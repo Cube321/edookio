@@ -131,9 +131,7 @@ app.use('/', adminRoutes);
 app.use('/', homeRoutes);
 app.use('/', authRoutes);
 
-app.all('*', (req, res, next) => {
-    next(new ExpressError('Stránka nebyla nalezena', 404));
-})
+
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here
