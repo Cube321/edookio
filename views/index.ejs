@@ -1,7 +1,116 @@
-<% layout ('../views/layouts/boilerplate.ejs')  %> 
-    <h1>Zvol kategorii</h1>
-    <ul>
-        <li><a href="/cards/getrandomcard/tresthmota">Trestní právo hmotné</a></li>
-        <li><a href="/cards/getrandomcard/obcanhmota">Občanské právo hmotné</a></li>
-    </ul>
-    <a href="/cards/new">Přidat kartu</a>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Právničíme</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body class="d-flex flex-column vh-100">
+    <%- include('./partials/navbar') %> 
+
+    <main role="main">
+        <%- include('./partials/alert') %>
+        <section class="jumbotron text-center">
+          <div class="container my-5">
+              <div class="row">
+                  <div class="col-sm-6 offset-sm-3">
+                    <h1 class="jumbotron-heading mb-3">Studijní pomůcka pro právníky</h1>
+                    <p class="lead text-muted">Pusťte se do studia práv se sadou stovek kartiček s otázkami a odpověďmi, které jsou pro vás zdarma k dispozici.</p>        
+                  </div>
+              </div>
+          </div>
+        </section>
+  
+        <div class="album py-5 bg-light">
+          <div class="container">
+  
+            <div class="row">
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <a href="/cards/getrandomcard/tresthmota" class="landing-link">
+                        <div class="card shadow">
+                            <div class="d-flex justify-content-center">
+                                <img src="/img/landing_trest.jpeg" class="rounded-circle landing-img m-3" alt="">
+                            </div>
+                            <div class="card-body cat-text">
+                            <h5 class="card-title">Trestní právo</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <a href="/cards/getrandomcard/obcanhmota" class="landing-link">
+                        <div class="card shadow">
+                            <div class="d-flex justify-content-center">
+                                <img src="/img/landing_obcan.jpeg" class="rounded-circle landing-img m-3" alt="">
+                            </div>
+                            <div class="card-body cat-text">
+                            <h5 class="card-title">Občanské právo</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <a href="/cards/getrandomcard/spravnipravo" class="landing-link">
+                        <div class="card shadow">
+                            <div class="d-flex justify-content-center">
+                                <img src="/img/landing_sprava.jpeg" class="rounded-circle landing-img m-3" alt="">
+                            </div>
+                            <div class="card-body cat-text">
+                            <h5 class="card-title">Správní právo</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <a href="/cards/getrandomcard/ustavnipravo" class="landing-link">
+                        <div class="card shadow">
+                            <div class="d-flex justify-content-center">
+                                <img src="/img/landing_ustavko.jpeg" class="rounded-circle landing-img m-3" alt="">
+                            </div>
+                            <div class="card-body cat-text">
+                            <h5 class="card-title">Ústavní právo</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <a href="/cards/getrandomcard/obchodnipravo" class="landing-link">
+                        <div class="card shadow">
+                            <div class="d-flex justify-content-center">
+                                <img src="/img/landing_obchod.jpeg" class="rounded-circle landing-img m-3" alt="">
+                            </div>
+                            <div class="card-body cat-text">
+                            <h5 class="card-title">Obchodní právo</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
+                    <a href="/cards/getrandomcard/mezinarodnipravo" class="landing-link">
+                        <div class="card shadow">
+                            <div class="d-flex justify-content-center">
+                                <img src="/img/landing_mezinarodko.jpeg" class="rounded-circle landing-img m-3" alt="">
+                            </div>
+                            <div class="card-body cat-text">
+                            <h5 class="card-title">Mezinárodní právo</h5>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+              
+  
+      </main>
+    <%- include('./partials/footer') %> 
+    <!-- JS for Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script> 
+</body>
+</html>
+
+
+    
+
+    

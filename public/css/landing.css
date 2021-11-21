@@ -1,0 +1,31 @@
+.landing-img {
+    width: 100px;
+    height: 100px;
+    opacity: 0.7;
+}
+
+
+
+.card:hover .landing-img { 
+    transition: 0.3s;
+    opacity: 1;
+}
+
+.cat-text {
+    text-align: center;
+}
+
+.cat-text h5, .cat-text :hover {
+    font-size: 1.2rem;
+    color: #212529;
+    text-decoration: none;
+}
+
+.landing-link {
+    text-decoration: none;
+}
+
+.card {
+    height: 100%;
+}
+
