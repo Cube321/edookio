@@ -19,6 +19,8 @@ router.get('/cards/getrandomcard/:category', catchAsync(async (req, res, next) =
     const cardsAmount = cards.length;
     const randomNumber = Math.floor(Math.random() * (cardsAmount));
     const randomCard = cards[randomNumber];
+    console.log(`Náhodná karta je: ${randomCard}`);
+    console.log(`Náhodná číslo je: ${randomNumber}`);
     let topicText = "";
     for (let cat of categories){
         if(cat.value === category){
