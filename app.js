@@ -143,6 +143,10 @@ app.use((err, req, res, next) => {
     res.redirect('/');
 })
 
+app.all('*', (req, res, next) => {
+    console.log(`************************ 404 **********************`)
+})
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
