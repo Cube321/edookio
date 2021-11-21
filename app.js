@@ -144,7 +144,9 @@ app.use((err, req, res, next) => {
 })
 
 app.all('*', (req, res, next) => {
-    console.log(`************************ 404 **********************`)
+    console.log(`************************ 404 **********************`);
+    req.flash('error', 'Stránka nebyla nalezena.');
+    res.redirect('/');
 })
 
 const port = process.env.PORT || 3000;
