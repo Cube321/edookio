@@ -132,7 +132,6 @@ app.use('/', homeRoutes);
 app.use('/', authRoutes);
 
 app.all('*', (req, res, next) => {
-    console.log(req.route);
     next(new ExpressError('Stránka nebyla nalezena', 404));
 })
 
