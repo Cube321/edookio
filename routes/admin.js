@@ -8,7 +8,7 @@ const { isLoggedIn, isAdmin } = require('../utils/middleware');
 
 //show all cards in the DB
 router.get('/admin/listallcards', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
-    const allCards = await Card.find({});
+    const allCards = await Card.find({}); 
     res.render('listAllCards', {cards: allCards});
 }))
 
