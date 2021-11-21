@@ -1,0 +1,20 @@
+
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="col-lg-6 offset-lg-3">
+    <div class="card text-center shadow">
+        <div class="card-header">
+          <%= topicText %> 
+        </div>
+        <div class="card-body">
+          <p class="card-text"><%- card.pageA %> </p>
+          <hr>
+          <p class="card-text"><%- card.pageB %> </p>
+          <a href="#" class="btn btn-outline-primary">Zobrazit</a>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-danger">Těžké</a>
+          <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-success">Snadné</a>
+        </div>
+      </div>
+      <p class="text-center mt-4 text-muted"><a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a> | <a href="#" class="text-muted">Nahlásit chybu</a></p>
+</div>

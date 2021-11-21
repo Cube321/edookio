@@ -1,0 +1,33 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+    <div class="col-sm-4 offset-sm-4">
+        <h1>Registrace administrátora</h1>
+        <form class="row g-3 needs-validation mt-3" novalidate action="/auth/user/new" method="POST">
+            <div class="mt-2">
+            <label for="email" class="form-label">E-mail</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mt-2">
+                <label for="password" class="form-label">Heslo</label>
+                <input type="password" class="form-control" id="password" name="password" minlength=6 required>
+                <div class="invalid-feedback">
+                    Heslo musí obsahovat nejméně 6 znaků.
+                </div>
+            </div>
+            <div class="mt-2">
+                <label for="password_confirmation" class="form-label">Heslo znovu</label>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" minlength=6 required>
+                <div class="invalid-feedback">
+                    Heslo musí obsahovat nejméně 6 znaků.
+                </div>
+            </div>
+            <div class="mt-2">
+                <label for="key" class="form-label">Klíč</label>
+                <input type="password" class="form-control" id="key" name="key" required>
+            </div>
+        <div class="col-12">
+        <button class="btn btn-primary" type="submit">Zaregistrovat</button>
+        </div>
+    </form>
+</div>
+    
+    <script src="/js/validateForms.js"></script>

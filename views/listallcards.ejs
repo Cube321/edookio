@@ -1,0 +1,10 @@
+<% layout ('../views/layouts/boilerplate.ejs')  %> 
+    <ul>
+        <% for( let card of cards) { %>
+            <li><%= card.pageA %> 
+                <form action="/cards/remove/<%= card._id%>?_method=DELETE" method="POST">
+                    <button>Odstranit</button>
+                </form>
+            </li>
+        <% } %>
+    </ul>

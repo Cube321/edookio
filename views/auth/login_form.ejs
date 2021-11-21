@@ -1,0 +1,30 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container d-flex justify-content-center align-items-center mt-1 mb-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow">
+                <img src="/img/login_pic.jpeg" alt="" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title mb-0">Přihlášení</h5>
+                    <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/login" method="POST">
+                        <div class="mt-1">
+                        <label for="email" class="form-label col-form-label-sm">E-mail</label>
+                            <input type="email" class="form-control form-control-sm" id="username" name="username" autofocus required>
+                        </div>
+                        <div class="mt-1">
+                            <label for="password" class="form-label col-form-label-sm">Heslo</label>
+                            <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+                        </div>
+                        <div>
+                            <button class="btn btn-info btn-sm w-100 mt-2" type="submit">Přihlásit se</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+    
+    
+    <script src="/js/validateForms.js"></script>

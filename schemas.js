@@ -1,0 +1,38 @@
+const BaseJoi = require('joi');
+const sanitizeHtml = require('sanitize-html');
+
+const extension = (joi) => ({
+    type: 'string',
+    base: joi.string(),
+    messages: {
+        'string.escapeHTML': '{{#label}} must not include HTML!'
+    },
+    rules: {
+        escapeHTML: {
+            validate(value, helpers) {
+                const clean = sanitizeHtml(value, {
+                    allowedTags: ['b','strong','i','p','span','li','ul','h1','h2','h3','h4','h5','h6'],
+                    allowedAttributes: {},
+                });
+                if (clean !== value) return helpers.error('string.escapeHTML', { value })
+                return clean;
+            }
+        }
+    }
+});
+
+const Joi = BaseJoi.extend(extension);
+
+module.exports.cardSchema = Joi.object({
+    pageA: Joi.string().required().escapeHTML(),
+    pageB: Joi.string().required().escapeHTML(),
+    author: Joi.string().required().escapeHTML(),
+    topic: Joi.string().required().escapeHTML()
+})
+
+module.exports.userSchema = Joi.object({
+    email: Joi.string().required().escapeHTML(),
+    password: Joi.string().required().min(6).escapeHTML(),
+    password_confirmation: Joi.string().required().min(6).escapeHTML(),
+    key: Joi.string().escapeHTML()
+})
