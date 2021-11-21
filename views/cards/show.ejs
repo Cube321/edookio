@@ -5,14 +5,14 @@
         <div class="card-header">
           <%= topicText %> 
         </div>
-        <div class="card-body">
+        <div class="card-body min-height">
           <p class="card-text"><%- card.pageA %> </p>
           <hr>
           <p class="card-text"><%- card.pageB %> </p>
-          <a href="#" class="btn btn-outline-primary">Zobrazit</a>
         </div>
         <div class="card-footer d-flex justify-content-between">
           <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-danger">Těžké</a>
+          <a href="#" class="btn btn-outline-primary">Otočit</a>
           <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-success">Snadné</a>
         </div>
       </div>
