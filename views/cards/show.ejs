@@ -1,20 +1,36 @@
 
 <% layout ('layouts/boilerplate.ejs')  %> 
-<div class="col-lg-6 offset-lg-3">
+<div class="row">
+<div class="col-lg-6 offset-lg-1 flashcard">
     <div class="card text-center shadow">
-        <div class="card-header">
-          <%= topicText %> 
-        </div>
-        <div class="card-body min-height">
-          <p class="card-text"><%- card.pageA %> </p>
+        <div class="card-body">
+          <div class="d-flex justify-content-center align-items-center min-height-70px">
+            <div class="card-text pageA" id="pageA"><%- card.pageA %> </div>
+          </div>
           <hr>
-          <p class="card-text"><%- card.pageB %> </p>
+          <div class="d-flex flex-column min-height-230px">
+            <div class="card-text" id="pageB"><%- card.pageB %> </div>
+          </div>
         </div>
         <div class="card-footer d-flex justify-content-between">
-          <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-danger">Těžké</a>
-          <a href="#" class="btn btn-outline-primary">Otočit</a>
-          <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-success">Snadné</a>
+          <div>
+            <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-danger hard-btn disabled" >Těžké</a>
+          </div>
+          <a href="#" class="btn btn-outline-primary" id='btn-flip'>Otočit!</a>
+          <div>
+            <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-success easy-btn disabled" >Snadné</a>
+          </div>
         </div>
       </div>
-      <p class="text-center mt-4 text-muted"><a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a> | <a href="#" class="text-muted">Nahlásit chybu</a></p>
-</div>
+      <p class="text-center mt-4 text-muted servis-btns">
+        <% if (currentUser && currentUser.admin) { %>
+          <a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a> | 
+        <% } %>
+          <a href="#" class="text-muted">Nahlásit chybu</a></p>
+    </div>
+    <div class="col-lg-2">
+      <div class="card shadow">
+        <h5 class="card-title">68 %</h5>
+      </div>
+    </div>
+  </div>

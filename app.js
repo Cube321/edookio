@@ -25,9 +25,9 @@ const adminRoutes = require('./routes/admin');
 const homeRoutes = require('./routes/home');
 const authRoutes = require('./routes/auth');
 
-const dbUrl = process.env.DB_URL;
+//const dbUrl = process.env.DB_URL;
 
-//const dbUrl = 'mongodb://localhost:27017/LawStudyApp';
+const dbUrl = 'mongodb://localhost:27017/LawStudyApp';
 
 mongoose.connect(dbUrl)
     .then(() => {

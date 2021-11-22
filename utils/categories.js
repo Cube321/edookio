@@ -1,4 +1,4 @@
 module.exports.categories = [
-    {value: "tresthmota", text: "Trestní právo hmotné"},
-    {value: "obcanhmota", text: "Občanské právo hmotné"}
+    {value: "trestnipravo", text: "Trestní právo"},
+    {value: "obcanskepravo", text: "Občanské právo"}
 ]

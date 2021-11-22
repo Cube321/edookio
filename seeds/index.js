@@ -15,7 +15,7 @@ mongoose.connect('mongodb://localhost:27017/LawStudyApp')
         for( i = 1; i < 5; i++){
             const author = `Jakub ${i}`
             const card = new Card({
-                topic: 'tresthmota',
+                topic: 'trestnipravo',
                 pageA: 'Dělení trestných činů',
                 pageB: 'Přečiny a zločiny',
                 author
@@ -25,7 +25,7 @@ mongoose.connect('mongodb://localhost:27017/LawStudyApp')
         for( i = 1; i < 5; i++){
             const author = `Jakub ${i}`
             const card = new Card({
-                topic: 'obcanhmota',
+                topic: 'obcanskepravo',
                 pageA: 'Dělení věcí',
                 pageB: 'Hmotné a nehmotné, <b>movité a nemovité</b>',
                 author
