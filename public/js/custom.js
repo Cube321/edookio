@@ -1,8 +1,18 @@
 $(document).ready(function() {
-    $('#btn-flip').click(function(){
-        $('#pageB').fadeIn();
-        $('.hard-btn').removeClass('disabled');
-        $('.easy-btn').removeClass('disabled');
-        $('#btn-flip').addClass('disabled');
+    setTimeout(function(){
+        $("#back").removeClass("invisible");
+    }, 100)
+
+    $("#card").flip({
+        trigger: "manual"
     });
+
+    $("#btn-flip-front").click(function(){
+        $("#card").flip('toggle');
+    })
+
+    $("#btn-flip-back").click(function(){
+        $("#card").flip('toggle');
+    })
+    
 });

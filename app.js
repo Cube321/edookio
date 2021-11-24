@@ -24,6 +24,7 @@ const cardRoutes = require('./routes/cards');
 const adminRoutes = require('./routes/admin');
 const homeRoutes = require('./routes/home');
 const authRoutes = require('./routes/auth');
+const sectionRoutes = require('./routes/sections');
 
 const dbUrl = process.env.DB_URL;
 
@@ -130,6 +131,7 @@ app.use('/', cardRoutes);
 app.use('/', adminRoutes);
 app.use('/', homeRoutes);
 app.use('/', authRoutes);
+app.use('/', sectionRoutes);
 
 
 

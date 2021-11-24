@@ -1,8 +1,9 @@
 
 <% layout ('layouts/boilerplate.ejs')  %> 
+<!--
 <div class="row">
 <div class="col-lg-6 offset-lg-1 flashcard">
-    <div class="card text-center shadow">
+    <div class="card text-center shadow" >
         <div class="card-body">
           <div class="d-flex justify-content-center align-items-center min-height-70px">
             <div class="card-text pageA" id="pageA"><%- card.pageA %> </div>
@@ -14,11 +15,11 @@
         </div>
         <div class="card-footer d-flex justify-content-between">
           <div>
-            <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-danger hard-btn disabled" >Těžké</a>
+            <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-outline-danger hard-btn disabled" >Těžké</a>
           </div>
           <a href="#" class="btn btn-outline-primary" id='btn-flip'>Otočit!</a>
           <div>
-            <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-success easy-btn disabled" >Snadné</a>
+            <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-outline-success easy-btn disabled" >Snadné</a>
           </div>
         </div>
       </div>
@@ -31,6 +32,42 @@
     <div class="col-lg-2">
       <div class="card shadow">
         <h5 class="card-title">68 %</h5>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <div class="row">
+    <div class="col-lg-5 offset-lg-1">
+      <div class="">
+        <div id="card" class=""> 
+          <div class="card front text-center shadow"> 
+            <div class="card-body">
+              <div class="d-flex justify-content-center align-items-center min-height-300px">
+                <div class="card-text pageA" id="pageA"><%- card.pageA %> </div>
+              </div>
+            </div>
+            <div class="card-footer d-flex justify-content-center">
+              <a href="#" class="btn btn-outline-primary" id='btn-flip-front'>Otočit!</a>
+            </div>
+          </div> 
+          <div class="card back shadow invisible" id="back">
+            <div class="card-body">
+              <div class="d-flex flex-column min-height-300px">
+                <div class="card-text" id="pageB"><%- card.pageB %> </div>
+              </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <div>
+                <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-outline-danger hard-btn" >Těžké</a>
+              </div>
+              <a href="#" class="btn btn-outline-primary" id='btn-flip-back'>Otočit!</a>
+              <div>
+                <a href="/cards/getrandomcard/<%=card.topic%>" class="btn btn-outline-success easy-btn" >Snadné</a>
+              </div>
+            </div>
+          </div> 
+        </div>
       </div>
     </div>
   </div>
