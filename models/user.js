@@ -11,7 +11,8 @@ const UserSchema = new Schema ({
     admin: {
         type: Boolean,
         default: false
-    }
+    },
+    sections: Array
 })
 
 UserSchema.plugin(passportLocalMongoose);

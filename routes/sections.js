@@ -6,6 +6,7 @@ const Category = require('../models/category');
 const Card = require('../models/card');
 const { isLoggedIn, isAdmin, validateSection } = require('../utils/middleware');
 const { cardSchema } = require('../schemas');
+const {categories} = require('../utils/categories')
 
 
 
@@ -16,19 +17,23 @@ router.get('/category/:category', catchAsync(async (req, res, next) => {
         req.flash('error','Kategorie neexistuje.');
         return res.redirect('back');
     }
-    res.render('category', {category});
+    let title = "";
+    categories.forEach(c => {
+        if(c.value === req.params.category){title = c.text};
+    })
+    res.render('category', {category, title});
 }))
 
-//create new Category - change to PUSH for production
+//create new Category
 router.get('/category/new/:categoryName', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
     const { categoryName } = req.params;
     const newCategory = new Category({name: categoryName, sections: []});
     const savedCategory = await newCategory.save();
-    res.send(savedCategory);
+    res.redirect(`/category/${categoryName}`);
 }))
 
 //create new Section in Category
-router.post('/category/:category/newSection', validateSection, catchAsync(async (req, res, next )=> {
+router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdmin, catchAsync(async (req, res, next )=> {
     //check if category exists
     const foundCategory = await Category.findOne({name: req.params.category});
     if(!foundCategory){
@@ -51,7 +56,7 @@ router.post('/category/:category/newSection', validateSection, catchAsync(async 
 }))
 
 //remove Section from Category and delete its Cards
-router.get('/category/:category/removeSection/:sectionId', catchAsync(async(req, res, next) => {
+router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
     await Category.findOneAndUpdate({name: category}, {$pull: {sections: sectionId}});

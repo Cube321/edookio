@@ -14,13 +14,13 @@
       <div class="container">
           <ul class="navbar-nav">
               <li><a href="/category/<%= card.category %>" class="back-link"><i class="fas fa-chevron-left me-2 mb-2"></i>Zpět na kategorii</a></li>
-              <li><p class="fw-bolder m-0"><%= sectionName %></p></li>
+              <li><p class="m-0"><small><%= sectionName %></p></small></li>
           </ul>
       </div>
     </nav>
     <main class="container mt-5">
         <div class="row">
-          <div class="col-lg-5 offset-lg-2">
+          <div class="col-lg-5 offset-lg-2 mb-3">
             <div class="">
               <div id="card" class="flashcard"> 
                 <div class="card front text-center shadow"> 
@@ -41,11 +41,11 @@
                   </div>
                   <div class="card-footer d-flex justify-content-between">
                     <div>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-outline-danger hard-btn" >Těžké</a>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>"></a>
                     </div>
                     <a href="#" class="btn btn-outline-primary" id='btn-flip-back'>Otočit!</a>
                     <div>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-outline-success easy-btn" >Snadné</a>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-primary easy-btn" >Další</a>
                     </div>
                   </div>
                 </div> 
@@ -59,11 +59,11 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2">
+          <div class="col-lg-2 mb-3">
             <div class="card shadow">
-              <div class="card-body">
-                <p><%= nextNum - 1 %>/<%= sectionLength %></p>
-                <p>Trestní právo: Obecná část</p>
+              <div class="card-body text-center">
+                <h6><%= sectionName %> </h6>
+                <p class="text-muted">Karta <%= nextNum - 1 %> z <%= sectionLength %></p>
               </div>
             </div>
           </div>

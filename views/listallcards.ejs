@@ -1,8 +1,0 @@
-<% layout ('../views/layouts/boilerplate.ejs')  %> 
-    <ul>
-        <% for( let card of cards) { %>
-            <li><%= card.pageA %> 
-                <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
-            </li>
-        <% } %>
-    </ul>

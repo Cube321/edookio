@@ -1,10 +1,27 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
+<% if (!currentUser){  %> 
+    <div class="row">
+        <div class="col-md-10 offset-md-1 mb-4">
+            <div class="card orange-shadow">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h5 class="p-3 mb-0"><i class="fas fa-lock fa-2x px-2"></i>Zaregistruj se a získej přístup ke stovkám kartiček zdarma</h5>
+                        <p class="text-muted px-3"><small>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatao.</small></p>
+                    </div>
+                    <div class="col-sm-4 p-3 d-flex justify-content-center align-items-center">
+                        <a class="btn btn-danger" href="/auth/user/new">Zaregistrovat se</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } %> 
 <div class="row mb-3">
     <div class="col-md-3 offset-md-1 mb-3">
         <div class="card shadow">
             <div class="card-body category-box">
                 <i class="fas fa-user-lock mt-4 mb-2"></i>
-                <p class="mt-2 mb-4">Trestní právo</p>
+                <p class="mt-2 mb-4"><%= title %> </p>
             </div>
         </div>
     </div>
@@ -21,17 +38,22 @@
                     <p>Kategorie neobsahuje žádné sekce.</p>
                 <% } else { category.sections.forEach(section => { %>
                     <div class="row py-2">
-                        <div class="col-xl-9">                    
+                        <div class="col-7">                    
                                 <p class="m-0"><i class="fas fa-layer-group me-2"></i><%= section.name %></p>
                         </div>
-                        <div class="col-xl-1 col-6">
-                            <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger">Spustit</a>
+                        <div class="col-3">
+                            <% if (!currentUser){ %> 
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>
+                            <% } else { %> 
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger" style="float:right">Spustit</a>
+                            <% } %> 
                         </div>
-                        <div class="col-xl-2 col-6 d-flex justify-content-evenly align-items-center">
-                            <p class="m-0">0/<%= section.cards.length %></p>
-                            <% if (currentUser) { %>
-                                <a href="/category/<%= category.name %>/<%= section._id %>/newCard  " class="add-icon"><i class="fas fa-plus-square"></i></a>
-                                <a href="/category/<%= category.name %>/removeSection/<%= section._id %>" class="remove-icon"><i class="fas fa-times"></i></a>
+                        <div class="col-2 d-flex justify-content-evenly align-items-center">
+                            <p class="m-0"><%= section.cards.length %> <i class="fas fa-scroll"></i></p>
+                            <% if (currentUser && currentUser.admin) { %>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
+                                <a href="/category/<%= category.name %>/removeSection/<%= section._id %>" class="remove-icon"><i class="fas fa-times px-1"></i></a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
                             <% } %>
                         </div>
                     </div>
@@ -41,9 +63,9 @@
         </div>
     </div>
 </div>
-<% if (currentUser && currentUser.isAdmin) { %>
+<% if (currentUser && currentUser.admin) { %>
 <div class="row">
-    <div class="col-md-7 offset-md-4">
+    <div class="col-md-7 offset-md-4 mb-3">
         <div class="card shadow add-section">
             <div class="card-body">
                 <form action="/category/<%= category.name  %>/newSection" method="POST">

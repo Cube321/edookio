@@ -1,0 +1,15 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-11 offset-1 mb-3">
+            <h5>Registrovaní uživatelé</h5>
+        </div>
+    </div>
+    <% for(let user of users){ %> 
+        <div class="row">
+            <div class="col-sm-2 offset-1"><%= user.email %> </div>
+            <div class="col-sm-2">registrován 22. 11. 2022</div>
+            <hr>
+        </div>
+    <% } %> 
+</div>
