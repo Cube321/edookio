@@ -2,3 +2,37 @@
     margin-bottom: 4px;
     margin-right: 10px;
 }
+
+/*CATEGORY*/
+.section-list .add-icon {
+    color: green;
+}
+
+.section-list .remove-icon {
+    color: red;
+    background-color: white;
+    border-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-box {
+    text-align: center;
+}
+
+.category-box i {
+    font-size: 4rem;
+}
+
+.category-box p {
+    font-size: 2rem;
+}
+
+.category-headline {
+    font-weight: 700;
+}
+
+.navbar .nav-item .nav-link {
+    color:#161619;
+    font-weight: 500;
+}

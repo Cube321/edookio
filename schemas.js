@@ -11,7 +11,7 @@ const extension = (joi) => ({
         escapeHTML: {
             validate(value, helpers) {
                 const clean = sanitizeHtml(value, {
-                    allowedTags: ['b','strong','i','p','span','li','ul','h1','h2','h3','h4','h5','h6'],
+                    allowedTags: ['b','strong','i','p','span',"ul",'ol','li','h1','h2','h3','h4','h5','h6'],
                     allowedAttributes: {},
                 });
                 if (clean !== value) return helpers.error('string.escapeHTML', { value })
@@ -26,8 +26,7 @@ const Joi = BaseJoi.extend(extension);
 module.exports.cardSchema = Joi.object({
     pageA: Joi.string().required().escapeHTML(),
     pageB: Joi.string().required().escapeHTML(),
-    author: Joi.string().required().escapeHTML(),
-    topic: Joi.string().required().escapeHTML()
+    author: Joi.string().required().escapeHTML()
 })
 
 module.exports.userSchema = Joi.object({
@@ -35,4 +34,9 @@ module.exports.userSchema = Joi.object({
     password: Joi.string().required().min(6).escapeHTML(),
     password_confirmation: Joi.string().required().min(6).escapeHTML(),
     key: Joi.string().escapeHTML()
+})
+
+module.exports.sectionSchema = Joi.object({
+    name: Joi.string().required().escapeHTML(),
+    category: Joi.string().required().escapeHTML()
 })

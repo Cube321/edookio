@@ -5,14 +5,14 @@
         <form class="row g-3 needs-validation mt-3" novalidate action="/cards/edit/<%=card._id%>?_method=PUT" method="POST">
             <div class="mt-2">
             <label for="pageA" class="form-label">Strana A</label>
-            <input type="text" class="form-control" id="pageA" name="pageA" value="<%=card.pageA%>" required>
+            <textarea name="pageA" id="pageA" class="form-control" cols="30" rows="5" required><%=card.pageA%></textarea>
             <div class="valid-feedback">
                 V pořádku!
             </div>
             </div>
             <div class="mt-2">
                 <label for="pageB" class="form-label">Strana B</label>
-                <input type="text" class="form-control" id="pageB" name="pageB" value="<%=card.pageB%>" required>
+                <textarea name="pageB" id="pageB" class="form-control" cols="30" rows="10" required><%=card.pageB%></textarea>
                 <div class="valid-feedback">
                 V pořádku!
                 </div>
@@ -23,17 +23,6 @@
                 <div class="valid-feedback">
                 V pořádku!
                 </div>
-            </div>
-            <div class="mt-2">
-            <label for="topic" class="form-label">Kategorie</label>
-            <select class="form-select" name="topic" id="topic" required>
-                <% for( let cat of categories) { %>
-                    <option value="<%= cat.value %>" <%= (card.topic === cat.value) ? "selected" : "" %> ><%= cat.text %></option>
-                <% } %>
-            </select>
-            <div class="invalid-feedback">
-                Zvolte kategorii.
-            </div>
             </div>
             <div class="col-12">
             <button class="btn btn-primary" type="submit">Vložit</button>

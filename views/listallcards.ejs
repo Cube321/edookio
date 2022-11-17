@@ -2,9 +2,7 @@
     <ul>
         <% for( let card of cards) { %>
             <li><%= card.pageA %> 
-                <form action="/cards/remove/<%= card._id%>?_method=DELETE" method="POST">
-                    <button>Odstranit</button>
-                </form>
+                <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
             </li>
         <% } %>
     </ul>

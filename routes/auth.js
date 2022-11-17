@@ -35,7 +35,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             if (err) return next(err);
         })
         req.flash('success', 'Registrace proběhla úspěšně.');
-        res.redirect('/');
+        res.redirect('/'); 
     } catch (err){
         if (err.message === 'A user with the given username is already registered'){
             req.flash('error', 'Uživatel již existuje.');
@@ -53,10 +53,10 @@ router.get('/auth/user/login', (req, res) => {
 
 //login request (POST)
 router.post('/auth/user/login', passport.authenticate('local', {failureFlash: 'Nesprávné heslo nebo e-mail.', failureRedirect: '/auth/user/login'}), catchAsync(async (req, res) => {
-    //const redirectUrl = req.session.returnTo || '/';
-    //delete req.session.returnTo;
+    const redirectUrl = req.session.returnTo || '/';
+    delete req.session.returnTo;
     req.flash('success','Přihlášení proběhlo úspěšně. Vítejte!');
-    res.redirect('/');
+    res.redirect(redirectUrl);
 }))
 
 //logout request (GET)

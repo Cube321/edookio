@@ -2,15 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CardSchema = new Schema({
-    topic: {
+    category: {
         type: String,
-        required: true
+        required: true,
+        default: 'notset'
     },
     pageA: String,
     pageB: String,
     author: {
         type: String,
         required: true
+    },
+    section: {
+        type : Schema.Types.ObjectId, 
+        ref: 'Section'
     }
 })
 

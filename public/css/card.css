@@ -7,8 +7,9 @@
     min-height: 300px;
 }
 
-.servis-btns {
+.servis-btns a {
     font-size: 0.8rem;
+    line-height: 1rem;
 }
 
 
@@ -35,3 +36,17 @@
 .invisible {
     visibility: hidden;
 }
+
+.btn-link {
+    border: none;
+    background-color: #F8F9FA;
+    font-size: 0.8rem;
+}
+
+.back-link {
+    text-decoration: none;
+    font-weight:600;
+    color: darkblue;
+    font-size: 0.8rem;
+}
+

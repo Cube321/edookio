@@ -44,7 +44,7 @@ app.use(express.json()); //for JSON data
 app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(mongoSanitize({
-    replaceWith: '_',
+    replaceWith: '_', 
   }));
 
 const sessionConfig = {
@@ -83,7 +83,9 @@ const styleSrcUrls = [
     "https://use.fontawesome.com/",
 ];
 const connectSrcUrls = [
-    "https://api.mapbox.com/"
+    "https://api.mapbox.com/",
+    "https://ka-f.fontawesome.com/"
+
 ];
 const fontSrcUrls = [];
 app.use(
@@ -116,6 +118,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    //gives access to currectUser on all templates
     res.locals.currentUser = req.user;
     next();
 })
@@ -132,8 +135,6 @@ app.use('/', adminRoutes);
 app.use('/', homeRoutes);
 app.use('/', authRoutes);
 app.use('/', sectionRoutes);
-
-
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here
