@@ -8,7 +8,7 @@
     <% for(let user of users){ %> 
         <div class="row">
             <div class="col-sm-2 offset-1"><%= user.email %> </div>
-            <div class="col-sm-2">registrován 22. 11. 2022</div>
+            <div class="col-sm-2"><%= user.dateOfRegistration %> </div>
             <hr>
         </div>
     <% } %> 

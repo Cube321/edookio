@@ -22,6 +22,9 @@
                 </li>
               <% } else { %>
                 <li class="nav-item">
+                  <a class="nav-link" href="/auth/user/profile">Můj účet (<%= currentUser.firstname %>)</a>
+                </li>
+                <li class="nav-item">
                   <a class="nav-link" href="/auth/user/logout">Odhlásit se</a>
                 </li>
               <% } %>

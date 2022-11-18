@@ -1,0 +1,40 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="row p-3">
+                    <div class="col-12">
+                        <h3>Můj účet</h3>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <div class="col-4 mb-3 fw-bold">
+                        <p>Jméno</p>
+                    </div>
+                    <div class="col-8 mb-3">
+                        <%= user.firstname %> <%= user.lastname %> 
+                    </div>
+                    <div class="col-4 mb-3 fw-bold">
+                        <p>E-mail</p>
+                    </div>
+                    <div class="col-8 mb-3">
+                        <%= user.email %> 
+                    </div>
+                    <div class="col-4 mb-3 fw-bold">
+                        <p>Datum registrace</p>
+                    </div>
+                    <div class="col-8 mb-3">
+                        <%= user.dateOfRegistration %> 
+                    </div>
+                    <div class="col-4 mb-3 fw-bold">
+                        <p>Heslo</p>
+                    </div>
+                    <div class="col-8">
+                        <a href="/auth/user/changePassword" class="btn btn-danger btn-sm">Změnit heslo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,13 @@ const User = require('../models/user');
 const passport = require('passport');
 const { isLoggedIn } = require('../utils/middleware');
 const { validateUser } = require('../utils/middleware');
+const uuid = require('uuid');
+
+//my profile view page
+router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
+    const {user} = req;
+    res.render('auth/profile', {user});
+}))
 
 //register form user (GET)
 router.get('/auth/user/new', (req, res) => {
@@ -18,7 +25,7 @@ router.get('/auth/admin/new', (req, res) => {
 
 //register request (POST)
 router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) => {
-    const {email, password, password_confirmation, key} = req.body;
+    const {email, password, password_confirmation, key, firstname, lastname} = req.body;
     //check password 
     if(password !== password_confirmation){
         req.flash('error','Obě zadaná hesla se musí shodovat.');
@@ -29,7 +36,9 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         let admin = false;
         if(key === process.env.adminRegKey) admin = true;
         //register user
-        const user = new User({email, username: email, admin});
+        const passChangeId = uuid.v1();
+        const dateOfRegistration = Date.now();
+        const user = new User({email, username: email, admin, dateOfRegistration, firstname, lastname, passChangeId});
         const newUser = await User.register(user, password);
         req.login(newUser, err => {
             if (err) return next(err);
@@ -64,6 +73,87 @@ router.get('/auth/user/logout', isLoggedIn, (req, res) => {
     req.logout();
     res.redirect('/');
 })
+
+//change password (GET)
+router.get('/auth/user/changePassword', isLoggedIn, (req, res) => {
+    res.render('auth/change_password');
+})
+
+//change password (POST)
+router.post('/auth/user/changePassword', isLoggedIn, catchAsync(async(req, res) => {
+    try {
+    if(req.body.newpassword === req.body.newpasswordcheck){
+        const user = await User.findById(req.user._id);
+        await user.changePassword(req.body.oldpassword, req.body.newpassword);
+        req.flash('success','Heslo bylo změněno');
+        res.redirect('/auth/user/profile');
+    } else {
+        req.flash('error','Nové heslo a Nové heslo pro kontrolu se musí shodovat');
+        res.redirect('/auth/user/changePassword');
+    } } catch (err) {
+        if(err.message === "Password or username is incorrect"){
+            req.flash('error','Nesprávné heslo');
+        } else {
+            req.flash('error','Omlouváme se, něco se nepovedlo');
+        }
+        res.redirect('/auth/user/changePassword');
+    }
+}))
+
+//request forgotten password form (GET)
+router.get('/auth/user/requestPassword', (req, res) => {
+    res.render('auth/request_password');
+})
+
+//request forgotten password (POST) - NEDOKONČENO - Je třeba zaslat e-mail s linkem na změnu hesla a vytvořit nějaké id, aby to nemohl udělat kdokoliv
+router.post('/auth/user/requestPassword', catchAsync(async(req, res) => {
+    const user = await User.findOne({email: req.body.email});
+    //check if user exists
+    if(!user){
+        req.flash('error','Uživatelské jméno neexistuje');
+        return res.redirect('/auth/user/requestPassword');
+    }
+    //create original passChangeId on user
+    const passChangeId = uuid.v1();
+    user.passChangeId = passChangeId;
+    await user.save();
+    //sent e-mail with link to user
+    const changeLink = `/auth/user/setPassword/${passChangeId}`;
+
+    res.render('auth/password_sent');
+}))
+
+//set password FORM (GET)
+router.get('/auth/user/setPassword/:passChangeId', catchAsync(async(req, res) => {
+    const user = await User.findOne({passChangeId: req.params.passChangeId});
+    const {passChangeId} = req.params;
+    if(!user){
+        req.flash('error','Uživatel s passChangeId nenalezen.');
+        return res.redirect('/');
+    } else {
+        res.render('auth/set_password', {passChangeId});
+    }
+}))
+
+//set password POST 
+router.post('/auth/user/setPassword/:passChangeId', catchAsync(async(req, res) => {
+    const user = await User.findOne({passChangeId: req.params.passChangeId});
+    if(!user){
+        req.flash('error','Uživatel s passChangeId nenalezen.');
+        return res.redirect('/');
+    } else if(req.body.newpassword === req.body.newpasswordcheck){
+        await user.setPassword(req.body.newpassword);
+        await user.save();
+        req.login(user, err => {
+            if (err) return next(err);
+        })
+        req.flash('success','Heslo bylo změněno')
+        res.redirect('/');
+    } else {
+        req.flash('error','Nové heslo a Nové heslo pro kontrolu se musí shodovat');
+        res.redirect(`/auth/user/setPassword/${req.params.passChangeId}`);
+    }
+}))
 
 
 module.exports = router;
