@@ -1,6 +1,6 @@
 This favicon was generated using the following font:
 
-- Font Title: Leckerli One
-- Font Author: Copyright (c) 2011 Gesine Todt (www.gesine-todt.de), with Reserved Font Names "Leckerli"
-- Font Source: http://fonts.gstatic.com/s/leckerlione/v11/V8mCoQH8VCsNttEnxnGQ-1itLZxcBtItFw.ttf
+- Font Title: Noto Color Emoji
+- Font Author: Copyright 2021 Google Inc. All Rights Reserved.
+- Font Source: http://fonts.gstatic.com/s/notocoloremoji/v24/Yq6P-KqIXTD0t4D9z1ESnKM3-HpFab5s79iz64w.ttf
 - Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))

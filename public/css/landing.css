@@ -1,3 +1,22 @@
+.main-header {
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg_cover5.jpeg) no-repeat center center; 
+    background-size: cover;
+    min-height: 450px;
+    color: white;
+    background-blend-mode: darken;
+}
+
+.jumbotron-heading {
+    font-size: 8vh;
+}
+
+.vision-statement {
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg_login.jpeg) no-repeat center center; 
+    background-size: cover;
+    color: white;
+    background-blend-mode: darken;
+}
+
 .landing-img {
     width: 100px;
     height: 100px;

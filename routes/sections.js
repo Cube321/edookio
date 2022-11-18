@@ -15,11 +15,15 @@ router.get('/category/:category', catchAsync(async (req, res, next) => {
         req.flash('error','Kategorie neexistuje.');
         return res.redirect('back');
     }
+    let demoCat = {sections: []};
+    if(!req.user){
+        demoCat = await Category.findOne({name:"demo"});
+    }
     let title = "";
     categories.forEach(c => {
         if(c.value === req.params.category){title = c.text};
     })
-    res.render('category', {category, title});
+    res.render('category', {category, title, demoCat});
 }))
 
 //create new Category

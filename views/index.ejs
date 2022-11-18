@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inlege</title>
+    <title>InLege</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap_customised.css">
     <link rel="stylesheet" href="/css/custom.css">
@@ -14,18 +14,24 @@
 
     <main role="main"> 
         <%- include('./partials/alert') %>
-        <section class="jumbotron text-center">
-          <div class="container my-5">
+        <section class="jumbotron main-header">
+          <div class="container">
               <div class="row">
-                  <div class="col-sm-6 offset-sm-3">
+                  <div class="col-sm-5 my-5 p-4">
                     <h1 class="jumbotron-heading mb-3">Studuj právo efektivně!</h1>
-                    <p class="lead text-muted">Pusť se do studia práv se sadou stovek kartiček s otázkami a odpověďmi, které jsou pro vás zdarma k dispozici.</p>        
-                  </div>
+                    <p class="lead">Pusť se do studia práv se sadou stovek kartiček s otázkami a odpověďmi. Skvělá interaktivní příprava na zkoušky.</p>        
+                    <div class="mt-5">
+                        <% if(!currentUser){ %> 
+                            <a href="/auth/user/new" class="btn btn-lg btn-danger">Registrace zdarma</a>
+                        <% } %> 
+                    </div>
+                </div>
               </div>
           </div>
         </section>
+
   
-        <div class="album py-5 bg-light">
+        <div class="album pt-5 pb-3 my-5">
           <div class="container">
   
             <div class="row">
@@ -114,9 +120,21 @@
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
-      </main>
+
+    <section class="vision-statement">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2 text-center my-5">
+                    <h1 class="mb-4">Naše vize</h1>
+                    <p class="fs-5">Mladí právníci neustále skládají zkoušky. Ať už na právnické fakultě nebo po jejím dokončení v rámci dalšího profesního vzdělávání. Sami jsme touto cestou prošli. Rádi bychom jim nabídli nástroj, který jim na této náročné cestě usnadní život a přípravu na tyto zkoušky zefektní. Proto jsme vytvořili <strong style="color:#E80F88">InLege</strong>, aplikaci pro studium práva.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
     <%- include('./partials/footer') %> 
     <!-- JS for Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>

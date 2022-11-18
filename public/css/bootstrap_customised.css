@@ -45,3 +45,7 @@ a {
 a:hover {
     color: #AF0171;
 }
+
+.navbar .nav-item .nav-link:hover {
+    color: #AF0171;
+}

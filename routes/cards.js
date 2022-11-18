@@ -44,7 +44,7 @@ router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin
     res.redirect(`/category/${req.params.category}`);
 }))
 
-router.get('/category/:category/section/:sectionId/repeatSection', catchAsync(async(req, res) => {
+router.get('/category/:category/section/:sectionId/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
     const foundSection = await Section.findById(req.params.sectionId);
     console.log(user.sections);
@@ -63,10 +63,16 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const cardNumEdited = cardNum - 1;
     let nextNum = parseInt(cardNum) + 1;
     if(foundSection.cards.length === cardNumEdited){
-        const {user} = req;
-        user.sections.push(foundSection._id);
-        await user.save();
-        return res.render('sections/finished', {category, sectionName: foundSection.name});
+        if(req.user){
+            const {user} = req;
+            user.sections.push(foundSection._id);
+            await user.save();
+            return res.render('sections/finished', {category, sectionName: foundSection.name, demo: false});
+        } else {
+            //user not logged in - in demo section
+            return res.render('sections/finished', {category, sectionName: foundSection.name, demo: true});
+        }
+        
     }
     if(cardNumEdited < 0 || cardNum > foundSection.cards.length){
         req.flash('error','Zadané číslo karty nebylo nalezeno.');
