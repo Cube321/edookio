@@ -8,8 +8,6 @@ const { isLoggedIn, isAdmin, validateSection } = require('../utils/middleware');
 const { cardSchema } = require('../schemas');
 const {categories} = require('../utils/categories')
 
-
-
 //show sections of category
 router.get('/category/:category', catchAsync(async (req, res, next) => {
     const category = await Category.findOne({name: req.params.category}).populate('sections').exec();
@@ -63,7 +61,10 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     //delete Cards in Section
     await Card.deleteMany({section: sectionId});
     //delete Section
-    await Section.findByIdAndDelete(sectionId);
+    const deletedSection = await Section.findByIdAndDelete(sectionId);
+    const foundCategory = await Category.findOne({name: req.params.category});
+    foundCategory.numOfCards = foundCategory.numOfCards - deletedSection.cards.length;
+    await foundCategory.save();
     req.flash('success','Sekce byla odstraněna.');
     res.redirect(`/category/${category}`);
 }))

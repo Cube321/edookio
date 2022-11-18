@@ -4,9 +4,11 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Card = require('../models/card');
 const Section = require('../models/section');
+const Category = require('../models/category');
 const { categories } = require('../utils/categories');
 const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
 const section = require('../models/section');
+const user = require('../models/user');
 
 //show a specific card
 router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
@@ -29,9 +31,28 @@ router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isAdmin
     res.render('cards/new', {category, sectionId, sectionName: foundSection.name});
 }))
 
-router.get('/category/:category/section/:sectionId/listAllCards', catchAsync(async(req, res) => {
+router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const section = await Section.findById(req.params.sectionId).populate('cards');
     res.render('sections/listAllCards', {section});
+}))
+
+router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    const foundSection = await Section.findById(req.params.sectionId);
+    foundSection.isPublic = true;
+    await foundSection.save();
+    req.flash('success','Sekce byla zveřejněna');
+    res.redirect(`/category/${req.params.category}`);
+}))
+
+router.get('/category/:category/section/:sectionId/repeatSection', catchAsync(async(req, res) => {
+    const {user} = req;
+    const foundSection = await Section.findById(req.params.sectionId);
+    console.log(user.sections);
+    const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
+    user.sections = filteredSections;
+    await user.save();
+    console.log(user);
+    res.redirect(`/category/${req.params.category}/section/${req.params.sectionId}/1`);
 }))
 
 //show Card of Section
@@ -42,7 +63,10 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const cardNumEdited = cardNum - 1;
     let nextNum = parseInt(cardNum) + 1;
     if(foundSection.cards.length === cardNumEdited){
-        return res.render('sections/finished', {category});
+        const {user} = req;
+        user.sections.push(foundSection._id);
+        await user.save();
+        return res.render('sections/finished', {category, sectionName: foundSection.name});
     }
     if(cardNumEdited < 0 || cardNum > foundSection.cards.length){
         req.flash('error','Zadané číslo karty nebylo nalezeno.');
@@ -67,6 +91,9 @@ router.post('/category/:category/section/:sectionId/newCard', validateCard, isLo
     })
     const foundSection = await Section.findById(sectionId);
     const createdCard = await newCard.save();
+    const foundCategory = await Category.findOne({name: req.params.category});
+    foundCategory.numOfCards++;
+    await foundCategory.save();
     foundSection.cards.push(createdCard._id);
     await foundSection.save();
     req.flash('success','Kartička byla přidána do databáze.');
@@ -99,6 +126,9 @@ router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res,
     const foundCard = await Card.findById(id);
     await Section.findByIdAndUpdate(foundCard.section, {$pull: {cards: id}});
     await Card.findByIdAndDelete(id);
+    const foundCategory = await Category.findOne({name: foundCard.category});
+    foundCategory.numOfCards--;
+    await foundCategory.save();
     req.flash('success','Kartička byla odstraněna.');
     res.redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))

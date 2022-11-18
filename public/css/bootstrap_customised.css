@@ -1,0 +1,47 @@
+/* PALETTE #E80F88 #AF0171 #790252 #4C0033 */
+
+
+.btn-danger {
+    background-color: #E80F88;
+    border-color: #E80F88;
+    outline-color: #AF0171;
+}
+
+.btn-danger:hover {
+    background-color: #AF0171;
+    border-color: #AF0171;
+    outline-color: #AF0171;
+}
+
+.btn-danger.disabled {
+    background-color: #AF0171;
+    border-color: #AF0171;
+}
+
+.btn-outline-danger {
+    border-color: #E80F88;
+    color: #E80F88;
+}
+
+.btn-outline-danger:hover {
+    border-color: #AF0171;
+    background-color: #AF0171;
+}
+
+.btn-danger:active, .btn-danger:focus {
+    outline-color: #AF0171;
+    background-color: #AF0171;
+}
+
+.btn-info {
+    color: white;
+}
+
+a {
+    color: #E80F88;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #AF0171;
+}

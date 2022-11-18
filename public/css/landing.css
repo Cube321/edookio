@@ -15,7 +15,7 @@
     text-align: center;
 }
 
-.cat-text h5, .cat-text :hover {
+.cat-text h5 {
     font-size: 1.2rem;
     color: #212529;
     text-decoration: none;
@@ -28,4 +28,3 @@
 .card {
     height: 100%;
 }
-

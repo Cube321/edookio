@@ -2,8 +2,12 @@
 <div class="container">
     <div class="row">
         <div class="col-6 offset-3">
-            <h1>Gratulujeme! Dokončil jsi balíček!</h1>
-            <a href="/category/<%= category%>">Zpět na kategorii</a>
+            <div class="card shadow text-center p-4">
+                <h1>Gratulujeme!<br /></h1>
+                <h3>Dokončil jsi balíček "<%= sectionName%>"</h3>
+                <p><i class="fas fa-check-circle me-2 fa-3x my-4" style="color:green"></i></p>
+                <a href="/category/<%= category%>">Zpět na kategorii</a>
+            </div>
         </div>
     </div>
 </div>

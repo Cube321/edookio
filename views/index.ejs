@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inlege</title>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap_customised.css">
     <link rel="stylesheet" href="/css/custom.css">
     <link rel="stylesheet" href="/css/landing.css">
 </head>
@@ -17,8 +18,8 @@
           <div class="container my-5">
               <div class="row">
                   <div class="col-sm-6 offset-sm-3">
-                    <h1 class="jumbotron-heading mb-3">Studijní pomůcka pro právníky</h1>
-                    <p class="lead text-muted">Pusťte se do studia práv se sadou stovek kartiček s otázkami a odpověďmi, které jsou pro vás zdarma k dispozici.</p>        
+                    <h1 class="jumbotron-heading mb-3">Studuj právo efektivně!</h1>
+                    <p class="lead text-muted">Pusť se do studia práv se sadou stovek kartiček s otázkami a odpověďmi, které jsou pro vás zdarma k dispozici.</p>        
                   </div>
               </div>
           </div>
@@ -28,14 +29,16 @@
           <div class="container">
   
             <div class="row">
-                <div class="offset-3 col-lg-2 col-md-4 col-6 mb-4">
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
                     <a href="/category/trestnipravo" class="landing-link">
                         <div class="card shadow">
                             <div class="d-flex justify-content-center">
                                 <img src="/img/landing_trest.jpeg" class="rounded-circle landing-img m-3" alt="">
                             </div>
                             <div class="card-body cat-text">
-                            <h5 class="card-title">Trestní právo</h5>
+                                <h5 class="card-title">Trestní právo</h5>
+                                <p class="text-muted"><%= trestnipravo.numOfCards %>  kartiček</p>
+                                <a href="/category/trestnipravo" class="btn btn-sm btn-danger">Studovat</a>
                             </div>
                         </div>
                     </a>
@@ -47,7 +50,9 @@
                                 <img src="/img/landing_obcan.jpeg" class="rounded-circle landing-img m-3" alt="">
                             </div>
                             <div class="card-body cat-text">
-                            <h5 class="card-title">Občanské právo</h5>
+                                <h5 class="card-title">Občanské právo</h5>
+                                <p class="text-muted"><%= obcanskepravo.numOfCards %> kartiček</p>
+                                <a href="/category/obcanskepravo" class="btn btn-sm btn-danger">Studovat</a>
                             </div>
                         </div>
                     </a>
@@ -59,19 +64,23 @@
                                 <img src="/img/landing_sprava.jpeg" class="rounded-circle landing-img m-3" alt="">
                             </div>
                             <div class="card-body cat-text">
-                            <h5 class="card-title">Správní právo</h5>
+                                <h5 class="card-title">Správní právo</h5>
+                                <p class="text-muted"><%= spravnipravo.numOfCards %> kartiček</p>
+                                <a href="/category/spravnipravo" class="btn btn-sm btn-danger">Studovat</a>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="offset-3 col-lg-2 col-md-4 col-6 mb-4">
+                <div class="col-lg-2 col-md-4 col-6 mb-4">
                     <a href="/category/ustavnipravo" class="landing-link">
                         <div class="card shadow">
                             <div class="d-flex justify-content-center">
                                 <img src="/img/landing_ustavko.jpeg" class="rounded-circle landing-img m-3" alt="">
                             </div>
                             <div class="card-body cat-text">
-                            <h5 class="card-title">Ústavní právo</h5>
+                                <h5 class="card-title">Ústavní právo</h5>
+                                <p class="text-muted"><%= ustavnipravo.numOfCards %> kartiček</p>
+                                <a href="/category/ustavnipravo" class="btn btn-sm btn-danger">Studovat</a>
                             </div>
                         </div>
                     </a>
@@ -83,7 +92,9 @@
                                 <img src="/img/landing_obchod.jpeg" class="rounded-circle landing-img m-3" alt="">
                             </div>
                             <div class="card-body cat-text">
-                            <h5 class="card-title">Obchodní právo</h5>
+                                <h5 class="card-title">Obchodní právo</h5>
+                                <p class="text-muted"><%= obchodnipravo.numOfCards %> kartiček</p>
+                                <a href="/category/obchodnipravo" class="btn btn-sm btn-danger">Studovat</a>
                             </div>
                         </div>
                     </a>
@@ -95,13 +106,16 @@
                                 <img src="/img/landing_mezinarodko.jpeg" class="rounded-circle landing-img m-3" alt="">
                             </div>
                             <div class="card-body cat-text">
-                            <h5 class="card-title">Mezinárodní právo</h5>
+                                <h5 class="card-title">Mezinárodní právo</h5>
+                                <p class="text-muted"><%= mezinarodnipravo.numOfCards %> kartiček</p>
+                                <a href="/category/mezinarodnipravo" class="btn btn-sm btn-danger">Studovat</a>
                             </div>
                         </div>
                     </a>
                 </div>
-              
-  
+            </div>
+        </div>
+    </div>
       </main>
     <%- include('./partials/footer') %> 
     <!-- JS for Bootstrap -->
