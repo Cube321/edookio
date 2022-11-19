@@ -76,17 +76,22 @@ const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     "https://kit.fontawesome.com/",
     "https://cdnjs.cloudflare.com/",
-    "https://cdn.jsdelivr.net"
+    "https://cdn.jsdelivr.net",
+    "https://www.googletagmanager.com/",
+    "https://region1.google-analytics.com/"
+
 ];
 const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
     "https://stackpath.bootstrapcdn.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
+    "https://region1.google-analytics.com/"
 ];
 const connectSrcUrls = [
     "https://api.mapbox.com/",
-    "https://ka-f.fontawesome.com/"
+    "https://ka-f.fontawesome.com/",
+    "https://region1.google-analytics.com/"
 
 ];
 const fontSrcUrls = [];
