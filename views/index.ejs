@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="/css/custom.css">
     <link rel="stylesheet" href="/css/landing.css">
 </head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNQ2L4K9C9"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NNQ2L4K9C9');
+</script>
 <body class="d-flex flex-column vh-100">
     <%- include('./partials/navbar') %> 
 
@@ -17,7 +26,7 @@
         <section class="jumbotron main-header">
           <div class="container">
               <div class="row">
-                  <div class="col-sm-5 my-5 p-4">
+                  <div class="col-sm-5 offset-sm-1 my-5 p-4">
                     <h1 class="jumbotron-heading mb-3">Studuj právo efektivně!</h1>
                     <p class="lead">Pusť se do studia práv se sadou stovek kartiček s otázkami a odpověďmi. Skvělá interaktivní příprava na zkoušky.</p>        
                     <div class="mt-5">

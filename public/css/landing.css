@@ -21,12 +21,14 @@
     width: 100px;
     height: 100px;
     opacity: 0.7;
+    /*filter: grayscale(100%);*/
 }
 
 
 
 .card:hover .landing-img { 
-    transition: 0.3s;
+    transition: 0.5s;
+    filter: grayscale(0%);
     opacity: 1; 
 }
 
