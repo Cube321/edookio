@@ -10,9 +10,13 @@ $(document).ready(function() {
     });
 
     $("#btn-flip-front").click(function(){
-        $("#pageA").remove();
         $("#card").flip('toggle');
         pushes++; 
+    })
+
+    $("#rotate-back").click(() => {
+        $("#card").flip('toggle');
+        pushes--;
     })
 
     $("#btn-flip-back").click(function(){
@@ -25,7 +29,6 @@ $(document).ready(function() {
         ) {
             pushes++;
             if(pushes === 1){
-                $("#pageA").remove();
                 $("#card").flip('toggle');
             }
             if(pushes === 2){

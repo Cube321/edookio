@@ -1,14 +1,14 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <% if (!currentUser){  %> 
     <div class="row">
-        <div class="col-md-10 offset-md-1 mb-4">
+        <div class="col-md-10 offset-md-1 mb-5">
             <div class="card orange-shadow">
                 <div class="row">
-                    <div class="col-sm-7">
-                        <h5 class="p-3 mb-0"><i class="fas fa-lock fa-2x px-2"></i>Zaregistruj se a získej přístup ke stovkám kartiček zdarma</h5>
-                        <p class="text-muted px-3"><small>Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatao.</small></p>
+                    <div class="col-lg-8">
+                        <h5 class="px-3 pt-3 pb-2 mb-0">Zaregistruj se a získej přístup ke stovkám kartiček zdarma</h5>
+                        <p class="text-muted px-3"><small>Rychlá a bezplatná registrace ti umožní využít potenciálu InLege naplno!</small></p>
                     </div>
-                    <div class="col-sm-5 p-3 d-flex justify-content-around align-items-center">
+                    <div class="col-lg-4 p-3 d-flex justify-content-around align-items-center">
                         <a class="btn btn-danger" href="/auth/user/new">Zaregistrovat se</a>
                         <% if(demoCat.sections.length > 0){ %> 
                             <a class="btn btn-outline-danger" href="/category/demo/section/<%= demoCat.sections[0]%>/1">Vyzkoušet demo</a>
@@ -22,9 +22,18 @@
 <div class="row mb-3">
     <div class="col-md-3 offset-md-1 mb-3">
         <div class="card shadow">
-            <div class="card-body category-box">
-                <i class="fas fa-user-lock mt-4 mb-2"></i>
-                <p class="mt-2 mb-4"><%= title %> </p>
+            <div class="card-body category-box d-flex flex-column align-items-center justify-content-center">
+                <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                    <% if(category.name === "demo"){ %> <i class="fas fa-gavel"></i> <% } %>
+                    <% if(category.name === "trestnipravo"){ %> <i class="fas fa-book-dead"></i> <% } %>
+                    <% if(category.name === "obcanskepravo"){ %> <i class="fas fa-book"></i> <% } %>
+                    <% if(category.name === "spravnipravo"){ %> <i class="fas fa-journal-whills"></i> <% } %>
+                    <% if(category.name === "ustavnipravo"){ %> <i class="fas fa-balance-scale-right"></i> <% } %>
+                    <% if(category.name === "obchodnipravo"){ %> <i class="far fa-handshake"></i> <% } %>
+                    <% if(category.name === "mezinarodnipravo"){ %> <i class="fas fa-globe-europe"></i> <% } %>
+                    
+                </div>
+                <p class="mt-4 mb-2"><%= title %> </p>
             </div>
         </div>
     </div>

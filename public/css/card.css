@@ -16,7 +16,7 @@
     overflow: scroll;
 }
 
-.servis-btns a {
+.servis-btns a, .servis-btns p {
     font-size: 0.8rem;
     line-height: 1rem;
 }
@@ -84,3 +84,8 @@
     pointer-events: none; /* so the text is still selectable */
   }
 
+  @media only screen and (max-width: 600px) {
+    .otacej-mezernikem {
+      visibility: hidden;
+    }
+  }

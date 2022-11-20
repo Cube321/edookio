@@ -38,6 +38,17 @@
 }
 
 .orange-shadow {
-    box-shadow: 0 .5rem 1rem rgba(232, 15, 136, 0.8);
+    box-shadow: 0 .3rem 0.5rem rgba(232, 15, 136, 0.8);
     border: 1px solid rgba(232, 15, 136, 0.4);;
+}
+
+.category-img {
+    width: 8rem;
+    height: 8rem;
+}
+
+.icon-background {
+    background-color: #EEEEEE;
+    height: 7rem;
+    width: 7rem;
 }

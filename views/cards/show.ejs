@@ -55,11 +55,10 @@
                       <div class="card-text m-4 mb-0 max-height-280px text-gradient" id="pageB"><%- card.pageB %> </div>
                     </div>
                   </div>
-                  <div class="card-footer d-flex justify-content-center">
-                    <!--<a href="#" class="btn btn-outline-primary" id='btn-flip-back'>Otočit!</a>-->
-                    <div>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-danger easy-btn" id="next-btn" >Další</a>
-                    </div>
+                  <div class="card-footer d-flex justify-content-between align-items-center">
+                        <a href="#" id="rotate-back"><i class="fas fa-sync-alt"></i></a>
+                        <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-danger easy-btn" id="next-btn" >Další</a>
+                        <div style="width:14px"></div>
                   </div>
                 </div> 
               </div>
@@ -69,6 +68,7 @@
                   <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
                 <% } %>
                   <a href="#" class="text-muted">Nahlásit chybu</a>
+                  <p class="text-muted mb-0 px-3 otacej-mezernikem">Otáčej [mezerníkem]</p>
               </div>
             </div>
           </div>
