@@ -58,6 +58,14 @@
     font-size: 0.8rem;
 }
 
+#pageB > p, #pageB > ul {
+    text-align: justify;
+}
+
+#pageB > ul > li {
+    padding-top: 0.8rem;
+}
+
 /* Text gradient fade */
   .text-gradient {
     position: relative;
