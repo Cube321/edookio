@@ -5,7 +5,12 @@
             <div class="card shadow text-center p-4">
                 <h2>Gratulujeme!<br /></h2>
                 <h4>Dokončil/a jsi balíček "<%= sectionName%>"</h4>
-                <p><i class="fas fa-check-circle me-2 fa-3x my-4" style="color:green"></i></p>
+                <div class="my-5 d-flex justify-content-center">
+                    <div class="w-75">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width:100%" >100%</div>
+                    </div>
+                </div>
+                
                 <% if(!demo){ %> 
                     <a href="/category/<%= category%>">Zpět na kategorii</a>
                 <% } else { %> 

@@ -37,6 +37,10 @@
     color: white;
 }
 
+.bg-danger {
+    background-color: #E80F88!important;
+}
+
 a {
     color: #E80F88;
     text-decoration: none;

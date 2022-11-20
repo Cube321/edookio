@@ -78,10 +78,14 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         req.flash('error','Zadané číslo karty nebylo nalezeno.');
         return res.redirect('/');
     }
+    //data for progress bar
+    let progressStep = Math.round(100 / foundSection.cards.length);
+    let progressStatus = progressStep * (cardNum-1);
+    console.log(progressStatus);
     const cardId = foundSection.cards[cardNumEdited];
     const foundCard = await Card.findById(cardId);
     const sectionLength = foundSection.cards.length;
-    res.render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength});
+    res.render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus});
 }))
 
 //add new card - save (POST)

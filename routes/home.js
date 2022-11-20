@@ -6,12 +6,20 @@ const catchAsync = require('../utils/catchAsync');
 //show homepage
 router.get('/', catchAsync(async(req, res) => {
     const categories = await Category.find({});
-    const trestnipravo = categories[0];
-    const obcanskepravo = categories[1];
-    const spravnipravo = categories[2];
-    const ustavnipravo = categories[3];
-    const obchodnipravo = categories[4];
-    const mezinarodnipravo = categories[5];
+    let trestnipravo = "";
+    let obcanskepravo = "";
+    let spravnipravo = "";
+    let ustavnipravo = "";
+    let obchodnipravo = "";
+    let mezinarodnipravo = "";
+    categories.forEach(cat => {
+        if(cat.name === "trestnipravo"){trestnipravo = cat};
+        if(cat.name === "obcanskepravo"){obcanskepravo = cat};
+        if(cat.name === "spravnipravo"){spravnipravo = cat};
+        if(cat.name === "ustavnipravo"){ustavnipravo = cat};
+        if(cat.name === "obchodnipravo"){obchodnipravo = cat};
+        if(cat.name === "mezinarodnipravo"){mezinarodnipravo = cat};
+    })
     res.render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, mezinarodnipravo});
 }))
 

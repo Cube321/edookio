@@ -1,10 +1,19 @@
 /* SHOW CARD PAGE */
+.text-smaller {
+    font-size: 0.9rem;
+}
+
 .min-height-70px {
     min-height: 70px;
 }
 
 .min-height-300px {
     min-height: 300px;
+}
+
+.max-height-280px {
+    max-height: 280px;
+    overflow: scroll;
 }
 
 .servis-btns a {
@@ -48,4 +57,22 @@
     font-weight:600;
     font-size: 0.8rem;
 }
+
+/* Text gradient fade */
+  .text-gradient {
+    position: relative;
+  }
+  
+  .text-gradient:after {
+    position: absolute;
+    bottom: 0;  
+    height: 10%;
+    width: 100%;
+    content: "";
+    background: linear-gradient(to top,
+       rgba(255,255,255, 1) 20%, 
+       rgba(255,255,255, 0) 80%
+    );
+    pointer-events: none; /* so the text is still selectable */
+  }
 
