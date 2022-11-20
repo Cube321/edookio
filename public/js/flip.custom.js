@@ -10,6 +10,7 @@ $(document).ready(function() {
     });
 
     $("#btn-flip-front").click(function(){
+        $("#pageA").remove();
         $("#card").flip('toggle');
         pushes++; 
     })
@@ -24,6 +25,7 @@ $(document).ready(function() {
         ) {
             pushes++;
             if(pushes === 1){
+                $("#pageA").remove();
                 $("#card").flip('toggle');
             }
             if(pushes === 2){
