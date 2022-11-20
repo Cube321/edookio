@@ -6,6 +6,7 @@ const passport = require('passport');
 const { isLoggedIn } = require('../utils/middleware');
 const { validateUser } = require('../utils/middleware');
 const uuid = require('uuid');
+const mail = require('../mail/mail_inlege');
 
 //my profile view page
 router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
@@ -43,6 +44,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         req.login(newUser, err => {
             if (err) return next(err);
         })
+        mail.welcome(newUser.email);
         req.flash('success', 'Registrace proběhla úspěšně.');
         res.redirect('/'); 
     } catch (err){
@@ -122,7 +124,8 @@ router.post('/auth/user/requestPassword', catchAsync(async(req, res) => {
     await user.save();
     //sent e-mail with link to user
     const changeLink = `/auth/user/setPassword/${passChangeId}`;
-
+    const data = {link: changeLink, email: user.email};
+    mail.forgottenPassword(data);
     res.render('auth/password_sent');
 }))
 

@@ -20,6 +20,10 @@ const UserSchema = new Schema ({
     },
     passChangeId: {
         type: String
+    },
+    cardsSeen: {
+        type: Number,
+        default: 0
     }
 })
 

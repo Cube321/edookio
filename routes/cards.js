@@ -58,13 +58,13 @@ router.get('/category/:category/section/:sectionId/repeatSection', isLoggedIn, c
 //show Card of Section
 router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchAsync(async(req, res, next) => {
     const { sectionId, category } = req.params;
+    const {user} = req;
     const cardNum = parseInt(req.params.cardNum);
     const foundSection = await Section.findById(sectionId);
     const cardNumEdited = cardNum - 1;
     let nextNum = parseInt(cardNum) + 1;
     if(foundSection.cards.length === cardNumEdited){
         if(req.user){
-            const {user} = req;
             user.sections.push(foundSection._id);
             await user.save();
             return res.render('sections/finished', {category, sectionName: foundSection.name, demo: false});
@@ -81,9 +81,11 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     //data for progress bar
     let progressStep = Math.round(100 / foundSection.cards.length);
     let progressStatus = progressStep * (cardNum-1);
-    console.log(progressStatus);
     const cardId = foundSection.cards[cardNumEdited];
     const foundCard = await Card.findById(cardId);
+    //increase user's cardsSeen by 1
+    user.cardsSeen++;
+    user.save();
     const sectionLength = foundSection.cards.length;
     res.render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus});
 }))
