@@ -7,7 +7,7 @@ const middleware = {};
 
 middleware.isLoggedIn = (req, res, next) => {
     req.session.returnTo = req.originalUrl;
-    if(req.params.category = "demo"){
+    if(req.params.category === "demo"){
         return next();
     }
     if (!req.isAuthenticated()) {
