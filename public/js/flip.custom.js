@@ -27,7 +27,6 @@ $(document).ready(function() {
                 $("#card").flip('toggle');
             }
             if(pushes === 2){
-                $(".loader-push-class").addClass("justify-content-center");
                 $("#loader").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
                 $("#pageB").remove();
                 const redirectLink = $("#next-btn").prop("href");
