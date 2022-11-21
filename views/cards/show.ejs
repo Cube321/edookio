@@ -52,7 +52,11 @@
                   <div class="card-body">
                     <div class="d-flex align-items-center justify-content-center min-height-300px loader-push-class">
                       <div id="loader"></div>
-                      <div class="card-text m-4 mb-0 max-height-280px text-gradient" id="pageB"><%- card.pageB %> </div>
+                      <div class="card-text m-4 mb-0 max-height-280px text-gradient" id="pageB">
+                        <div class="inner-card-div">
+                          <%- card.pageB %> 
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="card-footer d-flex justify-content-between align-items-center">
@@ -72,9 +76,9 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-2 mb-3">
+          <div class="col-lg-2 mb-3 mt-5 mt-lg-0">
             <div class="card shadow">
-              <div class="card-body text-center">
+              <div class="card-body text-center mt-5">
                 <h6><%= sectionName %> </h6>
                 <p class="text-muted">Karta <%= nextNum - 1 %> z <%= sectionLength %></p>
                 <div class="progress mb-2">

@@ -13,7 +13,11 @@
 
 .max-height-280px {
     max-height: 280px;
-    overflow: scroll;
+    overflow: auto;
+}
+
+.inner-card-div {
+    width: 98%;
 }
 
 .servis-btns a, .servis-btns p {
@@ -86,6 +90,6 @@
 
   @media only screen and (max-width: 600px) {
     .otacej-mezernikem {
-      visibility: hidden;
+      display: none;
     }
   }

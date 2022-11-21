@@ -84,8 +84,10 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const cardId = foundSection.cards[cardNumEdited];
     const foundCard = await Card.findById(cardId);
     //increase user's cardsSeen by 1
-    user.cardsSeen++;
-    user.save();
+    if(user){
+        user.cardsSeen++;
+        user.save();
+    }
     const sectionLength = foundSection.cards.length;
     res.render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus});
 }))
