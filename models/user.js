@@ -24,6 +24,10 @@ const UserSchema = new Schema ({
     cardsSeen: {
         type: Number,
         default: 0
+    },
+    isPremium: {
+        type: Boolean,
+        default: false
     }
 })
 

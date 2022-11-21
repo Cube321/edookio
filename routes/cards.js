@@ -61,6 +61,12 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const {user} = req;
     const cardNum = parseInt(req.params.cardNum);
     const foundSection = await Section.findById(sectionId);
+    //check if Premium access required and allowed
+    if(foundSection.isPremium && !user.isPremium){
+        req.flash('error','Je nám líto, tato sekce je přístupná pouze uživatelům Premium.');
+        return res.redirect('back');
+    }
+    //cards counting logic
     const cardNumEdited = cardNum - 1;
     let nextNum = parseInt(cardNum) + 1;
     if(foundSection.cards.length === cardNumEdited){

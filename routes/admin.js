@@ -12,4 +12,12 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     res.render('admin/users', {users});
 }))
 
+router.get('/admin/:userId/upgradeToPremium', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    const user = await User.findById(req.params.userId);
+    user.isPremium = true;
+    await user.save();
+    req.flash('success','Uživatel je nyní Premium');
+    res.redirect('/admin/listAllUsers');
+}))
+
 module.exports = router;

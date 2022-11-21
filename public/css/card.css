@@ -17,7 +17,7 @@
 }
 
 .inner-card-div {
-    width: 98%;
+    width: 96%;
 }
 
 .servis-btns a, .servis-btns p {
@@ -62,11 +62,11 @@
     font-size: 0.8rem;
 }
 
-#pageB > p, #pageB > ul {
+#pageB > div > p, #pageB > div > ul {
     text-align: justify;
 }
 
-#pageB > ul > li {
+#pageB > div > ul > li {
     padding-top: 0.8rem;
 }
 

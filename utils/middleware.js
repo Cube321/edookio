@@ -26,6 +26,15 @@ middleware.isAdmin = (req, res, next) => {
     }
 }
 
+middleware.isPremiumUser = (req, res, next) => {
+    if(req.user.isPremium){
+        next();
+    } else {
+        req.flash('error','Tato sekce je přístupná pouze uživatelům Premium.');
+        res.redirect('back');
+    }
+}
+
 //has to contain all elements of a mongoose schema even if no validation on them is required
 middleware.validateCard = (req, res, next) => {
     const { error } = cardSchema.validate(req.body);

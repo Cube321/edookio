@@ -14,8 +14,11 @@ const SectionSchema = new Schema({
         type: Boolean,
         default: false
     },
-    cards: [{ type : Schema.Types.ObjectId, ref: 'Card' }]
-
+    cards: [{ type : Schema.Types.ObjectId, ref: 'Card' }],
+    isPremium: {
+        type: Boolean,
+        default: false
+    }
 })
 
 //write .post delete middleware (course, video 466) 14. 11. 2022

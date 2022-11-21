@@ -44,13 +44,19 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
     }
     //create new Section and add it to Category
     const categoryName = foundCategory.name;
-    const {name} = req.body;
+    const {name, isPremium} = req.body;
+    //isPremium logic
+    let isPremiumBoolean = false;
+    if(isPremium === "premium"){isPremiumBoolean = true};
+    //create new section
     const newSection = new Section({
         name,
         category: categoryName,
-        cards: []
+        cards: [],
+        isPremium: isPremiumBoolean
     })
     const savedSection = await newSection.save();
+    console.log(newSection);
     foundCategory.sections.push(savedSection._id);
     const savedCategory = await foundCategory.save();
     req.flash('success',`Sekce ${savedSection.name} byla vytvořena.`);

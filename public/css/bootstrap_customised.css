@@ -18,6 +18,11 @@
     border-color: #AF0171;
 }
 
+.btn-warning.disabled {
+    background-color: #FFB81C;
+    border-color: #FFB81C;
+}
+
 .btn-outline-danger {
     border-color: #E80F88;
     color: #E80F88;
@@ -40,6 +45,7 @@
 .bg-danger {
     background-color: #E80F88!important;
 }
+
 
 a {
     color: #E80F88;
