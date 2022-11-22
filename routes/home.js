@@ -20,7 +20,7 @@ router.get('/', catchAsync(async(req, res) => {
         if(cat.name === "obchodnipravo"){obchodnipravo = cat};
         if(cat.name === "mezinarodnipravo"){mezinarodnipravo = cat};
     })
-    res.render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, mezinarodnipravo});
+    res.status(200).render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, mezinarodnipravo});
 }))
 
 module.exports = router;

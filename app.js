@@ -149,18 +149,16 @@ app.use((err, req, res, next) => {
     const {statusCode = 500, message = 'Něco se pokazilo.', stack = "empty"} = err;
     //res.status(statusCode).render('error', {message, stack});
     console.log(err);
-    req.flash('error','Jejda, něco se pokazilo.');
-    res.redirect('/');
+    req.flash('error', err.message);
+    res.status(400).redirect('/');
 })
 
 app.all('*', (req, res, next) => {
     console.log(`************************ 404 **********************`);
+    console.log(req.path);
     req.flash('error', 'Stránka nebyla nalezena.');
     res.redirect('/');
 })
 
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-    console.log(`Running on ${port}!`);
-})
+//exports app - requested in server.js - required for proper testing
+module.exports = app;

@@ -29,10 +29,19 @@ router.get('/category/:category', catchAsync(async (req, res, next) => {
 //create new Category
 router.get('/category/new/:categoryName', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
     const { categoryName } = req.params;
-    const newCategory = new Category({name: categoryName, sections: []});
-    const savedCategory = await newCategory.save();
-    res.redirect(`/category/${categoryName}`);
+    await categoryService.create(categoryName);
+    res.status(201).redirect(`/category/${categoryName}`);
 }))
+
+const categoryService = {};
+categoryService.create = async (categoryName) => {
+    const foundCategory = await Category.find({name: categoryName});
+    if(foundCategory.length > 0){
+        throw new Error('Kategorie již existuje!');
+    }
+    const newCategory = new Category({name: categoryName, sections: []});
+    await newCategory.save();
+}
 
 //create new Section in Category
 router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdmin, catchAsync(async (req, res, next )=> {

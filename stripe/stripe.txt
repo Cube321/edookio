@@ -1,0 +1,2 @@
+information on implementation of Stripe: https://www.saasbase.dev/subscription-payments-1-adding-basic-and-pro-subscription-plans-using-stripe/
+5 part article
