@@ -26,8 +26,8 @@ const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
         }
       ],
   
-      success_url: `http://localhost:3000/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:3000/payment/failed`
+      success_url: `https://www.inlege.cz/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `https://www.inlege.cz/payment/failed`
     })
   
     return session
@@ -45,7 +45,7 @@ const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
   const createBillingSession = async (customer) => {
     const session = await Stripe.billingPortal.sessions.create({
       customer,
-      return_url: 'https://localhost:3000'
+      return_url: 'https://www.inlege.cz'
     })
     return session
   }
