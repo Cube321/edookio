@@ -1,7 +1,7 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-lg-6 offset-lg-3">
             <div class="card">
                 <div class="row p-3">
                     <div class="col-12">
@@ -43,4 +43,35 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="card mt-3">
+                <div class="row p-3">
+                    <div class="col-12">
+                        <h3>Přejít na Premium</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="radio" id="monthly" name="product" value="monthly" />
+                        <label for="monthly">99 Kč měsíčně</label><br />
+                        <input type="radio" id="yearly" name="product" value="yearly" />
+                        <label for="yearly">990 Kč ročně</label><br />
+
+                        <button class="btn btn-primary" id="checkout-button" type="submit">
+                        Koupit
+                        </button>
+                        <button id="manage-billing-button" type="submit">
+                            Manage Billing
+                          </button>
+                          <input type="text" id="customerID" name="customerID" value="<%= user.billingId %>" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src="/js/jquery.min.js" ></script>
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript" src="/js/profile.js"></script>

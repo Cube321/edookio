@@ -4,12 +4,12 @@ const catchAsync = require('../utils/catchAsync');
 const Section = require('../models/section');
 const Category = require('../models/category');
 const Card = require('../models/card');
-const { isLoggedIn, isAdmin, validateSection } = require('../utils/middleware');
+const { isLoggedIn, isAdmin, validateSection, isPremiumUser } = require('../utils/middleware');
 const { cardSchema } = require('../schemas');
 const {categories} = require('../utils/categories')
 
 //show sections of category
-router.get('/category/:category', catchAsync(async (req, res, next) => {
+router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, next) => {
     const category = await Category.findOne({name: req.params.category}).populate('sections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
@@ -26,7 +26,7 @@ router.get('/category/:category', catchAsync(async (req, res, next) => {
     res.render('category', {category, title, demoCat});
 }))
 
-//create new Category
+//create new Category - new approach - service moved out of the route
 router.get('/category/new/:categoryName', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
     const { categoryName } = req.params;
     await categoryService.create(categoryName);
@@ -67,7 +67,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
     const savedSection = await newSection.save();
     console.log(newSection);
     foundCategory.sections.push(savedSection._id);
-    const savedCategory = await foundCategory.save();
+    await foundCategory.save();
     req.flash('success',`Sekce ${savedSection.name} byla vytvořena.`);
     res.redirect(`/category/${savedSection.category}`);
 }))
@@ -76,7 +76,10 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
 router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
-    await Category.findOneAndUpdate({name: category}, {$pull: {sections: sectionId}});
+    const updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {sections: sectionId}});
+    if(!updatedCategory){
+        throw Error("Kategorie s tímto ID neexistuje");
+    }
     //delete Cards in Section
     await Card.deleteMany({section: sectionId});
     //delete Section

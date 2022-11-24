@@ -28,7 +28,10 @@ const UserSchema = new Schema ({
     isPremium: {
         type: Boolean,
         default: false
-    }
+    },
+    billingId: String,
+    plan: { type: String, enum: ['none', 'yearly', 'monthly'], default: 'none' },
+    endDate: {type: Date, defualt: null}
 })
 
 UserSchema.plugin(passportLocalMongoose);

@@ -1,11 +1,13 @@
 const { cardSchema } = require('../schemas.js');
 const { userSchema } = require('../schemas.js');
 const { sectionSchema } = require('../schemas.js');
+const User = require('../models/user');
 const ExpressError = require('../utils/ExpressError');
+const moment = require('moment');
 
 const middleware = {};
 
-middleware.isLoggedIn = (req, res, next) => {
+middleware.isLoggedIn = async (req, res, next) => {
     req.session.returnTo = req.originalUrl;
     if(req.params.category === "demo"){
         return next();
@@ -14,7 +16,25 @@ middleware.isLoggedIn = (req, res, next) => {
         req.flash('error','Pro přístup nemáte dostatečná oprávnění.');
         return res.redirect('/auth/user/login');
     }
+    if(req.user.isPremium){
+        await checkAndUpdatePremiumEndDate(req.user);
+    }
     next();
+}
+
+const checkAndUpdatePremiumEndDate = async (user) => {
+    const today = Date.now();
+    const {endDate} = user;
+        if(moment(today).format() > moment(endDate).format()){
+            console.log('Premium skončilo')
+            const foundUser = await User.findById(user._id);
+            foundUser.isPremium = false;
+            foundUser.endDate = null;
+            foundUser.plan = "none";
+            await foundUser.save()
+            console.log('Premium ended - saved to DB');
+            console.log(foundUser);
+        }
 }
 
 middleware.isAdmin = (req, res, next) => {
@@ -26,12 +46,12 @@ middleware.isAdmin = (req, res, next) => {
     }
 }
 
-middleware.isPremiumUser = (req, res, next) => {
-    if(req.user.isPremium){
+middleware.isPremiumUser = async (req, res, next) => {
+    if(req.user && req.user.isPremium){
+        await checkAndUpdatePremiumEndDate(req.user); 
         next();
     } else {
-        req.flash('error','Tato sekce je přístupná pouze uživatelům Premium.');
-        res.redirect('back');
+        next();
     }
 }
 

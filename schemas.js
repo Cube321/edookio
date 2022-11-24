@@ -35,7 +35,8 @@ module.exports.userSchema = Joi.object({
     email: Joi.string().required().escapeHTML(),
     password: Joi.string().required().min(6).escapeHTML(),
     password_confirmation: Joi.string().required().min(6).escapeHTML(),
-    key: Joi.string().escapeHTML()
+    key: Joi.string().escapeHTML(),
+    billingId: Joi.string()
 })
 
 module.exports.sectionSchema = Joi.object({

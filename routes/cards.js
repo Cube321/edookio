@@ -28,30 +28,43 @@ router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
 router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isAdmin, catchAsync(async(req, res, next) => {
     const {category, sectionId} = req.params;
     const foundSection = await Section.findById(sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
     res.render('cards/new', {category, sectionId, sectionName: foundSection.name});
 }))
 
+//list all cards in section
 router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const section = await Section.findById(req.params.sectionId).populate('cards');
+    if(!section){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
     res.render('sections/listAllCards', {section});
 }))
 
+//publish section
 router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
     foundSection.isPublic = true;
     await foundSection.save();
     req.flash('success','Sekce byla zveřejněna');
     res.redirect(`/category/${req.params.category}`);
 }))
 
+
 router.get('/category/:category/section/:sectionId/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
     const foundSection = await Section.findById(req.params.sectionId);
-    console.log(user.sections);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
     const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
     user.sections = filteredSections;
     await user.save();
-    console.log(user);
     res.redirect(`/category/${req.params.category}/section/${req.params.sectionId}/1`);
 }))
 
@@ -61,6 +74,9 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const {user} = req;
     const cardNum = parseInt(req.params.cardNum);
     const foundSection = await Section.findById(sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
     //check if Premium access required and allowed
     if(foundSection.isPremium && !user.isPremium){
         req.flash('error','Je nám líto, tato sekce je přístupná pouze uživatelům Premium.');
@@ -110,8 +126,14 @@ router.post('/category/:category/section/:sectionId/newCard', validateCard, isLo
         author
     })
     const foundSection = await Section.findById(sectionId);
-    const createdCard = await newCard.save();
     const foundCategory = await Category.findOne({name: req.params.category});
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    if(!foundCategory){
+        throw Error("Kategorie s tímto ID neexistuje");
+    }
+    const createdCard = await newCard.save();
     foundCategory.numOfCards++;
     await foundCategory.save();
     foundSection.cards.push(createdCard._id);
@@ -136,6 +158,9 @@ router.put('/cards/edit/:id', validateCard, isLoggedIn, isAdmin, catchAsync(asyn
     const {id} = req.params;
     const {pageA, pageB, author} = req.body;
     const foundCard = await Card.findByIdAndUpdate(id, {pageA, pageB, author});
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
     req.flash('success','Kartička byla aktualizována.');
     res.redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))
@@ -144,6 +169,9 @@ router.put('/cards/edit/:id', validateCard, isLoggedIn, isAdmin, catchAsync(asyn
 router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const foundCard = await Card.findById(id);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
     await Section.findByIdAndUpdate(foundCard.section, {$pull: {cards: id}});
     await Card.findByIdAndDelete(id);
     const foundCategory = await Category.findOne({name: foundCard.category});

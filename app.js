@@ -18,8 +18,13 @@ const User = require('./models/user');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
+const bodyParser = require('body-parser');
 
 
+app.use("/webhook", bodyParser.raw({ type: "application/json" }))
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 
 //routes
 const cardRoutes = require('./routes/cards');
@@ -27,6 +32,7 @@ const adminRoutes = require('./routes/admin');
 const homeRoutes = require('./routes/home');
 const authRoutes = require('./routes/auth');
 const sectionRoutes = require('./routes/sections');
+const paymentRoutes = require('./routes/payments');
 
 const dbUrl = process.env.DB_URL;
 
@@ -43,7 +49,7 @@ mongoose.connect(dbUrl)
 
 app.use(express.urlencoded({extended: true})); //for html forms
 app.use(express.json()); //for JSON data
-app.use(morgan('tiny'));
+//app.use(morgan('tiny'));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(mongoSanitize({
     replaceWith: '_', 
@@ -78,7 +84,8 @@ const scriptSrcUrls = [
     "https://cdnjs.cloudflare.com/",
     "https://cdn.jsdelivr.net",
     "https://www.googletagmanager.com/",
-    "https://region1.google-analytics.com/"
+    "https://region1.google-analytics.com/",
+    "https://js.stripe.com/"
 
 ];
 const styleSrcUrls = [
@@ -98,7 +105,7 @@ const fontSrcUrls = [];
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: [],
+            defaultSrc: ["https://js.stripe.com/"],
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
@@ -142,13 +149,17 @@ app.use('/', adminRoutes);
 app.use('/', homeRoutes);
 app.use('/', authRoutes);
 app.use('/', sectionRoutes);
+app.use('/', paymentRoutes);
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here
 app.use((err, req, res, next) => {
     const {statusCode = 500, message = 'Něco se pokazilo.', stack = "empty"} = err;
     //res.status(statusCode).render('error', {message, stack});
-    console.log(err);
+    if(err.name === "CastError"){
+        req.flash('error', "Záznam nebyl v databázi nalezen - pravděpodobně nesprávný formát ID");
+        return res.status(404).redirect('/');
+    }
     req.flash('error', err.message);
     res.status(400).redirect('/');
 })

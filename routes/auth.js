@@ -7,6 +7,7 @@ const { isLoggedIn } = require('../utils/middleware');
 const { validateUser } = require('../utils/middleware');
 const uuid = require('uuid');
 const mail = require('../mail/mail_inlege');
+const Stripe = require('../utils/stripe');
 
 //my profile view page
 router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
@@ -39,11 +40,24 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         //register user
         const passChangeId = uuid.v1();
         const dateOfRegistration = Date.now();
-        const user = new User({email, username: email, admin, dateOfRegistration, firstname, lastname, passChangeId});
+        const customer = await Stripe.addNewCustomer(email);
+        const user = new User({
+            email, 
+            username: email, 
+            admin, 
+            dateOfRegistration, 
+            firstname, 
+            lastname, 
+            passChangeId,
+            billingId: customer.id,
+            plan: "none",
+            endDate: null
+        });
         const newUser = await User.register(user, password);
-        req.login(newUser, err => {
+        await req.login(newUser, err => {
             if (err) return next(err);
         })
+        console.log(`Added new user and customer ${email} with MongoID ${newUser._id} and billingId ${newUser.billingId}`);
         mail.welcome(newUser.email);
         req.flash('success', 'Registrace proběhla úspěšně.');
         res.redirect('/'); 
