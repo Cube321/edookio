@@ -8,7 +8,8 @@ const moment = require('moment');
 
 const productToPriceMap = {
     YEARLY: process.env.PRODUCT_YEARLY,
-    MONTHLY: process.env.PRODUCT_MONTHLY
+    MONTHLY: process.env.PRODUCT_MONTHLY,
+    DAILY: process.env.PRODUCT_DAILY
   }
 
 //Stripe checkout
@@ -20,6 +21,9 @@ router.post('/payment/checkout', isLoggedIn, catchAsync(async (req, res) => {
     if(req.body.product === "yearly")(
         session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.YEARLY)
     )
+    if(req.body.product === "daily")(
+      session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.DAILY)
+  )
     res.send({ sessionId: session.id })
   }))
 
@@ -34,6 +38,7 @@ router.get('/payment/failed', (req, res) => {
 })
 
 router.post('/webhook', async (req, res) => {
+    console.log('HIT THE HOOK');
     let event
     try {
       event = Stripe.createWebhook(req.body, req.header('Stripe-Signature'))
@@ -41,14 +46,17 @@ router.post('/webhook', async (req, res) => {
       console.log(err)
       return res.sendStatus(400)
     }
-
+    
     const data = event.data.object
-
+    console.log(data);
 
   switch (event.type) {
     //create new subscription
     case 'customer.subscription.created': {
       const user = await User.findOne({billingId: data.customer});
+      if(!user){
+        throw Error('Uživatel s tímto platebním ID nebyl nalezen');
+      }
       let today = Date.now();
       if (data.plan.id === productToPriceMap.YEARLY) {
         user.plan = 'yearly';
@@ -59,6 +67,11 @@ router.post('/webhook', async (req, res) => {
         user.plan = 'monthly';
         user.endDate = moment(today).add('1','month').format();
       }
+
+      if (data.plan.id === productToPriceMap.DAILY) {
+        user.plan = 'daily';
+        user.endDate = moment(today).add('1','day').format();
+      }
       user.isPremium = true;
       await user.save()
       break
@@ -66,7 +79,11 @@ router.post('/webhook', async (req, res) => {
       //manage subscription (change plan + cancel)
       case "customer.subscription.updated":{
         //changed payment period
+        console.log('UPDATED RUNNING');
         const user = await User.findOne({billingId: data.customer});
+        if(!user){
+          throw Error('Uživatel s tímto platebním ID nebyl nalezen');
+        }
         let today = Date.now();
 
         if (data.plan.id == productToPriceMap.YEARLY) {
@@ -80,6 +97,12 @@ router.post('/webhook', async (req, res) => {
           user.endDate = moment(today).add('1','month').format();
           user.isPremium = true;
           //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
+        }
+
+        if (data.plan.id == productToPriceMap.DAILY) {
+          user.plan = "daily";
+          user.endDate = moment(today).add('1','day').format();
+          user.isPremium = true;
         }
         
         //cancelation
