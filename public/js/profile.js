@@ -21,12 +21,47 @@ $(document).ready(function () {
         .then((result) => result.json())
         .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
     })
-  })
 
-  const manageBillingButton = $('#manage-billing-button')
-  const customerID = $('input[name="customerID"]').val()
+    const checkoutButtonMonthly = $('#checkout-button-monthly')
+  
+    checkoutButtonMonthly.click(function () {
+      const product = "monthly";
+  
+      fetch('/payment/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          product
+        })
+      })
+        .then((result) => result.json())
+        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
+    })
 
-  manageBillingButton.click(function () {
+    const checkoutButtonYearly = $('#checkout-button-yearly')
+  
+    checkoutButtonYearly.click(function () {
+      const product = "yearly";
+  
+      fetch('/payment/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          product
+        })
+      })
+        .then((result) => result.json())
+        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
+    })
+
+    const manageBillingButton = $('#manage-billing-button')
+    const customerID = $('input[name="customerID"]').val()
+
+    manageBillingButton.click(function () {
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -42,3 +77,4 @@ $(document).ready(function () {
         .then((result) => window.location.replace(result.url))
         .catch((error) => console.log('error', error))
     })
+  })

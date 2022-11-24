@@ -8,11 +8,16 @@ const { validateUser } = require('../utils/middleware');
 const uuid = require('uuid');
 const mail = require('../mail/mail_inlege');
 const Stripe = require('../utils/stripe');
+const moment = require('moment');
 
 //my profile view page
 router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
-    res.render('auth/profile', {user});
+    let endDate = "";
+    if(user.isPremium){
+        endDate = moment(user.endDate).locale('cs').format('LL')
+    }
+    res.render('auth/profile', {user, endDate});
 }))
 
 //register form user (GET)

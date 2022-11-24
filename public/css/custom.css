@@ -3,6 +3,10 @@
     margin-right: 10px;
 }
 
+.color-1 {
+    color: #E80F88;
+}
+
 /*CATEGORY*/
 .section-list .add-icon {
     color: green;
@@ -56,4 +60,47 @@
 /* CATEGOGRIES - PREMIUM SECTIONS*/
 .golden {
     color: #FFB81C;
+}
+
+/* PROFILE - PREMIUM OFFERS*/
+.price-tag-outer {
+    
+}
+
+.price-tag-inner {
+    border-radius: 5px;
+    text-align: center;
+    color: #E80F88;
+    transition: all 0.3s;
+}
+
+.premium-plan-card {
+    transition: all 0.3s;
+    border-color: #E80F88;
+    border-top-color:#E80F88;
+}
+
+.premium-plan-card .card-header {
+    background-color:#E80F88;
+    text-align: center;
+    color: white;
+    font-size: large;
+    border-bottom: none;
+}
+
+.premium-plan-card p {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+    color: #6C657D
+}
+
+.price-tag-inner .price {
+    font-weight: 600;
+    font-size:x-large;
+}
+
+.price-tag-inner .period {
+    font-size: smaller;
+    color: #6C657D
 }

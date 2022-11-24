@@ -48,3 +48,8 @@
 .card {
     height: 100%;
 }
+
+/* Alerts */
+.alert {
+    margin-bottom: 0;
+}

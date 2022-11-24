@@ -59,3 +59,7 @@ a:hover {
 .navbar .nav-item .nav-link:hover {
     color: #AF0171;
 }
+
+.btn-check:checked+.btn-outline-danger {
+    background-color: #E80F88!important;
+}

@@ -19,6 +19,7 @@ router.get('/admin/:userId/upgradeToPremium', isLoggedIn, isAdmin, catchAsync(as
         throw Error("Uživatel s tímto ID neexistuje");
     }
     user.isPremium = true;
+    user.plan = "yearly";
     await user.save();
     req.flash('success','Uživatel je nyní Premium');
     res.redirect('/admin/listAllUsers');
