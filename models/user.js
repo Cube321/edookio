@@ -30,7 +30,7 @@ const UserSchema = new Schema ({
         default: false
     },
     billingId: String,
-    plan: { type: String, enum: ['none', 'yearly', 'monthly'], default: 'none' },
+    plan: { type: String, enum: ['none', 'yearly', 'monthly', 'daily'], default: 'none' },
     endDate: {type: Date, defualt: null}
 })
 
