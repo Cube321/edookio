@@ -25,17 +25,17 @@ router.post('/payment/checkout', isLoggedIn, catchAsync(async (req, res) => {
     if(req.body.product === "daily")(
       session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.DAILY)
   )
-    res.send({ sessionId: session.id })
+    res.status(200).send({ sessionId: session.id })
   }))
 
 //payment successful
 router.get('/payment/success', (req, res) => {
-  res.render('payments/success')
+  res.status(200).render('payments/success')
 })
 
 //payment failed
 router.get('/payment/failed', (req, res) => {
-  res.render('payments/failed')
+  res.status(200).render('payments/failed')
 })
 
 router.post('/webhook', async (req, res) => {
@@ -137,7 +137,7 @@ router.post('/webhook', async (req, res) => {
 router.post('/billing', async (req, res) => {
   const { customer } = req.body
   const session = await Stripe.createBillingSession(customer)
-  res.json({ url: session.url })
+  res.status(200).json({ url: session.url })
 })
 
   module.exports = router;

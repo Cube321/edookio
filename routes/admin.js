@@ -11,13 +11,13 @@ const Stripe = require('../utils/stripe');
 //show all registered users
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
-    res.render('admin/users', {users});
+    res.status(200).render('admin/users', {users});
 }))
 
 //show all reported cards
 router.get('/admin/listAllReports', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const cards = await Card.find({ factualMistakeReports: { $exists: true, $ne: [] } });
-    res.render('admin/reports', {cards});
+    res.status(200).render('admin/reports', {cards});
 }))
 
 router.get('/admin/:userId/upgradeToPremium', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
@@ -29,7 +29,7 @@ router.get('/admin/:userId/upgradeToPremium', isLoggedIn, isAdmin, catchAsync(as
     user.plan = "yearly";
     await user.save();
     req.flash('success','Uživatel je nyní Premium');
-    res.redirect('/admin/listAllUsers');
+    res.status(201).redirect('/admin/listAllUsers');
 }))
 
 //cookies
@@ -37,5 +37,10 @@ router.get("/cookies-agreed",function(req, res){
 	req.session.cookiesAgreed = true;
 	res.sendStatus(200);
 });
+
+//premium explanation page
+router.get('/premium', (req, res) => {
+    res.status(200).render('premium');
+})
 
 module.exports = router;

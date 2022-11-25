@@ -7,8 +7,6 @@ const Section = require('../models/section');
 const Category = require('../models/category');
 const { categories } = require('../utils/categories');
 const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
-const section = require('../models/section');
-const user = require('../models/user');
 
 //show a specific card
 router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
@@ -21,7 +19,7 @@ router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
     const section = await Section.findById(card.section);
     const sectionLength = section.cards.length;
     const nextNum = 1;
-    res.render('cards/show', {card, sectionName: section.name, nextNum, sectionLength});
+    res.status(200).render('cards/show', {card, sectionName: section.name, nextNum, sectionLength});
 }))
 
 //render new card page (GET)
@@ -31,7 +29,7 @@ router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isAdmin
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
     }
-    res.render('cards/new', {category, sectionId, sectionName: foundSection.name});
+    res.status(200).render('cards/new', {category, sectionId, sectionName: foundSection.name});
 }))
 
 //list all cards in section
@@ -40,7 +38,7 @@ router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, is
     if(!section){
         throw Error("Sekce s tímto ID neexistuje");
     }
-    res.render('sections/listAllCards', {section});
+    res.status(200).render('sections/listAllCards', {section});
 }))
 
 //publish section
@@ -52,7 +50,7 @@ router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin
     foundSection.isPublic = true;
     await foundSection.save();
     req.flash('success','Sekce byla zveřejněna');
-    res.redirect(`/category/${req.params.category}`);
+    res.status(200).redirect(`/category/${req.params.category}`);
 }))
 
 
@@ -65,7 +63,7 @@ router.get('/category/:category/section/:sectionId/repeatSection', isLoggedIn, c
     const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
     user.sections = filteredSections;
     await user.save();
-    res.redirect(`/category/${req.params.category}/section/${req.params.sectionId}/1`);
+    res.status(200).redirect(`/category/${req.params.category}/section/${req.params.sectionId}/1`);
 }))
 
 //show Card of Section
@@ -80,7 +78,7 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     //check if Premium access required and allowed
     if(foundSection.isPremium && !user.isPremium){
         req.flash('error','Je nám líto, tato sekce je přístupná pouze uživatelům Premium.');
-        return res.redirect('back');
+        return res.status(403).redirect('back');
     }
     //cards counting logic
     const cardNumEdited = cardNum - 1;
@@ -89,16 +87,16 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         if(req.user){
             user.sections.push(foundSection._id);
             await user.save();
-            return res.render('sections/finished', {category, sectionName: foundSection.name, demo: false});
+            return res.status(200).render('sections/finished', {category, sectionName: foundSection.name, demo: false});
         } else {
             //user not logged in - in demo section
-            return res.render('sections/finished', {category, sectionName: foundSection.name, demo: true});
+            return res.status(200).render('sections/finished', {category, sectionName: foundSection.name, demo: true});
         }
         
     }
     if(cardNumEdited < 0 || cardNum > foundSection.cards.length){
         req.flash('error','Zadané číslo karty nebylo nalezeno.');
-        return res.redirect('/');
+        return res.status(200).redirect('/');
     }
     //data for progress bar
     let progressStep = Math.round(100 / foundSection.cards.length);
@@ -111,7 +109,7 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         user.save();
     }
     const sectionLength = foundSection.cards.length;
-    res.render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus});
+    res.status(200).render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus});
 }))
 
 //add new card - save (POST)
@@ -139,7 +137,7 @@ router.post('/category/:category/section/:sectionId/newCard', validateCard, isLo
     foundSection.cards.push(createdCard._id);
     await foundSection.save();
     req.flash('success','Kartička byla přidána do databáze.');
-    res.redirect(`/category/${category}/section/${sectionId}/listAllCards`);
+    res.status(201).redirect(`/category/${category}/section/${sectionId}/listAllCards`);
 }))
 
 //edit card - form (GET)
@@ -150,7 +148,7 @@ router.get('/cards/edit/:id', isLoggedIn, isAdmin, catchAsync(async (req, res, n
         req.flash('error','Kartička nebyla nalezena.');
         return res.redirect('/');
     }
-    res.render('cards/edit', {card, categories});
+    res.status(200).render('cards/edit', {card, categories});
 }))
 
 //edit card - save (PUT)
@@ -162,7 +160,7 @@ router.put('/cards/edit/:id', validateCard, isLoggedIn, isAdmin, catchAsync(asyn
         throw Error("Kartička s tímto ID neexistuje");
     }
     req.flash('success','Kartička byla aktualizována.');
-    res.redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
+    res.status(201).redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))
 
 //remove card (GET)
@@ -178,7 +176,7 @@ router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res,
     foundCategory.numOfCards--;
     await foundCategory.save();
     req.flash('success','Kartička byla odstraněna.');
-    res.redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
+    res.status(201).redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))
 
 //NAHLÁSTI CHYBU NA KARTĚ 

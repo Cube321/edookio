@@ -169,7 +169,7 @@ app.all('*', (req, res, next) => {
     console.log(`************************ 404 **********************`);
     console.log(req.path);
     req.flash('error', 'Stránka nebyla nalezena.');
-    res.redirect('/');
+    res.status(404).redirect('/');
 })
 
 //exports app - requested in server.js - required for proper testing

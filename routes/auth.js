@@ -18,17 +18,17 @@ router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     if(user.isPremium){
         endDate = moment(user.endDate).locale('cs').format('LL')
     }
-    res.render('auth/profile', {user, endDate, dateOfRegistration});
+    res.status(200).render('auth/profile', {user, endDate, dateOfRegistration});
 }))
 
 //register form user (GET)
 router.get('/auth/user/new', (req, res) => {
-    res.render('auth/register_form');
+    res.status(200).render('auth/register_form');
 })
 
 //register form admin (GET)
 router.get('/auth/admin/new', (req, res) => {
-    res.render('auth/admin_registr');
+    res.status(200).render('auth/admin_registr');
 })
 
 //register request (POST)
@@ -67,20 +67,20 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         console.log(`Added new user and customer ${email} with MongoID ${newUser._id} and billingId ${newUser.billingId}`);
         mail.welcome(newUser.email);
         req.flash('success', 'Registrace proběhla úspěšně.');
-        res.redirect('/'); 
+        res.status(201).redirect('/'); 
     } catch (err){
         if (err.message === 'A user with the given username is already registered'){
             req.flash('error', 'Uživatel již existuje.');
         } else {
             req.flash('error', 'Jejda, něco se nepovedlo.');
         }
-        res.redirect('back');
+        res.status(400).redirect('back');
     }
 }))
 
 //login form (GET)
 router.get('/auth/user/login', (req, res) => {
-    res.render('auth/login_form');
+    res.status(200).render('auth/login_form');
 })
 
 //login request (POST)
@@ -88,21 +88,21 @@ router.post('/auth/user/login', passport.authenticate('local', {failureFlash: 'N
     let redirectUrl = req.session.returnTo || '/';
     delete req.session.returnTo;
     if(redirectUrl === "/auth/user/logout"){redirectUrl = "/"};
-    res.redirect(redirectUrl);
+    res.status(200).redirect(redirectUrl);
 }))
 
 //logout request (GET)
 router.get('/auth/user/logout', isLoggedIn, (req, res) => {
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.redirect('/');
+        res.status(400).redirect('/');
       });
-    res.redirect('/');
+    res.status(200).redirect('/');
 })
 
 //change password (GET)
 router.get('/auth/user/changePassword', isLoggedIn, (req, res) => {
-    res.render('auth/change_password');
+    res.status(200).render('auth/change_password');
 })
 
 //change password (POST)
@@ -115,20 +115,20 @@ router.post('/auth/user/changePassword', isLoggedIn, catchAsync(async(req, res) 
         res.redirect('/auth/user/profile');
     } else {
         req.flash('error','Nové heslo a Nové heslo pro kontrolu se musí shodovat');
-        res.redirect('/auth/user/changePassword');
+        res.status(200).redirect('/auth/user/changePassword');
     } } catch (err) {
         if(err.message === "Password or username is incorrect"){
             req.flash('error','Nesprávné heslo');
         } else {
             req.flash('error','Omlouváme se, něco se nepovedlo');
         }
-        res.redirect('/auth/user/changePassword');
+        res.status(400).redirect('/auth/user/changePassword');
     }
 }))
 
 //request forgotten password form (GET)
 router.get('/auth/user/requestPassword', (req, res) => {
-    res.render('auth/request_password');
+    res.status(200).render('auth/request_password');
 })
 
 //request forgotten password (POST) - NEDOKONČENO - Je třeba zaslat e-mail s linkem na změnu hesla a vytvořit nějaké id, aby to nemohl udělat kdokoliv
@@ -147,7 +147,7 @@ router.post('/auth/user/requestPassword', catchAsync(async(req, res) => {
     const changeLink = `/auth/user/setPassword/${passChangeId}`;
     const data = {link: changeLink, email: user.email};
     mail.forgottenPassword(data);
-    res.render('auth/password_sent');
+    res.status(200).render('auth/password_sent');
 }))
 
 //set password FORM (GET)
@@ -155,10 +155,10 @@ router.get('/auth/user/setPassword/:passChangeId', catchAsync(async(req, res) =>
     const user = await User.findOne({passChangeId: req.params.passChangeId});
     const {passChangeId} = req.params;
     if(!user){
-        req.flash('error','Uživatel s passChangeId nenalezen.');
+        req.status(400).flash('error','Uživatel s passChangeId nenalezen.');
         return res.redirect('/');
     } else {
-        res.render('auth/set_password', {passChangeId});
+        res.status(200).render('auth/set_password', {passChangeId});
     }
 }))
 
@@ -175,10 +175,10 @@ router.post('/auth/user/setPassword/:passChangeId', catchAsync(async(req, res) =
             if (err) return next(err);
         })
         req.flash('success','Heslo bylo změněno')
-        res.redirect('/');
+        res.status(200).redirect('/');
     } else {
         req.flash('error','Nové heslo a Nové heslo pro kontrolu se musí shodovat');
-        res.redirect(`/auth/user/setPassword/${req.params.passChangeId}`);
+        res.status(400).redirect(`/auth/user/setPassword/${req.params.passChangeId}`);
     }
 }))
 

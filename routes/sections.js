@@ -5,7 +5,6 @@ const Section = require('../models/section');
 const Category = require('../models/category');
 const Card = require('../models/card');
 const { isLoggedIn, isAdmin, validateSection, isPremiumUser } = require('../utils/middleware');
-const { cardSchema } = require('../schemas');
 const {categories} = require('../utils/categories')
 
 //show sections of category
@@ -13,7 +12,7 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     const category = await Category.findOne({name: req.params.category}).populate('sections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
-        return res.redirect('back');
+        return res.status(404).redirect('back');
     }
     let demoCat = {sections: []};
     if(!req.user){
@@ -23,7 +22,7 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     categories.forEach(c => {
         if(c.value === req.params.category){title = c.text};
     })
-    res.render('category', {category, title, demoCat});
+    res.status(200).render('category', {category, title, demoCat});
 }))
 
 //create new Category - new approach - service moved out of the route
@@ -49,7 +48,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
     const foundCategory = await Category.findOne({name: req.params.category});
     if(!foundCategory){
         req.flash('error','Kategorie neexistuje.');
-        return res.redirect('back');
+        return res.status(404).redirect('back');
     }
     //create new Section and add it to Category
     const categoryName = foundCategory.name;
@@ -69,7 +68,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
     foundCategory.sections.push(savedSection._id);
     await foundCategory.save();
     req.flash('success',`Sekce ${savedSection.name} byla vytvořena.`);
-    res.redirect(`/category/${savedSection.category}`);
+    res.status(200).redirect(`/category/${savedSection.category}`);
 }))
 
 //remove Section from Category and delete its Cards
@@ -88,7 +87,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     foundCategory.numOfCards = foundCategory.numOfCards - deletedSection.cards.length;
     await foundCategory.save();
     req.flash('success','Sekce byla odstraněna.');
-    res.redirect(`/category/${category}`);
+    res.status(200).redirect(`/category/${category}`);
 }))
 
 module.exports = router;
