@@ -1,7 +1,6 @@
 .main-header-premium {
     background: linear-gradient( rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url(../img/bg_cover5.jpeg) no-repeat center center; 
     background-size: cover;
-    min-height: 100vh;
     color: white;
     background-blend-mode: darken;
 }
