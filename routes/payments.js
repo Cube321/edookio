@@ -5,6 +5,7 @@ const Stripe = require('../utils/stripe');
 const {isLoggedIn} = require('../utils/middleware');
 const User = require('../models/user');
 const moment = require('moment');
+const mail = require('../mail/mail_inlege');
 
 const productToPriceMap = {
     YEARLY: process.env.PRODUCT_YEARLY,
@@ -73,7 +74,8 @@ router.post('/webhook', async (req, res) => {
         user.endDate = moment(today).add('1','day').format();
       }
       user.isPremium = true;
-      await user.save()
+      await user.save();
+      mail.subscriptionCreated(user.email);
       break
     }
       //manage subscription (change plan + cancel)
@@ -90,12 +92,16 @@ router.post('/webhook', async (req, res) => {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();
           user.isPremium = true;
+          const endDate = moment(user.endDate).locale('cs').format('LL');
+          mail.subscriptionUpdated(user.email, endDate);
         }
   
         if (data.plan.id == productToPriceMap.MONTHLY) {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
           user.isPremium = true;
+          const endDate = moment(user.endDate).locale('cs').format('LL');
+          mail.subscriptionUpdated(user.email, endDate);
           //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
         }
 
@@ -103,12 +109,16 @@ router.post('/webhook', async (req, res) => {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
           user.isPremium = true;
+          const endDate = moment(user.endDate).locale('cs').format('LL');
+          mail.subscriptionUpdated(user.email, endDate);
         }
         
         //cancelation
         if (data.canceled_at) {
           // cancelled
           user.plan = "none";
+          const endDate = moment(user.endDate).locale('cs').format('LL');
+          mail.subscriptionCanceled(user.email, endDate);
         }
   
         await user.save()

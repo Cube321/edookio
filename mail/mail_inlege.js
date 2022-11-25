@@ -22,6 +22,59 @@ mail.welcome = function(email, callback){
       });
 };
 
+//subscription created e-mail
+mail.subscriptionCreated = function(email, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: email,
+      subject: "Služby Premium aktivovány",
+      html: `
+          <h3>Služby Premium aktivovány</h3>
+          <p>Na základě Tvé objednávky a platby jsme Ti aktivovaly služby Premium. Nyní máš přístup ke stovkám prémiových kartiček.</p>
+      `
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
+//subscription updated e-mail
+mail.subscriptionUpdated = function(email, endDate, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: email,
+      subject: "Služby Premium prodlouženy",
+      html: `
+          <h3>Služby Premium prodlouženy</h3>
+          <p>Tvé předplatné bylo prodlouženo do ${endDate}.</p>
+      `
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
+mail.subscriptionCanceled = function(email, endDate, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: email,
+      subject: "Předplatné ukončeno",
+      html: `
+          <h3>Tvé předplatné Premium na InLege bylo ukočeno</h3>
+          <p>Tvé předplatné bylo ukočeno. Další platby Ti již nebudou strženy. Premium můžeš využívat do konce zaplaceného obdoví, tedy do ${endDate}.</p>
+      `
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
 //forgotten password - change link
 mail.forgottenPassword = function(data, callback){
   const msg = {
