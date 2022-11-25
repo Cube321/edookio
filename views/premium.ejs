@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/bootstrap_customised.css">
     <link rel="stylesheet" href="/css/custom.css">
     <link rel="stylesheet" href="/css/landing.css">
+    <link rel="stylesheet" href="/css/premium.css">
     <!-- META TAGS -->
     <meta property="og:url"                content="https://www.inlege.cz/" />
     <meta property="og:title"              content="InLege - Studuj právo efektivně!" />
@@ -28,43 +29,64 @@
 
     <main role="main"> 
         <%- include('./partials/alert') %>
-        <section class="jumbotron main-header">
+        <!--
+        <section class="jumbotron main-header-premium">
           <div class="container">
               <div class="row">
-                  <div class="col-sm-5 offset-sm-1 my-5 p-4">
-                    <h1 class="jumbotron-heading mb-3">InLege <br>Premium</h1>
-                    <p class="lead">InLege nabízí stovky kartiček zdarma. Pro opravdové fajnšmekry však máme také rozšířenou nabídku kartiček jen za pár korun měsíčně.</p>        
-                    <div class="mt-5">
-                        <% if(!currentUser){ %> 
-                            <a href="/auth/user/new" class="btn btn-lg btn-danger">Registrace zdarma</a>
-                        <% } %> 
+                  <div class="col-sm-4 offset-sm-4 my-3 mt-5 p-4">
+                    <h1 class="jumbotron-heading mb-3 text-center">InLege <span class="color-1">Premium</span></h1>
+                    <p class="lead text-center"><strong>InLege nabízí stovky kartiček zdarma. Pro opravdové fajnšmekry však máme také rozšířenou nabídku kartiček jen za pár korun měsíčně.</strong></p>        
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 offset-3">
+                    <div class="mb-5 d-flex justify-content-between align-items-center">
+                        <a href="/auth/user/new" class="btn btn-lg btn-danger">Roční předplatné (990 Kč)</a>
+                        <a href="/auth/user/new" class="btn btn-lg btn-danger">Měsíční předplatné (99 Kč)</a>
                     </div>
                 </div>
               </div>
           </div>
         </section>
-
-  
-        <div class="album pt-5 pb-3 my-5">
-          <div class="container">
-  
-            <div class="row">
-                
-            </div>
-
-        </div>
-    </div>
-
-    <section class="vision-statement">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-8 offset-md-2 text-center my-5">
-                    <h1 class="mb-4">Naše vize</h1>
-                    <p class="fs-5">Mladí právníci neustále skládají zkoušky. Ať už na právnické fakultě nebo po jejím dokončení v rámci dalšího profesního vzdělávání. Sami jsme touto cestou prošli. Rádi bychom jim nabídli nástroj, který jim na této náročné cestě usnadní život a přípravu na tyto zkoušky zefektní. Proto jsme vytvořili <strong style="color:#E80F88">InLege</strong>, aplikaci pro studium práva.</p>
+        -->
+        <section class="jumbotron main-header-premium">
+            <div class="container d-flex flex-column justify-content-center align-items-center h-100 pb-5">
+                <div class="d-flex flex-column justify-content-center align-items-center">
+                    <h1 class="jumbotron-heading my-3 text-center">InLege <span class="color-1">Premium</span></h1>
+                    <p class="lead text-center w-custom p-3 pb-5"><strong>InLege nabízí stovky kartiček zdarma. Pro opravdové fajnšmekry však máme také rozšířenou nabídku kartiček jen za pár korun měsíčně.</strong></p>
+                </div>
+                <div class="price-table-wrapper">
+                    <div class="card premium-plan-card m-4 mt-0">
+                        <div class="card-header">Měsíční</div>
+                        <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
+                            <div class="price-tag-inner">
+                                <span class="price">99 Kč</span> / <span class="period">měsíčně</span>
+                            </div>
+                        </div> 
+                        <p class="text-center my-3">Předplatné Premium placené měsíčně.</p>
+                        <p class="text-center my-3"><strong>+ 2 486</strong><br> prémiových kartiček</p>
+                        <div class="px-3 d-flex justify-content-center">
+                            <a href="/auth/user/new" class="btn btn-danger my-3">Zaregistrovat se a aktivovat</a> 
+                        </div>
+                    </div>
+                    <div class="card premium-plan-card m-4 mt-0">
+                        <div class="card-header">Roční</div>
+                        <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
+                            <div class="price-tag-inner">
+                                <span class="price">990 Kč</span> / <span class="period">ročně</span>
+                            </div> 
+                        </div>
+                        <p class="text-center my-3">Předplatné Premium se slevou za roční platbu.</p>
+                        <p class="text-center my-3"><strong>+ 2 486</strong><br> prémiových kartiček</p>
+                        <div class="px-3 d-flex justify-content-center">
+                            <a href="/auth/user/new" class="btn btn-danger my-3">Zaregistrovat se a aktivovat</a> 
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+          </section>
+        
 </main>
     <%- include('./partials/footer') %>
     <%- include('./partials/cookiesBar')%> 
