@@ -1,8 +1,8 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 offset-lg-3">
-            <div class="card">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card profile-card">
                 <div class="row p-3 pb-0">
                     <div class="col-12">
                         <h3>Můj účet</h3>
@@ -34,27 +34,47 @@
                         <p>Datum registrace</p>
                     </div>
                     <div class="col-8">
-                        <%= user.dateOfRegistration %> 
+                        <%= dateOfRegistration %> 
                     </div>
                     <hr />
                     <div class="col-4 fw-bold">
                         <p>Předplatné</p>
                     </div>
                     <% if(user.isPremium){ %>
-                    <div class="col-8">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="mb-0">aktivní do <%= endDate %> </p>
-                            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
-                                Správa předplatného
-                            </button>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-0">aktivní do <%= endDate %> </p>
+                                <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+                                    Správa předplatného
+                                </button>
+                            </div>
                         </div>
-                    </div>
                     <% } else { %>
                         <div class="col-8">
                             <p class="mb-0">žádné</p>
                         </div>
-                    <% } %> 
+                    <% } %>
                     <hr />
+                    <% if(user.isPremium){ %> 
+                        <div class="col-4 fw-bold">
+                            <p>Typ předplatného</p>
+                        </div>
+                        <div class="col-8">
+                            <% if(user.plan === "none"){ %>
+                                <p class="mb-0">zrušeno (aktivní do konce období)</p>
+                            <% }%>  
+                            <% if(user.plan === "monthly"){ %>
+                                <p class="mb-0">měsíční (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.plan === "yearly"){ %>
+                                <p class="mb-0">roční (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.plan === "daily"){ %>
+                                <p class="mb-0">denní (další platba <%= endDate %>)</p>
+                            <% }%> 
+                        </div> 
+                        <hr />
+                    <% } %> 
                     <div class="col-4 fw-bold">
                         <p>Heslo</p>
                     </div>
@@ -69,12 +89,12 @@
     </div>
     <% if(!user.isPremium){ %> 
     <div class="row">
-        <div class="col-lg-6 offset-lg-3">
+        <div class="col-lg-8 offset-lg-2">
             <div class="card mt-3">
                 <div class="row p-3">
                     <div class="col-12">
                         <h3>Přejít na Premium (předplatné)</h3>
-                        <p class="text-muted mb-0">S účtem Premium získáte přístup k dalším stovkám kartiček ze všech oborů práva. Vyberte si mezi měsíčním a ročním předplatným. Ukončit jej můžete kdykoliv.</p>
+                        <p class="text-muted mb-0">S účtem Premium získáš přístup k dalším stovkám kartiček ze všech oborů práva. Vyber si mezi měsíčním a ročním předplatným. Ukončit jej můžeš kdykoliv.</p>
                     </div>
                 </div>
                 <!--
@@ -93,7 +113,7 @@
                 </div>
                 -->
                 <div class="row p-3 pb-0 mb-3">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5 offset-sm-1">
                         <div class="card premium-plan-card m-4 mt-0">
                             <div class="card-header">Měsíční</div>
                             <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
@@ -109,7 +129,7 @@
                         </div>
                         
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="card premium-plan-card m-4 mt-0">
                             <div class="card-header">Roční</div>
                             <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">

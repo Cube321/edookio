@@ -181,4 +181,57 @@ router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res,
     res.redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))
 
+//NAHLÁSTI CHYBU NA KARTĚ 
+
+//render success page
+router.get('/cards/report/success', (req,res) => {
+    res.status(200).render('cards/reportSubmited')
+})
+
+router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isAdmin, catchAsync(async(req,res) => {
+    const foundCard = await Card.findById(req.params.cardId);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
+    const updatedReports = foundCard.factualMistakeReports.map(report => {
+        if(report.user === req.params.userEmail){
+            report.solved = true;
+            return report;
+        } else {
+            return report;
+        }
+    });
+    foundCard.factualMistakeReports = updatedReports;
+    await Card.findByIdAndUpdate(req.params.cardId, foundCard);
+    console.log(foundCard);
+    res.status(200).redirect('/admin/listAllReports');
+}))
+
+//render report form
+router.get('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
+    const foundCard = await Card.findById(req.params.cardId);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
+    res.status(200).render('cards/report', {card: foundCard});
+}))
+
+//receive the message
+router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
+    const foundCard = await Card.findById(req.params.cardId);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
+    const newReport = {
+        date: Date.now(),
+        reportMsg: req.body.reportMsg,
+        solved: false,
+        user: req.user.email
+    }
+    foundCard.factualMistakeReports.push(newReport);
+    await foundCard.save();
+    console.log(foundCard);
+    res.status(201).redirect('/cards/report/success');
+}))
+
 module.exports = router;

@@ -53,3 +53,61 @@
 .alert {
     margin-bottom: 0;
 }
+
+/* COOKIES */
+
+.cookies-warning {
+	position: fixed;
+  bottom: 0;
+  padding: 2px 15px;
+	width: 100%;
+	text-align: center;
+	z-index: 100;
+	background-color: rgba(0,0,0,1);
+	color: white;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-top: 3px solid white;
+}
+
+.cookies-warning p {
+  margin: 0;
+  padding: 0;
+	font-size: 1rem;
+}
+
+.cookies-warning a {
+  color: white;
+  text-decoration: none;
+}
+
+.cookies-warning a:hover {
+  color: white;
+}
+
+.cookies-warning .btn-agree {
+    text-decoration: none;
+	color: black;
+	background: white;
+    padding: 5px 20px;
+    border-radius: 16px;
+    margin: 5px;
+    -webkit-transition-duration: 0.3s;
+         -o-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.cookies-warning .btn-agree:hover {
+    color: black;
+    background: white;
+    text-decoration: none;
+}

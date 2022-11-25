@@ -31,7 +31,11 @@ const UserSchema = new Schema ({
     },
     billingId: String,
     plan: { type: String, enum: ['none', 'yearly', 'monthly', 'daily'], default: 'none' },
-    endDate: {type: Date, defualt: null}
+    endDate: {type: Date, defualt: null},
+    isGdprApproved: {
+        type: Boolean,
+        default: false
+    }
 })
 
 UserSchema.plugin(passportLocalMongoose);

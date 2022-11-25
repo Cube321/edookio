@@ -132,6 +132,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    res.locals.cookiesAgreed = req.session.cookiesAgreed;
     //gives access to currectUser on all templates
     res.locals.currentUser = req.user;
     next();

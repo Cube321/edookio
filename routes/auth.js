@@ -14,10 +14,11 @@ const moment = require('moment');
 router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
     let endDate = "";
+    let dateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
     if(user.isPremium){
         endDate = moment(user.endDate).locale('cs').format('LL')
     }
-    res.render('auth/profile', {user, endDate});
+    res.render('auth/profile', {user, endDate, dateOfRegistration});
 }))
 
 //register form user (GET)
@@ -56,7 +57,8 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             passChangeId,
             billingId: customer.id,
             plan: "none",
-            endDate: null
+            endDate: null,
+            isGdprApproved: true
         });
         const newUser = await User.register(user, password);
         await req.login(newUser, err => {

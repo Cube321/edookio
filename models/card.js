@@ -16,6 +16,10 @@ const CardSchema = new Schema({
     section: {
         type : Schema.Types.ObjectId, 
         ref: 'Section'
+    },
+    factualMistakeReports: {
+        type: Array,
+        default: []
     }
 })
 
