@@ -49,11 +49,12 @@ router.post('/webhook', async (req, res) => {
     }
     
     const data = event.data.object
-    console.log(data);
+    console.log(event.type);
 
   switch (event.type) {
     //create new subscription
     case 'customer.subscription.created': {
+      console.log('CREATING RUNNING');
       const user = await User.findOne({billingId: data.customer});
       if(!user){
         throw Error('Uživatel s tímto platebním ID nebyl nalezen');
@@ -87,8 +88,7 @@ router.post('/webhook', async (req, res) => {
           throw Error('Uživatel s tímto platebním ID nebyl nalezen');
         }
         let today = Date.now();
-
-        if (!data.canceled_at && data.plan.id == productToPriceMap.YEARLY) {
+        if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.YEARLY) {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();
           user.isPremium = true;
@@ -96,7 +96,7 @@ router.post('/webhook', async (req, res) => {
           mail.subscriptionUpdated(user.email, endDate);
         }
   
-        if (!data.canceled_at && data.plan.id == productToPriceMap.MONTHLY) {
+        if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.MONTHLY) {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
           user.isPremium = true;
@@ -105,12 +105,16 @@ router.post('/webhook', async (req, res) => {
           //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
         }
 
-        if (!data.canceled_at && data.plan.id == productToPriceMap.DAILY) {
+        if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.DAILY) {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
           user.isPremium = true;
           const endDate = moment(user.endDate).locale('cs').format('LL');
           mail.subscriptionUpdated(user.email, endDate);
+        }
+
+        if(user.justSubscribed){
+          user.justSubscribed = false;
         }
         
         //cancelation

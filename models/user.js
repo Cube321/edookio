@@ -35,7 +35,8 @@ const UserSchema = new Schema ({
     isGdprApproved: {
         type: Boolean,
         default: false
-    }
+    },
+    justSubscribed: {type: Boolean, default: true}
 })
 
 UserSchema.plugin(passportLocalMongoose);
