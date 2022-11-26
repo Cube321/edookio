@@ -10,20 +10,20 @@
 			.catch(err => console.log(err));
 		});
 
+    $("#next-btn").click(function(){
+      $("#loader").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
+      $("#pageB").remove();
+  })
+
+  $("#pageB").scroll(function(){
+      $(this).removeClass('text-gradient');
+  })
+
 $(document).ready(function() {
 	const PUBLISHABLE_KEY = 'pk_test_51M7LRDAaRhuCsgZoSmUjyXiHbiKnXBc3g4YgwigzTCTfFpUMAB6NizhS3tL8WzxE9ICPRJl5Rzz6KiCJaxCVczwc00ZEs1F1zJ'
   
     const stripe = Stripe(
       PUBLISHABLE_KEY)
-
-    $("#next-btn").click(function(){
-        $("#loader").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
-        $("#pageB").remove();
-    })
-
-    $("#pageB").scroll(function(){
-        $(this).removeClass('text-gradient');
-    })
 
 	//Stripe payment
 	const checkoutButtonMonthly = $('#checkout-button-monthly')
