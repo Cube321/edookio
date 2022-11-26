@@ -81,10 +81,10 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
     if(!foundSection){
-        throw Error("Kategorie s tímto ID neexistuje");
+        throw Error("Sekce s tímto ID neexistuje");
     }
     let updatedCategory;
-    if(foundSection.isPremium){
+    if(!foundSection.isPremium){
         updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {basicSections: sectionId}});
         console.log('removed basic section from category array');
     } 
@@ -94,7 +94,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     } 
     
     if(!updatedCategory){
-        throw Error("Kategorie s tímto ID neexistuje");
+        throw Error("dddKategorie s tímto ID neexistuje");
     }
     //delete Cards in Section
     await Card.deleteMany({section: sectionId});

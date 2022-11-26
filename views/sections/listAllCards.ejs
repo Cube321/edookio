@@ -7,8 +7,8 @@
     </div>
     <% for(let card of section.cards){ %> 
         <div class="row">
-            <div class="col-sm-3 offset-1"><%= card.pageA %> </div>
-            <div class="col-sm-5"><%= card.pageB %> </div>
+            <div class="col-sm-3 offset-1 text-small"><%- card.pageA %> </div>
+            <div class="col-sm-5 text-small"><%- card.pageB %> </div>
             <div class="col-sm-1"><a href="/cards/edit/<%= card._id%>">Upravit</a></div>
             <div class="col-sm-1"><a href="/cards/remove/<%= card._id%>">Odstranit</a></div>
             <div class="col-sm-1"><a href="/cards/show/<%= card._id%>">Zobrazit</a></div>

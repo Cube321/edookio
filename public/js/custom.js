@@ -1,3 +1,15 @@
+    //cookies approval
+		$("#btn-agree").on("click", function(){
+			$.ajax({
+				method: "GET",
+				url: "/cookies-agreed"
+			})
+			.then(res => {
+				$(".cookies-warning").addClass("d-none");
+			})
+			.catch(err => console.log(err));
+		});
+
 $(document).ready(function() {
 	const PUBLISHABLE_KEY = 'pk_test_51M7LRDAaRhuCsgZoSmUjyXiHbiKnXBc3g4YgwigzTCTfFpUMAB6NizhS3tL8WzxE9ICPRJl5Rzz6KiCJaxCVczwc00ZEs1F1zJ'
   
@@ -12,18 +24,6 @@ $(document).ready(function() {
     $("#pageB").scroll(function(){
         $(this).removeClass('text-gradient');
     })
-
-    //cookies approval
-		$("#btn-agree").on("click", function(){
-			$.ajax({
-				method: "GET",
-				url: "/cookies-agreed"
-			})
-			.then(res => {
-				$(".cookies-warning").addClass("d-none");
-			})
-			.catch(err => console.log(err));
-		});
 
 	//Stripe payment
 	const checkoutButtonMonthly = $('#checkout-button-monthly')

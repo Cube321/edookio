@@ -7,6 +7,10 @@
     color: #E80F88;
 }
 
+.text-small {
+    font-size: 0.8rem;
+}
+
 /*CATEGORY*/
 .section-list .add-icon {
     color: green;
