@@ -72,7 +72,7 @@
                                     </div>
                                 <% } %>
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 d-flex justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
                                 <% if(!section.isPremium){ %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>    
@@ -141,7 +141,7 @@
                             <div class="col-2">
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2 d-flex justify-content-center align-items-center">
                                 <% if (!currentUser){ %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
@@ -216,7 +216,7 @@
                                 </div>
                             <% } %>
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 d-flex justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
                                 <% if(!section.isPremium){ %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>    
@@ -285,7 +285,7 @@
                             <div class="col-2">
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>
                             </div>
-                            <div class="col-3">
+                            <div class="col-3 d-flex justify-content-center align-items-center">
                                 <% if (!currentUser){ %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
