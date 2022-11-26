@@ -19,7 +19,7 @@ router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
     const section = await Section.findById(card.section);
     const sectionLength = section.cards.length;
     const nextNum = 1;
-    res.status(200).render('cards/show', {card, sectionName: section.name, nextNum, sectionLength});
+    res.status(200).render('cards/show', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0});
 }))
 
 //render new card page (GET)
