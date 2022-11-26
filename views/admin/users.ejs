@@ -8,13 +8,16 @@
     <% for(let user of users){ %> 
         <div class="row">
             <div class="col-sm-2 offset-1"><%= user.email %> </div>
-            <div class="col-sm-2"><%= user.dateOfRegistration %> </div>
+            <div class="col-sm-2"><%= user.updatedDateOfRegistration %> </div>
             <% if(user.isPremium){ %> 
                 <div class="col-sm-1">Premium</div>
             <% } else { %>
                 <div class="col-sm-1">-</div>
             <% } %>
-            <div class="col-sm-1"><a href="/admin/<%=user._id%>/upgradeToPremium">Upgrade to premium</a></div>
+            <div class="col-sm-2"><a href="/admin/<%=user._id%>/upgradeToPremium">Upgrade to premium</a></div>
+            <div class="col-sm-2">
+                <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Odstranit uživatele</button></form>
+            </div>
             <hr>
         </div>
     <% } %> 
