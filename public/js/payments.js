@@ -7,7 +7,7 @@ $(document).ready(function() {
 	//Stripe payment
   const checkoutButtonDaily = $('#checkout-button-daily')
   
-  checkoutButtonMonthly.click(function () {
+  checkoutButtonDaily.click(function () {
     const product = "daily";
 
     fetch('/payment/checkout', {
