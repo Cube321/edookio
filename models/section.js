@@ -6,6 +6,10 @@ const SectionSchema = new Schema({
         type: String,
         required: true
     },
+    shortDescription: {
+        type: String,
+        default: ""
+    },
     category: {
         type: String,
         required: true

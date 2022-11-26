@@ -52,7 +52,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
     }
     //create new Section and add it to Category
     const categoryName = foundCategory.name;
-    const {name, isPremium} = req.body;
+    const {name, isPremium, desc} = req.body;
     //isPremium logic
     let isPremiumBoolean = false;
     if(isPremium === "premium"){isPremiumBoolean = true};
@@ -61,7 +61,8 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
         name,
         category: categoryName,
         cards: [],
-        isPremium: isPremiumBoolean
+        isPremium: isPremiumBoolean,
+        shortDescription: desc
     })
     const savedSection = await newSection.save();
     if(savedSection.isPremium){
@@ -94,7 +95,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     } 
     
     if(!updatedCategory){
-        throw Error("dddKategorie s tímto ID neexistuje");
+        throw Error("Kategorie s tímto ID neexistuje");
     }
     //delete Cards in Section
     await Card.deleteMany({section: sectionId});
@@ -105,6 +106,26 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     await foundCategory.save();
     req.flash('success','Sekce byla odstraněna.');
     res.status(200).redirect(`/category/${category}`);
+}))
+
+//edit section name and description
+router.get('/category/:category/editSection/:sectionId', catchAsync(async(req, res) => {
+    const foundSection = await Section.findById(req.params.sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    res.render('sections/edit', {section: foundSection});
+}))
+
+router.put('/category/:category/editSection/:sectionId', catchAsync(async(req, res) => {
+    const foundSection = await Section.findById(req.params.sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    foundSection.name = req.body.name;
+    foundSection.shortDescription = req.body.desc;
+    await foundSection.save();
+    res.status(201).redirect(`/category/${req.params.category}`);
 }))
 
 //changing order of the sections
