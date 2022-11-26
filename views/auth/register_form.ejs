@@ -7,7 +7,11 @@
                 <div class="text-center">
                     <h4 class="mb-3 mt-2">Registrace</h4>
                 </div>
+                <% if (requiresPremium) { %>
+                    <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new?requiresPremium=true" method="POST">
+                <% } else { %>
                 <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new" method="POST">
+                <% } %> 
                     <div class="mt-2">
                         <label for="firstname" class="form-label">Jméno</label>
                             <input type="text" class="form-control form-control-sm" id="firstname" name="firstname" required>

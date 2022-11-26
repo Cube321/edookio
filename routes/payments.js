@@ -57,7 +57,8 @@ router.post('/webhook', async (req, res) => {
       console.log('CREATING RUNNING');
       const user = await User.findOne({billingId: data.customer});
       if(!user){
-        throw Error('Uživatel s tímto platebním ID nebyl nalezen');
+        console.log('Uživatel s tímto platebním ID nebyl nalezen');
+        return res.sendStatus(404);
       }
       let today = Date.now();
       if (data.plan.id === productToPriceMap.YEARLY) {
@@ -85,7 +86,8 @@ router.post('/webhook', async (req, res) => {
         console.log('UPDATED RUNNING');
         const user = await User.findOne({billingId: data.customer});
         if(!user){
-          throw Error('Uživatel s tímto platebním ID nebyl nalezen');
+          console.log('Uživatel s tímto platebním ID nebyl nalezen');
+          return res.sendStatus(404);
         }
         let today = Date.now();
         if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.YEARLY) {

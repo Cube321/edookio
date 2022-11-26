@@ -9,7 +9,7 @@ const {categories} = require('../utils/categories')
 
 //show sections of category
 router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, next) => {
-    const category = await Category.findOne({name: req.params.category}).populate('sections').exec();
+    const category = await Category.findOne({name: req.params.category}).populate('basicSections').populate('premiumSections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
         return res.status(404).redirect('back');
@@ -64,8 +64,12 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
         isPremium: isPremiumBoolean
     })
     const savedSection = await newSection.save();
-    console.log(newSection);
-    foundCategory.sections.push(savedSection._id);
+    if(savedSection.isPremium){
+        foundCategory.premiumSections.push(savedSection._id);
+    } 
+    if(!savedSection.isPremium){
+        foundCategory.basicSections.push(savedSection._id);
+    } 
     await foundCategory.save();
     req.flash('success',`Sekce ${savedSection.name} byla vytvořena.`);
     res.status(200).redirect(`/category/${savedSection.category}`);
@@ -75,7 +79,20 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
 router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
-    const updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {sections: sectionId}});
+    const foundSection = await Section.findById(sectionId);
+    if(!foundSection){
+        throw Error("Kategorie s tímto ID neexistuje");
+    }
+    let updatedCategory;
+    if(foundSection.isPremium){
+        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {basicSections: sectionId}});
+        console.log('removed basic section from category array');
+    } 
+    if(foundSection.isPremium){
+        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {premiumSections: sectionId}});
+        console.log('removed premium section from category array');
+    } 
+    
     if(!updatedCategory){
         throw Error("Kategorie s tímto ID neexistuje");
     }
@@ -87,6 +104,60 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     foundCategory.numOfCards = foundCategory.numOfCards - deletedSection.cards.length;
     await foundCategory.save();
     req.flash('success','Sekce byla odstraněna.');
+    res.status(200).redirect(`/category/${category}`);
+}))
+
+//changing order of the sections
+router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    const {sectionId, category} = req.params;
+    const foundCategory = await Category.findOne({name: category});
+    if(!foundCategory){
+        throw Error("Kategorie s tímto ID neexistuje");
+    }
+    if(foundCategory.basicSections.includes(sectionId)){
+        let fromIndex = foundCategory.basicSections.indexOf(sectionId);
+        if(fromIndex !== 0){
+        let toIndex = fromIndex--;
+        let section = foundCategory.basicSections.splice(fromIndex, 1)[0];
+        foundCategory.basicSections.splice(toIndex, 0, section);
+        await foundCategory.save(); 
+        }
+    }
+    if(foundCategory.premiumSections.includes(sectionId)){
+        let fromIndex = foundCategory.premiumSections.indexOf(sectionId);
+        if(fromIndex !== 0){
+        let toIndex = fromIndex--;
+        let section = foundCategory.premiumSections.splice(fromIndex, 1)[0];
+        foundCategory.premiumSections.splice(toIndex, 0, section);
+        await foundCategory.save(); 
+        }
+    }
+    res.status(200).redirect(`/category/${category}`);
+}))
+router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    const {sectionId, category} = req.params;
+    const foundCategory = await Category.findOne({name: category});
+    if(!foundCategory){
+        throw Error("Kategorie s tímto ID neexistuje");
+    }
+    if(foundCategory.basicSections.includes(sectionId)){
+        let fromIndex = foundCategory.basicSections.indexOf(sectionId);
+        if(fromIndex < foundCategory.basicSections.length){
+        let toIndex = fromIndex++;
+        let section = foundCategory.basicSections.splice(fromIndex, 1)[0];
+        foundCategory.basicSections.splice(toIndex, 0, section);
+        await foundCategory.save(); 
+        }
+    }
+    if(foundCategory.premiumSections.includes(sectionId)){
+        let fromIndex = foundCategory.premiumSections.indexOf(sectionId);
+        if(fromIndex < foundCategory.premiumSections.length){
+        let toIndex = fromIndex++;
+        let section = foundCategory.premiumSections.splice(fromIndex, 1)[0];
+        foundCategory.premiumSections.splice(toIndex, 0, section);
+        await foundCategory.save(); 
+        }
+    }
     res.status(200).redirect(`/category/${category}`);
 }))
 

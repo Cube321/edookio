@@ -14,7 +14,7 @@ const SectionSchema = new Schema({
         type: Boolean,
         default: false
     },
-    cards: [{ type : Schema.Types.ObjectId, ref: 'Card' }],
+    cards: [{ type : Schema.Types.ObjectId, ref: 'Card'}],
     isPremium: {
         type: Boolean,
         default: false

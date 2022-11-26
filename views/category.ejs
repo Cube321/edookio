@@ -10,7 +10,7 @@
                     </div>
                     <div class="col-lg-4 p-3 d-flex justify-content-around align-items-center">
                         <a class="btn btn-danger" href="/auth/user/new">Zaregistrovat se</a>
-                        <% if(demoCat.sections.length > 0){ %> 
+                        <% if(demoCat.basicSections.length > 0){ %> 
                             <a class="btn btn-outline-danger" href="/category/demo/section/<%= demoCat.sections[0]%>/1">Vyzkoušet demo</a>
                         <% } %>
                     </div>
@@ -42,20 +42,20 @@
             <div class="card-body">
                     <div class="row">
                         <div class="col-9">                    
-                                <p class="m-0 category-headline">Zvolte balíček</p>
+                                <p class="m-0 category-headline">Základní balíčky</p>
                         </div>
                     </div>
                     <hr class="mt-0">
-                <% if (category.sections.length < 1) { %>
+                <% if (category.basicSections.length < 1) { %>
                     <p>Kategorie neobsahuje žádné sekce.</p>
-                <% } else { category.sections.forEach(section => { %>
+                <% } else { category.basicSections.forEach(section => { %>
                     <% if(section.isPublic){ %> 
                     <div class="row py-2">
                         <div class="col-7">                    
                                 <% if(currentUser && currentUser.sections.includes(section._id)) { %>
                                     <p class="m-0 text-muted"><i class="fas fa-check-circle me-2" style="color:#AF0171"></i><%= section.name %></p>
                                 <% } else if (section.isPremium) { %>
-                                    <p class="m-0"><i class="fas fa-star me-2 golden"></i><%= section.name %></p>
+                                    <p class="m-0"><i class="fas fa-star me-2"></i><%= section.name %></p>
                                 <% } else { %> 
                                     <p class="m-0"><i class="fas fa-layer-group me-2"></i><%= section.name %></p>
                                 <% } %>
@@ -78,6 +78,8 @@
                         <div class="col-2 d-flex justify-content-evenly align-items-center">
                             <p class="m-0"><%= section.cards.length %> <i class="fas fa-scroll"></i></p>
                             <% if (currentUser && currentUser.admin) { %>
+                                <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up"></i></a>
+                                <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down"></i></a>
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
                                 <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1"></i></a>
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
@@ -106,7 +108,7 @@
                                     <% if(currentUser && currentUser.sections.includes(section._id)) { %>
                                         <p class="m-0 text-muted"><i class="fas fa-check-circle me-2" style="color:green"></i><%= section.name %></p>
                                     <% } else if (section.isPremium) { %>
-                                        <p class="m-0"><i class="fas fa-star me-2 golden"></i><%= section.name %></p>
+                                        <p class="m-0"><i class="fas fa-star me-2"></i><%= section.name %></p>
                                     <% } else { %> 
                                         <p class="m-0"><i class="fas fa-layer-group me-2"></i><%= section.name %></p>
                                     <% } %>
@@ -114,7 +116,7 @@
                             <div class="col-2">
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <% if (!currentUser){ %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
@@ -123,9 +125,11 @@
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger" style="float:right">Spustit</a>
                                 <% } %> 
                             </div>
-                            <div class="col-2 d-flex justify-content-evenly align-items-center">
-                                <p class="m-0"><%= section.cards.length %> <i class="fas fa-scroll"></i></p>
+                            <div class="col-3 d-flex justify-content-evenly align-items-center">
+                                <p class="m-0"> <%= section.cards.length %> <i class="fas fa-scroll"></i></p>
                                 <% if (currentUser && currentUser.admin) { %>
+                                    <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up"></i></a>
+                                    <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down"></i></a>
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
                                     <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1"></i></a>
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
@@ -149,6 +153,123 @@
                             </div>
                         <% } %>
 
+                <% }) }%>
+            </div>
+        </div>
+        <div class="card shadow mt-4">
+            <div class="card-body">
+                    <div class="row">
+                        <div class="col-9">                    
+                                <p class="m-0 category-headline">Premium balíčky</p>
+                        </div>
+                    </div>
+                    <hr class="mt-0">
+                <% if (category.premiumSections.length < 1) { %>
+                    <p>Kategorie neobsahuje žádné sekce.</p>
+                <% } else { category.premiumSections.forEach(section => { %>
+                    <% if(section.isPublic){ %> 
+                    <div class="row py-2">
+                        <div class="col-7">                    
+                                <% if(currentUser && currentUser.sections.includes(section._id)) { %>
+                                    <p class="m-0 text-muted"><i class="fas fa-check-circle me-2" style="color:#AF0171"></i><%= section.name %></p>
+                                <% } else if (section.isPremium) { %>
+                                    <p class="m-0"><i class="fas fa-star me-2"></i><%= section.name %></p>
+                                <% } else { %> 
+                                    <p class="m-0"><i class="fas fa-layer-group me-2"></i><%= section.name %></p>
+                                <% } %>
+                        </div>
+                        <div class="col-3">
+                            <% if (!currentUser){ %> 
+                                <% if(!section.isPremium){ %> 
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>    
+                                <% } else { %>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
+                                <% } %>  
+                            <% } else if(!currentUser.isPremium && section.isPremium){ %> 
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
+                            <% } else if(currentUser.sections.includes(section._id)) { %> 
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/repeatSection" class="btn btn-sm btn-outline-danger" style="float:right">Opakovat</a>
+                            <% } else { %> 
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger" style="float:right">Spustit</a>
+                            <% } %> 
+                        </div>
+                        <div class="col-2 d-flex justify-content-evenly align-items-center">
+                            <p class="m-0"><%= section.cards.length %> <i class="fas fa-scroll"></i></p>
+                            <% if (currentUser && currentUser.admin) { %>
+                                <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up"></i></a>
+                                <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down"></i></a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
+                                <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1"></i></a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
+                            <% } %>
+                        </div>
+                    </div>
+                    <hr class="">
+                      <!-- Modal -->
+                        <div class="modal fade" id="deleteSectionModal<%=section._id%>" tabindex="-1">
+                            <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title">Opravdu chcete odstranit sekci <%=section.name%>?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body d-flex justify-content-center align-items-center">
+                                    <a href="/category/<%= category.name %>/removeSection/<%= section._id %>/" class="btn btn-danger">Ano, odstranit</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    <% } %>
+                    <% if(!section.isPublic && currentUser && currentUser.admin){ %> 
+                        <div class="row py-2">
+                            <div class="col-5">                    
+                                    <% if(currentUser && currentUser.sections.includes(section._id)) { %>
+                                        <p class="m-0 text-muted"><i class="fas fa-check-circle me-2" style="color:green"></i><%= section.name %></p>
+                                    <% } else if (section.isPremium) { %>
+                                        <p class="m-0"><i class="fas fa-star me-2"></i><%= section.name %></p>
+                                    <% } else { %> 
+                                        <p class="m-0"><i class="fas fa-layer-group me-2"></i><%= section.name %></p>
+                                    <% } %>
+                            </div>
+                            <div class="col-2">
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>
+                            </div>
+                            <div class="col-3">
+                                <% if (!currentUser){ %> 
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>
+                                <% } else if(currentUser.sections.includes(section._id)) { %> 
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/repeatSection" class="btn btn-sm btn-outline-danger" style="float:right">Opakovat</a>
+                                <% } else { %> 
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/1" class="btn btn-sm btn-danger" style="float:right">Spustit</a>
+                                <% } %> 
+                            </div>
+                            <div class="col-2 d-flex justify-content-evenly align-items-center">
+                                <p class="m-0"><%= section.cards.length %>  <i class="fas fa-scroll"></i></p>
+                                <% if (currentUser && currentUser.admin) { %>
+                                    <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up"></i></a>
+                                    <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down"></i></a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
+                                    <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1"></i></a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <hr class="">
+                          <!-- Modal -->
+                            <div class="modal fade" id="deleteSectionModal<%=section._id%>" tabindex="-1">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title">Opravdu chcete odstranit sekci <%=section.name%>?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body d-flex justify-content-center align-items-center">
+                                        <a href="/category/<%= category.name %>/removeSection/<%= section._id %>/" class="btn btn-danger">Ano, odstranit</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        <% } %>
                 <% }) }%>
             </div>
         </div>

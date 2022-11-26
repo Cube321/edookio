@@ -50,8 +50,9 @@
                             </div>
                         </div>
                     <% } else { %>
-                        <div class="col-8">
-                            <p class="mb-0">žádné</p>
+                        <div class="col-8 d-flex justify-content-between align-items-center">
+                            <p class="">žádné</p>
+                            <a href="/premium" class="btn btn-danger btn-sm mb-2">Aktivovat</a>
                         </div>
                     <% } %>
                     <hr />
@@ -87,69 +88,6 @@
             </div>
         </div>
     </div>
-    <% if(!user.isPremium){ %> 
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <div class="card mt-3">
-                <div class="row p-3">
-                    <div class="col-12">
-                        <h3>Přejít na Premium (předplatné)</h3>
-                        <p class="text-muted mb-0">S účtem Premium získáš přístup k dalším stovkám kartiček ze všech oborů práva. Vyber si mezi měsíčním a ročním předplatným. Ukončit jej můžeš kdykoliv.</p>
-                    </div>
-                </div>
-                <!--
-                <div class="row p-3 mb-2">
-                    <div class="col-sm-4">
-                        <input type="radio" class="btn-check" name="product" id="monthly" value="monthly">
-                        <label class="btn btn-outline-danger w-100" for="monthly">99 Kč / měsíc</label>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="radio" class="btn-check" name="product" id="yearly" value="yearly" >
-                        <label class="btn btn-outline-danger w-100" for="yearly">990 Kč / rok</label>
-                    </div>
-                    <div class="col-sm-4 d-flex">
-                        <button class="btn btn-danger w-100" id="checkout-button" type="submit">Aktivovat</button>
-                    </div>
-                </div>
-                -->
-                <div class="row p-3 pb-0 mb-3">
-                    <div class="col-sm-5 offset-sm-1">
-                        <div class="card premium-plan-card m-4 mt-0">
-                            <div class="card-header">Měsíční</div>
-                            <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
-                                <div class="price-tag-inner">
-                                    <span class="price">99 Kč</span> / <span class="period">měsíčně</span>
-                                </div>
-                            </div> 
-                            <p class="text-center my-3">Předplatné Premium placené měsíčně.</p>
-                            <p class="text-center my-3"><strong>+ 2 486</strong><br> prémiových kartiček</p>
-                            <div class="px-3 d-flex justify-content-center">
-                                <button class="btn btn-danger my-3" id="checkout-button-monthly" type="submit">Aktivovat</button> 
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="card premium-plan-card m-4 mt-0">
-                            <div class="card-header">Roční</div>
-                            <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
-                                <div class="price-tag-inner">
-                                    <span class="price">990 Kč</span> / <span class="period">ročně</span>
-                                </div> 
-                            </div>
-                            <p class="text-center my-3">Předplatné Premium se slevou za roční platbu.</p>
-                            <p class="text-center my-3"><strong>+ 2 486</strong><br> prémiových kartiček</p>
-                            <div class="px-3 d-flex justify-content-center">
-                                <button class="btn btn-danger my-3" id="checkout-button-yearly" type="submit">Aktivovat</button> 
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <% } %> 
 </div>
 
 <script src="/js/jquery.min.js" ></script>

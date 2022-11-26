@@ -23,7 +23,11 @@ router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
 
 //register form user (GET)
 router.get('/auth/user/new', (req, res) => {
-    res.status(200).render('auth/register_form');
+    let requiresPremium = false;
+    if(req.query.premium === "true"){
+        requiresPremium = true;
+    }
+    res.status(200).render('auth/register_form', {requiresPremium});
 })
 
 //register form admin (GET)
@@ -67,7 +71,11 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         console.log(`Added new user and customer ${email} with MongoID ${newUser._id} and billingId ${newUser.billingId}`);
         mail.welcome(newUser.email);
         req.flash('success', 'Registrace proběhla úspěšně.');
-        res.status(201).redirect('/'); 
+        if(req.query.requiresPremium){
+            res.status(201).redirect('/premium'); 
+        } else {
+            res.status(201).redirect('/'); 
+        }
     } catch (err){
         if (err.message === 'A user with the given username is already registered'){
             req.flash('error', 'Uživatel již existuje.');

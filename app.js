@@ -38,7 +38,7 @@ const dbUrl = process.env.DB_URL;
 
 //const dbUrl = 'mongodb://localhost:27017/LawStudyApp';
 
-mongoose.connect(dbUrl)
+mongoose.connect(dbUrl, {dbName: process.env.DB_NAME})
     .then(() => {
         console.log("Connected to MongoDB!")
     })
@@ -58,6 +58,7 @@ app.use(mongoSanitize({
 const sessionConfig = {
     store: MongoStore.create({
         mongoUrl: dbUrl,
+        dbName: process.env.DB_NAME,
         secret: process.env.SESSION_SECRET,
         touchAfter: 24 * 3600
     }),

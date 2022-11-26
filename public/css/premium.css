@@ -131,7 +131,7 @@
     border-color: #E80F88;
     border-top-color:#E80F88;
     background-color: rgba(0, 0, 0, 0.5);
-    width: 310px;
+    width: 280px;
 }
 
 .premium-plan-card:hover {
@@ -182,6 +182,6 @@
         flex-direction: column;
     }
     .premium-plan-card {
-        width: 70%;
+        width: 90%;
     }
   }

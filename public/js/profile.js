@@ -4,60 +4,6 @@ $(document).ready(function () {
     const stripe = Stripe(
       PUBLISHABLE_KEY)
 
-    const checkoutButton = $('#checkout-button')
-  
-    checkoutButton.click(function () {
-      const product = $('input[name="product"]:checked').val()
-  
-      fetch('/payment/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product
-        })
-      })
-        .then((result) => result.json())
-        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
-    })
-
-    const checkoutButtonMonthly = $('#checkout-button-monthly')
-  
-    checkoutButtonMonthly.click(function () {
-      const product = "monthly";
-  
-      fetch('/payment/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product
-        })
-      })
-        .then((result) => result.json())
-        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
-    })
-
-    const checkoutButtonYearly = $('#checkout-button-yearly')
-  
-    checkoutButtonYearly.click(function () {
-      const product = "yearly";
-  
-      fetch('/payment/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product
-        })
-      })
-        .then((result) => result.json())
-        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
-    })
-
     const manageBillingButton = $('#manage-billing-button')
     const customerID = $('input[name="customerID"]').val()
 
