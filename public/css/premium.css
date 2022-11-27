@@ -168,6 +168,10 @@
     width: 50%
 }
 
+.w-custom-80 {
+    width: 80%
+}
+
 @media only screen and (max-width: 780px) {
     .w-custom {
       width: 80%;
