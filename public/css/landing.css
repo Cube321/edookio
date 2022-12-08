@@ -141,6 +141,10 @@
     color: #4C0033;
 }
 
+.d-none-780-down {
+    display:none;
+}
+
 @media only screen and (max-width: 780px) {
     .landing-info-wrapper {
         flex-direction: column;
@@ -149,5 +153,12 @@
         flex-basis: 0;
         flex-grow: 1;
         width: 100%;
+    }
+    .d-none-780-down {
+        display:block;
+    }
+
+    .d-none-780-up {
+        display:none;
     }
   }
