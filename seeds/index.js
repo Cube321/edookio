@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/LawStudyApp')
         console.log(err)
     })
 
-    const seedDB = async () => {
+    const seedDB = async () => { 
         await Card.deleteMany({});
         for( i = 1; i < 5; i++){
             const author = `Jakub ${i}`
