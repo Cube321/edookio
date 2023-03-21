@@ -53,7 +53,7 @@ router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin
     res.status(200).redirect(`/category/${req.params.category}`);
 }))
 
-
+//repeat section - filter section out of the array of finished sections
 router.get('/category/:category/section/:sectionId/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
     const foundSection = await Section.findById(req.params.sectionId);

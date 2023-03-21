@@ -28,7 +28,9 @@
                 </li>
               <% } else { %>
                 <li class="nav-item">
+                  <% if (!currentUser.isPremium){ %>
                   <a class="nav-link premium" href="/premium">Premium</a>
+                  <% } %>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/auth/user/profile">Můj účet (<%= currentUser.firstname %>)</a>

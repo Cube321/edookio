@@ -12,7 +12,9 @@ mail.welcome = function(email, callback){
         subject: "Vítej v InLege",
         html: `
             <h3>Vítej na InLege</h3>
-            <p>Tvá registrace na portálu InLege byla úspěšná!</p>
+            <p>Ahoj!<p>
+            <p>Tvá registrace na portálu InLege byla úspěšná! Věříme, že se InLege zařadí mezi nástroje a pomůcky, které při studiu práva používáš pravidelně.</p>
+            <p>S pozdravem <br />Tým InLege</p>
         `
       };
     //send the mail
@@ -30,7 +32,9 @@ mail.subscriptionCreated = function(email, callback){
       subject: "Služby Premium aktivovány",
       html: `
           <h3>Služby Premium aktivovány</h3>
+          <p>Ahoj!<p>
           <p>Na základě Tvé objednávky a platby jsme Ti aktivovaly služby Premium. Nyní máš přístup ke stovkám prémiových kartiček.</p>
+          <p>S pozdravem <br />Tým InLege</p>
       `
     };
   //send the mail
@@ -48,7 +52,9 @@ mail.subscriptionUpdated = function(email, endDate, callback){
       subject: "Služby Premium prodlouženy",
       html: `
           <h3>Služby Premium prodlouženy</h3>
+          <p>Ahoj!<p>
           <p>Tvé předplatné bylo prodlouženo do ${endDate}.</p>
+          <p>S pozdravem <br />Tým InLege</p>
       `
     };
   //send the mail
@@ -65,7 +71,9 @@ mail.subscriptionCanceled = function(email, endDate, callback){
       subject: "Předplatné ukončeno",
       html: `
           <h3>Tvé předplatné Premium na InLege bylo ukočeno</h3>
+          <p>Ahoj!<p>
           <p>Tvé předplatné bylo ukočeno. Další platby Ti již nebudou strženy. Premium můžeš využívat do konce zaplaceného obdoví, tedy do ${endDate}.</p>
+          <p>S pozdravem <br />Tým InLege</p>
       `
     };
   //send the mail
@@ -84,6 +92,7 @@ mail.forgottenPassword = function(data, callback){
       html: `
           <h3>Zapomenuté heslo</h3>
           <p>Své heslo můžeš změnit po kliknutí na tento odkaz: <a href="https://www.inlege.cz${data.link}">https://www.inlege.cz${data.link}</a></p>
+          <p>S pozdravem <br />Tým InLege</p>
       `
     };
   //send the mail

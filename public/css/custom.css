@@ -177,3 +177,13 @@
 .navbar .nav-item .nav-link.premium {
     color: #E80F88;
 }
+
+/* FINISHED SECTION */
+.finished-progress-bar {
+    border-radius: 10px;
+}
+
+/* REGISTRATION */
+.registration-gdpr {
+    margin-top: 2px;
+}
