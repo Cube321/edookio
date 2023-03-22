@@ -77,7 +77,9 @@ router.post('/webhook', async (req, res) => {
       }
       user.isPremium = true;
       await user.save();
+      //info emails
       mail.subscriptionCreated(user.email);
+      mail.adminInfoNewSubscription(user);
       break
     }
       //manage subscription (change plan + cancel)
@@ -95,7 +97,9 @@ router.post('/webhook', async (req, res) => {
           user.endDate = moment(today).add('1','year').format();
           user.isPremium = true;
           const endDate = moment(user.endDate).locale('cs').format('LL');
+          //info emails
           mail.subscriptionUpdated(user.email, endDate);
+          mail.adminInfoSubscriptionUpdated(user, endDate);
         }
   
         if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.MONTHLY) {
@@ -103,7 +107,9 @@ router.post('/webhook', async (req, res) => {
           user.endDate = moment(today).add('1','month').format();
           user.isPremium = true;
           const endDate = moment(user.endDate).locale('cs').format('LL');
+          //info emails
           mail.subscriptionUpdated(user.email, endDate);
+          mail.adminInfoSubscriptionUpdated(user, endDate);
           //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
         }
 
@@ -112,7 +118,9 @@ router.post('/webhook', async (req, res) => {
           user.endDate = moment(today).add('1','day').format();
           user.isPremium = true;
           const endDate = moment(user.endDate).locale('cs').format('LL');
+          //info emails
           mail.subscriptionUpdated(user.email, endDate);
+          mail.adminInfoSubscriptionUpdated(user, endDate);
         }
 
         if(user.justSubscribed){
@@ -125,6 +133,7 @@ router.post('/webhook', async (req, res) => {
           user.plan = "none";
           const endDate = moment(user.endDate).locale('cs').format('LL');
           mail.subscriptionCanceled(user.email, endDate);
+          mail.adminInfoSubscriptionCanceled(user, endDate);
         }
   
         await user.save()

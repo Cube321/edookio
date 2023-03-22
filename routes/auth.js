@@ -69,7 +69,10 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             if (err) return next(err);
         })
         console.log(`Added new user and customer ${email} with MongoID ${newUser._id} and billingId ${newUser.billingId}`);
+        //send info e-mails
         mail.welcome(newUser.email);
+        mail.adminInfoNewUser(newUser);
+        //
         req.flash('success', 'Registrace proběhla úspěšně.');
         if(req.query.requiresPremium){
             res.status(201).redirect('/premium'); 
