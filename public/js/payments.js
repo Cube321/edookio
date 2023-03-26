@@ -25,6 +25,24 @@ $(document).ready(function() {
         .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
     })
 
+    const checkoutButtonDaily = $('#checkout-button-daily')
+  
+    checkoutButtonDaily.click(function () {
+      const product = "daily";
+  
+      fetch('/payment/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          product
+        })
+      })
+        .then((result) => result.json())
+        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
+    })
+
     const checkoutButtonYearly = $('#checkout-button-yearly')
   
     checkoutButtonYearly.click(function () {

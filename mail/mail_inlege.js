@@ -28,7 +28,7 @@ mail.welcome = function(email, callback){
 mail.adminInfoNewUser = function(newUser, callback){
   const msg = {
       from: "info@inlege.cz", 
-      to: 'jakubspacil@gmail.com',
+      to: process.env.ADMIN_MAIL,
       subject: `Zaregistroval se nový uživatel: ${newUser.email}`,
       html: `
           <h3>Registrace nového uživatele</h3>
@@ -73,7 +73,7 @@ mail.subscriptionCreated = function(email, callback){
 mail.adminInfoNewSubscription = function(user, callback){
   const msg = {
       from: "info@inlege.cz", 
-      to: 'jakubspacil@gmail.com',
+      to: process.env.ADMIN_MAIL,
       subject: `Uživatel aktivoval Premium: ${user.email}`,
       html: `
           <h3>Aktivace předplatného Premium</h3>
@@ -119,7 +119,7 @@ mail.subscriptionUpdated = function(email, endDate, callback){
 mail.adminInfoSubscriptionUpdated = function(user, endDate, callback){
   const msg = {
       from: "info@inlege.cz", 
-      to: 'jakubspacil@gmail.com',
+      to: process.env.ADMIN_MAIL,
       subject: `Uživatel prodloužil Premium: ${user.email}`,
       html: `
           <h3>Prodloužení předplatného Premium</h3>
@@ -164,7 +164,7 @@ mail.subscriptionCanceled = function(email, endDate, callback){
 mail.adminInfoSubscriptionCanceled = function(user, endDate, callback){
   const msg = {
       from: "info@inlege.cz", 
-      to: 'jakubspacil@gmail.com',
+      to: process.env.ADMIN_MAIL,
       subject: `Uživatel ukončil Premium: ${user.email}`,
       html: `
           <h3>Ukončení předplatného Premium</h3>
