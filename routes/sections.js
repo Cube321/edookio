@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const Section = require('../models/section');
 const Category = require('../models/category');
+const User = require('../models/user');
 const Card = require('../models/card');
 const { isLoggedIn, isAdmin, validateSection, isPremiumUser } = require('../utils/middleware');
 const {categories} = require('../utils/categories')
@@ -18,10 +19,30 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     if(!req.user){
         demoCat = await Category.findOne({name:"demo"});
     }
+    //asign name of category
     let title = "";
     categories.forEach(c => {
         if(c.value === req.params.category){title = c.text};
     })
+    //add data to user's unfinishedSections
+    if(req.user){
+        category.basicSections.forEach((section, index) => {
+            let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(x => x.sectionId.toString() == section._id.toString());
+            if(unfinishedSectionIndex > -1){
+                category.basicSections[index].isUnfinished = true;
+                category.basicSections[index].lastSeenCard = req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
+            }
+        })  
+        category.premiumSections.forEach((section, index) => {
+            let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(x => x.sectionId.toString() == section._id.toString());
+            if(unfinishedSectionIndex > -1){
+                category.premiumSections[index].isUnfinished = true;
+                category.premiumSections[index].lastSeenCard = req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
+            }
+        })  
+    }
+    //console.log(category.basicSections);
+    //render category page
     res.status(200).render('category', {category, title, demoCat});
 }))
 

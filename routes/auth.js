@@ -103,10 +103,10 @@ router.post('/auth/user/login', passport.authenticate('local', {failureFlash: 'N
 }))
 
 //logout request (GET)
-router.get('/auth/user/logout', isLoggedIn, (req, res) => {
+router.get('/auth/user/logout', isLoggedIn, (req, res, next) => {
     req.logout(function(err) {
         if (err) { return next(err); }
-        res.status(400).redirect('/');
+        res.status(200).redirect('/');
       });
     res.status(200).redirect('/');
 })

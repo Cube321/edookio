@@ -15,6 +15,7 @@ const UserSchema = new Schema ({
         default: false
     },
     sections: Array,
+    unfinishedSections: Array,
     dateOfRegistration: {
         type: Date
     },

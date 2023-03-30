@@ -22,6 +22,14 @@ const SectionSchema = new Schema({
     isPremium: {
         type: Boolean,
         default: false
+    },
+    isUnfinished: {
+        type: Boolean,
+        default: false
+    },
+    lastSeenCard: {
+        type: Number,
+        default: 0
     }
 })
 

@@ -80,11 +80,26 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         req.flash('error','Je nám líto, tato sekce je přístupná pouze uživatelům Premium.');
         return res.status(403).redirect('back');
     }
+    //add unfinished section
+    if(user && cardNum === 1){
+        //filter out this section if already in the array (case: user views card num 1 repeatedly)
+        const filteredUnfinishedSections = user.unfinishedSections.filter(section => section.sectionId.toString() !== foundSection._id.toString());
+        user.unfinishedSections = filteredUnfinishedSections;
+        //create new unfinished section and push it to the array
+        let newUnfinishedSection = {sectionId: sectionId, lastCard: 1};
+        user.unfinishedSections.push(newUnfinishedSection);
+    }
     //cards counting logic
     const cardNumEdited = cardNum - 1;
     let nextNum = parseInt(cardNum) + 1;
+    
+    //section finished logic
     if(foundSection.cards.length === cardNumEdited){
         if(req.user){
+            //remove section from unfinishedSections
+            const filteredUnfinishedSections = user.unfinishedSections.filter(section => section.sectionId.toString() !== foundSection._id.toString());
+            user.unfinishedSections = filteredUnfinishedSections;
+            //add section to finished sections
             user.sections.push(foundSection._id);
             await user.save();
             return res.status(200).render('sections/finished', {category, sectionName: foundSection.name, demo: false});
@@ -103,9 +118,16 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     let progressStatus = progressStep * (cardNum-1);
     const cardId = foundSection.cards[cardNumEdited];
     const foundCard = await Card.findById(cardId);
-    //increase user's cardsSeen by 1
+    //update users data
     if(user){
+        //increase users cardsSeen by 1
         user.cardsSeen++;
+        //update lastSeenCard in unifnishedSection
+        let unfinishedSectionIndex = user.unfinishedSections.findIndex(x => x.sectionId.toString() == foundSection._id.toString());
+        if(unfinishedSectionIndex > -1){user.unfinishedSections[unfinishedSectionIndex].lastCard = cardNum};
+        //mark modified nested objects - otherwise Mongoose does not see it and save it
+        user.markModified('unfinishedSections');
+        //save
         user.save();
     }
     const sectionLength = foundSection.cards.length;

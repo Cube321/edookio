@@ -14,13 +14,19 @@ const moment = require('moment');
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
     let updatedUsers = [];
+    let premiumUsersCount = 0;
+    let registeredUsersCount = 0;
     users.forEach(user => {
         let newUser = user;
 
         newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
         updatedUsers.push(newUser);
+        //countRegisteredUsers
+        registeredUsersCount = users.length;
+        //count Premium users
+        if(user.isPremium === true){premiumUsersCount++};
     })
-    res.status(200).render('admin/users', {users: updatedUsers});
+    res.status(200).render('admin/users', {users: updatedUsers, premiumUsersCount, registeredUsersCount});
 }))
 
 //show all reported cards
