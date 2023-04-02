@@ -19,6 +19,9 @@ const UserSchema = new Schema ({
     dateOfRegistration: {
         type: Date
     },
+    lastActive: {
+        type: Date
+    },
     passChangeId: {
         type: String
     },
@@ -32,12 +35,15 @@ const UserSchema = new Schema ({
     },
     billingId: String,
     plan: { type: String, enum: ['none', 'yearly', 'monthly', 'daily'], default: 'none' },
-    endDate: {type: Date, defualt: null},
+    endDate: {type: Date, default: null},
     isGdprApproved: {
         type: Boolean,
         default: false
     },
-    justSubscribed: {type: Boolean, default: true}
+    justSubscribed: {type: Boolean, default: true},
+    premiumDateOfActivation: {type: Date, default: null},
+    premiumDateOfUpdate: {type: Date, default: null},
+    premiumDateOfCancelation: {type: Date, default: null}
 })
 
 UserSchema.plugin(passportLocalMongoose);

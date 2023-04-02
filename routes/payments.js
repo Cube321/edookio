@@ -61,6 +61,7 @@ router.post('/webhook', async (req, res) => {
         return res.sendStatus(404);
       }
       let today = Date.now();
+      user.premiumDateOfActivation = moment();
       if (data.plan.id === productToPriceMap.YEARLY) {
         user.plan = 'yearly';
         user.endDate = moment(today).add('1','year').format();
@@ -96,6 +97,9 @@ router.post('/webhook', async (req, res) => {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();
           user.isPremium = true;
+          //update date on user
+          user.premiumDateOfUpdate = moment();
+          //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           mail.subscriptionUpdated(user.email, endDate);
@@ -106,6 +110,9 @@ router.post('/webhook', async (req, res) => {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
           user.isPremium = true;
+          //update date on user
+          user.premiumDateOfUpdate = moment();
+          //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           mail.subscriptionUpdated(user.email, endDate);
@@ -117,6 +124,9 @@ router.post('/webhook', async (req, res) => {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
           user.isPremium = true;
+          //update date on user
+          user.premiumDateOfUpdate = moment();
+          //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           mail.subscriptionUpdated(user.email, endDate);
@@ -130,6 +140,7 @@ router.post('/webhook', async (req, res) => {
         //cancelation
         if (data.canceled_at) {
           // cancelled
+          user.premiumDateOfCancelation = moment();
           user.plan = "none";
           const endDate = moment(user.endDate).locale('cs').format('LL');
           mail.subscriptionCanceled(user.email, endDate);

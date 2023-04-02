@@ -14,19 +14,39 @@ const moment = require('moment');
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
     let updatedUsers = [];
+    //count all users and premium users
     let premiumUsersCount = 0;
     let registeredUsersCount = 0;
+    let usersActiveInLastWeek = 0;
+    let premiumActivationsInLastWeek = 0;
+    let premiumUpdatesInLastWeek = 0;
+    let premiumDeactivationsInLastWeek = 0;
     users.forEach(user => {
         let newUser = user;
-
         newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
         updatedUsers.push(newUser);
-        //countRegisteredUsers
+        //count Registered users
         registeredUsersCount = users.length;
         //count Premium users
         if(user.isPremium === true){premiumUsersCount++};
+        //count users active in the last week
+        if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){usersActiveInLastWeek++};
+        //count premium activations in the last week
+        if(user.premiumDateOfActivation && moment(user.premiumDateOfActivation).isAfter(moment().subtract(1, 'week'))){premiumActivationsInLastWeek++};
+        //count premium updates in the last week
+        if(user.premiumDateOfUpdate && moment(user.premiumDateOfUpdate).isAfter(moment().subtract(1, 'week'))){premiumUpdatesInLastWeek++};
+        //count premium deactivations in the last week
+        if(user.premiumDateOfDeactivation && moment(user.premiumDateOfDeactivation).isAfter(moment().subtract(1, 'week'))){premiumDeactivationsInLastWeek++};
     })
-    res.status(200).render('admin/users', {users: updatedUsers, premiumUsersCount, registeredUsersCount});
+    res.status(200).render('admin/users', {
+        users: updatedUsers, 
+        premiumUsersCount, 
+        registeredUsersCount, 
+        usersActiveInLastWeek, 
+        premiumActivationsInLastWeek,
+        premiumUpdatesInLastWeek,
+        premiumDeactivationsInLastWeek
+    });
 }))
 
 //show all reported cards

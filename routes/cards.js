@@ -5,6 +5,7 @@ const ExpressError = require('../utils/ExpressError');
 const Card = require('../models/card');
 const Section = require('../models/section');
 const Category = require('../models/category');
+const moment = require('moment');
 const { categories } = require('../utils/categories');
 const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
 
@@ -72,6 +73,9 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const {user} = req;
     const cardNum = parseInt(req.params.cardNum);
     const foundSection = await Section.findById(sectionId);
+    //update date of user's last activity
+    user.lastActive = moment();
+    //check if section exists
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
     }
