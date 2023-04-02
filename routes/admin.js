@@ -36,7 +36,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         //count premium updates in the last week
         if(user.premiumDateOfUpdate && moment(user.premiumDateOfUpdate).isAfter(moment().subtract(1, 'week'))){premiumUpdatesInLastWeek++};
         //count premium deactivations in the last week
-        if(user.premiumDateOfDeactivation && moment(user.premiumDateOfDeactivation).isAfter(moment().subtract(1, 'week'))){premiumDeactivationsInLastWeek++};
+        if(user.premiumDateOfCancelation && moment(user.premiumDateOfCancelation).isAfter(moment().subtract(1, 'week'))){premiumDeactivationsInLastWeek++};
     })
     res.status(200).render('admin/users', {
         users: updatedUsers, 
