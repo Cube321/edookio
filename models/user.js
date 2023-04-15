@@ -43,7 +43,11 @@ const UserSchema = new Schema ({
     justSubscribed: {type: Boolean, default: true},
     premiumDateOfActivation: {type: Date, default: null},
     premiumDateOfUpdate: {type: Date, default: null},
-    premiumDateOfCancelation: {type: Date, default: null}
+    premiumDateOfCancelation: {type: Date, default: null},
+    hasUnsubscribed: {
+        type: Boolean,
+        default: false
+    }
 })
 
 UserSchema.plugin(passportLocalMongoose);

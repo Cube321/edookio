@@ -74,7 +74,9 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
     const cardNum = parseInt(req.params.cardNum);
     const foundSection = await Section.findById(sectionId);
     //update date of user's last activity
-    user.lastActive = moment();
+    if(user){
+        user.lastActive = moment();
+    }
     //check if section exists
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");

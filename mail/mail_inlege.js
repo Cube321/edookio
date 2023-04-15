@@ -205,32 +205,38 @@ mail.forgottenPassword = function(data, callback){
     });
 };
 
+//email for all users
+mail.sendEmergencyEmail = function(email, subject, text, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: email,
+      subject: subject,
+      html: `${text}`
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log('---ERROR--- Nepodarilo se odeslat e-mail z /admin/email');
+        console.log(err);}      
+    });
+};
 
-//contact form e-mail
-mail.sendQuestion = function(data, callback){
-    const msg = {
-        from: "postak@chilero.cz", 
-        reply_to: data.email,
-        to: "info@chilero.cz", // adresa pro zaslani otazky z become_owner page
-        subject: "Chilero | Nový dotaz od zájemce o inzerci",
-        //text: "Máte novou zprávu od: " + data.email + "\n tel: " + data.phone + " text: " + data.message,
-        html: `<p><strong>Nový dotaz od zájemce o inzerci</strong></p>
-               <p>
-                  Odesílatel: ${data.name}
-                  <br />
-                  E-mail: ${data.email}
-                  <br />
-                  Telefon: ${data.phone}
-               </p>
-               <p style="white-space: pre-line ">
-                  ${data.message}
-               </p>
-        `
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-            callback(err);
-      });
+//email for subscribed users
+mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: email,
+      subject: subject,
+      html: `${text}
+              <br />
+              <p style="font-size:0.8rem;color=grey">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log('---ERROR--- Nepodarilo se odeslat e-mail z /admin/email');
+        console.log(err);}      
+    });
 };
 
 module.exports = mail;
