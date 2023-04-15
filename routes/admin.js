@@ -103,6 +103,9 @@ router.post('/admin/email', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
                 mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
             }
         })
+    
+    } else if (groupChoice === "radioTest"){
+        mail.sendTestEmail('pravnicime@gmail.com', subjectAll, textAll);
     //should never run, implies some problem with radio buttons
     } else {
         req.flash('fail','E-mail nebyl odeslán, něco se nepovedlo');

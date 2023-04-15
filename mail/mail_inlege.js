@@ -239,4 +239,22 @@ mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
     });
 };
 
+//email test
+mail.sendTestEmail = function(email, subject, text, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: email,
+      subject: subject,
+      html: `${text}
+              <br />
+              <p style="font-size:0.8rem;color=grey">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log('---ERROR--- Nepodarilo se odeslat e-mail z /admin/email');
+        console.log(err);}      
+    });
+};
+
 module.exports = mail;

@@ -44,9 +44,15 @@
                         <div class="col-8">
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="mb-0">aktivní do <%= endDate %> </p>
-                                <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
-                                    Správa předplatného
-                                </button>
+                                <% if(user.plan === "yearly"){ %>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning">
+                                        Správa předplatného
+                                    </button>
+                                <% } else { %>
+                                    <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+                                        Správa předplatného
+                                    </button>
+                                <% } %>
                             </div>
                         </div>
                     <% } else { %>
@@ -89,6 +95,35 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Warning -->
+<div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upozornění</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Chcete-li změnit <b>roční předplatné na měsíční</b>, učiňte tak prosím až ke konci ročního období. Platební systém bohužel neumí zachovat informaci o předplaceném období a změnou na měsíční tak dojde ke ztrátě předplaceného období.
+          </p>
+          <p>
+            <b>Změnou období z ročního na měsíční berete na vědomí a přijímáte, že dojde ke zkrácení předplaceného období na 1 měsíc.</b>
+          </p>
+          <p>
+            Chcete-li předplatné zrušit, zůstane Vám aktivní do konce předplaceného období.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+          <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+            Pokračovat
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script src="/js/jquery.min.js" ></script>
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
