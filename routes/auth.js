@@ -96,10 +96,11 @@ router.get('/auth/user/login', (req, res) => {
 
 //login request (POST)
 router.post('/auth/user/login', passport.authenticate('local', {failureFlash: 'Nesprávné heslo nebo e-mail.', failureRedirect: '/auth/user/login'}), catchAsync(async (req, res) => {
-    let redirectUrl = req.session.returnTo || '/';
-    delete req.session.returnTo;
-    if(redirectUrl === "/auth/user/logout"){redirectUrl = "/"};
-    res.status(200).redirect(redirectUrl);
+    res.status(200).redirect('/');
+    //let redirectUrl = req.session.returnTo || '/';
+    //delete req.session.returnTo;
+    //if(redirectUrl === "/auth/user/logout"){redirectUrl = "/"};
+    //res.status(200).redirect(redirectUrl);
 }))
 
 //logout request (GET)
