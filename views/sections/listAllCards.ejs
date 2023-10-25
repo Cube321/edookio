@@ -1,9 +1,9 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-12 d-flex justify-content-around">
-            <a href="/category/<%= section.category %>" class="btn btn-sm btn-primary">Zpět na kategorii</a>
-            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-primary">Přidat kartu</a>
+        <div class="col-12 d-flex justify-content-between mb-4">
+            <a href="/category/<%= section.category %>" class="btn btn-sm btn-danger">Zpět na kategorii</a>
+            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartu</a>
         </div>
     </div>
     <div class="row">
@@ -22,9 +22,9 @@
         </div>
     <% } %> 
     <div class="row">
-        <div class="col-12 d-flex justify-content-around">
-            <a href="/category/<%= section.category %>" class="btn btn-sm btn-primary">Zpět na kategorii</a>
-            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-primary">Přidat kartu</a>
+        <div class="col-12 d-flex justify-content-between mt-4">
+            <a href="/category/<%= section.category %>" class="btn btn-sm btn-danger">Zpět na kategorii</a>
+            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartu</a>
         </div>
     </div>
 </div>
