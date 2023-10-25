@@ -11,4 +11,9 @@ router.get('/legal/gdpr', (req, res) => {
     res.render('legal/gdpr');
 })
 
+//show contact
+router.get('/legal/contact', (req, res) => {
+    res.render('legal/contact');
+})
+
 module.exports = router;

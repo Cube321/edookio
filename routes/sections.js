@@ -7,9 +7,11 @@ const User = require('../models/user');
 const Card = require('../models/card');
 const { isLoggedIn, isAdmin, validateSection, isPremiumUser } = require('../utils/middleware');
 const {categories} = require('../utils/categories')
+const mongoose = require('mongoose');
 
 //show sections of category
 router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, next) => {
+
     const category = await Category.findOne({name: req.params.category}).populate('basicSections').populate('premiumSections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
@@ -125,6 +127,22 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     const foundCategory = await Category.findOne({name: req.params.category});
     foundCategory.numOfCards = foundCategory.numOfCards - deletedSection.cards.length;
     await foundCategory.save();
+    //remove section from list of unfinished sections of all users
+    let searchQuery = mongoose.Types.ObjectId(sectionId);
+    let foundUsersUnfinished = await User.find({ unfinishedSections: {$elemMatch: {sectionId: searchQuery.toString()}} });
+    for (let user of foundUsersUnfinished) {
+        let updatedSections = user.unfinishedSections.filter(section => section.sectionId !== searchQuery.toString())
+        user.unfinishedSections = updatedSections;
+        user.save();
+    } 
+    //remove section from list of finished sections of all users
+    let foundUsersFinished = await User.find({ sections: searchQuery});
+    for (let user of foundUsersFinished) {
+        let updatedSections = user.sections.filter(section => section.toString() !== searchQuery.toString())
+        user.sections = updatedSections;
+        user.save();
+    } 
+    //flash a redirect
     req.flash('success','Sekce byla odstraněna.');
     res.status(200).redirect(`/category/${category}`);
 }))
