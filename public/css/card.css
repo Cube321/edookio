@@ -16,9 +16,9 @@
     overflow: auto;
 }
 
-.inner-card-div {
+/*.inner-card-div {
     width: 96%;
-}
+}*/
 
 .servis-btns a, .servis-btns p {
     font-size: 0.8rem;
@@ -67,7 +67,11 @@
 }
 
 #pageB > div > ul > li {
-    padding-top: 0.8rem;
+    padding-top: 0.3rem;
+}
+
+#pageB > div > p {
+    margin-bottom: 0.5rem;
 }
 
 /* Text gradient fade */
