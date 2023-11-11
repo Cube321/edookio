@@ -1,17 +1,17 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
-    <div class="col-sm-6 offset-sm-3">
+    <div class="col-lg-6 offset-lg-3">
         <h5>Vložit novou kartu do sekce <%= sectionName %> v kategorii <%= category %> </h5>
         <form class="row g-3 needs-validation mt-3" novalidate action="/category/<%= category %>/section/<%= sectionId %>/newCard" method="POST">
             <div class="mt-2">
             <label for="pageA" class="form-label">Strana A</label>
-            <textarea name="pageA" id="pageA" class="form-control" cols="30" rows="5" required></textarea>
+            <textarea name="pageA" id="pageA" class="form-control" cols="30" rows="4" required></textarea>
             <div class="valid-feedback">
                 V pořádku!
             </div>
             </div>
             <div class="mt-2">
                 <label for="pageB" class="form-label">Strana B</label>
-                <textarea name="pageB" id="pageB" class="form-control" cols="30" rows="10" required></textarea>
+                <textarea name="pageB" id="pageB" class="form-control" cols="30" rows="8" required></textarea>
                 <div class="valid-feedback">
                 V pořádku!
                 </div>
@@ -23,8 +23,9 @@
                 V pořádku!
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12 d-flex justify-content-between">
             <button class="btn btn-danger btn-sm" type="submit">Vložit</button>
+            <a href="/category/<%= category %>/section/<%= sectionId %>/listAllCards">Zobrazit všechny karty</a>
             </div>
         </form>
     </div>

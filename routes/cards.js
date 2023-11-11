@@ -165,7 +165,7 @@ router.post('/category/:category/section/:sectionId/newCard', validateCard, isLo
     foundSection.cards.push(createdCard._id);
     await foundSection.save();
     req.flash('success','Kartička byla přidána do databáze.');
-    res.status(201).redirect(`/category/${category}/section/${sectionId}/listAllCards`);
+    res.status(201).redirect(`/category/${category}/section/${sectionId}/newCard`);
 }))
 
 //edit card - form (GET)
