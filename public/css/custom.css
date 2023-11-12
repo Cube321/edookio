@@ -204,3 +204,9 @@
 .footer-link {
     color: #6C657D;
 }
+
+@media only screen and (max-width: 992px) {
+    .nezobrazovat-na-mobilu-landing {
+      display: none;
+    }
+  }
