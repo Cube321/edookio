@@ -9,12 +9,11 @@ mail.welcome = function(email, callback){
     const msg = {
         from: "info@inlege.cz", 
         to: email,
-        subject: "Vítej v InLege",
+        subject: "Vítej na InLege",
         html: `
-            <h3>Vítej na InLege</h3>
-            <p>Ahoj!<p>
-            <p>Tvá registrace na portálu InLege byla úspěšná! Věříme, že se InLege zařadí mezi nástroje a pomůcky, které při studiu práva používáš pravidelně.</p>
-            <p>S pozdravem <br />Tým InLege</p>
+        <p style="font-family:Helvetica Neue">Ahoj,<p>
+        <p style="font-family:Helvetica Neue">tvá registrace na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> byla dokončena! Doufáme, že se InLege zařadí mezi nástroje a pomůcky, které při studiu práva používáš pravidelně.</p>
+        <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
         `
       };
     //send the mail
@@ -54,12 +53,11 @@ mail.subscriptionCreated = function(email, callback){
   const msg = {
       from: "info@inlege.cz", 
       to: email,
-      subject: "Služby Premium aktivovány",
+      subject: "Předplatné Premium aktivováno",
       html: `
-          <h3>Služby Premium aktivovány</h3>
-          <p>Ahoj!<p>
-          <p>Na základě Tvé objednávky a platby jsme Ti aktivovaly služby Premium. Nyní máš přístup ke stovkám prémiových kartiček.</p>
-          <p>S pozdravem <br />Tým InLege</p>
+          <p style="font-family:Helvetica Neue">Ahoj,<p>
+          <p style="font-family:Helvetica Neue">na základě tvé objednávky a platby jsme ti aktivovali předplatné Premium. Nyní máš přístup ke stovkám prémiových kartiček navíc.</p>
+          <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
       `
     };
   //send the mail
@@ -100,12 +98,11 @@ mail.subscriptionUpdated = function(email, endDate, callback){
   const msg = {
       from: "info@inlege.cz", 
       to: email,
-      subject: "Služby Premium prodlouženy",
+      subject: "Předplatné Premium prodlouženo",
       html: `
-          <h3>Služby Premium prodlouženy</h3>
-          <p>Ahoj!<p>
-          <p>Tvé předplatné bylo prodlouženo do ${endDate}.</p>
-          <p>S pozdravem <br />Tým InLege</p>
+          <p style="font-family:Helvetica Neue">Ahoj,<p>
+          <p style="font-family:Helvetica Neue">tvé předplatné Premium bylo prodlouženo do ${endDate}.</p>
+          <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
       `
     };
   //send the mail
@@ -145,12 +142,11 @@ mail.subscriptionCanceled = function(email, endDate, callback){
   const msg = {
       from: "info@inlege.cz", 
       to: email,
-      subject: "Předplatné ukončeno",
+      subject: "Předplatné Premium ukončeno",
       html: `
-          <h3>Tvé předplatné Premium na InLege bylo ukočeno</h3>
-          <p>Ahoj!<p>
-          <p>Tvé předplatné bylo ukočeno. Další platby Ti již nebudou strženy. Premium můžeš využívat do konce zaplaceného obdoví, tedy do ${endDate}.</p>
-          <p>S pozdravem <br />Tým InLege</p>
+          <p style="font-family:Helvetica Neue">Ahoj,<p>
+          <p style="font-family:Helvetica Neue">tvé předplatné Premium bylo ukončeno. Další platby ti již nebudou účtovány. Premium můžeš využívat do konce zaplaceného období, tedy do ${endDate}. Většina obsahu InLege je pro tebe i nadále přístupná zdarma!</p>
+          <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
       `
     };
   //send the mail
@@ -193,8 +189,8 @@ mail.sendFeedback = function(email, name, text, callback){
       to: 'jakubspacil@gmail.com',
       subject: "Zpětná vazba (formulář)",
       html: `
-          <h3>Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</h3>
-          <p>${text}</p>
+          <h3 style="font-family:Helvetica Neue">Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</h3>
+          <p style="font-family:Helvetica Neue">${text}</p>
       `
     };
   //send the mail
@@ -211,9 +207,9 @@ mail.forgottenPassword = function(data, callback){
       to: data.email,
       subject: "Zapomenuté heslo",
       html: `
-          <h3>Zapomenuté heslo</h3>
-          <p>Své heslo můžeš změnit po kliknutí na tento odkaz: <a href="https://www.inlege.cz${data.link}">https://www.inlege.cz${data.link}</a></p>
-          <p>S pozdravem <br />Tým InLege</p>
+          <h3 style="font-family:Helvetica Neue">Zapomenuté heslo</h3>
+          <p style="font-family:Helvetica Neue">Své heslo můžeš změnit po kliknutí na tento odkaz: <a href="https://www.inlege.cz${data.link}">https://www.inlege.cz${data.link}</a></p>
+          <p style="font-family:Helvetica Neue">S pozdravem <br />Tým InLege</p>
       `
     };
   //send the mail
@@ -247,7 +243,7 @@ mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
       subject: subject,
       html: `${text}
               <br />
-              <p style="font-size:0.8rem;color=grey">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
+              <p style="font-size:0.8rem;color=grey;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
     };
   //send the mail
   sgMail.send(msg, function(err) {
@@ -265,7 +261,7 @@ mail.sendTestEmail = function(email, subject, text, callback){
       subject: subject,
       html: `${text}
               <br />
-              <p style="font-size:0.8rem;color=grey">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
+              <p style="font-size:0.8rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
     };
   //send the mail
   sgMail.send(msg, function(err) {
