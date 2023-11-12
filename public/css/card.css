@@ -92,8 +92,19 @@
     pointer-events: none; /* so the text is still selectable */
   }
 
-  @media only screen and (max-width: 600px) {
-    .otacej-mezernikem {
+  @media only screen and (max-width: 992px) {
+    .nezobrazovat-na-mobilu {
       display: none;
     }
   }
+
+  @media only screen and (min-width: 992px) {
+    .zobrazovat-jen-na-mobilu {
+      display: none;
+    }
+    .mobile-btn {
+        width: 10rem;
+    }
+  }
+
+

@@ -33,8 +33,22 @@
           </ul>
       </div>
     </nav>
-    <main class="container mt-5">
+    <main class="container mt-md-5 p-4">
         <div class="row">
+          <div class="col-lg-2 mb-3 zobrazovat-jen-na-mobilu">
+            <div class="card shadow">
+              <div class="card-body text-center">
+                <p class="text-muted text-smaller mb-1">Karta <%= nextNum - 1 %> z <%= sectionLength %></p>
+                <div class="progress">
+                  <% if(progressStatus && progressStatus === 0){ %> 
+                    <div class="progress-bar bg-danger" role="progressbar"></div>
+                  <% } else { %> 
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%" ><%= progressStatus %>%</div>
+                  <% } %> 
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="col-lg-5 offset-lg-2 mb-3">
             <div class="">
               <div id="card" class="flashcard text-smaller"> 
@@ -72,11 +86,11 @@
                   <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
                 <% } %>
                   <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted">Nahlásit chybu</a>
-                  <p class="text-muted mb-0 px-3 otacej-mezernikem">Otáčej [mezerníkem]</p>
+                  <p class="text-muted mb-0 px-3 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</p>
               </div>
             </div>
           </div>
-          <div class="col-lg-2 mb-3 mt-5 mt-lg-0">
+          <div class="col-lg-2 mb-3 mt-5 mt-lg-0 nezobrazovat-na-mobilu">
             <div class="card shadow">
               <div class="card-body text-center mt-3">
                 <h6><%= sectionName %> </h6>
