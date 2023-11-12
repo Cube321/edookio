@@ -148,7 +148,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
 }))
 
 //edit section name and description
-router.get('/category/:category/editSection/:sectionId', catchAsync(async(req, res) => {
+router.get('/category/:category/editSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
@@ -156,7 +156,7 @@ router.get('/category/:category/editSection/:sectionId', catchAsync(async(req, r
     res.render('sections/edit', {section: foundSection});
 }))
 
-router.put('/category/:category/editSection/:sectionId', catchAsync(async(req, res) => {
+router.put('/category/:category/editSection/:sectionId',isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");

@@ -186,6 +186,24 @@ mail.adminInfoSubscriptionCanceled = function(user, endDate, callback){
     });
 };
 
+//send feedbacl
+mail.sendFeedback = function(email, name, text, callback){
+  const msg = {
+      from: email, 
+      to: 'jakubspacil@gmail.com',
+      subject: "Zpětná vazba (formulář)",
+      html: `
+          <h3>Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</h3>
+          <p>${text}</p>
+      `
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
 //forgotten password - change link
 mail.forgottenPassword = function(data, callback){
   const msg = {

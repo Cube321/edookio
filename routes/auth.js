@@ -21,6 +21,20 @@ router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     res.status(200).render('auth/profile', {user, endDate, dateOfRegistration});
 }))
 
+//render feedback form
+router.get('/legal/feedback', isLoggedIn, catchAsync(async(req, res) => {
+    const {user} = req;
+    res.status(200).render('legal/feedback', {user});
+}))
+
+//send feedback
+router.post('/legal/feedback', isLoggedIn, catchAsync(async(req, res) => {
+    const {email, name, text} = req.body;
+    mail.sendFeedback(email, name, text);
+    req.flash('success','Feedback byl odeslán. Díky!')
+    res.status(201).redirect(`/legal/feedback`);
+}))
+
 //register form user (GET)
 router.get('/auth/user/new', (req, res) => {
     let requiresPremium = false;
