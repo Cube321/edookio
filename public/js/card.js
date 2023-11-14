@@ -5,7 +5,8 @@ $(document).ready(function() {
     })
 
     var pageB = document.getElementById('pageB');
-    if (pageB.scrollHeight > pageB.clientHeight) {
+    var innerCardDiv = document.getElementById('inner-card-div');
+    if (innerCardDiv.scrollHeight > innerCardDiv.clientHeight) {
         pageB.classList.add('text-gradient');
     }
 
