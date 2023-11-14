@@ -47,7 +47,8 @@ const UserSchema = new Schema ({
     hasUnsubscribed: {
         type: Boolean,
         default: false
-    }
+    },
+    savedCards: [{ type : Schema.Types.ObjectId, ref: 'Card'}]
 })
 
 UserSchema.plugin(passportLocalMongoose);

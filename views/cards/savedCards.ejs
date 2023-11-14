@@ -1,0 +1,114 @@
+<% layout ('layouts/boilerplate.ejs') %>
+<% if (currentUser && !currentUser.isPremium) { %>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="card">
+                    <div class="row p-3 pb-0">
+                        <div class="col-12">
+                            <h3 class="p-3 mb-0">Uložené kartičky</h3>
+                        </div>
+                        <div class="col-12">
+                            <p class="px-3">Kliknutím na ikonku <i class="far fa-star fa-lg"></i> (vpravo dole na každé kartičce) si kartičky můžeš <b>ukládat</b>. Pak je najdeš na této stránce rozdělení do jednotlivých kategorií <b>k dalšímu opakování</b>.</p>
+                            <p class="px-3">Tato funkce je dostupná <b>s předplatným Premium</b>.</p>
+                            <a href="/premium" class="btn btn-danger mb-3 mx-3">Zjistit více</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<% } else { %>
+        <div class="container nezobrazovat-na-mobilu-landing">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card profile-card">
+                        <div class="row p-3 pb-0">
+                            <div class="col-12">
+                                <h3 class="pb-3 mb-0">Uložené kartičky</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-12">
+                                <nav class="navbar navbar-expand-lg navbar-light bg-white">
+                                    <div class="container">
+                                    <a class="navbar-brand fs-4 p-0 zobrazovat-jen-na-mobilu" href="#">Uložené kartičky</a>
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavSave">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="navbarNavSave">
+                                        <ul class="navbar-nav">
+                                            <% for(let cat of categories){ %>
+                                                <li class="nav-item nav-item-saved-cards">
+                                                <a class="nav-link nav-link-saved-cards" href="#<%= cat.value %>"><%= cat.text %></a>
+                                            </li>
+                                            <% } %>
+                                        </ul>
+                                    </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% for(let cat of categories){ %>
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <div class="card">
+                            <div class="row p-3 pb-0">
+                                <div class="col-12" id="<%= cat.value %>">
+                                    <h5 class="d-flex align-items-center px-4">
+                                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                                            <img class="img-fit" src="/img/<%= cat.icon%>" alt="">
+                                        </div>
+                                            <span class="p-3"><%= cat.text%></span>
+                                    </h5>
+                                    <div class="accordion accordion-flush" id="accordion-cards">
+                                        <% for(let card of savedCards){ %>
+                                                <% if (card.category === cat.value) { %>
+                                                    <div id="accordion-<%= card._id %>" class="accordion-item" style="font-size:0.9rem">
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button collapsed px-4" type="button"
+                                                                data-bs-toggle="collapse" data-bs-target="#flush-<%= card._id %>">
+                                                                <%= card.pageA %>
+                                                            </button>
+                                                        </h2>
+                                                        <div id="flush-<%= card._id %>" class="accordion-collapse collapse"
+                                                            data-bs-parent="#accordion-cards">
+                                                            <div class="accordion-body px-sm-5">
+                                                                <div class="row">
+                                                                    <div class="col-11 col-sm-8">
+                                                                        <%- card.pageB %>
+                                                                    </div>
+                                                                    <div class="col-1 offset-sm-3 ">
+                                                                        <a href="#" class="btn btn-sm btn-outline-secondary remove-from-saved-link" name="<%= card._id %>" title="<%= currentUser.email %>">Odebrat</a>
+                                                                    </div>
+                                                                </div>                                          
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                            <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/savedCards.js"></script>

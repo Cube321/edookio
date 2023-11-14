@@ -20,7 +20,6 @@
 .landing-img {
     width: 100px;
     height: 100px;
-    opacity: 0.7;
 }
 
 .img-fit {
@@ -138,16 +137,18 @@
     font-size: 1.2rem;
 }
 
-.landing-info .info-secondary {
-    
-}
-
 .color-2 {
     color: #4C0033;
 }
 
 .d-none-780-down {
     display:none;
+}
+
+.icon-background-landing {
+    background-color: #EEEEEE;
+    height: 7rem;
+    width: 7rem;
 }
 
 @media only screen and (max-width: 780px) {

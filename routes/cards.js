@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Card = require('../models/card');
 const Section = require('../models/section');
+const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
 const { categories } = require('../utils/categories');
@@ -20,7 +21,8 @@ router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
     const section = await Section.findById(card.section);
     const sectionLength = section.cards.length;
     const nextNum = 1;
-    res.status(200).render('cards/show', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0});
+    let isCardSaved = isCardInArray(req.user.savedCards, id);
+    res.status(200).render('cards/show', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0, isCardSaved});
 }))
 
 //render new card page (GET)
@@ -137,7 +139,8 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         user.save();
     }
     const sectionLength = foundSection.cards.length;
-    res.status(200).render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus});
+    let isCardSaved = isCardInArray(user.savedCards, cardId.toString());
+    res.status(200).render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved});
 }))
 
 //add new card - save (POST)
@@ -203,6 +206,10 @@ router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res,
     const foundCategory = await Category.findOne({name: foundCard.category});
     foundCategory.numOfCards--;
     await foundCategory.save();
+    
+    //removed card from cards saved by users
+    await User.updateMany({}, {$pull: {savedCards: id}});
+
     req.flash('success','Kartička byla odstraněna.');
     res.status(201).redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))
@@ -259,5 +266,55 @@ router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
     console.log(foundCard);
     res.status(201).redirect('/cards/report/success');
 }))
+
+//save card to favourites
+router.post('/cards/save/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, res) => {
+    let foundUser = await User.findOne({email: req.params.userEmail});
+    if(!foundUser){
+        return res.sendStatus(404);
+    }
+    foundUser.savedCards.push(req.params.cardId);
+    await foundUser.save();
+    res.status(200).sendStatus(200);
+}))
+
+//remove card from favourites
+router.post('/cards/unsave/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, res) => {
+    if(req.params.userEmail !== req.user.email){
+        req.flash('error','Kartičku z uložených může odebrat jen uživatel, který ji uložil.')
+        return res.redirect('back');
+    }
+    let foundUser = await User.findOne({email: req.params.userEmail});
+    if(!foundUser){
+        return res.sendStatus(404);
+    }
+    let updatedSavedCards = foundUser.savedCards.filter((item) => item.toString() !== req.params.cardId);
+    foundUser.savedCards = updatedSavedCards;
+    await foundUser.save();
+    res.status(200).sendStatus(200);
+}))
+
+//show all saved cards
+router.get('/cards/saved', isLoggedIn, catchAsync(async(req, res) => {
+    let foundUser = await User.findById(req.user._id).populate('savedCards').select('savedCards');
+    let categoriesWithoutDemo = categories.filter(cat => cat.value !== "demo");
+    res.render('cards/savedCards', {savedCards: foundUser.savedCards, categories: categoriesWithoutDemo});
+}))
+
+
+
+//HELPERS
+
+function isCardInArray(arrayOfIds, cardIdString) {
+    let arrayOfStrings = arrayOfIds.map(item => item.toString());
+    let isIncluded = arrayOfStrings.includes(cardIdString);
+    if(isIncluded){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 
 module.exports = router;

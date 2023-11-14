@@ -271,4 +271,19 @@ mail.sendTestEmail = function(email, subject, text, callback){
     });
 };
 
+//welcome e-mail
+mail.adminInfoUserDeleted = function(userEmail, callback){
+  const msg = {
+      from: "info@inlege.cz", 
+      to: process.env.ADMIN_MAIL,
+      subject: `Uživatel zrušil účet: ${userEmail}`,
+      html: `Uživatel zrušil účet: ${userEmail}`
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
 module.exports = mail;

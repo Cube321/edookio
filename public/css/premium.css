@@ -164,6 +164,10 @@
     color: white
 }
 
+.text-small {
+    font-size: 0.8rem
+}
+
 .w-custom {
     width: 50%
 }

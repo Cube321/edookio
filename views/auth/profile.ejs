@@ -90,6 +90,20 @@
                         <!--the following input transfers customer billing ID to Javascript -->
                         <input type="text" id="customerID" name="customerID" value="<%= user.billingId %>" style="display:none" />
                     </div>
+                    <hr />
+                    <div class="col-4 fw-bold">
+                        <p>Odstranit účet</p>
+                    </div>
+                    <% if(user.isPremium && user.plan !== "none"){ %> 
+                        <div class="col-8">
+                            před odstraněním účtu je nutné zrušit předplatné
+                        </div>
+                    <% } else { %>
+                        <div class="col-8 d-flex justify-content-end align-items-start">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal" class="btn btn-outline-danger btn-sm">Odstranit účet</a>
+                            
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -124,6 +138,21 @@
       </div>
     </div>
   </div>
+
+  <!-- MODAL - Delete user confirmation -->
+  <div class="modal fade" id="deleteUserModal" tabindex="-1">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Opravdu chcete odstranit svůj účet?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center align-items-center">
+            <a href="/auth/user/deleteMyAccount" class="btn btn-danger">Ano, odstranit</a>
+        </div>
+    </div>
+    </div>
+</div>
 
 <script src="/js/jquery.min.js" ></script>
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>

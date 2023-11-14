@@ -132,10 +132,24 @@ router.get('/admin/email/unsubscribe', catchAsync(async(req, res) => {
     }
 }))
 
-//delete account
-router.delete('/admin/:userId/deleteUser', catchAsync(async(req, res) => {
+//delete account - ADMIN ROUTE
+router.delete('/admin/:userId/deleteUser',isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     await User.findByIdAndDelete(req.params.userId);
     res.status(201).redirect('/admin/listAllUsers');
+}))
+
+//delete account - USER ROUTE (deleting user's own account)
+router.get('/auth/user/deleteMyAccount',isLoggedIn, catchAsync(async(req, res) => {
+    let foundUser = await User.findById(req.user._id);
+    if(foundUser.plan === "none"){
+        await User.findByIdAndDelete(req.user._id);
+        mail.adminInfoUserDeleted(foundUser.email);
+        req.flash('success','Tvůj účet byl odstraněn.');
+        res.status(201).redirect('/');
+    } else {
+        req.flash('error','Zdá se, že máš stále aktivní předplatné. Před odstraněním účtu jej prosím zruš.');
+        res.redirect('/auth/user/profile');
+    }
 }))
 
 module.exports = router;

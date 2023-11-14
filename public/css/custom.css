@@ -200,6 +200,41 @@
     margin-top: 2px;
 }
 
+/* SAVED CARDS PAGE*/
+.accordion-button:not(.collapsed) {
+    color: black;
+    background-color: white;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+}
+
+.img-fit {
+    max-width:60%;
+    max-height:60%;
+}
+
+.icon-background {
+    background-color: #EEEEEE;
+    height: 3.5rem;
+    width: 3.5rem;
+}
+
+.rounded-circle {
+    border-radius: 50%!important;
+}
+
+.btn-remove-from-saved {
+    border: none;
+    color: #212529
+}
+
+.nav-link-saved-cards {
+    font-size: 0.8rem;
+}
+
+.nav-item-saved-cards {
+    text-align: center;
+}
+
 /* FOOTER */
 .footer-link {
     color: #6C657D;
@@ -207,6 +242,20 @@
 
 @media only screen and (max-width: 992px) {
     .nezobrazovat-na-mobilu-landing {
+      display: none;
+    }
+
+    .nav-link-saved-cards {
+        font-size: 1rem;
+    }
+
+    .nav-item-saved-cards {
+        text-align: left;
+    }
+  }
+
+  @media only screen and (min-width: 992px) {
+    .zobrazovat-jen-na-mobilu {
       display: none;
     }
   }

@@ -74,6 +74,16 @@
     margin-bottom: 0.5rem;
 }
 
+.save-star {
+    color: #E80F88;
+    height: 20px;
+    width: 20px;
+}
+
+.spinner-border-small {
+    height: 20px;
+    width: 20px;
+ }
 /* Text gradient fade */
   .text-gradient {
     position: relative;
