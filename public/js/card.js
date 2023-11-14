@@ -4,6 +4,12 @@ $(document).ready(function() {
         $("#pageB").remove();
     })
 
+    var pageB = document.getElementById('pageB');
+    if (pageB.scrollHeight > pageB.clientHeight) {
+        pageB.classList.add('text-gradient');
+    }
+
+
     $("#pageB").scroll(function(){
         $(this).removeClass('text-gradient');
     })
