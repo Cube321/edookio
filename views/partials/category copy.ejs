@@ -55,7 +55,7 @@
             <div class="card-body">
                     <div class="row">
                         <div class="col-9">                    
-                                <h5 class="m-0 mb-3 mt-1">Základní balíčky</h5>
+                                <h5 class="m-0 mb-2">Základní balíčky</h5>
                         </div>
                     </div>
                     <hr class="mt-0">
@@ -67,10 +67,25 @@
                     <% if(section.isPublic){ %> 
                     <div class="row py-1">
                         <div class="col-7 d-flex align-items-center">                    
-                            <div>
-                                <p class="m-0"><%= section.name %></p>
-                                <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                            </div>
+                                <% if(currentUser && currentUser.sections.includes(section._id)) { %>
+                                    <i class="fas fa-check-circle me-2" style="color:#AF0171"></i>
+                                    <div>
+                                        <p class="m-0 text-muted  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } else if (section.isPremium) { %>
+                                    <i class="fas fa-star me-2"></i>
+                                    <div>
+                                        <p class="m-0  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } else { %> 
+                                    <i class="fas fa-layer-group me-2"></i>
+                                    <div>
+                                        <p class="m-0  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } %>
                         </div>
                         <div class="col-3 d-flex justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
@@ -125,10 +140,25 @@
                     <% if(!section.isPublic && currentUser && currentUser.admin){ %> 
                         <div class="row py-1">
                             <div class="col-5 d-flex align-items-center">                    
-                                <div>
-                                    <p class="m-0"><%= section.name %></p>
-                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                                </div>
+                                <% if(currentUser && currentUser.sections.includes(section._id)) { %>
+                                    <i class="fas fa-check-circle me-2" style="color:#AF0171"></i>
+                                    <div>
+                                        <p class="m-0 text-muted  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } else if (section.isPremium) { %>
+                                    <i class="fas fa-star me-2"></i>
+                                    <div>
+                                        <p class="m-0  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } else { %> 
+                                    <i class="fas fa-layer-group me-2"></i>
+                                    <div>
+                                        <p class="m-0  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } %>
                             </div>
                             <div class="col-2">
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>
@@ -184,7 +214,7 @@
             <div class="card-body">
                     <div class="row">
                         <div class="col-9">                    
-                            <h5 class="m-0 mb-3 mt-1">Premium balíčky</h5>
+                            <h5 class="m-0 mb-2">Premium balíčky</h5>
                         </div>
                     </div>
                     <hr class="mt-0">
@@ -196,10 +226,25 @@
                     <% if(section.isPublic){ %> 
                     <div class="row py-2">
                         <div class="col-7 d-flex align-items-center">                    
-                            <div>
-                                <p class="m-0"><%= section.name %></p>
-                                <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                            </div>
+                            <% if(currentUser && currentUser.sections.includes(section._id)) { %>
+                                <i class="fas fa-check-circle me-2" style="color:#AF0171"></i>
+                                <div>
+                                    <p class="m-0 text-muted  "><%= section.name %></p>
+                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                </div>
+                            <% } else if (section.isPremium) { %>
+                                <i class="fas fa-star me-2"></i>
+                                <div>
+                                    <p class="m-0"><%= section.name %></p>
+                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                </div>
+                            <% } else { %> 
+                                <i class="fas fa-layer-group me-2"></i>
+                                <div>
+                                    <p class="m-0  "><%= section.name %></p>
+                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                </div>
+                            <% } %>
                         </div>
                         <div class="col-3 d-flex justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
@@ -252,10 +297,25 @@
                     <% if(!section.isPublic && currentUser && currentUser.admin){ %> 
                         <div class="row py-2">
                             <div class="col-5 d-flex align-items-center">                    
-                                <div>
-                                    <p class="m-0"><%= section.name %></p>
-                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                                </div>
+                                <% if(currentUser && currentUser.sections.includes(section._id)) { %>
+                                    <i class="fas fa-check-circle me-2" style="color:#AF0171"></i>
+                                    <div>
+                                        <p class="m-0 text-muted  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } else if (section.isPremium) { %>
+                                    <i class="fas fa-star me-2"></i>
+                                    <div>
+                                        <p class="m-0  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } else { %> 
+                                    <i class="fas fa-layer-group me-2"></i>
+                                    <div>
+                                        <p class="m-0  "><%= section.name %></p>
+                                        <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    </div>
+                                <% } %>
                         </div>
                             <div class="col-2">
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>

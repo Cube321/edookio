@@ -18,7 +18,8 @@ $(document).ready(function() {
     })
 
     //remove saved card from favourites and from the page
-    $(".remove-from-saved-link").on('click', function(){
+    $(".remove-from-saved-link").on('click', function(e){
+        e.preventDefault();
         //get info
         let userEmail = $(this).attr("title");
         let cardId = $(this).attr("name");

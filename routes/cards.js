@@ -273,8 +273,11 @@ router.post('/cards/save/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, 
     if(!foundUser){
         return res.sendStatus(404);
     }
-    foundUser.savedCards.push(req.params.cardId);
-    await foundUser.save();
+    let isCardAlreadySaved = isCardInArray(foundUser.savedCards, req.params.cardId);
+    if(!isCardAlreadySaved){
+        foundUser.savedCards.push(req.params.cardId);
+        await foundUser.save();
+    }
     res.status(200).sendStatus(200);
 }))
 

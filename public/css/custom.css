@@ -7,10 +7,6 @@
     color: #E80F88;
 }
 
-.text-package-title {
-    font-size: 0.9rem;
-}
-
 .text-small {
     font-size: 0.8rem;
 }
@@ -37,7 +33,7 @@
 }
 
 .category-box p {
-    font-size: 1.5rem;
+    font-size: 1rem;
 }
 
 .img-fit {
@@ -47,6 +43,12 @@
 
 .category-headline {
     font-weight: 700;
+}
+
+.category-info {
+    background-color: #EEEEEE;
+    border-radius: 10px;
+    font-size: 1rem;
 }
 
 .navbar .nav-item .nav-link {
@@ -62,12 +64,6 @@
 .category-img {
     width: 8rem;
     height: 8rem;
-}
-
-.icon-background {
-    background-color: #EEEEEE;
-    height: 7rem;
-    width: 7rem;
 }
 
 /* CATEGOGRIES - PREMIUM SECTIONS*/
@@ -216,6 +212,12 @@
     background-color: #EEEEEE;
     height: 3.5rem;
     width: 3.5rem;
+}
+
+.icon-background-large {
+    background-color: #EEEEEE;
+    height: 7rem;
+    width: 7rem;
 }
 
 .rounded-circle {
