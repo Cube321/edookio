@@ -122,10 +122,13 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         return res.status(200).redirect('/');
     }
     //data for progress bar
-    let progressStep = Math.round(100 / foundSection.cards.length);
-    let progressStatus = progressStep * (cardNum-1);
+    let progressStep = 100 / foundSection.cards.length;
+    let progressStatus = progressStep * (cardNum);
+    progressStatus = Math.round(progressStatus - 1);
     const cardId = foundSection.cards[cardNumEdited];
     const foundCard = await Card.findById(cardId);
+    //
+    let isCardSaved = false;
     //update users data
     if(user){
         //increase users cardsSeen by 1
@@ -135,11 +138,12 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
         if(unfinishedSectionIndex > -1){user.unfinishedSections[unfinishedSectionIndex].lastCard = cardNum};
         //mark modified nested objects - otherwise Mongoose does not see it and save it
         user.markModified('unfinishedSections');
+        //is card already saved?
+        isCardSaved = isCardInArray(user.savedCards, cardId.toString());
         //save
         user.save();
     }
     const sectionLength = foundSection.cards.length;
-    let isCardSaved = isCardInArray(user.savedCards, cardId.toString());
     res.status(200).render('cards/show', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved});
 }))
 
