@@ -4,9 +4,6 @@ $(document).ready(function() {
         $("#pageB").remove();
     })
 
-    //dela to border, nevim odkud se po naloadovani DOM pridava style height:100% a posouva to jednu caru na card tak to takhle ojebavam ale je to hnus
-    $(".front").css('height','auto');
-
     var pageB = document.getElementById('pageB');
     if (pageB.scrollHeight > pageB.clientHeight) {
         pageB.classList.add('text-gradient');
