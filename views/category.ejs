@@ -69,7 +69,10 @@
                         <div class="col-7 d-flex align-items-center">                    
                             <div>
                                 <p class="m-0"><%= section.name %></p>
-                                <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                <p class="text-muted text-small mb-0"><%= section.shortDescription %></p>
+                                <% if (currentUser && currentUser.admin) { %>
+                                 <p class="text-muted text-small mb-0">ID sekce: <%= section._id %></p>
+                                <% } %>
                             </div>
                         </div>
                         <div class="col-3 d-flex justify-content-center align-items-center">
@@ -128,6 +131,9 @@
                                 <div>
                                     <p class="m-0"><%= section.name %></p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    <% if (currentUser && currentUser.admin) { %>
+                                        <p class="text-muted text-small mb-0">ID sekce: <%= section._id %></p>
+                                    <% } %>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -192,13 +198,16 @@
                     <p>Kategorie neobsahuje žádné sekce.</p>
                 <% } else { category.premiumSections.forEach(section => { %>
 
-                    <!-- SEZNAM ZAKLADNICH BALICKU -->
+                    <!-- SEZNAM PREMIUM BALICKU -->
                     <% if(section.isPublic){ %> 
                     <div class="row py-2">
                         <div class="col-7 d-flex align-items-center">                    
                             <div>
                                 <p class="m-0"><%= section.name %></p>
                                 <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                <% if (currentUser && currentUser.admin) { %>
+                                    <p class="text-muted text-small mb-0">ID sekce: <%= section._id %></p>
+                                   <% } %>
                             </div>
                         </div>
                         <div class="col-3 d-flex justify-content-center align-items-center">
@@ -255,6 +264,9 @@
                                 <div>
                                     <p class="m-0"><%= section.name %></p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    <% if (currentUser && currentUser.admin) { %>
+                                        <p class="text-muted text-small mb-0">ID sekce: <%= section._id %></p>
+                                       <% } %>
                                 </div>
                         </div>
                             <div class="col-2">
@@ -320,15 +332,21 @@
                         <div class="col-6">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Název sekce" required>
                         </div>
-                        <div class="col-4">
-                            <input type="text" class="form-control-plaintext" id="category" name="category" value="<%= category.name %>" readonly>
-                        </div>
                     </div>
                     <div class="row mt-2">
                         <label for="desc" class="col-2 col-form-label">Popis</label>
                         <div class="col-6">
                             <input type="text" class="form-control" id="desc" name="desc" placeholder="Krátký popis">
                         </div>
+                    </div>
+                    <div class="row mt-2">
+                        <label for="nextSection" class="col-2 col-form-label">ID NS</label>
+                        <div class="col-6">
+                            <input type="text" class="form-control" id="nextSection" name="nextSection" placeholder="ID navazující sekce">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <label for="isPremium" class="col-2 col-form-label">Dostupnost</label>
                         <div class="col-4">
                             <select class="form-select" name="isPremium" id="isPremium">
                                 <option value="zdarma">Zdarma</option>
@@ -336,8 +354,14 @@
                               </select>
                         </div>
                     </div>
+                    <div class="row mt-2">
+                        <label for="category" class="col-2 col-form-label">Kategorie</label>
+                        <div class="col-6">
+                            <input type="text" class="form-control-plaintext" id="category" name="category" value="<%= category.name %>" readonly>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-2 mt-2">
                             <button class="btn btn-danger w-100">Přidat</button>
                         </div>
                     </div>

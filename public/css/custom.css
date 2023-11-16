@@ -11,6 +11,11 @@
     font-size: 0.8rem;
 }
 
+.grey-highlight {
+    background-color: #EEEEEE;
+    border-radius: 10px;
+}
+
 /*CATEGORY*/
 .section-list .add-icon {
     color: green;
@@ -189,6 +194,11 @@
 /* FINISHED SECTION */
 .finished-progress-bar {
     border-radius: 10px;
+}
+
+.green-check {
+    color: #f44dac;
+    font-size: 6rem;
 }
 
 /* REGISTRATION */

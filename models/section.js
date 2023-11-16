@@ -30,6 +30,10 @@ const SectionSchema = new Schema({
     lastSeenCard: {
         type: Number,
         default: 0
+    },
+    nextSection: {
+        type: String,
+        default: ""
     }
 })
 

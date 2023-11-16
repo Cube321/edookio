@@ -1,0 +1,64 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-12 offset-lg-3">
+            <div class="card text-center p-4">
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <i class="fas fa-check-circle green-check"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-4 mb-3">
+                        <h3>Hotovo </h3>
+                        <h5>Skvělá práce!</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="grey-highlight px-3 py-2">Celkem máš nastudováno už <span class="color-1"><b><%= currentUser.cardsSeen %></b></span> kartiček.</p> 
+                        </div>
+                    </div>
+                </div>
+                <!--pokud se jedna o posledni sekci zobrazi se tento kod (odkaz zpet na kategorii)-->
+                <% if (nextSection.name === "lastSection") { %>
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <h6 class="mb-0 mt-2">Tohle byl poslední balíček <br>v této kategorii.</h6> 
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <a href="/category/<%= category%>/" class="btn btn-lg btn-danger mb-4">Zpět na kategorii</a>
+                        </div>
+                    </div>
+                <!--pokud se nejedna o posledni sekci zobrazi se tento kod (odkaz na dalsi balicek)-->
+                <% } else { %>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6 class="mb-0 mt-2"><b>Navazující balíček</b></h6> 
+                            <p><%= nextSection.name %></p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <% if (!currentUser.isPremium && nextSection.isPremium) { %>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <p class="mb-4 grey-highlight px-3 py-2">Navazující balíček je přístupný jen <br>s <b>předplatným Premium</b>.</p>
+                                </div>
+                                
+                                <a href="/premium" class="btn btn-lg btn-danger mb-4">Zjistit více</a>
+                            <% } else { %>
+                                <a href="/category/<%= category%>/section/<%= section.nextSection%>/1" class="btn btn-lg btn-danger mb-4">Pokračovat na další balíček</a>
+                            <% } %>
+                        </div>
+                        <div class="col-12">
+                            <a href="/category/<%= category%>" class="">zpět na kategorii</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

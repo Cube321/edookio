@@ -43,5 +43,6 @@ module.exports.sectionSchema = Joi.object({
     name: Joi.string().required().escapeHTML(),
     category: Joi.string().required().escapeHTML(),
     isPremium: Joi.string().required().escapeHTML(),
-    desc: Joi.string().escapeHTML()
+    desc: Joi.string().escapeHTML(),
+    nextSection: Joi.string().escapeHTML()
 })

@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
@@ -110,10 +111,27 @@ router.get('/category/:category/section/:sectionId/:cardNum', isLoggedIn, catchA
             //add section to finished sections
             user.sections.push(foundSection._id);
             await user.save();
-            return res.status(200).render('sections/finished', {category, sectionName: foundSection.name, demo: false});
+            //get name of next section
+                let nextSection = "notDefined";
+                //check if string is valid ObjectID
+                let isValidId = mongoose.isValidObjectId(foundSection.nextSection);
+                if (isValidId){
+                    nextSection = await Section.findById(foundSection.nextSection);
+                    if(!nextSection){
+                        nextSection = {name: "nenalezena"}
+                    }
+                } else {
+                    if(foundSection.nextSection === "lastSection"){
+                        nextSection = {name: "lastSection"};
+                    } else {
+                        nextSection = {name: "notValidId - udelejte prosim screen teto obrazovky a zaslete jej na mail info@inlege.cz"};
+                    }
+                }
+            
+            return res.status(200).render('sections/finishedLive', {category, section: foundSection, nextSection});
         } else {
             //user not logged in - in demo section
-            return res.status(200).render('sections/finished', {category, sectionName: foundSection.name, demo: true});
+            return res.status(200).render('sections/finishedDemo', {category, sectionName: foundSection.name});
         }
         
     }

@@ -19,6 +19,15 @@ $(document).ready(function() {
         $(this).addClass('disabled ');
     })
 
+    //disable "previous" btn after click event
+    $("#previous-btn-pageA").click(function(){
+        $(this).addClass('disabled ');
+    })
+
+    $("#previous-btn-pageB").click(function(){
+        $(this).addClass('disabled ');
+    })
+
 
     //saving card to favourites
     $("#save-star-div").click(() => {

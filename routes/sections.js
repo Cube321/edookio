@@ -75,7 +75,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
     }
     //create new Section and add it to Category
     const categoryName = foundCategory.name;
-    const {name, isPremium, desc} = req.body;
+    const {name, isPremium, desc, nextSection} = req.body;
     //isPremium logic
     let isPremiumBoolean = false;
     if(isPremium === "premium"){isPremiumBoolean = true};
@@ -85,7 +85,8 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
         category: categoryName,
         cards: [],
         isPremium: isPremiumBoolean,
-        shortDescription: desc
+        shortDescription: desc,
+        nextSection: nextSection
     })
     const savedSection = await newSection.save();
     if(savedSection.isPremium){
@@ -147,7 +148,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
     res.status(200).redirect(`/category/${category}`);
 }))
 
-//edit section name and description
+//edit section (name, description, next section)
 router.get('/category/:category/editSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
@@ -161,8 +162,11 @@ router.put('/category/:category/editSection/:sectionId',isLoggedIn, isAdmin, cat
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
     }
-    foundSection.name = req.body.name;
-    foundSection.shortDescription = req.body.desc;
+    let nextSection = req.body.next;
+    let {name, desc} = req.body;
+    foundSection.name = name;
+    foundSection.shortDescription = desc;
+    foundSection.nextSection = nextSection;
     await foundSection.save();
     res.status(201).redirect(`/category/${req.params.category}`);
 }))

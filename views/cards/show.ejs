@@ -68,11 +68,14 @@
                   </div>
                 </div>
                 <div class="card-footer d-flex justify-content-center">
+                  <% if (nextNum > 2) { %>
+                    <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
+                  <% } %>
                   <a href="#" class="btn btn-outline-danger" id='btn-flip-front'>Otočit</a>
                 </div>
               </div>
               <div class="card back invisible" id="back">
-                <div class="card-body">
+                <div class="card-body p-0 p-sm-2">
                   <div class="d-flex align-items-center justify-content-center min-height-300px loader-push-class">
                     <div id="loader"></div>
                     <div class="card-text m-4 mb-0 max-height-280px" id="pageB">
@@ -84,8 +87,12 @@
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                   <a href="#" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
-                  <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>"
-                    class="btn btn-danger easy-btn" id="next-btn">Další</a>
+                  <div>
+                    <% if (nextNum > 2) { %>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-danger easy-btn" id="previous-btn-pageB"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
+                    <% } %>
+                    <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-danger easy-btn" id="next-btn">Další</a>
+                  </div>
                   <% if(currentUser && currentUser.isPremium){%>
                     <% if(isCardSaved){%>
                       <div id="save-star-div" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
