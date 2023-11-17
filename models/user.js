@@ -10,6 +10,10 @@ const UserSchema = new Schema ({
         required: true,
         unique: true
     },
+    faculty: {
+        type: String,
+        default: "Neuvedeno"
+    },
     admin: {
         type: Boolean,
         default: false

@@ -1,57 +1,121 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="offset-1 col-md-10 mb-3 pt-3 card">
+        <div class="offset-1 col-md-4 mb-3 pt-3">
+            <div class="card stats p-3">
             <h5 class="mb-3">Statistiky</h5>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <p>Počet registrovaných uživatelů</p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <%= registeredUsersCount %>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <p>Počet Premium uživatelů</p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <%= premiumUsersCount %>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <p>Uživatelé aktivní v posledním týdnu</p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <%= usersActiveInLastWeek %>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <p>Aktivováno Premium v posledním týdnu</p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <%= premiumActivationsInLastWeek %>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <p>Prodlouženo Premium v posledním týdnu</p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <%= premiumUpdatesInLastWeek %>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-10">
                     <p>Deaktivováno Premium v posledním týdnu</p>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-2">
                     <%= premiumDeactivationsInLastWeek %>
                 </div>
             </div>
+            </div>
         </div>
+        <div class="col-md-3 mb-3 pt-3">
+            <div class="card stats p-3">
+                <h5 class="mb-3">Fakulty</h5>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF UP</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfUp %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF UK</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfUk %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF MUNI</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfMuni %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF ZČU</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfZcu %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Jiná</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfJina %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Nestuduje</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfNestuduji %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Neuvedeno</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfNeuvedeno %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="row">
         <div class="col-11 offset-1 mb-3">

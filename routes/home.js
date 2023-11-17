@@ -1,11 +1,16 @@
 const express = require('express');
 const Category = require('../models/category');
+const Card = require('../models/card');
+const Section = require('../models/section');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 
 //show homepage
 router.get('/', catchAsync(async(req, res) => {
     const categories = await Category.find({});
+    let numOfCategories = categories.length - 1;
+    const numOfCards = await Card.count();
+    const numOfSections = await Section.count();
     let trestnipravo = "";
     let obcanskepravo = "";
     let spravnipravo = "";
@@ -24,7 +29,7 @@ router.get('/', catchAsync(async(req, res) => {
         if(cat.name === "trestniproces"){trestniproces = cat};
         if(cat.name === "civilniproces"){civilniproces = cat};
     })
-    res.status(200).render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, mezinarodnipravo, trestniproces, civilniproces});
+    res.status(200).render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, mezinarodnipravo, trestniproces, civilniproces, numOfCards, numOfSections, numOfCategories});
 }))
 
 module.exports = router;

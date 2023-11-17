@@ -15,13 +15,14 @@ const mail = require('../mail/mail_inlege');
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
     let updatedUsers = [];
-    //count all users and premium users
+    //count all users and premium users and count faculties
     let premiumUsersCount = 0;
     let registeredUsersCount = 0;
     let usersActiveInLastWeek = 0;
     let premiumActivationsInLastWeek = 0;
     let premiumUpdatesInLastWeek = 0;
     let premiumDeactivationsInLastWeek = 0;
+    let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfNeuvedeno: 0};
     users.forEach(user => {
         let newUser = user;
         newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
@@ -38,6 +39,14 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         if(user.premiumDateOfUpdate && moment(user.premiumDateOfUpdate).isAfter(moment().subtract(1, 'week'))){premiumUpdatesInLastWeek++};
         //count premium deactivations in the last week
         if(user.premiumDateOfCancelation && moment(user.premiumDateOfCancelation).isAfter(moment().subtract(1, 'week'))){premiumDeactivationsInLastWeek++};
+        //count faculties
+        if(user.faculty === "PrF UP"){faculties.prfUp++};
+        if(user.faculty === "PrF UK"){faculties.prfUk++};
+        if(user.faculty === "PrF MUNI"){faculties.prfMuni++};
+        if(user.faculty === "PrF ZČU"){faculties.prfZcu++};
+        if(user.faculty === "Jiná"){faculties.prfJina++};
+        if(user.faculty === "Nestuduji"){faculties.prfNestuduji++};
+        if(user.faculty === "Neuvedeno"){faculties.prfNeuvedeno++};
     })
     res.status(200).render('admin/users', {
         users: updatedUsers, 
@@ -46,7 +55,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         usersActiveInLastWeek, 
         premiumActivationsInLastWeek,
         premiumUpdatesInLastWeek,
-        premiumDeactivationsInLastWeek
+        premiumDeactivationsInLastWeek,
+        faculties
     });
 }))
 

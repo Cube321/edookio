@@ -51,7 +51,7 @@ router.get('/auth/admin/new', (req, res) => {
 
 //register request (POST)
 router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) => {
-    const {email, password, password_confirmation, key, firstname, lastname} = req.body;
+    const {email, password, password_confirmation, key, firstname, lastname, faculty} = req.body;
     //check password 
     if(password !== password_confirmation){
         req.flash('error','Obě zadaná hesla se musí shodovat.');
@@ -60,7 +60,10 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
     try {
         //check for admin key
         let admin = false;
-        if(key === process.env.adminRegKey) admin = true;
+        if(key === process.env.adminRegKey) {
+            admin = true;
+            faculty = "Neuvedeno";
+        }
         //register user
         const passChangeId = uuid.v1();
         const dateOfRegistration = Date.now();
@@ -76,13 +79,13 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             billingId: customer.id,
             plan: "none",
             endDate: null,
-            isGdprApproved: true
+            isGdprApproved: true,
+            faculty
         });
         const newUser = await User.register(user, password);
         await req.login(newUser, err => {
             if (err) return next(err);
         })
-        console.log(`Added new user and customer ${email} with MongoID ${newUser._id} and billingId ${newUser.billingId}`);
         //send info e-mails
         mail.welcome(newUser.email);
         mail.adminInfoNewUser(newUser);

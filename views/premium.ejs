@@ -41,7 +41,7 @@
                         <div class="card-header">Měsíční</div>
                         <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
                             <div class="price-tag-inner">
-                                <span class="price">199 Kč</span> / <span class="period">měsíčně</span>
+                                <span class="price">149 Kč</span> / <span class="period">měsíčně</span>
                             </div>
                         </div> 
                         <p class="text-center my-3">Předplatné Premium placené měsíčně.</p>
@@ -55,13 +55,16 @@
                             <% if (currentUser && !currentUser.isPremium) { %>
                                 <a href="#" id="checkout-button-monthly" class="btn btn-danger my-3">Aktivovat</a> 
                             <% } %>
+                            <% if (currentUser && currentUser.isPremium) { %>
+                                <a href="#" class="btn btn-danger my-3 disabled">Tvé předplatné je aktivní</a> 
+                            <% } %>
                         </div>
                     </div>
                     <div class="card premium-plan-card m-4 mt-0">
                         <div class="card-header">Roční</div>
                         <div class="price-tag-outer d-flex justify-content-center p-3 mt-3">
                             <div class="price-tag-inner">
-                                <span class="price">1 490 Kč</span> / <span class="period">ročně</span>
+                                <span class="price">1 290 Kč</span> / <span class="period">ročně</span>
                             </div> 
                         </div>
                         <p class="text-center my-3">Předplatné Premium se slevou za roční platbu.</p>
@@ -74,6 +77,9 @@
                             <% } %>
                             <% if (currentUser && !currentUser.isPremium) { %>
                                 <a href="#" id="checkout-button-yearly" class="btn btn-danger my-3">Aktivovat</a> 
+                            <% } %>
+                            <% if (currentUser && currentUser.isPremium) { %>
+                                <a href="#" class="btn btn-danger my-3 disabled">Tvé předplatné je aktivní</a> 
                             <% } %>
                         </div>
                     </div>
