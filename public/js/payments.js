@@ -29,7 +29,9 @@ $(document).ready(function() {
   //Monthly Subscription
 	const checkoutButtonMonthly = $('#checkout-button-monthly')
   
-    checkoutButtonMonthly.click(function () {
+    checkoutButtonMonthly.click(function (e) {
+      e.preventDefault();
+      $(this).addClass("disabled");
       const product = "monthly";
   
       fetch('/payment/checkout', {
@@ -48,7 +50,9 @@ $(document).ready(function() {
     //Yearly Subscription
     const checkoutButtonYearly = $('#checkout-button-yearly')
   
-    checkoutButtonYearly.click(function () {
+    checkoutButtonYearly.click(function (e) {
+      e.preventDefault();
+      $(this).addClass("disabled");
       const product = "yearly";
   
       fetch('/payment/checkout', {
