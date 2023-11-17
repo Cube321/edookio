@@ -1,4 +1,5 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="cs">
 
 <head>
   <meta charset="UTF-8">
@@ -41,6 +42,8 @@
     </nav>
     <main class="container mt-md-5 p-4">
       <div class="row">
+
+        <!--PROGRESS STATUS MOBILE-->
         <div class="col-lg-2 mb-3 zobrazovat-jen-na-mobilu">
           <div class="card">
             <div class="card-body text-center">
@@ -58,40 +61,39 @@
             </div>
           </div>
         </div>
+
+
+        <!--FLIPCARD-->
         <div class="col-lg-5 offset-lg-2 mb-3">
-          <div class="">
-            <div id="card" class="flashcard">
-              <div class="card front text-center">
-                <div class="card-body d-block">
-                  <div class="d-flex justify-content-center align-items-center min-height-300px">
-                    <div class="card-text pageA m-4" id="pageA"><%- card.pageA %></div>
-                  </div>
+          <div class="flip-card">
+            <div class="card flip-card-inner">
+              <div class="card-body flip-card-front pb-0">
+                <div class="front-main-content d-flex justify-content-center align-items-center">
+                  <div class="card-text m-4 text-center" id="pageA"><%- card.pageA %></div>
                 </div>
-                <div class="card-footer d-flex justify-content-center">
-                  <% if (nextNum > 2) { %>
-                    <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
-                  <% } %>
-                  <a href="#" class="btn btn-outline-danger" id='btn-flip-front'>Otočit</a>
+                <div class="front-menu d-flex justify-content-between align-items-center">
+                  <a href=""></a>
+                  <div class="">
+                    <% if (nextNum > 2) { %>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
+                    <% } %>
+                    <a href="#" class="btn btn-outline-danger" id='btn-otocit'>Otočit</a>
+                  </div>
+                  <a href=""></a>
                 </div>
               </div>
-              <div class="card back invisible" id="back">
-                <div class="card-body p-0 p-sm-2">
-                  <div class="d-flex align-items-center justify-content-center min-height-300px loader-push-class">
-                    <div id="loader"></div>
-                    <div class="card-text m-4 mb-0 max-height-280px" id="pageB">
-                      <div class="inner-card-div" id="inner-card-div">
-                        <%- card.pageB %>
-                      </div>
-                    </div>
-                  </div>
+              <div class="card-body flip-card-back pb-0">
+                <div class="back-main-content d-flex justify-content-center align-items-center text-gradient">
+                  <div id="loader"></div>
+                  <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
-                <div class="card-footer d-flex justify-content-between align-items-center">
-                  <a href="#" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
+                <div class="back-menu d-flex justify-content-between align-items-center">
+                  <a href="" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
                   <div>
                     <% if (nextNum > 2) { %>
                       <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-danger easy-btn" id="previous-btn-pageB"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
                     <% } %>
-                    <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-danger easy-btn" id="next-btn">Další</a>
+                    <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-danger easy-btn" id="btn-dalsi">Další</a>
                   </div>
                   <% if(currentUser && currentUser.isPremium){%>
                     <% if(isCardSaved){%>
@@ -107,16 +109,10 @@
                 </div>
               </div>
             </div>
-            <div class="text-center mt-4 servis-btns d-flex justify-content-center align-items-center">
-              <% if (currentUser && currentUser.admin) { %>
-                <a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a>
-                <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
-                <% } %>
-                  <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted">Nahlásit chybu</a>
-                  <p class="text-muted mb-0 px-3 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</p>
-            </div>
           </div>
         </div>
+
+        <!--PROGRESS STATUS PC-->
         <div class="col-lg-2 mb-3 mt-5 mt-lg-0 nezobrazovat-na-mobilu">
           <div class="card">
             <div class="card-body text-center">
@@ -135,9 +131,22 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-lg-5 offset-lg-2">
+          <div class="text-center mt-4 servis-btns d-flex justify-content-center align-items-center">
+            <% if (currentUser && currentUser.admin) { %>
+              <a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a>
+              <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
+              <% } %>
+                <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted">Nahlásit chybu</a>
+                <p class="text-muted mb-0 px-3 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</p>
+          </div>
+        </div>
+        
+      </div>
     </main>
 
-    <!-- MODAL - Delete user confirmation -->
+    <!-- MODAL - Saving is Premium feature info -->
     <div class="modal fade" id="savePremium" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -164,9 +173,6 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
-      <script src="/js/jquery.flip.min.js"></script>
-      <script src="/js/flip.custom.js"></script>
-      <script src="/js/custom.js"></script>
       <script src="/js/card.js"></script>
 </body>
 

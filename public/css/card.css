@@ -1,20 +1,65 @@
+/* NEW CARD DESIGN*/
+.flip-card {
+    width: 100%;
+    height: 400px;
+  }
+
+  .flip-card-inner {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+  }
+
+  .flipped .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .flip-card-front,
+  .flip-card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+  }
+
+  .flip-card-front {
+
+  }
+
+  .flip-card-back {
+    transform: rotateY(180deg);
+  }
+
+  .front-main-content,
+  .back-main-content {
+    height: 85%;
+    border-bottom: 1px solid #EEEEEE;
+    overflow: auto;
+  }
+
+  .front-main-content::-webkit-scrollbar{
+    display: none;
+  }
+
+  .back-main-content::-webkit-scrollbar{
+    display: none;
+  }
+
+  .front-menu,
+  .back-menu {
+    height: 15%;
+  }
+
+  #pageB {
+    max-height: 100%;
+  }
+
 /* SHOW CARD PAGE */
 .text-smaller {
     font-size: 0.9rem;
 }
 
-.min-height-70px {
-    min-height: 70px;
-}
-
-.min-height-300px {
-    min-height: 300px;
-}
-
-.max-height-280px {
-    max-height: 280px;
-    overflow: auto;
-}
 
 /*.inner-card-div {
     width: 96%;
@@ -92,7 +137,7 @@
   .text-gradient:after {
     position: absolute;
     bottom: 0;  
-    height: 10%;
+    height: 15%;
     width: 100%;
     content: "";
     background: linear-gradient(to top,

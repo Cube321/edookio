@@ -1,22 +1,45 @@
+let push = 0;
+
 $(document).ready(function() {
-    $("#next-btn").click(function(){
+    //NEW CARD DESIGN
+      $("#btn-otocit").click((e) => {
+        e.preventDefault();
+        $(".flip-card").toggleClass('flipped');
+        push++;
+      })
+
+    $("#btn-dalsi").click(function(){
         $("#loader").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
         $("#pageB").remove();
     })
 
-    var pageB = document.getElementById('pageB');
-    if (pageB.scrollHeight > pageB.clientHeight) {
-        pageB.classList.add('text-gradient');
-    }
-
-
-    $("#pageB").scroll(function(){
-        $(this).removeClass('text-gradient');
+    //disable "next" btn after click event
+    $("#btn-dalsi").click(function(){
+        $(this).addClass('disabled ');
     })
 
-    //disable "next" btn after click event
-    $("#next-btn").click(function(){
-        $(this).addClass('disabled ');
+    //flip with space
+    document.body.onkeyup = function(e) {
+        if (e.key == " " ||
+            e.code == "Space"      
+        ) {
+            push++;
+            if(push === 1){
+                $(".flip-card").toggleClass('flipped');
+            }
+            if(push === 2){
+                $("#loader").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
+                $("#pageB").remove();
+                const redirectLink = $("#btn-dalsi").prop("href");
+                window.location.href = redirectLink;
+            }
+        }
+      }
+
+      $("#rotate-back").click((e) => {
+        e.preventDefault();
+        $(".flip-card").toggleClass('flipped');
+        push--;
     })
 
     //disable "previous" btn after click event
@@ -27,6 +50,20 @@ $(document).ready(function() {
     $("#previous-btn-pageB").click(function(){
         $(this).addClass('disabled ');
     })
+
+    //text-gradient on scrollable content
+        //remove gradient on scroll
+        $(".back-main-content").scroll(function(){
+            $(".back-main-content").removeClass('text-gradient');
+        })
+
+        //add gradient only if certaing height
+        //var pageB = document.getElementById('pageB');
+        //if (pageB.scrollHeight > pageB.clientHeight) {
+            //pageB.classList.add('text-gradient');
+        //} 
+
+    //OLD SCRIPTS 
 
 
     //saving card to favourites
