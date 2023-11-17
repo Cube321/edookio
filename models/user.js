@@ -37,6 +37,10 @@ const UserSchema = new Schema ({
         type: Boolean,
         default: false
     },
+    premiumGrantedByAdmin: {
+        type: Boolean,
+        default: false
+    },
     billingId: String,
     plan: { type: String, enum: ['none', 'yearly', 'monthly', 'daily'], default: 'none' },
     endDate: {type: Date, default: null},

@@ -8,6 +8,7 @@ const CategorySchema = new Schema({
     },
     basicSections: [{ type : Schema.Types.ObjectId, ref: 'Section' }],
     premiumSections: [{ type : Schema.Types.ObjectId, ref: 'Section' }],
+    sections: [{ type : Schema.Types.ObjectId, ref: 'Section' }],
     numOfCards: {
         type: Number,
         default: 0

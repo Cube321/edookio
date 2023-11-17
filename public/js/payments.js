@@ -32,6 +32,8 @@ $(document).ready(function() {
     checkoutButtonMonthly.click(function (e) {
       e.preventDefault();
       $(this).addClass("disabled");
+      $(this).empty();
+      $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
       const product = "monthly";
   
       fetch('/payment/checkout', {
@@ -53,6 +55,8 @@ $(document).ready(function() {
     checkoutButtonYearly.click(function (e) {
       e.preventDefault();
       $(this).addClass("disabled");
+      $(this).empty();
+      $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
       const product = "yearly";
   
       fetch('/payment/checkout', {

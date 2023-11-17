@@ -89,6 +89,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
         nextSection: nextSection
     })
     const savedSection = await newSection.save();
+    foundCategory.sections.push(savedSection._id);
     if(savedSection.isPremium){
         foundCategory.premiumSections.push(savedSection._id);
     } 
@@ -224,5 +225,7 @@ router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, ca
     }
     res.status(200).redirect(`/category/${category}`);
 }))
+
+
 
 module.exports = router;

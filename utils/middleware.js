@@ -26,14 +26,12 @@ const checkAndUpdatePremiumEndDate = async (user) => {
     const today = Date.now();
     const {endDate} = user;
         if(moment(today).format() > moment(endDate).format()){
-            console.log('Premium skončilo')
             const foundUser = await User.findById(user._id);
             foundUser.isPremium = false;
+            foundUser.premiumGrantedByAdmin = false;
             foundUser.endDate = null;
             foundUser.plan = "none";
             await foundUser.save()
-            console.log('Premium ended - saved to DB');
-            console.log(foundUser);
         }
 }
 

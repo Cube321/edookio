@@ -132,7 +132,12 @@
             <% } else { %>
                 <div class="col-sm-1">-</div>
             <% } %>
-            <div class="col-sm-2"><a href="/admin/<%=user._id%>/upgradeToPremium">Upgrade to premium</a></div>
+            <div class="col-sm-2">
+                <a href="/admin/<%=user._id%>/upgradeToPremium/addDay">P1D</a> 
+                <a href="/admin/<%=user._id%>/upgradeToPremium/addMonth">P1M</a> 
+                <a href="/admin/<%=user._id%>/upgradeToPremium/addYear">P1R</a> 
+                <a href="/admin/<%=user._id%>/upgradeToPremium/addDecade">P10R</a>
+            </div>
             <div class="col-sm-2">
                 <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Odstranit uživatele</button></form>
             </div>

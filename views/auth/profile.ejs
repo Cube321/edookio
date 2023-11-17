@@ -1,7 +1,7 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 offset-lg-2">
+        <div class="col-sm-8 offset-sm-2">
             <div class="card profile-card">
                 <div class="row p-3 pb-0">
                     <div class="col-12">
@@ -51,11 +51,11 @@
                         <div class="col-8">
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="mb-0">aktivní do <%= endDate %> </p>
-                                <% if(user.plan === "yearly"){ %>
+                                <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin === true){ %>
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning">
                                         Správa předplatného
                                     </button>
-                                <% } else { %>
+                                <% } else if (!user.premiumGrantedByAdmin === true){ %>
                                     <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
                                         Správa předplatného
                                     </button>
@@ -74,17 +74,20 @@
                             <p>Typ předplatného</p>
                         </div>
                         <div class="col-8">
-                            <% if(user.plan === "none"){ %>
+                            <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
                                 <p class="mb-0">zrušeno (aktivní do konce období)</p>
                             <% }%>  
-                            <% if(user.plan === "monthly"){ %>
+                            <% if(user.plan === "monthly" && !user.premiumGrantedByAdmin){ %>
                                 <p class="mb-0">měsíční (další platba <%= endDate %>)</p>
                             <% }%> 
-                            <% if(user.plan === "yearly"){ %>
+                            <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin){ %>
                                 <p class="mb-0">roční (další platba <%= endDate %>)</p>
                             <% }%> 
-                            <% if(user.plan === "daily"){ %>
+                            <% if(user.plan === "daily" && !user.premiumGrantedByAdmin){ %>
                                 <p class="mb-0">denní (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">zdarma do konce období</p>
                             <% }%> 
                         </div> 
                         <hr />

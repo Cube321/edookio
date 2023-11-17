@@ -3,6 +3,8 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
 const Card = require('../models/card');
+const Category = require('../models/category');
+const Section = require('../models/section');
 const { isLoggedIn, isAdmin } = require('../utils/middleware');
 const Stripe = require('../utils/stripe');
 const { findByIdAndDelete } = require('../models/user');
@@ -10,6 +12,16 @@ const moment = require('moment');
 const mail = require('../mail/mail_inlege');
 
 
+//edit sections of categories
+router.get('/admin/editCategory/:category', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
+    let {category} = req.params;
+    let allSections = await Section.find({category: category}).select('_id');
+    let foundCategory = await Category.findOne({name: category});
+    let onlyIdsArray = allSections.map(section => section = section._id);
+    foundCategory.sections = onlyIdsArray;
+    await foundCategory.save();
+    res.sendStatus(200);
+}))
 
 //show all registered users
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
@@ -66,14 +78,31 @@ router.get('/admin/listAllReports', isLoggedIn, isAdmin, catchAsync(async(req, r
     res.status(200).render('admin/reports', {cards});
 }))
 
-router.get('/admin/:userId/upgradeToPremium', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+//upgrade to premium - ADMIN ROUTE
+router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const user = await User.findById(req.params.userId);
+    let {period} = req.params;
     if(!user){
         throw Error("Uživatel s tímto ID neexistuje");
     }
     user.isPremium = true;
-    user.plan = "yearly";
-    user.endDate = Date.now() * 2;
+    user.premiumGrantedByAdmin = true;
+    if(period === "addDay"){
+        user.plan = "daily";
+        user.endDate = moment().add(1,'days');
+    }
+    if(period === "addMonth"){
+        user.plan = "monthly";
+        user.endDate = moment().add(1,'months');
+    }
+    if(period === "addYear"){
+        user.plan = "yearly";
+        user.endDate = moment().add(1,'years');
+    }
+    if(period === "addDecade"){
+        user.plan = "yearly";
+        user.endDate = moment().add(10,'years');
+    }
     await user.save();
     req.flash('success','Uživatel je nyní Premium');
     res.status(201).redirect('/admin/listAllUsers');

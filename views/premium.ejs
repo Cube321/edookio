@@ -53,7 +53,7 @@
                                 <a href="/auth/user/new?premium=true" class="btn btn-danger my-3">Zaregistrovat se a aktivovat</a> 
                             <% } %>
                             <% if (currentUser && !currentUser.isPremium) { %>
-                                <a href="#" id="checkout-button-monthly" class="btn btn-danger my-3">Aktivovat</a> 
+                                <a href="#" id="checkout-button-monthly" class="btn btn-lg btn-danger my-3" style="min-width:115px">Aktivovat</a> 
                             <% } %>
                             <% if (currentUser && currentUser.isPremium) { %>
                                 <a href="#" class="btn btn-danger my-3 disabled">Tvé předplatné je aktivní</a> 
@@ -76,7 +76,7 @@
                                 <a href="/auth/user/new?premium=true" class="btn btn-danger my-3">Zaregistrovat se a aktivovat</a> 
                             <% } %>
                             <% if (currentUser && !currentUser.isPremium) { %>
-                                <a href="#" id="checkout-button-yearly" class="btn btn-danger my-3">Aktivovat</a> 
+                                <a href="#" id="checkout-button-yearly" class="btn btn-lg btn-danger my-3" style="min-width:115px">Aktivovat</a> 
                             <% } %>
                             <% if (currentUser && currentUser.isPremium) { %>
                                 <a href="#" class="btn btn-danger my-3 disabled">Tvé předplatné je aktivní</a> 
