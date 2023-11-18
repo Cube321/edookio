@@ -53,38 +53,7 @@ router.post('/webhook', async (req, res) => {
 
   switch (event.type) {
     //create new subscription
-    case 'customer.subscription.created': {
-      console.log('CREATING RUNNING');
-      const user = await User.findOne({billingId: data.customer});
-      user.justSubscribed = true;
-      if(!user){
-        console.log('Uživatel s tímto platebním ID nebyl nalezen');
-        return res.sendStatus(404);
-      }
-      let today = Date.now();
-      user.premiumDateOfActivation = moment();
-      if (data.plan.id === productToPriceMap.YEARLY) {
-        user.plan = 'yearly';
-        user.endDate = moment(today).add('1','year').format();
-      }
-
-      if (data.plan.id === productToPriceMap.MONTHLY) {
-        user.plan = 'monthly';
-        user.endDate = moment(today).add('1','month').format();
-      }
-
-      if (data.plan.id === productToPriceMap.DAILY) {
-        user.plan = 'daily';
-        user.endDate = moment(today).add('1','day').format();
-      }
-      user.isPremium = true;
-      await user.save();
-      //info emails
-      mail.subscriptionCreated(user.email);
-      mail.adminInfoNewSubscription(user);
-      break
-    }
-      //manage subscription (change plan + cancel)
+      //manage subscription (new/update/cancel)
       case "customer.subscription.updated":{
         //changed payment period
         console.log('UPDATED RUNNING');
@@ -94,48 +63,60 @@ router.post('/webhook', async (req, res) => {
           return res.sendStatus(404);
         }
         let today = Date.now();
-        if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.YEARLY) {
+        if (!data.canceled_at && data.plan.id == productToPriceMap.YEARLY) {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();
-          user.isPremium = true;
-          //update date on user
-          user.premiumDateOfUpdate = moment();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
-          mail.subscriptionUpdated(user.email, endDate);
-          mail.adminInfoSubscriptionUpdated(user, endDate);
+          if(user.isPremium){
+              mail.subscriptionUpdated(user.email, endDate);
+              mail.adminInfoSubscriptionUpdated(user, endDate);
+              //update date on user
+              user.premiumDateOfUpdate = moment();
+          } else {
+              mail.subscriptionCreated(user.email);
+              mail.adminInfoNewSubscription(user);
+          }
+          user.isPremium = true;
         }
   
         if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.MONTHLY) {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
-          user.isPremium = true;
-          //update date on user
-          user.premiumDateOfUpdate = moment();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
-          mail.subscriptionUpdated(user.email, endDate);
-          mail.adminInfoSubscriptionUpdated(user, endDate);
+          if(user.isPremium){
+            mail.subscriptionUpdated(user.email, endDate);
+            mail.adminInfoSubscriptionUpdated(user, endDate);
+            //update date on user
+            user.premiumDateOfUpdate = moment();
+          } else {
+              mail.subscriptionCreated(user.email);
+              mail.adminInfoNewSubscription(user);
+          }
+          user.isPremium = true;
           //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
         }
 
         if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.DAILY) {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
-          user.isPremium = true;
-          //update date on user
-          user.premiumDateOfUpdate = moment();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
-          mail.subscriptionUpdated(user.email, endDate);
-          mail.adminInfoSubscriptionUpdated(user, endDate);
-        }
-
-        if(user.justSubscribed){
-          user.justSubscribed = false;
+          //info emails
+          if(user.isPremium){
+            mail.subscriptionUpdated(user.email, endDate);
+            mail.adminInfoSubscriptionUpdated(user, endDate);
+            //update date on user
+            user.premiumDateOfUpdate = moment();
+          } else {
+              mail.subscriptionCreated(user.email);
+              mail.adminInfoNewSubscription(user);
+          }
+          user.isPremium = true;
         }
         
         //cancelation
