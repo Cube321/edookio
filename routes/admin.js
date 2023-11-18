@@ -15,6 +15,28 @@ const mail = require('../mail/mail_inlege');
 //show all registered users
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
+    
+    //count free and premium sections and cards separately
+    const sectionsPremium = await Section.find({isPremium: true}).select('cards');
+    const sectionsFree = await Section.find({isPremium: false}).select('cards');
+    let cardsPremiumCount = 0;
+    let cardsFreeCount = 0;
+    let sectionsFreeCount = sectionsFree.length;
+    let sectionsPremiumCount = sectionsPremium.length;
+    sectionsPremium.forEach(section => {
+        cardsPremiumCount = cardsPremiumCount + section.cards.length;
+    })
+    sectionsFree.forEach(section => {
+        cardsFreeCount = cardsFreeCount + section.cards.length;
+    })
+        //count ratios - cards
+        let cardsTotal = cardsFreeCount + cardsPremiumCount
+        let freeCardRatio =  Math.round(100 / cardsTotal * cardsFreeCount);
+
+        //count ratios - sections
+        let sectionsTotal = sectionsFreeCount + sectionsPremiumCount
+        let freeSectionRatio =  Math.round(100 / sectionsTotal * sectionsFreeCount);
+
     let updatedUsers = [];
     //count all users and premium users and count faculties
     let premiumUsersCount = 0;
@@ -57,7 +79,13 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         premiumActivationsInLastWeek,
         premiumUpdatesInLastWeek,
         premiumDeactivationsInLastWeek,
-        faculties
+        faculties,
+        cardsPremiumCount,
+        cardsFreeCount,
+        sectionsFreeCount,
+        sectionsPremiumCount,
+        freeCardRatio,
+        freeSectionRatio
     });
 }))
 
