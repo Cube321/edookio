@@ -11,10 +11,6 @@ const moment = require('moment');
 const { categories } = require('../utils/categories');
 const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
 
-//demo flip
-router.get("/demoFlip", (req, res)=> {
-    res.render('flipCardByChatGPT');
-})
 
 //show a specific card
 router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {

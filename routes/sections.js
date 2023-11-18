@@ -46,7 +46,7 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     //console.log(category.basicSections);
     //render category page
     console.log(category.sections);
-    res.status(200).render('category2', {category, title, demoCat});
+    res.status(200).render('category', {category, title, demoCat});
 }))
 
 //create new Category - new approach - service moved out of the route
@@ -197,7 +197,7 @@ router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, ca
     const {sectionId, category} = req.params;
     const foundCategory = await Category.findOne({name: category});
     if(!foundCategory){
-        throw Error("Kategorie s tímto ID neexistuje");
+        throw Error("Kategorie s tímto názvem neexistuje");
     }
     if(foundCategory.sections.includes(sectionId)){
         let fromIndex = foundCategory.sections.indexOf(sectionId);
@@ -208,6 +208,22 @@ router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, ca
         await foundCategory.save(); 
         }
     }
+    res.status(200).redirect(`/category/${category}`);
+}))
+
+router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {category, sectionId, changeDirection} = req.params;
+    let foundSection = await Section.findById(sectionId);
+    if(!foundSection){
+        throw Error("Balíček s tímto ID neexistuje");
+    }
+    if(changeDirection === "toZdarma"){
+        foundSection.isPremium = false;
+    }
+    if(changeDirection === "toPremium"){
+        foundSection.isPremium = true;
+    }
+    await foundSection.save();
     res.status(200).redirect(`/category/${category}`);
 }))
 
