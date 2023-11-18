@@ -12,17 +12,6 @@ const moment = require('moment');
 const mail = require('../mail/mail_inlege');
 
 
-//edit sections of categories
-router.get('/admin/editCategory/:category', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
-    let {category} = req.params;
-    let allSections = await Section.find({category: category}).select('_id');
-    let foundCategory = await Category.findOne({name: category});
-    let onlyIdsArray = allSections.map(section => section = section._id);
-    foundCategory.sections = onlyIdsArray;
-    await foundCategory.save();
-    res.sendStatus(200);
-}))
-
 //show all registered users
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});

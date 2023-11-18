@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 //show sections of category
 router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, next) => {
 
-    const category = await Category.findOne({name: req.params.category}).populate('basicSections').populate('premiumSections').exec();
+    const category = await Category.findOne({name: req.params.category}).populate('basicSections').populate('premiumSections').populate('sections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
         return res.status(404).redirect('back');
@@ -45,7 +45,8 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     }
     //console.log(category.basicSections);
     //render category page
-    res.status(200).render('category', {category, title, demoCat});
+    console.log(category.sections);
+    res.status(200).render('category2', {category, title, demoCat});
 }))
 
 //create new Category - new approach - service moved out of the route
@@ -110,14 +111,16 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
         throw Error("Sekce s tímto ID neexistuje");
     }
     let updatedCategory;
+    //remove sections from category arrays
     if(!foundSection.isPremium){
-        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {basicSections: sectionId}});
+        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {basicSections: sectionId, sections: sectionId}});
         console.log('removed basic section from category array');
     } 
     if(foundSection.isPremium){
-        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {premiumSections: sectionId}});
+        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {premiumSections: sectionId, sections: sectionId}});
         console.log('removed premium section from category array');
     } 
+
     
     if(!updatedCategory){
         throw Error("Kategorie s tímto ID neexistuje");
@@ -179,21 +182,12 @@ router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isAdmin, catc
     if(!foundCategory){
         throw Error("Kategorie s tímto ID neexistuje");
     }
-    if(foundCategory.basicSections.includes(sectionId)){
-        let fromIndex = foundCategory.basicSections.indexOf(sectionId);
+    if(foundCategory.sections.includes(sectionId)){
+        let fromIndex = foundCategory.sections.indexOf(sectionId);
         if(fromIndex !== 0){
         let toIndex = fromIndex--;
-        let section = foundCategory.basicSections.splice(fromIndex, 1)[0];
-        foundCategory.basicSections.splice(toIndex, 0, section);
-        await foundCategory.save(); 
-        }
-    }
-    if(foundCategory.premiumSections.includes(sectionId)){
-        let fromIndex = foundCategory.premiumSections.indexOf(sectionId);
-        if(fromIndex !== 0){
-        let toIndex = fromIndex--;
-        let section = foundCategory.premiumSections.splice(fromIndex, 1)[0];
-        foundCategory.premiumSections.splice(toIndex, 0, section);
+        let section = foundCategory.sections.splice(fromIndex, 1)[0];
+        foundCategory.sections.splice(toIndex, 0, section);
         await foundCategory.save(); 
         }
     }
@@ -205,21 +199,12 @@ router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, ca
     if(!foundCategory){
         throw Error("Kategorie s tímto ID neexistuje");
     }
-    if(foundCategory.basicSections.includes(sectionId)){
-        let fromIndex = foundCategory.basicSections.indexOf(sectionId);
-        if(fromIndex < foundCategory.basicSections.length){
+    if(foundCategory.sections.includes(sectionId)){
+        let fromIndex = foundCategory.sections.indexOf(sectionId);
+        if(fromIndex < foundCategory.sections.length){
         let toIndex = fromIndex++;
-        let section = foundCategory.basicSections.splice(fromIndex, 1)[0];
-        foundCategory.basicSections.splice(toIndex, 0, section);
-        await foundCategory.save(); 
-        }
-    }
-    if(foundCategory.premiumSections.includes(sectionId)){
-        let fromIndex = foundCategory.premiumSections.indexOf(sectionId);
-        if(fromIndex < foundCategory.premiumSections.length){
-        let toIndex = fromIndex++;
-        let section = foundCategory.premiumSections.splice(fromIndex, 1)[0];
-        foundCategory.premiumSections.splice(toIndex, 0, section);
+        let section = foundCategory.sections.splice(fromIndex, 1)[0];
+        foundCategory.sections.splice(toIndex, 0, section);
         await foundCategory.save(); 
         }
     }
