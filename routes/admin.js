@@ -126,7 +126,6 @@ router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catch
     }
     await user.save();
     let endDate = moment(user.endDate).locale('cs').format('LL');
-    console.log(endDate);
     mail.sendAdminGrantedPremium(user.email, endDate);
     req.flash('success','Uživatel je nyní Premium');
     res.status(201).redirect('/admin/listAllUsers');

@@ -11,6 +11,10 @@
     font-size: 0.8rem;
 }
 
+.text-smaller {
+    font-size: 0.875rem;
+}
+
 .grey-highlight {
     background-color: #EEEEEE;
     border-radius: 10px;

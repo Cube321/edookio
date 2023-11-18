@@ -1,6 +1,6 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
-    <div class="row">
+    <div class="row text-smaller">
         <div class="offset-1 col-md-4 mb-3 pt-3">
             <div class="card stats p-3">
             <h5 class="mb-3">Statistiky</h5>
@@ -119,18 +119,18 @@
             <div class="card stats p-3">
                 <h5 class="mb-3">Kartičky a balíčky</h5>
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <p>Kartiček zdarma</p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <%= cardsFreeCount %>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <p>Kartiček v předplatném</p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <%= cardsPremiumCount %>
                     </div>
                 </div>
@@ -144,18 +144,18 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <p>Balíčky zdarma</p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <%= sectionsFreeCount %>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-9">
                         <p>Balíčky v předplatném</p>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <%= sectionsPremiumCount %>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
         </div>
     </div>
     <% for(let user of users){ %> 
-        <div class="row">
+        <div class="row text-smaller">
             <div class="col-sm-2 offset-1"><%= user.email %> </div>
             <div class="col-sm-2">REG: <%= user.updatedDateOfRegistration %> </div>
             <div class="col-sm-1"><%= user.cardsSeen %></div>
@@ -186,6 +186,11 @@
             <% } else { %>
                 <div class="col-sm-1">-</div>
             <% } %>
+            <% if (user.isPremium && !user.premiumGrantedByAdmin) { %>
+                <div class="col-sm-4 text-center">
+                    <p class="text-muted">- aktivní placené předplatné -</p>
+                </div>
+            <% } else { %>
             <div class="col-sm-2">
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addDay">P1D</a> 
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addMonth">P1M</a> 
@@ -196,6 +201,7 @@
             <div class="col-sm-2">
                 <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Odstranit uživatele</button></form>
             </div>
+            <% } %>
             <hr>
         </div>
     <% } %> 
