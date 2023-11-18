@@ -81,7 +81,7 @@ router.post('/webhook', async (req, res) => {
           user.isPremium = true;
         }
   
-        if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.MONTHLY) {
+        if (!data.canceled_at && data.plan.id == productToPriceMap.MONTHLY) {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
           //format endDate
@@ -100,7 +100,7 @@ router.post('/webhook', async (req, res) => {
           //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
         }
 
-        if (!data.canceled_at && !user.justSubscribed && data.plan.id == productToPriceMap.DAILY) {
+        if (!data.canceled_at && data.plan.id == productToPriceMap.DAILY) {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
           //format endDate
