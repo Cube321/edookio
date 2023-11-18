@@ -56,6 +56,7 @@ router.post('/webhook', async (req, res) => {
     case 'customer.subscription.created': {
       console.log('CREATING RUNNING');
       const user = await User.findOne({billingId: data.customer});
+      user.justSubscribed = true;
       if(!user){
         console.log('Uživatel s tímto platebním ID nebyl nalezen');
         return res.sendStatus(404);
