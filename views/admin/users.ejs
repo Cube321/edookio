@@ -125,7 +125,7 @@
     <% for(let user of users){ %> 
         <div class="row">
             <div class="col-sm-2 offset-1"><%= user.email %> </div>
-            <div class="col-sm-2"><%= user.updatedDateOfRegistration %> </div>
+            <div class="col-sm-2">REG: <%= user.updatedDateOfRegistration %> </div>
             <div class="col-sm-1"><%= user.cardsSeen %></div>
             <% if(user.isPremium){ %> 
                 <div class="col-sm-1">Premium</div>
@@ -135,6 +135,7 @@
             <div class="col-sm-2">
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addDay">P1D</a> 
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addMonth">P1M</a> 
+                <a href="/admin/<%=user._id%>/upgradeToPremium/add6Weeks">P6W</a> 
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addYear">P1R</a> 
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addDecade">P10R</a>
             </div>

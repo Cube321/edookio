@@ -4,6 +4,8 @@ const { sectionSchema } = require('../schemas.js');
 const User = require('../models/user');
 const ExpressError = require('../utils/ExpressError');
 const moment = require('moment');
+const mail = require('../mail/mail_inlege');
+
 
 const middleware = {};
 
@@ -32,6 +34,7 @@ const checkAndUpdatePremiumEndDate = async (user) => {
             foundUser.endDate = null;
             foundUser.plan = "none";
             await foundUser.save()
+            mail.sendPremiumEnded(foundUser.email);
         }
 }
 

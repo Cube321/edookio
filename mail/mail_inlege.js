@@ -7,7 +7,7 @@ var mail = {};
 //welcome e-mail
 mail.welcome = function(email, callback){
     const msg = {
-        from: "info@inlege.cz", 
+        from: {email:"info@inlege.cz", name: "InLege.cz"}, 
         to: email,
         subject: "Vítej na InLege",
         html: `
@@ -52,9 +52,9 @@ mail.adminInfoNewUser = function(newUser, callback){
 //subscription created e-mail
 mail.subscriptionCreated = function(email, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: email,
-      subject: "Předplatné Premium aktivováno",
+      subject: "Předplatné InLege Premium aktivováno",
       html: `
           <p style="font-family:Helvetica Neue">Ahoj,<p>
           <p style="font-family:Helvetica Neue">na základě tvé objednávky a platby jsme ti aktivovali předplatné Premium. Nyní máš přístup ke stovkám prémiových kartiček navíc.</p>
@@ -97,9 +97,9 @@ mail.adminInfoNewSubscription = function(user, callback){
 //subscription updated e-mail
 mail.subscriptionUpdated = function(email, endDate, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: email,
-      subject: "Předplatné Premium prodlouženo",
+      subject: "Předplatné InLege Premium prodlouženo",
       html: `
           <p style="font-family:Helvetica Neue">Ahoj,<p>
           <p style="font-family:Helvetica Neue">tvé předplatné Premium bylo prodlouženo do ${endDate}.</p>
@@ -139,9 +139,28 @@ mail.adminInfoSubscriptionUpdated = function(user, endDate, callback){
     });
 };
 
+//subscription Premium granted by admin
+mail.sendAdminGrantedPremium = function(email, endDate, callback){
+  const msg = {
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
+      to: email,
+      subject: `Dárek: Předplatné InLege Premium aktivováno do ${endDate}`,
+      html: `
+      <p style="font-family:Helvetica Neue">Ahoj,<p>
+      <p style="font-family:Helvetica Neue">na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> ti bylo právě administrátorem zdarma aktivováno předplatné Premium do ${endDate}! Užij si více než 2 500 opakovacích kartiček a další prémiové funkce.</p>
+      <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
+      `
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
 mail.subscriptionCanceled = function(email, endDate, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: email,
       subject: "Předplatné Premium ukončeno",
       html: `
@@ -183,6 +202,25 @@ mail.adminInfoSubscriptionCanceled = function(user, endDate, callback){
     });
 };
 
+//info mail when Premium actually ended (is send when user uses InLege after Premium expired)
+mail.sendPremiumEnded = function(email, callback){
+  const msg = {
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
+      to: email,
+      subject: `Předplatné InLege Premium právě skončilo`,
+      html: `
+      <p style="font-family:Helvetica Neue">Ahoj,<p>
+      <p style="font-family:Helvetica Neue">tvé předplatné Premium na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> právě skončilo. I tak můžeš nadále zdarma využívat více než 1 500 opakovacích kartiček. Předplatné můžeš kdykoliv <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz/premium">obnovit</a>.</p>
+      <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
+      `
+    };
+  //send the mail
+  sgMail.send(msg, function(err) {
+      if(err){
+        console.log(err);}      
+    });
+};
+
 //send feedbacl
 mail.sendFeedback = function(email, name, text, callback){
   const msg = {
@@ -204,7 +242,7 @@ mail.sendFeedback = function(email, name, text, callback){
 //forgotten password - change link
 mail.forgottenPassword = function(data, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: data.email,
       subject: "Zapomenuté heslo",
       html: `
@@ -223,7 +261,7 @@ mail.forgottenPassword = function(data, callback){
 //email for all users
 mail.sendEmergencyEmail = function(email, subject, text, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: email,
       subject: subject,
       html: `${text}`
@@ -239,7 +277,7 @@ mail.sendEmergencyEmail = function(email, subject, text, callback){
 //email for subscribed users
 mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: email,
       subject: subject,
       html: `${text}
@@ -257,7 +295,7 @@ mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
 //email test
 mail.sendTestEmail = function(email, subject, text, callback){
   const msg = {
-      from: "info@inlege.cz", 
+      from: {email:"info@inlege.cz", name: "InLege.cz"}, 
       to: email,
       subject: subject,
       html: `${text}
@@ -272,7 +310,7 @@ mail.sendTestEmail = function(email, subject, text, callback){
     });
 };
 
-//welcome e-mail
+//account deleted - admin info mail
 mail.adminInfoUserDeleted = function(userEmail, callback){
   const msg = {
       from: "info@inlege.cz", 

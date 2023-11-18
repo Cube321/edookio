@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	//Stripe payment
 
-  /* TEST DAILY
+   TEST DAILY
   const checkoutButtonDaily = $('#checkout-button-daily')
   
   checkoutButtonDaily.click(function () {
@@ -24,7 +24,7 @@ $(document).ready(function() {
       .then((result) => result.json())
       .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
   })
-  */
+  
 
   //Monthly Subscription
 	const checkoutButtonMonthly = $('#checkout-button-monthly')

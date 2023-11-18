@@ -28,24 +28,15 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     })
     //add data to user's unfinishedSections
     if(req.user){
-        category.basicSections.forEach((section, index) => {
+        category.sections.forEach((section, index) => {
             let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(x => x.sectionId.toString() == section._id.toString());
             if(unfinishedSectionIndex > -1){
-                category.basicSections[index].isUnfinished = true;
-                category.basicSections[index].lastSeenCard = req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
+                category.sections[index].isUnfinished = true;
+                category.sections[index].lastSeenCard = req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
             }
-        })  
-        category.premiumSections.forEach((section, index) => {
-            let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(x => x.sectionId.toString() == section._id.toString());
-            if(unfinishedSectionIndex > -1){
-                category.premiumSections[index].isUnfinished = true;
-                category.premiumSections[index].lastSeenCard = req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
-            }
-        })  
+        })   
     }
-    //console.log(category.basicSections);
     //render category page
-    console.log(category.sections);
     res.status(200).render('category', {category, title, demoCat});
 }))
 

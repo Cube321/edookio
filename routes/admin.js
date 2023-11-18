@@ -84,6 +84,10 @@ router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catch
         user.plan = "monthly";
         user.endDate = moment().add(1,'months');
     }
+    if(period === "add6Weeks"){
+        user.plan = "monthly";
+        user.endDate = moment().add(6,'weeks');
+    }
     if(period === "addYear"){
         user.plan = "yearly";
         user.endDate = moment().add(1,'years');
@@ -93,6 +97,9 @@ router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catch
         user.endDate = moment().add(10,'years');
     }
     await user.save();
+    let endDate = moment(user.endDate).locale('cs').format('LL');
+    console.log(endDate);
+    mail.sendAdminGrantedPremium(user.email, endDate);
     req.flash('success','Uživatel je nyní Premium');
     res.status(201).redirect('/admin/listAllUsers');
 }))

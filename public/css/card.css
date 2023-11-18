@@ -57,7 +57,7 @@
 
 /* SHOW CARD PAGE */
 .text-smaller {
-    font-size: 0.9rem;
+    font-size: 0.875rem;
 }
 
 
@@ -103,8 +103,6 @@
 
 .back-link {
     text-decoration: none;
-    font-weight:600;
-    font-size: 0.8rem;
 }
 
 #pageB > div > p, #pageB > div > ul {
