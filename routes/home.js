@@ -4,9 +4,11 @@ const Card = require('../models/card');
 const Section = require('../models/section');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
+const { isPremiumUser } = require('../utils/middleware');
+
 
 //show homepage
-router.get('/', catchAsync(async(req, res) => {
+router.get('/', isPremiumUser, catchAsync(async(req, res) => {
     const categories = await Category.find({});
     let numOfCategories = categories.length - 1;
     const numOfCards = await Card.count();
