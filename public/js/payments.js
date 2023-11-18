@@ -6,7 +6,6 @@ $(document).ready(function() {
 
 	//Stripe payment
 
-   TEST DAILY
   const checkoutButtonDaily = $('#checkout-button-daily')
   
   checkoutButtonDaily.click(function () {
