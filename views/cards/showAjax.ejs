@@ -75,7 +75,7 @@
                 <div class="front-menu d-flex justify-content-between align-items-center">
                   <a href=""></a>
                   <div class="">
-                    <a href="#" class="btn btn-outline-danger" id='btn-otocit'>Otočit</a>
+                    <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit-rendered'>Otočit</a>
                   </div>
                   <a href=""></a>
                 </div>
@@ -86,19 +86,19 @@
                   <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                  <a href="" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
+                  <a href="" id="rotate-back-rendered"><i class="fas fa-sync-alt fa-lg"></i></a>
                   <div>
                     <% if(sectionLength + 1 !== nextNum){ %>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-danger easy-btn" id="btn-dalsi">Další</a>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
                     <% } else { %>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-danger easy-btn" id="btn-dalsi-last-card">DalšíL</a>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-last-card">Další</a>
                     <% } %>
                     </div>
                     <% if(currentUser && currentUser.isPremium){%>
                       <% if(isCardSaved){%>
-                        <div id="save-star-div" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
+                        <div id="save-star-div-rendered" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
                       <% } else { %>
-                        <div id="save-star-div" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
+                        <div id="save-star-div-rendered" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
                       <% } %>
                     <% } else if (currentUser && !currentUser.isPremium) { %>
                     <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>

@@ -6,11 +6,18 @@ $(document).ready(function() {
     function getNextCard(direction, side){
         let nextCardUrl = "/"
         if(direction === "next"){
-            nextCardUrl = $("#btn-dalsi").attr("href");
+            if($("#btn-dalsi").length){
+                nextCardUrl = $("#btn-dalsi").attr("href");
+            }
+            if($("#btn-dalsi-rendered").length){
+                nextCardUrl = $("#btn-dalsi-rendered").attr("href");
+            }
+            
         }
         if(direction === "previous"){
             nextCardUrl = $("#flip-card #previous-btn-pageA").attr("href");
         }
+        console.log(nextCardUrl);
         $.ajax({
             method: "GET",
             url: nextCardUrl
@@ -32,8 +39,8 @@ $(document).ready(function() {
             } else {
                 previousCard = data.nextNum - 2;
             }
-            if(data.nextNum > 2){previousBtnFront = `<a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}" class="btn btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>`}
-            if(data.nextNum > 2){previousBtnBack = `<a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}" class="btn btn-danger easy-btn mx-1" id="previous-btn-pageB"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>`}
+            if(data.nextNum > 2){previousBtnFront = `<a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}" class="btn btn-lg btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>`}
+            if(data.nextNum > 2){previousBtnBack = `<a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}" class="btn btn-lg btn-danger easy-btn mx-1" id="previous-btn-pageB"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>`}
             if(data.user && data.user.isPremium && data.isCardSaved) {starFull = `<div id="save-star-div" name="${data.user.email}/${data.card._id}" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>`}
             if(data.user && data.user.isPremium && !data.isCardSaved) {starEmpty = `<div id="save-star-div" name="${data.user.email}/${data.card._id}" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>`}
             if(data.user && !data.user.isPremium) {starActivateModal = `<div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>`}
@@ -51,7 +58,7 @@ $(document).ready(function() {
                     <a href=""></a>
                     <div class="">
                     ${previousBtnFront}
-                    <a href="#" class="btn btn-outline-danger" id='btn-otocit'>Otočit</a>
+                    <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit'>Otočit</a>
                     </div>
                     <a href=""></a>
                 </div>
@@ -65,7 +72,7 @@ $(document).ready(function() {
                     <a href="" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
                     <div>
                     ${previousBtnBack}
-                    <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-danger easy-btn" id="btn-dalsi">Další</a>
+                    <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
                     </div>
                     ${starEmpty}
                     ${starFull}
@@ -84,13 +91,13 @@ $(document).ready(function() {
             $("#progressBarMobile").css('width', data.progressStatus + "%");
             $("#progressBarMac").css('width', data.progressStatus + "%");
 
-            $("#flip-card #btn-otocit").on('touchstart',(e) => {
+            $("#flip-card #btn-otocit").on('click',(e) => {
                 e.preventDefault();
                 $(".flip-card").toggleClass('flipped');
                 push++;
               })
 
-            $("#flip-card #btn-dalsi").on('touchstart',function(e){
+            $("#flip-card #btn-dalsi").on('click',function(e){
                 e.preventDefault();
                 $(this).addClass('disabled')
                 $("#loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
@@ -103,7 +110,7 @@ $(document).ready(function() {
                 }
             })
 
-            $("#rotate-back").on('touchstart',(e) => {
+            $("#rotate-back").on('click',(e) => {
                 e.preventDefault();
                 $(".flip-card").toggleClass('flipped');
                 push--;
@@ -111,7 +118,7 @@ $(document).ready(function() {
 
             //back btn logic
             //disable "previous" btn after click event
-            $("#flip-card #previous-btn-pageA").on('touchstart',function(e){
+            $("#flip-card #previous-btn-pageA").on('click',function(e){
                 e.preventDefault();
                 $("#flip-card #loaderA").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
                 $("#flip-card #pageB").remove();
@@ -120,7 +127,7 @@ $(document).ready(function() {
                 getNextCard('previous','front');
             })
 
-            $("#flip-card #previous-btn-pageB").on('touchstart',function(e){
+            $("#flip-card #previous-btn-pageB").on('click',function(e){
                 e.preventDefault();
                 $("#flip-card #loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
                 $("#flip-card #pageB").remove();
@@ -151,54 +158,59 @@ $(document).ready(function() {
                 }
             }
 
+            //remove gradient on scroll
+            $("#flip-card .back-main-content").scroll(function(){
+                $("#flip-card .back-main-content").removeClass('text-gradient');
+            })
+
             //saving card to favourites (page rendered)
-    $("#flip-card #save-star-div").on('touchstart',() => {
-        console.log("clicked")
-        //remove card from saved
-        if($("#flip-card #save-star-div").hasClass("clicked")){
-            $("#flip-card #save-star-div").empty();
-            $("#flip-card #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div').attr('name');
-            $.ajax({
-                method: "POST",
-                url: `/cards/unsave/${saveUrl}`
+            $("#flip-card #save-star-div").on('click',() => {
+                console.log("clicked")
+                //remove card from saved
+                if($("#flip-card #save-star-div").hasClass("clicked")){
+                    $("#flip-card #save-star-div").empty();
+                    $("#flip-card #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+                    const saveUrl = $('#save-star-div').attr('name');
+                    $.ajax({
+                        method: "POST",
+                        url: `/cards/unsave/${saveUrl}`
+                    })
+                    .then(res => {
+                        $("#flip-card #save-star-div").empty()
+                        $("#flip-card #save-star-div").removeClass("clicked");
+                        $("#flip-card #save-star-div").append("<i class='far fa-star fa-lg'></i>")
+                    })
+                    .catch(err => console.log(err)); 
+                //add card to saved
+                } else {
+                    $("#flip-card #save-star-div").empty();
+                    $("#flip-card #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+                    const saveUrl = $('#save-star-div').attr('name');
+                    $.ajax({
+                        method: "POST",
+                        url: `/cards/save/${saveUrl}`
+                    })
+                    .then(res => {
+                        $("#flip-card #save-star-div").empty()
+                        $("#flip-card #save-star-div").addClass("clicked");
+                        $("#flip-card #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
+                    })
+                    .catch(err => console.log(err)); 
+                }
             })
-            .then(res => {
-                $("#flip-card #save-star-div").empty()
-                $("#flip-card #save-star-div").removeClass("clicked");
-                $("#flip-card #save-star-div").append("<i class='far fa-star fa-lg'></i>")
-            })
-            .catch(err => console.log(err)); 
-        //add card to saved
-        } else {
-            $("#flip-card #save-star-div").empty();
-            $("#flip-card #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div').attr('name');
-            $.ajax({
-                method: "POST",
-                url: `/cards/save/${saveUrl}`
-            })
-            .then(res => {
-                $("#flip-card #save-star-div").empty()
-                $("#flip-card #save-star-div").addClass("clicked");
-                $("#flip-card #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
-            })
-            .catch(err => console.log(err)); 
-        }
-    })
 
             push = 0;
         })
         .catch(err => console.log(err));
     }
 
-      $("#btn-otocit").on('touchstart',(e) => {
+      $("#btn-otocit-rendered").on('click',(e) => {
         e.preventDefault();
         $(".flip-card").toggleClass('flipped');
         push++;
       })
 
-    $("#btn-dalsi").on('touchstart',function(e){
+    $("#btn-dalsi-rendered").on('click',function(e){
         e.preventDefault();
         $(this).addClass('disabled ');
         $("#loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
@@ -206,7 +218,7 @@ $(document).ready(function() {
         getNextCard("next");
     })
 
-    $("#rotate-back").on('touchstart',(e) => {
+    $("#rotate-back-rendered").on('click',(e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
         push--;
@@ -245,36 +257,36 @@ $(document).ready(function() {
     
 
     //saving card to favourites (page rendered)
-    $("#save-star-div").on('touchstart',() => {
+    $("#save-star-div-rendered").on('click',() => {
         console.log("clicked")
         //remove card from saved
-        if($("#save-star-div").hasClass("clicked")){
-            $("#save-star-div").empty();
-            $("#save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+        if($("#save-star-div-rendered").hasClass("clicked")){
+            $("#save-star-div-rendered").empty();
+            $("#save-star-div-rendered").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
             const saveUrl = $('#save-star-div').attr('name');
             $.ajax({
                 method: "POST",
                 url: `/cards/unsave/${saveUrl}`
             })
             .then(res => {
-                $("#save-star-div").empty()
-                $("#save-star-div").removeClass("clicked");
-                $("#save-star-div").append("<i class='far fa-star fa-lg'></i>")
+                $("#save-star-div-rendered").empty()
+                $("#save-star-div-rendered").removeClass("clicked");
+                $("#save-star-div-rendered").append("<i class='far fa-star fa-lg'></i>")
             })
             .catch(err => console.log(err)); 
         //add card to saved
         } else {
-            $("#save-star-div").empty();
-            $("#save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div').attr('name');
+            $("#save-star-div-rendered").empty();
+            $("#save-star-div-rendered").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            const saveUrl = $('#save-star-div-rendered').attr('name');
             $.ajax({
                 method: "POST",
                 url: `/cards/save/${saveUrl}`
             })
             .then(res => {
-                $("#save-star-div").empty()
-                $("#save-star-div").addClass("clicked");
-                $("#save-star-div").append("<i class='fas fa-star fa-lg'></i>")
+                $("#save-star-div-rendered").empty()
+                $("#save-star-div-rendered").addClass("clicked");
+                $("#save-star-div-rendered").append("<i class='fas fa-star fa-lg'></i>")
             })
             .catch(err => console.log(err)); 
         }
