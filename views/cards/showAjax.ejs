@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/bootstrap_customised.css">
   <link rel="stylesheet" href="/css/custom.css">
-  <link rel="stylesheet" href="/css/card.css?ldddddsdd">
+  <link rel="stylesheet" href="/css/card.css?ldddsdd">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -35,6 +35,8 @@
           <li>
             <p class="m-0"><small>
                 <%= sectionName %>
+                <div id="rotate-back-rendered" class="nezobrazovat-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></div>
+                  <div id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></div>
             </p></small>
           </li>
         </ul>
@@ -86,8 +88,7 @@
                   <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                  <div id="rotate-back-rendered" class="nezobrazovat-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></div>
-                  <div id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></div>
+                  
                   <div>
                     <% if(sectionLength + 1 !== nextNum){ %>
                       <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
@@ -174,7 +175,7 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
-      <script src="/js/card.js?ldcfffdd"></script>
+      <script src="/js/card.js?ldfdd"></script>
 </body>
 
 </html>
