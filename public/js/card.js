@@ -64,14 +64,15 @@ $(document).ready(function() {
                     <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                    <div class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></div><div class="zobrazovat-jen-na-mobilu" id="rotate-back-mobile"><i class="fas fa-sync-alt fa-lg"></i></div>
-                    <div>
-                    <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
-                    </div>
                     ${starEmpty}
                     ${starFull}
                     ${starActivateModal}
                     ${starPlaceholder}
+                    <div>
+                    <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
+                    </div>
+                    <a href="#" class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
+                    <a href="#" class="zobrazovat-jen-na-mobilu" id="rotate-back-mobile"><i class="fas fa-sync-alt fa-lg"></i></a>
                 </div>
                 </div>
             </div>
@@ -106,17 +107,10 @@ $(document).ready(function() {
             })
 
             $("#flip-card #rotate-back").click((e) => {
+                e.preventDefault();
                 $("#flip-card").toggleClass('flipped');
                 push--;
             })
-
-            /*
-            $("#flip-card #rotate-back-mobile").click(() => {
-                alert("clicked rendered")
-                $("#flip-card").toggleClass('flipped');
-                push--;
-            })
-            */
 
             //flip with space
             document.body.onkeyup = function(e) {
@@ -218,29 +212,20 @@ $(document).ready(function() {
         
     })
 
-    /*
-    $("#rotate-back-mobile-rendered").click(() => {
-        $("#flip-card").toggleClass('flipped');
-        push--;
-    })
-    */
-
-    /*
+    
     $('#flip-card').on('click', '#rotate-back-mobile-rendered', function(e) {
         e.preventDefault(e);
-        alert("clicked rendered")
         $("#flip-card").toggleClass('flipped');
         push--;
       });
 
       $('#flip-card').on('click', '#rotate-back-mobile', function(e) {
         e.preventDefault(e);
-        alert("clicked ajax")
         $("#flip-card").toggleClass('flipped');
         push--;
       });
 
-      */
+      
 
     //text-gradient on scrollable content
         //remove gradient on scroll
@@ -253,7 +238,6 @@ $(document).ready(function() {
             if (e.key == " " ||
                 e.code == "Space"      
             ) {
-                e.preventDefault();
                 push++;
                 if(push === 1){
                     $("#flip-card").toggleClass('flipped');
