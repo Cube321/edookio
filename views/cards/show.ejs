@@ -47,14 +47,14 @@
         <div class="col-lg-2 mb-3 zobrazovat-jen-na-mobilu">
           <div class="card">
             <div class="card-body text-center">
-              <p class="text-muted text-smaller mb-1">Karta <span id="progressCardNumMobile"><%= nextNum - 1 %></span> z <%= sectionLength %>
+              <p class="text-muted text-smaller mb-1">Karta <%= nextNum - 1 %> z <%= sectionLength %>
               </p>
               <div class="progress">
                 <% if(progressStatus && progressStatus===0){ %>
                   <div class="progress-bar bg-danger" role="progressbar"></div>
                   <% } else { %>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%" id="progressBarMobile">
-                      <span id="progressBarStatusMobile"><%= progressStatus %>%</span>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%">
+                      <%= progressStatus %>%
                     </div>
                     <% } %>
               </div>
@@ -65,46 +65,47 @@
 
         <!--FLIPCARD-->
         <div class="col-lg-5 offset-lg-2 mb-3">
-          <div class="flip-card" id="flip-card">
-            <div class="border-grey flip-card-inner">
+          <div class="flip-card">
+            <div class="card flip-card-inner">
               <div class="card-body flip-card-front pb-0">
                 <div class="front-main-content d-flex justify-content-center align-items-center">
-                  <div id="loaderA"></div>
                   <div class="card-text m-4 text-center" id="pageA"><%- card.pageA %></div>
                 </div>
                 <div class="front-menu d-flex justify-content-between align-items-center">
                   <a href=""></a>
                   <div class="">
-                    <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit-rendered'>Otočit</a>
+                    <% if (nextNum > 2) { %>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
+                    <% } %>
+                    <a href="#" class="btn btn-outline-danger" id='btn-otocit'>Otočit</a>
                   </div>
                   <a href=""></a>
                 </div>
               </div>
               <div class="card-body flip-card-back pb-0">
                 <div class="back-main-content d-flex justify-content-center align-items-center text-gradient">
-                  <div id="loaderB"></div>
+                  <div id="loader"></div>
                   <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                  <a href="" id="rotate-back-rendered"><i class="fas fa-sync-alt fa-lg"></i></a>
+                  <a href="" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
                   <div>
-                    <% if(sectionLength + 1 !== nextNum){ %>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
-                    <% } else { %>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-last-card">Další</a>
+                    <% if (nextNum > 2) { %>
+                      <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum -2 %>" class="btn btn-danger easy-btn" id="previous-btn-pageB"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>
                     <% } %>
-                    </div>
-                    <% if(currentUser && currentUser.isPremium){%>
-                      <% if(isCardSaved){%>
-                        <div id="save-star-div-rendered" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
-                      <% } else { %>
-                        <div id="save-star-div-rendered" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
-                      <% } %>
-                    <% } else if (currentUser && !currentUser.isPremium) { %>
-                    <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>
+                    <a href="/category/<%=card.category%>/section/<%=card.section%>/<%= nextNum %>" class="btn btn-danger easy-btn" id="btn-dalsi">Další</a>
+                  </div>
+                  <% if(currentUser && currentUser.isPremium){%>
+                    <% if(isCardSaved){%>
+                      <div id="save-star-div" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
                     <% } else { %>
-                      <div style="width:14px"></div>
-                      <% } %>
+                      <div id="save-star-div" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
+                    <% } %>
+                  <% } else if (currentUser && !currentUser.isPremium) { %>
+                  <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>
+                  <% } else { %>
+                    <div style="width:14px"></div>
+                    <% } %>
                 </div>
               </div>
             </div>
@@ -115,14 +116,14 @@
         <div class="col-lg-2 mb-3 mt-5 mt-lg-0 nezobrazovat-na-mobilu">
           <div class="card">
             <div class="card-body text-center">
-              <p class="text-muted text-smaller">Karta <span id="progressCardNumMac"><%= nextNum - 1 %></span> z <%= sectionLength %>
+              <p class="text-muted text-smaller">Karta <%= nextNum - 1 %> z <%= sectionLength %>
               </p>
               <div class="progress mb-2">
                 <% if(progressStatus && progressStatus===0){ %>
                   <div class="progress-bar bg-danger" role="progressbar"></div>
                   <% } else { %>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%" id="progressBarMac">
-                      <span id="progressBarStatusMac"><%= progressStatus %>%</span>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%">
+                      <%= progressStatus %>%
                     </div>
                     <% } %>
               </div>
