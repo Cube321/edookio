@@ -86,8 +86,10 @@
                   <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                  <a href="/" id="rotate-back-rendered" class="nezobrazovat-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></a>
-                  <a href="/" id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></a>
+                  <div>
+                    <a href="/" id="rotate-back-rendered" class="nezobrazovat-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i>XXX</a>
+                    <a href="/" id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i>XXX</a>
+                  </div>
                   <div>
                     <% if(sectionLength + 1 !== nextNum){ %>
                       <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
