@@ -225,6 +225,7 @@ $(document).ready(function() {
     })
     */
 
+    /*
     $('#flip-card').on('click', '#rotate-back-mobile-rendered', function(e) {
         e.preventDefault(e);
         alert("clicked rendered")
@@ -238,6 +239,8 @@ $(document).ready(function() {
         $("#flip-card").toggleClass('flipped');
         push--;
       });
+
+      */
 
     //text-gradient on scrollable content
         //remove gradient on scroll
@@ -273,7 +276,6 @@ $(document).ready(function() {
 
     //saving card to favourites (page rendered)
     $("#save-star-div-rendered").click(() => {
-        console.log("clicked")
         //remove card from saved
         if($("#save-star-div-rendered").hasClass("clicked")){
             $("#save-star-div-rendered").empty();
