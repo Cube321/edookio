@@ -91,13 +91,13 @@ $(document).ready(function() {
             $("#progressBarMobile").css('width', data.progressStatus + "%");
             $("#progressBarMac").css('width', data.progressStatus + "%");
 
-            $("#flip-card #btn-otocit").click((e) => {
+            $("#flip-card #btn-otocit").on("tap",(e) => {
                 e.preventDefault();
                 $(".flip-card").toggleClass('flipped');
                 push++;
               })
 
-            $("#flip-card #btn-dalsi").click(function(e){
+            $("#flip-card #btn-dalsi").on("tap",function(e){
                 e.preventDefault();
                 $(this).addClass('disabled')
                 $("#loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
@@ -110,7 +110,7 @@ $(document).ready(function() {
                 }
             })
 
-            $("#rotate-back").click((e) => {
+            $("#rotate-back").on("tap",(e) => {
                 e.preventDefault();
                 $(".flip-card").toggleClass('flipped');
                 push--;
@@ -118,7 +118,7 @@ $(document).ready(function() {
 
             //back btn logic
             //disable "previous" btn after click event
-            $("#flip-card #previous-btn-pageA").click(function(e){
+            $("#flip-card #previous-btn-pageA").on("tap",function(e){
                 e.preventDefault();
                 $("#flip-card #loaderA").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
                 $("#flip-card #pageB").remove();
@@ -127,7 +127,7 @@ $(document).ready(function() {
                 getNextCard('previous','front');
             })
 
-            $("#flip-card #previous-btn-pageB").click(function(e){
+            $("#flip-card #previous-btn-pageB").on("tap",function(e){
                 e.preventDefault();
                 $("#flip-card #loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
                 $("#flip-card #pageB").remove();
@@ -164,7 +164,7 @@ $(document).ready(function() {
             })
 
             //saving card to favourites (page rendered)
-            $("#flip-card #save-star-div").click(() => {
+            $("#flip-card #save-star-div").on("tap",() => {
                 console.log("clicked")
                 //remove card from saved
                 if($("#flip-card #save-star-div").hasClass("clicked")){
@@ -204,13 +204,13 @@ $(document).ready(function() {
         .catch(err => console.log(err));
     }
 
-      $("#btn-otocit-rendered").click((e) => {
+      $("#btn-otocit-rendered").on("tap",(e) => {
         e.preventDefault();
         $(".flip-card").toggleClass('flipped');
         push++;
       })
 
-    $("#btn-dalsi-rendered").click(function(e){
+    $("#btn-dalsi-rendered").on("tap",function(e){
         e.preventDefault();
         $(this).addClass('disabled ');
         $("#loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
@@ -218,7 +218,7 @@ $(document).ready(function() {
         getNextCard("next");
     })
 
-    $("#rotate-back-rendered").click((e) => {
+    $("#rotate-back-rendered").on("tap",(e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
         push--;
@@ -257,7 +257,7 @@ $(document).ready(function() {
     
 
     //saving card to favourites (page rendered)
-    $("#save-star-div-rendered").click(() => {
+    $("#save-star-div-rendered").on("tap",() => {
         console.log("clicked")
         //remove card from saved
         if($("#save-star-div-rendered").hasClass("clicked")){
