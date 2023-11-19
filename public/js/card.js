@@ -64,7 +64,7 @@ $(document).ready(function() {
                     <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                    <span class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></span><div class="zobrazovat-jen-na-mobilu" id="rotate-back-mobile"><i class="fas fa-sync-alt fa-lg"></i></div>
+                    <div class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></div><div class="zobrazovat-jen-na-mobilu" id="rotate-back-mobile"><i class="fas fa-sync-alt fa-lg"></i></div>
                     <div>
                     <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
                     </div>
