@@ -131,6 +131,13 @@
   cursor: pointer;
 }
 
+#rotate-back-mobile,
+#rotate-back-mobile-rendered {
+  color: #E80F88;
+  cursor: pointer;
+  zoom: 120%;
+}
+
 #predchozi-karticka-link {
   cursor: pointer;
 }
@@ -166,6 +173,9 @@
   @media only screen and (max-width: 992px) {
     .nezobrazovat-na-mobilu {
       display: none;
+    }
+    .save-star {
+      zoom: 120%;
     }
   }
 
