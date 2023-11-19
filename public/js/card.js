@@ -110,11 +110,13 @@ $(document).ready(function() {
                 push--;
             })
 
+            /*
             $("#flip-card #rotate-back-mobile").click(() => {
                 alert("clicked rendered")
                 $("#flip-card").toggleClass('flipped');
                 push--;
             })
+            */
 
             //flip with space
             document.body.onkeyup = function(e) {
@@ -217,10 +219,22 @@ $(document).ready(function() {
         
     })
 
+    /*
     $("#rotate-back-mobile-rendered").click(() => {
         $("#flip-card").toggleClass('flipped');
         push--;
     })
+    */
+
+    $('#flip-card').on('click', '#rotate-back-mobile-rendered', function() {
+        $("#flip-card").toggleClass('flipped');
+        push--;
+      });
+
+      $('#flip-card').on('click', '#rotate-back-mobile', function() {
+        $("#flip-card").toggleClass('flipped');
+        push--;
+      });
 
     //text-gradient on scrollable content
         //remove gradient on scroll
