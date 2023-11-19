@@ -69,7 +69,7 @@ $(document).ready(function() {
                     <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                    <span class="" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></span><div class="zobrazovat-jen-na-mobilu" style="min-width: 14px;"></div>
+                    <span class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></span><div class="zobrazovat-jen-na-mobilu" style="min-width: 14px;"></div>
                     <div>
                     ${previousBtnBack}
                     <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
