@@ -111,6 +111,7 @@ $(document).ready(function() {
             })
 
             $("#flip-card #rotate-back-mobile").click(() => {
+                alert("clicked rendered")
                 $("#flip-card").toggleClass('flipped');
                 push--;
             })
@@ -198,6 +199,7 @@ $(document).ready(function() {
 
     $("#flip-card #rotate-back-rendered").click((e) => {
         e.preventDefault();
+        alert("clicked rendered")
         $("#flip-card").toggleClass('flipped');
         push--;
     })
