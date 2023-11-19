@@ -131,6 +131,10 @@
   cursor: pointer;
 }
 
+#predchozi-karticka-link {
+  cursor: pointer;
+}
+
 .save-star {
     color: #E80F88;
     height: 20px;

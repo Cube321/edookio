@@ -15,9 +15,9 @@ $(document).ready(function() {
             
         }
         if(direction === "previous"){
-            nextCardUrl = $("#flip-card #previous-btn-pageA").attr("href");
+            nextCardUrl = $("#predchozi-karticka-link").attr("name");
+            console.log(nextCardUrl)
         }
-        console.log(nextCardUrl);
         $.ajax({
             method: "GET",
             url: nextCardUrl
@@ -69,7 +69,7 @@ $(document).ready(function() {
                     <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
-                    <span class="" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></span><div class="zobrazovat-jen-na-mobilu" style="min-width: 14px;"></div>
+                    <span class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></span><div class="zobrazovat-jen-na-mobilu" style="min-width: 14px;"></div>
                     <div>
                     ${previousBtnBack}
                     <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
@@ -90,6 +90,7 @@ $(document).ready(function() {
             $("#progressBarStatusMac").text(data.progressStatus + "%");
             $("#progressBarMobile").css('width', data.progressStatus + "%");
             $("#progressBarMac").css('width', data.progressStatus + "%");
+            $("#predchozi-karticka-link").attr("name", `/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}`);
 
             $("#flip-card #btn-otocit").click((e) => {
                 e.preventDefault();
@@ -113,26 +114,6 @@ $(document).ready(function() {
             $("#flip-card #rotate-back").click((e) => {
                 $("#flip-card").toggleClass('flipped');
                 push--;
-            })
-
-            //back btn logic
-            //disable "previous" btn after click event
-            $("#flip-card #previous-btn-pageA").click(function(e){
-                e.preventDefault();
-                $("#flip-card #loaderA").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
-                $("#flip-card #pageB").remove();
-                $("#flip-card #pageA").remove();
-                $(this).addClass('disabled');
-                getNextCard('previous','front');
-            })
-
-            $("#flip-card #previous-btn-pageB").click(function(e){
-                e.preventDefault();
-                $("#flip-card #loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
-                $("#flip-card #pageB").remove();
-                $("#flip-card #pageA").remove();
-                $(this).addClass('disabled');
-                getNextCard('previous');
             })
 
             //flip with space
@@ -164,7 +145,6 @@ $(document).ready(function() {
 
             //saving card to favourites (page rendered)
             $("#flip-card #save-star-div").click(() => {
-                console.log("clicked")
                 //remove card from saved
                 if($("#flip-card #save-star-div").hasClass("clicked")){
                     $("#flip-card #save-star-div").empty();
@@ -221,6 +201,19 @@ $(document).ready(function() {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
         push--;
+    })
+
+    $("#predchozi-karticka-link").click(function(e){
+        $("#flip-card #pageB").remove();
+        $("#flip-card #pageA").remove();
+        if($("#flip-card").hasClass("flipped")){
+            $("#flip-card #loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            getNextCard('previous');
+        } else {
+            $("#flip-card #loaderA").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            getNextCard('previous','front');
+        }
+        
     })
 
     //text-gradient on scrollable content
