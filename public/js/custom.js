@@ -1,5 +1,6 @@
     //cookies approval
-		$("#btn-agree").on("click", function(){
+		$("#btn-agree").on("click", function(e){
+			e.preventDefault();
 			$.ajax({
 				method: "GET",
 				url: "/cookies-agreed"

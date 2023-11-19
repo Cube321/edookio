@@ -24,6 +24,10 @@
   }
 
   .flip-card-front {
+    transform: rotateX(0deg);
+  }
+
+  .flip-card-front {
 
   }
 
@@ -60,6 +64,10 @@
     font-size: 0.875rem;
 }
 
+.border-grey {
+  border: 1px solid #DFDFDF;
+  border-radius: 0.25rem;
+}
 
 /*.inner-card-div {
     width: 96%;
