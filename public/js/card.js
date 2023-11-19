@@ -26,8 +26,6 @@ $(document).ready(function() {
             console.log(data);
             if(side !== "front"){$("#flip-card").toggleClass('flipped');}
             //conditional logic for content
-            let previousBtnFront = "";
-            let previousBtnBack = "";
             let starEmpty = "";
             let starFull = "";
             let starActivateModal = "";
@@ -39,8 +37,6 @@ $(document).ready(function() {
             } else {
                 previousCard = data.nextNum - 2;
             }
-            //if(data.nextNum > 2){previousBtnFront = `<a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}" class="btn btn-lg btn-outline-danger easy-btn mx-1" id="previous-btn-pageA"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>`}
-            //if(data.nextNum > 2){previousBtnBack = `<a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}" class="btn btn-lg btn-danger easy-btn mx-1" id="previous-btn-pageB"><i class="fas fa-arrow-left" style="line-height: 1.5;"></i></a>`}
             if(data.user && data.user.isPremium && data.isCardSaved) {starFull = `<div id="save-star-div" name="${data.user.email}/${data.card._id}" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>`}
             if(data.user && data.user.isPremium && !data.isCardSaved) {starEmpty = `<div id="save-star-div" name="${data.user.email}/${data.card._id}" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>`}
             if(data.user && !data.user.isPremium) {starActivateModal = `<div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>`}
@@ -57,7 +53,6 @@ $(document).ready(function() {
                 <div class="front-menu d-flex justify-content-between align-items-center">
                     <a href=""></a>
                     <div class="">
-                    ${previousBtnFront}
                     <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit'>Otočit</a>
                     </div>
                     <a href=""></a>
@@ -71,7 +66,6 @@ $(document).ready(function() {
                 <div class="back-menu d-flex justify-content-between align-items-center">
                     <span class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></span><div class="zobrazovat-jen-na-mobilu" style="min-width: 14px;"></div>
                     <div>
-                    ${previousBtnBack}
                     <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
                     </div>
                     ${starEmpty}
