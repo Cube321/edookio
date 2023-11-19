@@ -35,6 +35,7 @@ const authRoutes = require('./routes/auth');
 const sectionRoutes = require('./routes/sections');
 const paymentRoutes = require('./routes/payments');
 const legalRoutes = require('./routes/legal');
+const CardAjaxRoutes = require('./routes/cardsAjax');
 
 const dbUrl = process.env.DB_URL;
 
@@ -153,6 +154,7 @@ app.use('/', authRoutes);
 app.use('/', sectionRoutes);
 app.use('/', paymentRoutes);
 app.use('/', legalRoutes);
+app.use('/', CardAjaxRoutes);
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here
