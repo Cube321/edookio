@@ -225,13 +225,13 @@ $(document).ready(function() {
     })
     */
 
-    $('#flip-card').on('click', '#rotate-back-mobile-rendered', function() {
+    $('#flip-card').on('touchstart click', '#rotate-back-mobile-rendered', function() {
         alert("clicked rendered")
         $("#flip-card").toggleClass('flipped');
         push--;
       });
 
-      $('#flip-card').on('click', '#rotate-back-mobile', function() {
+      $('#flip-card').on('touchstart click', '#rotate-back-mobile', function() {
         alert("clicked ajax")
         $("#flip-card").toggleClass('flipped');
         push--;
