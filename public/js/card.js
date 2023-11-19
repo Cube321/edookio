@@ -84,6 +84,13 @@ $(document).ready(function() {
             </div>
             `);
 
+            $(".star-at-top").empty().append(`
+                ${starEmpty}
+                ${starFull}
+                ${starActivateModal}
+                ${starPlaceholder}
+            `)
+
             //update progress bar
             $("#progressCardNumMobile").text(data.nextNum - 1);
             $("#progressCardNumMac").text(data.nextNum - 1);
@@ -146,35 +153,35 @@ $(document).ready(function() {
             })
 
             //saving card to favourites (page rendered)
-            $("#flip-card #save-star-div").click(() => {
+            $("#main-container #save-star-div").click(() => {
                 //remove card from saved
-                if($("#flip-card #save-star-div").hasClass("clicked")){
-                    $("#flip-card #save-star-div").empty();
-                    $("#flip-card #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-                    const saveUrl = $('#save-star-div').attr('name');
+                if($("#main-container #save-star-div").hasClass("clicked")){
+                    $("#main-container #save-star-div").empty();
+                    $("#main-container #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+                    const saveUrl = $('#main-container #save-star-div').attr('name');
                     $.ajax({
                         method: "POST",
                         url: `/cards/unsave/${saveUrl}`
                     })
                     .then(res => {
-                        $("#flip-card #save-star-div").empty()
-                        $("#flip-card #save-star-div").removeClass("clicked");
-                        $("#flip-card #save-star-div").append("<i class='far fa-star fa-lg'></i>")
+                        $("#main-container #save-star-div").empty()
+                        $("#main-container #save-star-div").removeClass("clicked");
+                        $("#main-container #save-star-div").append("<i class='far fa-star fa-lg'></i>")
                     })
                     .catch(err => console.log(err)); 
                 //add card to saved
                 } else {
-                    $("#flip-card #save-star-div").empty();
-                    $("#flip-card #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-                    const saveUrl = $('#save-star-div').attr('name');
+                    $("#main-container #save-star-div").empty();
+                    $("#main-container #save-star-div").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+                    const saveUrl = $('#main-container #save-star-div').attr('name');
                     $.ajax({
                         method: "POST",
                         url: `/cards/save/${saveUrl}`
                     })
                     .then(res => {
-                        $("#flip-card #save-star-div").empty()
-                        $("#flip-card #save-star-div").addClass("clicked");
-                        $("#flip-card #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
+                        $("#main-container #save-star-div").empty()
+                        $("#main-container #save-star-div").addClass("clicked");
+                        $("#main-container #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
                     })
                     .catch(err => console.log(err)); 
                 }
@@ -273,35 +280,69 @@ $(document).ready(function() {
     
 
     //saving card to favourites (page rendered)
-    $("#save-star-div-rendered").click(() => {
+    $("#save-star-div-rendered-top").click(() => {
         //remove card from saved
-        if($("#save-star-div-rendered").hasClass("clicked")){
-            $("#save-star-div-rendered").empty();
-            $("#save-star-div-rendered").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div').attr('name');
+        if($("#save-star-div-rendered-top").hasClass("clicked")){
+            $("#save-star-div-rendered-top").empty();
+            $("#save-star-div-rendered-top").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            const saveUrl = $('#save-star-div-rendered-top').attr('name');
             $.ajax({
                 method: "POST",
                 url: `/cards/unsave/${saveUrl}`
             })
             .then(res => {
-                $("#save-star-div-rendered").empty()
-                $("#save-star-div-rendered").removeClass("clicked");
-                $("#save-star-div-rendered").append("<i class='far fa-star fa-lg'></i>")
+                $("#save-star-div-rendered-top").empty()
+                $("#save-star-div-rendered-top").removeClass("clicked");
+                $("#save-star-div-rendered-top").append("<i class='far fa-star fa-lg'></i>")
             })
             .catch(err => console.log(err)); 
         //add card to saved
         } else {
-            $("#save-star-div-rendered").empty();
-            $("#save-star-div-rendered").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div-rendered').attr('name');
+            $("#save-star-div-rendered-top").empty();
+            $("#save-star-div-rendered-top").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            const saveUrl = $('#save-star-div-rendered-top').attr('name');
             $.ajax({
                 method: "POST",
                 url: `/cards/save/${saveUrl}`
             })
             .then(res => {
-                $("#save-star-div-rendered").empty()
-                $("#save-star-div-rendered").addClass("clicked");
-                $("#save-star-div-rendered").append("<i class='fas fa-star fa-lg'></i>")
+                $("#save-star-div-rendered-top").empty()
+                $("#save-star-div-rendered-top").addClass("clicked");
+                $("#save-star-div-rendered-top").append("<i class='fas fa-star fa-lg'></i>")
+            })
+            .catch(err => console.log(err)); 
+        }
+    })
+
+    $("#save-star-div-rendered-bottom").click(() => {
+        //remove card from saved
+        if($("#save-star-div-rendered-bottom").hasClass("clicked")){
+            $("#save-star-div-rendered-bottom").empty();
+            $("#save-star-div-rendered-bottom").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            const saveUrl = $('#save-star-div-rendered-bottom').attr('name');
+            $.ajax({
+                method: "POST",
+                url: `/cards/unsave/${saveUrl}`
+            })
+            .then(res => {
+                $("#save-star-div-rendered-bottom").empty()
+                $("#save-star-div-rendered-bottom").removeClass("clicked");
+                $("#save-star-div-rendered-bottom").append("<i class='far fa-star fa-lg'></i>")
+            })
+            .catch(err => console.log(err)); 
+        //add card to saved
+        } else {
+            $("#save-star-div-rendered-bottom").empty();
+            $("#save-star-div-rendered-bottom").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+            const saveUrl = $('#save-star-div-rendered-bottom').attr('name');
+            $.ajax({
+                method: "POST",
+                url: `/cards/save/${saveUrl}`
+            })
+            .then(res => {
+                $("#save-star-div-rendered-bottom").empty()
+                $("#save-star-div-rendered-bottom").addClass("clicked");
+                $("#save-star-div-rendered-bottom").append("<i class='fas fa-star fa-lg'></i>")
             })
             .catch(err => console.log(err)); 
         }
