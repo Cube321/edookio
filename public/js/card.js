@@ -93,7 +93,7 @@ $(document).ready(function() {
 
             $("#flip-card #btn-otocit").click((e) => {
                 e.preventDefault();
-                $(".flip-card").toggleClass('flipped');
+                $("#flip-card").toggleClass('flipped');
                 push++;
               })
 
@@ -110,9 +110,8 @@ $(document).ready(function() {
                 }
             })
 
-            $("#rotate-back").click((e) => {
-                e.preventDefault();
-                $(".flip-card").toggleClass('flipped');
+            $("#flip-card #rotate-back").click((e) => {
+                $("#flip-card").toggleClass('flipped');
                 push--;
             })
 
@@ -206,7 +205,7 @@ $(document).ready(function() {
 
       $("#btn-otocit-rendered").click((e) => {
         e.preventDefault();
-        $(".flip-card").toggleClass('flipped');
+        $("#flip-card").toggleClass('flipped');
         push++;
       })
 
@@ -218,7 +217,7 @@ $(document).ready(function() {
         getNextCard("next");
     })
 
-    $("#rotate-back-rendered").click((e) => {
+    $("#flip-card #rotate-back-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
         push--;
