@@ -125,6 +125,12 @@
     margin-bottom: 0.5rem;
 }
 
+#rotate-back,
+#rotate-back-rendered {
+  color: #E80F88;
+  cursor: pointer;
+}
+
 .save-star {
     color: #E80F88;
     height: 20px;
