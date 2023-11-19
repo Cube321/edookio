@@ -143,6 +143,14 @@
   min-width: 40px;
 }
 
+#btn-dalsi,
+#btn-dalsi-rendered,
+#btn-dalsi-last-card,
+#btn-otocit,
+#btn-otocit-rendered {
+  min-width: 120px;
+}
+
 #predchozi-karticka-link {
   cursor: pointer;
 }
@@ -152,6 +160,14 @@
     height: 100%;
     min-width: 40px;
     zoom: 120%;
+}
+
+.star-at-top {
+  min-width: 40px;
+  zoom: 120%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .spinner-border-small {

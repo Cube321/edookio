@@ -64,10 +64,14 @@ $(document).ready(function() {
                     <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
                 </div>
                 <div class="back-menu d-flex justify-content-between align-items-center">
+                    <div class="nezobrazovat-na-mobilu">
                     ${starEmpty}
                     ${starFull}
                     ${starActivateModal}
                     ${starPlaceholder}
+                    </div>
+                    <div style="width:40px" class="zobrazovat-jen-na-mobilu"></div>
+                    
                     <div>
                     <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
                     </div>
@@ -113,14 +117,6 @@ $(document).ready(function() {
                 $("#flip-card").toggleClass('flipped');
                 push--;
             })
-
-            /*
-            $("#flip-card #rotate-back-mobile").click(() => {
-                alert("clicked rendered")
-                $("#flip-card").toggleClass('flipped');
-                push--;
-            })
-            */
 
             //flip with space
             document.body.onkeyup = function(e) {
@@ -232,14 +228,12 @@ $(document).ready(function() {
     
     $('#flip-card').on('click', '#rotate-back-mobile-rendered', function(e) {
         e.preventDefault(e);
-        alert("clicked rendered")
         $("#flip-card").toggleClass('flipped');
         push--;
       });
 
       $('#flip-card').on('click', '#rotate-back-mobile', function(e) {
         e.preventDefault(e);
-        alert("clicked ajax")
         $("#flip-card").toggleClass('flipped');
         push--;
       });
