@@ -196,7 +196,7 @@ $(document).ready(function() {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
         setTimeout(() => {
-            $(".flip-card-front").toggleClass('hide');
+            $(".flip-card-front").remove();
           }, 200);
         push++;
       })
