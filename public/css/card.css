@@ -26,12 +26,13 @@
 
   .flip-card-front {
     transform: rotateX(0deg);
+    z-index: 2;
   }
-
-
 
   .flip-card-back {
     transform: rotateY(180deg);
+    transform: translateZ(0);
+    z-index: 1;
   }
 
   .front-main-content,
