@@ -15,7 +15,7 @@ const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
 //show a specific card
 router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
     const {id} = req.params;
-    const card = await Card.findById(id);cardAjax
+    const card = await Card.findById(id);
     if (!card){
         req.flash('error','Kartička nebyla nalezena.');
         return res.redirect('/');
@@ -24,7 +24,7 @@ router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
     const sectionLength = section.cards.length;
     const nextNum = 1;
     let isCardSaved = isCardInArray(req.user.savedCards, id);
-    res.status(200).render('cards/show', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0, isCardSaved});
+    res.status(200).render('cards/showAjax', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0, isCardSaved});
 }))
 
 //render new card page (GET)

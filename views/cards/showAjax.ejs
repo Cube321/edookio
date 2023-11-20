@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/bootstrap_customised.css">
   <link rel="stylesheet" href="/css/custom.css">
-  <link rel="stylesheet" href="/css/card.css">
+  <link rel="stylesheet" href="/css/card.css?kkk">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -151,14 +151,14 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-5 offset-lg-2">
+        <div class="col-lg-6 offset-lg-2">
           <div class="text-center mt-4 servis-btns d-flex justify-content-around align-items-center">
             <% if (currentUser && currentUser.admin) { %>
               <a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a>
               <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
               <% } %>
                 <p id="predchozi-karticka-link" name="/category/<%= card.category %>/section/<%= card.section %>/cardAjax/<%= 0 %>" class="text-muted px-3 mb-0">Předchozí kartička</p>
-                <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted">Nahlásit chybu</a>
+                <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted px-3">Nahlásit chybu</a>
                 <p class="text-muted mb-0 px-3 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</p>
           </div>
         </div>
