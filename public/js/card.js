@@ -4,6 +4,12 @@ let push = 0;
 $(document).ready(function() {
         //GET DATA FOR CARD
     function getNextCard(direction, side){
+        $(".flip-card-front").click(()=>{
+            alert("FRONT")
+        })
+        $(".flip-card-back").click(()=>{
+            alert("BACK")
+        })
         let nextCardUrl = "/"
         if(direction === "next"){
             if($("#btn-dalsi").length){
@@ -195,9 +201,6 @@ $(document).ready(function() {
       $("#btn-otocit-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
-        setTimeout(() => {
-            $(".flip-card-front").remove();
-          }, 200);
         push++;
       })
 
@@ -212,9 +215,6 @@ $(document).ready(function() {
     $("#flip-card #rotate-back-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
-        setTimeout(() => {
-            $(".flip-card-front").toggleClass('hide');
-          }, 200);
         push--;
     })
 
@@ -242,9 +242,6 @@ $(document).ready(function() {
     $('#flip-card').on('click', '#rotate-back-mobile-rendered', function(e) {
         e.preventDefault(e);
         $("#flip-card").toggleClass('flipped');
-        setTimeout(() => {
-            $(".flip-card-front").toggleClass('hide');
-          }, 200);
         push--;
       });
 
