@@ -34,7 +34,7 @@
               <div class="row">
                   <div class="col-md-5 offset-md-1 my-5 p-4">
                     <h1 class="jumbotron-heading mb-3">Studuj práva efektivně s <span class="color-1">InLege</span>!</h1>
-                    <p class="lead">Pusť se do studia práv s více než dvěma tisíci kartiček s otázkami a odpověďmi. Skvělá interaktivní příprava na zkoušky.</p>        
+                    <p class="lead">Pusť se do studia práv s více než dvěma tisíci kartiček s otázkami a odpověďmi, nabízejících skvělou interaktivní přípravu na zkoušky.</p>        
                    <!-- <p>Pusť se do studia práv s více než dvěma tisíci kartiček s otázkami a odpověďmi, nabízejících skvělou interaktivní přípravu na zkoušky. S InLege získáš více než jen aplikaci - získáš společenství, které ti pomůže otevřít dveře k úspěšné právnické kariéře.</p>
                     <h2>Proč Studovat s InLege?</h2>
                     <ul>
@@ -45,9 +45,9 @@
                     </ul>
                     <p>Přidej se k nám a udělej krok k efektivnějšímu a úspěšnějšímu studiu práv s InLege!</p>
                 -->
-                    <div class="mt-5">
+                    <div class="mt-5 text-center-on-mobile">
                         <% if(!currentUser){ %> 
-                            <a href="/auth/user/new" class="btn btn-lg btn-danger">Studuj zdarma</a>
+                            <a href="/auth/user/new" class="btn btn-lg btn-danger call-to-action">Studuj zdarma</a>
                         <% } %> 
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="col-9">
                                     <p class="info-main"><%= numOfCards %> opakovacích kartiček</p>
-                                    <p class="info-secondary text-muted">a přibývají</p>
+                                    <p class="info-secondary text-muted">a přibývají každý týden</p>
                                 </div>
                             </div>
                         </div>
@@ -108,8 +108,8 @@
                                     <i class="fas fa-mobile-alt fa-3x color-2 text-muted"></i>
                                 </div>
                                 <div class="col-9">
-                                    <p class="info-main">Procvičuj i na mobilu</p>
-                                    <p class="info-secondary text-muted">díky responzivnímu designu</p>
+                                    <p class="info-main">Studuj kdykoliv a kdekoliv</p>
+                                    <p class="info-secondary text-muted">na mobilu i u počítače</p>
                                 </div>
                             </div>
                         </div>
@@ -119,8 +119,8 @@
                                     <i class="fas fa-gavel fa-3x color-2 text-muted"></i>
                                 </div>
                                 <div class="col-9">
-                                    <p class="info-main"><%= numOfCategories %> právních oblastí </p>
-                                    <p class="info-secondary text-muted">obsahujících <%= numOfSections  %> balíčků</p>
+                                    <p class="info-main"><%= numOfCategories %> oblastí, <%= numOfSections  %> balíčků</p>
+                                    <p class="info-secondary text-muted">komplexní pokrytí studijního materiálu</p>
                                 </div>
                             </div>
                         </div>
@@ -269,15 +269,14 @@
             <div class="row">
                 <div class="col-md-8 offset-md-2 text-center my-5">
                     <h1 class="mb-4">Naše vize</h1>
-                    <p class="fs-5">Mladí právníci neustále skládají zkoušky. Ať už na právnické fakultě nebo po jejím dokončení v rámci dalšího profesního vzdělávání. Sami jsme touto cestou prošli. Rádi bychom vám proto nabídli nástroj, který bychom za našich studijí sami ocenili a věříme, že vám na této náročné cestě usnadní život a přípravu na zkoušky zefektivní. Proto jsme vytvořili <strong style="color:#E80F88">InLege</strong>, aplikaci pro studenty práv.</p>
+                    <p class="fs-5">Mladí právníci se neustále potýkají se zkouškami, ať už na právnické fakultě nebo v průběhu dalšího profesního vzdělávání po jejím absolvování. Jsme si vědomi této náročné cesty, proto jsme vytvořili nástroj, který bychom sami v době našich studií ocenili. S radostí vám představujeme <strong class="color-1">InLege</strong>, inovativní webovou aplikaci nejen pro studenty práv.</p>
+
                     <!--
                     <p class="fs-5">Naší filozofií je, aby bylo InLege každodenním nástrojem pro co nejvíce studentů. Proto jsme si stanovili jako základní pravidlo, že bude vždy <strong style="color:#E80F88">nejméně 50 % obsahu zdarma</strong>. A to držíme!</p>
                     <h1>Mladí Právníci, Zkoušky a InLege</h1>
 
-<p>Mladí právníci se neustále potýkají se zkouškami, ať už na právnické fakultě nebo v průběhu dalšího profesního vzdělávání po jejím absolvování. Jsme si vědomi této náročné cesty, proto jsme vytvořili nástroj, který bychom sami v době našich studií ocenili. S radostí vám představujeme <strong>InLege</strong>, inovativní webovou aplikaci pro studenty práv v České republice.</p>
 
 <p>Naše filozofie spočívá v poskytnutí užitečného nástroje, který vám usnadní přípravu na zkoušky a zefektivní váš studijní proces. Jsme přesvědčeni, že InLege se stane nezbytným společníkem na této náročné cestě. Proč?</p>
-
 <ol>
     <li><strong>Zkušenostní Přístup:</strong> Jako absolventi práv jsme sami procházeli touto cestou, a tak jsme vytvořili aplikaci s ohledem na potřeby mladých právníků.</li>
 
@@ -290,6 +289,89 @@
 
 <p>InLege není pouze aplikací, je to společenství mladých právníků, kteří sdílejí váš zájem a chtějí vám pomoci na cestě k úspěchu. Připojte se k nám a dejte nám šanci vám usnadnit cestu k právnickému úspěchu!</p>
 -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="proc-inlege">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 offset-md-1 my-5">
+                    <h1 class="mb-5 text-center">Proč používat InLege?</h1>
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-1.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Unikátní přístup</h5>
+                                            <p class="reason-content">Zkušenosti absolventů práv přetavené do více než 2 500 interaktivních otázek a odpovědí.</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-2.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Připraven na vše</h5>
+                                            <p class="reason-content">Efektivní příprava na zkoušky, nezávisle na fázi tvého studia či profesního růstu.</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-3.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Širší společenství</h5>
+                                            <p class="reason-content">InLege není jen o kartičkách. Chceme budovat komunitu mladých právníků, kteří se podporují na cestě k úspěchu.</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-4.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Dostupné pro všechny</h5>
+                                            <p class="reason-content">Věříme, že kvalitní studijní materiály by měly být dostupné pro každého. Alespoň 50 % obsahu InLege je vždy zdarma!</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
