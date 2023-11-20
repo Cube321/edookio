@@ -20,7 +20,6 @@
     width: 100%;
     height: 100%;
     position: absolute;
-    backface-visibility: hidden;
   }
 
   .flip-card-front {
@@ -149,17 +148,6 @@
 #btn-otocit,
 #btn-otocit-rendered {
   min-width: 120px;
-  z-index: 10000;
-}
-
-#btn-otocit:focus,
-#btn-otocit-rendered:focus,
-#btn-otocit:hover,
-#btn-otocit-rendered:hover {
-  outline: none;
-  background-color: white;
-  color:#E80F88;
-  border: 1px solid #E80F88;
 }
 
 #predchozi-karticka-link {
