@@ -18,7 +18,7 @@ router.get('/', isPremiumUser, catchAsync(async(req, res) => {
     let spravnipravo = "";
     let ustavnipravo = "";
     let obchodnipravo = "";
-    let mezinarodnipravo = "";
+    let pravnickaanglictina = "";
     let trestniproces = "";
     let civilniproces = "";
     categories.forEach(cat => {
@@ -27,11 +27,11 @@ router.get('/', isPremiumUser, catchAsync(async(req, res) => {
         if(cat.name === "spravnipravo"){spravnipravo = cat};
         if(cat.name === "ustavnipravo"){ustavnipravo = cat};
         if(cat.name === "obchodnipravo"){obchodnipravo = cat};
-        if(cat.name === "mezinarodnipravo"){mezinarodnipravo = cat};
+        if(cat.name === "pravnickaanglictina"){pravnickaanglictina = cat};
         if(cat.name === "trestniproces"){trestniproces = cat};
         if(cat.name === "civilniproces"){civilniproces = cat};
     })
-    res.status(200).render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, mezinarodnipravo, trestniproces, civilniproces, numOfCards, numOfSections, numOfCategories});
+    res.status(200).render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, pravnickaanglictina, trestniproces, civilniproces, numOfCards, numOfSections, numOfCategories});
 }))
 
 module.exports = router;
