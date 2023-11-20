@@ -21,18 +21,18 @@
     height: 100%;
     position: absolute;
     backface-visibility: hidden;
-    
   }
 
   .flip-card-front {
     transform: rotateX(0deg);
-    z-index: 2;
   }
 
   .flip-card-back {
-    transform: rotateY(180deg);
-    transform: translateZ(0);
-    z-index: 1;
+    transform: rotateY(180deg);  
+  }
+
+  .hide {
+    display: none;
   }
 
   .front-main-content,

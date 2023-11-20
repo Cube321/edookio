@@ -2,23 +2,7 @@
 let push = 0;
 
 $(document).ready(function() {
-    $(".flip-card-back").click((e) => {
-        alert("clicked flip-card-back");
-    })
-    $(".flip-card-front").click((e) => {
-        alert("clicked flip-card-front");
-    })
-    $(".back-menu").click((e) => {
-        alert("clicked back-menu");
-    })
-    $(".vlozeny-div").click((e) => {
-        alert("clicked vlozeny-div");
-    })
-    $("#btn-dalsi-rendered").click((e) => {
-        alert("clicked btn-dalsi-rendered");
-    })
-    
-    //GET DATA FOR CARD
+        //GET DATA FOR CARD
     function getNextCard(direction, side){
         let nextCardUrl = "/"
         if(direction === "next"){
@@ -211,6 +195,9 @@ $(document).ready(function() {
       $("#btn-otocit-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
+        setTimeout(() => {
+            $(".flip-card-front").toggleClass('hide');
+          }, 200);
         push++;
       })
 
@@ -225,6 +212,9 @@ $(document).ready(function() {
     $("#flip-card #rotate-back-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
+        setTimeout(() => {
+            $(".flip-card-front").toggleClass('hide');
+          }, 200);
         push--;
     })
 
@@ -252,6 +242,9 @@ $(document).ready(function() {
     $('#flip-card').on('click', '#rotate-back-mobile-rendered', function(e) {
         e.preventDefault(e);
         $("#flip-card").toggleClass('flipped');
+        setTimeout(() => {
+            $(".flip-card-front").toggleClass('hide');
+          }, 200);
         push--;
       });
 
