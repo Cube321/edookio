@@ -148,6 +148,17 @@
   min-width: 120px;
 }
 
+#btn-otocit:focus,
+#btn-otocit-rendered:focus,
+#btn-otocit:hover,
+#btn-otocit-rendered:hover,
+#btn-otocit:active,
+#btn-otocit-rendered:active {
+  border: 1px solid #E80F88;
+  background-color: white;
+  color:#E80F88;
+}
+
 #predchozi-karticka-link {
   cursor: pointer;
 }
