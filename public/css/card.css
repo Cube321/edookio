@@ -13,7 +13,6 @@
 
   .flipped .flip-card-inner {
     transform: rotateY(180deg);
-    transform: translateZ(0);
   }
 
   .flip-card-front,
@@ -27,7 +26,6 @@
 
   .flip-card-front {
     transform: rotateX(0deg);
-    transform: translateZ(0);
   }
 
 
