@@ -1,11 +1,12 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
-<div class="container d-flex justify-content-center align-items-center mt-1 mb-5">
+<div class="container mt-1 mb-5">
     <div class="row">
-        <div class="d-flex justify-content-center align-items-center" style="max-width:330px;">
-            <div class="card shadow">
-                <div class="card-body">
+        <div class="col-lg-4 offset-lg-1 d-flex justify-content-center">
+        <div class="" style="max-width:330px;">
+            <div class="card  height-100">
+                <div class="card-body p-4 px-5">
                 <div class="text-center">
-                    <h3 class="mb-3 mt-2">Registrace</h3>
+                    <h2 class="mb-3 mt-2 color-1">Registrace</h2>
                 </div>
                 <% if (requiresPremium) { %>
                     <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new?requiresPremium=true" method="POST">
@@ -13,28 +14,28 @@
                 <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new" method="POST">
                 <% } %> 
                     <div class="mt-2">
-                        <input type="text" class="form-control form-control-sm" id="firstname" name="firstname" placeholder="Jméno" required>
+                        <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Jméno" required>
                     </div>
                     <div class="mt-3">
-                        <input type="text" class="form-control form-control-sm" id="lastname" name="lastname" placeholder="Příjmení" required>
+                        <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Příjmení" required>
                     </div>
                     <div class="mt-3">
-                        <input type="email" class="form-control form-control-sm" id="email" name="email" placeholder="E-mail" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
                     </div>
                     <div class="mt-3">
-                        <input type="password" class="form-control form-control-sm" id="password" name="password" placeholder="Heslo" minlength=6 required>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Heslo" minlength=6 required>
                         <div class="invalid-feedback">
                             Heslo musí obsahovat nejméně 6 znaků.
                         </div>
                     </div>
                     <div class="mt-3">
-                        <input type="password" class="form-control form-control-sm" id="password_confirmation" name="password_confirmation" placeholder="Heslo pro kontrolu" minlength=6 required>
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Heslo pro kontrolu" minlength=6 required>
                         <div class="invalid-feedback">
                             Heslo musí obsahovat nejméně 6 znaků.
                         </div>
                     </div>
                     <div>
-                        <select class="form-select form-select-sm" name="faculty" id="faculty">
+                        <select class="form-select" name="faculty" id="faculty">
                             <option selected value="Neuvedeno">Zvolte fakultu (nepovinné)</option>
                             <option value="PrF UP">PrF UP</option>
                             <option value="PrF UK">PrF UK</option>
@@ -64,12 +65,80 @@
                     </div>
                     
                     <div>
-                    <button class="btn btn-lg btn-danger w-100 mt-3" type="submit">Zaregistrovat</button>
+                    <button class="btn btn-lg btn-danger w-100 mt-3" type="submit">Pokračovat</button>
                     </div>
                 </form>
             </div>
         </div>
         </div>
+    </div>
+    <div class="col-6 d-flex justify-content-center align-items-center">
+        <div class="nezobrazovat-na-mobilu-landing">
+            <div class="card height-100 border-none">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h3 class="mb-3 mt-2">Jaké jsou hlavní výhody InLege?</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-1.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Unikátní přístup</h5>
+                                            <p class="reason-content">Zkušenosti absolventů práv přetavené do více než 2 500 interaktivních otázek a odpovědí.</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-2.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Připraví tě na vše</h5>
+                                            <p class="reason-content">Efektivní příprava na zkoušky, nezávisle na fázi tvého studia či profesního růstu.</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="reason">
+                                <div class="row">
+                                    <div class="col-lg-4 d-flex justify-content-center align-items-center">
+                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
+                                            <img src="/img/icon-reason-4.png" class="img-fit" alt="" />
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="ml-3">
+                                            <h5 class="reason-title">Dostupné pro všechny</h5>
+                                            <p class="reason-content">Věříme, že kvalitní studijní materiály by měly být dostupné pro každého. Alespoň 50 % obsahu InLege je vždy zdarma!</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
     

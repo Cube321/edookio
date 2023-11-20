@@ -43,13 +43,13 @@ $(document).ready(function() {
             $("#flip-card").empty();
             $("#flip-card").append(`
             <div class="border-grey flip-card-inner">
-                <div class="card-body flip-card-front pb-0">
+                <div class="card-body flip-card-front pb-0 px-0">
                     <div class="front-main-content d-flex justify-content-center align-items-center">
                         <div id="loaderA"></div>
                         <div class="card-text m-4 text-center" id="pageA">${data.card.pageA}</div>
                     </div>
                 </div>
-                <div class="card-body flip-card-back pb-0">
+                <div class="card-body flip-card-back pb-0 px-0">
                     <div class="back-main-content d-flex justify-content-center align-items-center text-gradient">
                         <div id="loaderB"></div>
                         <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
