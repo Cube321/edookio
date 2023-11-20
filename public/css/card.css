@@ -21,6 +21,7 @@
     height: 100%;
     position: absolute;
     backface-visibility: hidden;
+    transform: translateZ(0);
   }
 
   .flip-card-front {
