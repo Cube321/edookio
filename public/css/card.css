@@ -13,7 +13,6 @@
 
   .flipped .flip-card-inner {
     transform: rotateY(180deg);
-    backface-visibility: hidden;
   }
 
   .flip-card-front,
