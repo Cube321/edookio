@@ -13,6 +13,7 @@
 
   .flipped .flip-card-inner {
     transform: rotateY(180deg);
+    transform: translateZ(0);
   }
 
   .flip-card-front,
@@ -21,17 +22,19 @@
     height: 100%;
     position: absolute;
     backface-visibility: hidden;
-    transform: translateZ(0);
+    
   }
 
   .flip-card-front {
     transform: rotateX(0deg);
+    transform: translateZ(0);
   }
 
 
 
   .flip-card-back {
     transform: rotateY(180deg);
+    transform: translateZ(0);
   }
 
   .front-main-content,
