@@ -16,7 +16,6 @@ $(document).ready(function() {
         }
         if(direction === "previous"){
             nextCardUrl = $("#predchozi-karticka-link").attr("name");
-            console.log(nextCardUrl)
         }
         $.ajax({
             method: "GET",
@@ -59,8 +58,13 @@ $(document).ready(function() {
             </div>
             `);
 
-            $("#front-menu-row").toggleClass('hide');
-            $("#back-menu-row").toggleClass('hide');
+           if($("#predchozi-karticka-link").hasClass('back')){
+                $("#front-menu-row").toggleClass('hide');
+                $("#back-menu-row").toggleClass('hide');
+                $("#predchozi-karticka-link").removeClass('back');
+           }
+            
+            
             
             $("#back-menu-row").empty().append(`
             <div class="col-lg-6 offset-lg-2">
@@ -97,6 +101,7 @@ $(document).ready(function() {
                 $("#flip-card").toggleClass('flipped');
                 $("#back-menu-row").toggleClass('hide');
                 $("#front-menu-row").toggleClass('hide');
+                $("#predchozi-karticka-link").toggleClass('back');
                 push++;
               })
 
@@ -118,6 +123,7 @@ $(document).ready(function() {
                 $("#flip-card").toggleClass('flipped');
                 $("#back-menu-row").toggleClass('hide');
                 $("#front-menu-row").toggleClass('hide');
+                $("#predchozi-karticka-link").toggleClass('back');
                 push--;
             })
 
@@ -131,6 +137,7 @@ $(document).ready(function() {
                         $("#flip-card").toggleClass('flipped');
                         $("#back-menu-row").toggleClass('hide');
                         $("#front-menu-row").toggleClass('hide');
+                        $("#predchozi-karticka-link").toggleClass('back');
                     }
                     if(push === 2){
                         $("#loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
@@ -195,6 +202,7 @@ $(document).ready(function() {
         $("#flip-card").toggleClass('flipped');
         $("#back-menu-row").toggleClass('hide');
         $("#front-menu-row").toggleClass('hide');
+        $("#predchozi-karticka-link").toggleClass('back');
         push++;
       })
 
@@ -211,6 +219,7 @@ $(document).ready(function() {
         $("#flip-card").toggleClass('flipped');
         $("#back-menu-row").toggleClass('hide');
         $("#front-menu-row").toggleClass('hide');
+        $("#predchozi-karticka-link").toggleClass('back');
         push--;
     })
 
@@ -240,6 +249,7 @@ $(document).ready(function() {
         $("#flip-card").toggleClass('flipped');
         $("#back-menu-row").toggleClass('hide');
         $("#front-menu-row").toggleClass('hide');
+        $("#predchozi-karticka-link").toggleClass('back');
         push--;
       });
 
@@ -248,6 +258,7 @@ $(document).ready(function() {
         $("#flip-card").toggleClass('flipped');
         $("#back-menu-row").toggleClass('hide');
         $("#front-menu-row").toggleClass('hide');
+        $("#predchozi-karticka-link").toggleClass('back');
         push--;
       });
 
@@ -270,6 +281,7 @@ $(document).ready(function() {
                     $("#flip-card").toggleClass('flipped');
                     $("#back-menu-row").toggleClass('hide');
                     $("#front-menu-row").toggleClass('hide');
+                    $("#predchozi-karticka-link").toggleClass('back');
                 }
                 if(push === 2){
                     $("#loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
