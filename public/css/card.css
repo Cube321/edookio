@@ -32,6 +32,7 @@
 
   .flip-card-back {
     transform: rotateY(180deg);
+    backface-visibility: hidden;
   }
 
   .front-main-content,
