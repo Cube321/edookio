@@ -5,6 +5,9 @@ $(document).ready(function() {
     $(".flip-card-back").click((e) => {
         alert("clicked flip-card-back");
     })
+    $(".flip-card-front").click((e) => {
+        alert("clicked flip-card-front");
+    })
     $(".back-menu").click((e) => {
         alert("clicked back-menu");
     })
