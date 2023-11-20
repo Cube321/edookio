@@ -59,19 +59,6 @@
                     <% } %>
               </div>
             </div>
-            <div class="star-at-top">
-              <% if(currentUser && currentUser.isPremium){%>
-                <% if(isCardSaved){%>
-                  <div id="save-star-div-rendered-top" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
-                <% } else { %>
-                  <div id="save-star-div-rendered-top" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
-                <% } %>
-              <% } else if (currentUser && !currentUser.isPremium) { %>
-              <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>
-              <% } else { %>
-                <div style="width:14px"></div>
-                <% } %>
-            </div>
           </div>
         </div>
 
@@ -85,47 +72,14 @@
                   <div id="loaderA"></div>
                   <div class="card-text m-4 text-center" id="pageA"><%- card.pageA %></div>
                 </div>
-                <div class="front-menu d-flex justify-content-between align-items-center">
-                  <a href=""></a>
-                  <div class="">
-                    <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit-rendered'>Otočit</a>
-                  </div>
-                  <a href=""></a>
-                </div>
+                
               </div>
               <div class="card-body flip-card-back pb-0">
                 <div class="back-main-content d-flex justify-content-center align-items-center text-gradient">
                   <div id="loaderB"></div>
                   <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
-                <div class="back-menu d-flex justify-content-between align-items-center">
-                  <div class="nezobrazovat-na-mobilu">
-                    <% if(currentUser && currentUser.isPremium){%>
-                      <% if(isCardSaved){%>
-                        <div id="save-star-div-rendered-bottom" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
-                      <% } else { %>
-                        <div id="save-star-div-rendered-bottom" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
-                      <% } %>
-                    <% } else if (currentUser && !currentUser.isPremium) { %>
-                    <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>
-                    <% } else { %>
-                      <div style="width:40px"></div>
-                      <% } %>
-                  </div>
-                  <div style="width:40px" class="zobrazovat-jen-na-mobilu"></div>
-                  <div class="vlozeny-div">
-                    <% if(sectionLength + 1 !== nextNum){ %>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
-                    <% } else { %>
-                      <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-last-card">Další</a>
-                    <% } %>
-                    </div>
-                    <div>
-                      <a href="#" id="rotate-back-rendered" class="nezobrazovat-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></a>
-                      <a href="#" id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></a>
-                    </div>
-                    
-                </div>
+                
               </div>
             </div>
           </div>
@@ -150,6 +104,52 @@
           </div>
         </div>
       </div>
+        
+      </div>
+      
+      <div class="row" id="front-menu-row">
+        <div class="col-lg-6 offset-lg-2">
+          <div class="front-menu d-flex justify-content-between align-items-center border-grey">
+            <a href=""></a>
+            <div class="">
+              <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit-rendered'>Otočit</a>
+            </div>
+            <a href=""></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row hide" id="back-menu-row">
+        <div class="col-lg-6 offset-lg-2">
+          <div class="back-menu d-flex justify-content-between align-items-center border-grey">
+            <div class="">
+              <% if(currentUser && currentUser.isPremium){%>
+                <% if(isCardSaved){%>
+                  <div id="save-star-div-rendered-bottom" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
+                <% } else { %>
+                  <div id="save-star-div-rendered-bottom" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
+                <% } %>
+              <% } else if (currentUser && !currentUser.isPremium) { %>
+              <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>
+              <% } else { %>
+                <div style="width:40px"></div>
+                <% } %>
+            </div>
+            <div>
+              <% if(sectionLength + 1 !== nextNum){ %>
+                <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
+              <% } else { %>
+                <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-last-card">Další</a>
+              <% } %>
+            </div>
+            <div>
+              <a href="#" id="rotate-back-rendered" class="nezobrazovat-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></a>
+              <a href="#" id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu"><i class="fas fa-sync-alt fa-lg"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-lg-6 offset-lg-2">
           <div class="text-center mt-4 servis-btns d-flex justify-content-around align-items-center">

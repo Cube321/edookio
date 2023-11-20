@@ -195,8 +195,6 @@ $(document).ready(function() {
       $("#btn-otocit-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
-        $("#back-menu-row").toggleClass('hide');
-        $("#front-menu-row").toggleClass('hide');
         push++;
       })
 
@@ -208,11 +206,9 @@ $(document).ready(function() {
         getNextCard("next");
     })
 
-    $("#rotate-back-rendered").click((e) => {
+    $("#flip-card #rotate-back-rendered").click((e) => {
         e.preventDefault();
         $("#flip-card").toggleClass('flipped');
-        $("#back-menu-row").toggleClass('hide');
-        $("#front-menu-row").toggleClass('hide');
         push--;
     })
 
@@ -237,11 +233,9 @@ $(document).ready(function() {
     */
 
     
-    $('#rotate-back-mobile-rendered').on('click', function(e) {
+    $('#flip-card').on('click', '#rotate-back-mobile-rendered', function(e) {
         e.preventDefault(e);
         $("#flip-card").toggleClass('flipped');
-        $("#back-menu-row").toggleClass('hide');
-        $("#front-menu-row").toggleClass('hide');
         push--;
       });
 
