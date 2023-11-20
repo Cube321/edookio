@@ -33,6 +33,8 @@
 
   .hide {
     display: none;
+    height: 1px;
+    width: 1px;
   }
 
   .front-main-content,
