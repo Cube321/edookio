@@ -24,15 +24,11 @@
 
   .flip-card-front {
     transform: rotateX(0deg);
-    
+    backface-visibility: hidden;
   }
 
   .flip-card-back {
     transform: rotateY(180deg);  
-    backface-visibility: hidden;
-  }
-
-  .backface-visibility {
     backface-visibility: hidden;
   }
 

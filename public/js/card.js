@@ -4,12 +4,6 @@ let push = 0;
 $(document).ready(function() {
         //GET DATA FOR CARD
     function getNextCard(direction, side){
-        $(".flip-card-front").click(()=>{
-            alert("FRONT")
-        })
-        $(".flip-card-back").click(()=>{
-            alert("BACK")
-        })
         let nextCardUrl = "/"
         if(direction === "next"){
             if($("#btn-dalsi").length){
