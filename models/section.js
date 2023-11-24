@@ -34,6 +34,18 @@ const SectionSchema = new Schema({
     nextSection: {
         type: String,
         default: ""
+    },
+    countStarted: {
+        type: Number,
+        default: 0
+    },
+    countFinished: {
+        type: Number,
+        default: 0
+    },
+    countRepeated: {
+        type: Number,
+        default: 0
     }
 })
 

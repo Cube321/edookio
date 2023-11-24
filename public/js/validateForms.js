@@ -15,6 +15,9 @@
                 $("#submit-registration").addClass('disabled')
                 $("#submit-registration").empty();
                 $("#submit-registration").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");    
+                $("#submit-login").addClass('disabled')
+                $("#submit-login").empty();
+                $("#submit-login").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");    
             }
 
             form.classList.add('was-validated')

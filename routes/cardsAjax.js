@@ -20,8 +20,10 @@ router.get('/category/:category/section/:sectionId/cardAjax/repeatSection', isLo
     }
     const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
     user.sections = filteredSections;
+    foundSection.countRepeated++;
+    await foundSection.save();
     await user.save();
-    res.status(200).redirect(`/category/${req.params.category}/section/${req.params.sectionId}/cardAjax/1`);
+    res.status(200).redirect(`/category/${req.params.category}/section/${req.params.sectionId}/cardAjax/1?repeat=repeat`);
 }))
 
 //show Card of Section
@@ -38,6 +40,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     if(!Number.isInteger(cardNum)){
         throw Error("Zadané číslo karty není ve správném formátu.");
     }
+
     //handle request for previous card if that card is #1
     let requestedPreviousCardOne = false;
     if(cardNum === 0){
@@ -52,6 +55,11 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     //check if section exists
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
+    }
+    //count section started
+    if(cardNum === 1 && req.query.requestType !== "primaryData" && req.query.continue !== "continue" && req.query.repeat !== "repeat"){
+        foundSection.countStarted++;
+        await foundSection.save();
     }
     //check if Premium access required and allowed
     if(foundSection.isPremium && !user.isPremium){
@@ -82,6 +90,8 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
             //increase users cardsSeen by 1
             if(req.query.requestType !== "primaryData"){
                 user.cardsSeen++;
+                foundSection.countFinished++;
+                await foundSection.save();
             }
             await user.save();
             //get name of next section
@@ -132,11 +142,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
         //is card already saved?
         isCardSaved = isCardInArray(user.savedCards, cardId.toString());
         //save - throws error if user flips card to fast (cca below 2 s) - error logged
-        await user.save((err, user) => {
-            if(err){
-                console.log(err);
-            }
-        });
+        await user.save();
     }
     let iconPath = selectIconForSection(category);
     const sectionLength = foundSection.cards.length;
