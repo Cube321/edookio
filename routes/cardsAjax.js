@@ -111,7 +111,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', isLoggedI
     //
     let isCardSaved = false;
     //update users data
-    if(user){
+    if(user && req.query.requestType !== "primaryData"){
         //increase users cardsSeen by 1
         user.cardsSeen++;
         //update lastSeenCard in unifnishedSection
@@ -121,8 +121,12 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', isLoggedI
         user.markModified('unfinishedSections');
         //is card already saved?
         isCardSaved = isCardInArray(user.savedCards, cardId.toString());
-        //save
-        user.save();
+        //save - throws error if user flips card to fast (cca below 2 s) - error logged
+        user.save((err, user) => {
+            if(err){
+                console.log(err);
+            }
+        });
     }
     const sectionLength = foundSection.cards.length;
     if((cardNum === 1 && requestedPreviousCardOne === false) || req.query.continue === "continue"){

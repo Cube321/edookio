@@ -201,8 +201,7 @@ form .form-control, .form-select {
 	width: 100%;
 	text-align: center;
 	z-index: 100;
-	background-color: rgba(0,0,0,1);
-	color: white;
+	background-color: white;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -222,7 +221,6 @@ form .form-control, .form-select {
 }
 
 .cookies-warning a {
-  color: white;
   text-decoration: none;
 }
 

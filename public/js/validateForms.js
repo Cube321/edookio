@@ -11,9 +11,14 @@
             if (!form.checkValidity()) {
             event.preventDefault()
             event.stopPropagation()
+            } else {
+                $("#submit-registration").addClass('disabled')
+                $("#submit-registration").empty();
+                $("#submit-registration").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");    
             }
 
             form.classList.add('was-validated')
+          
         }, false)
         })
     })()

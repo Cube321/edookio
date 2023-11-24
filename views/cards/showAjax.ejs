@@ -66,7 +66,11 @@
         <!--FLIPCARD-->
         <div class="col-lg-6 offset-lg-2 mb-3">
           <div class="flip-card" id="flip-card">
-            <div class="border-grey flip-card-inner">
+            <% if(nextNum === 2){ %>
+              <div class="border-grey flip-card-inner" id="flip-card-inner" currentCardUrl="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= 0 %>">
+            <% } else { %>  
+              <div class="border-grey flip-card-inner" id="flip-card-inner" currentCardUrl="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum - 1 %>">
+            <% } %>
               <div class="card-body flip-card-front pb-0 px-0">
                 <div class="front-main-content d-flex justify-content-center align-items-center">
                   <div id="loaderA"></div>
@@ -152,11 +156,25 @@
         <div class="col-lg-6 offset-lg-2">
           <div class="text-center mt-4 servis-btns d-flex justify-content-around align-items-center">
             <% if (currentUser && currentUser.admin) { %>
-              <a href="/cards/edit/<%= card._id%>" class="text-muted">Upravit kartu</a>
-              <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3">Odstranit kartu</a>
+              <div id="upravit-kartu-div">
+                <a href="/cards/edit/<%= card._id%>" class="text-muted" >Upravit kartu</a>
+              </div>
+              <div id="odstranit-kartu-div">
+                <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3" id="odstranit-kartu">Odstranit kartu</a>
+              </div>
               <% } %>
-                <p id="predchozi-karticka-link" name="/category/<%= card.category %>/section/<%= card.section %>/cardAjax/<%= 0 %>" class="text-muted px-3 mb-0">Předchozí kartička</p>
-                <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted px-3">Nahlásit chybu</a>
+                <div>
+                  <% if(nextNum === 2){ %>
+                      <p id="predchozi-karticka-filler" class="text-muted px-3 mb-0">Předchozí kartička</p>
+                      <p id="predchozi-karticka-link" name="/category/<%= card.category %>/section/<%= card.section %>/cardAjax/<%= nextNum - 2 %>" class="text-muted px-3 mb-0 hide">Předchozí kartička</p>
+                  <% } else { %>  
+                      <p id="predchozi-karticka-filler" class="text-muted px-3 mb-0 hide">Předchozí kartička</p>
+                      <p id="predchozi-karticka-link" name="/category/<%= card.category %>/section/<%= card.section %>/cardAjax/<%= nextNum - 2 %>" class="text-muted px-3 mb-0">Předchozí kartička</p>
+                  <% } %>
+                </div>
+                <div id="nahlasit-kartu-div">
+                  <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted px-3" id="nahlasit-chybu">Nahlásit chybu</a>
+                </div>
                 <p class="text-muted mb-0 px-3 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</p>
           </div>
         </div>

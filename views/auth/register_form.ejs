@@ -6,7 +6,11 @@
             <div class="card height-100">
                 <div class="card-body p-4 px-5">
                 <div class="text-center">
-                    <h2 class="mb-3 mt-2">Registrace</h2>
+                    <h1 class="mb-3 mt-2">Registrace</h1>
+                    <p class="text-smaller text-muted text-center mb-0">
+                        Většina obsahu InLege je po registraci dostupná zdarma. Napořád. <br>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#moreInfo">Zjistit více</a>
+                    </p>
                 </div>
                 <% if (requiresPremium) { %>
                     <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new?requiresPremium=true" method="POST">
@@ -65,7 +69,7 @@
                     </div>
                     
                     <div>
-                    <button class="btn btn-lg btn-danger w-100 mt-3" type="submit">Pokračovat</button>
+                    <button class="btn btn-lg btn-danger w-100 mt-3" type="submit" id="submit-registration">Pokračovat</button>
                     </div>
                 </form>
             </div>
@@ -141,5 +145,23 @@
     </div>
     </div>
 </div>
+
+<!-- MODAL - Info o financi politice -->
+<div class="modal fade" id="moreInfo" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <h4 class="modal-title mb-3" style="text-align: center;">Naše vize a obsah zdarma</h4>
+            <p class="px-3" style="text-align: left;">V InLege věříme, že kvalitní studijní materiály by měly být dostupné <strong>každému a bezplatně</strong>. Proto jsme se rozhodli udržet <strong>nejméně 50 % obsahu</strong> vždy zdarma. Registrace je nutná pouze pro ukládání tvých rozpracovaných kartiček a pro správný chod portálu.</p>
+            <p class="px-3" style="text-align: left;"><strong>Registrace</strong> je bezplatná a <strong>nezavazuje tě k žádné platbě</strong>, a to ani v budoucnu. Můžeš klidně využívat InLege v jeho bezplatné verzi tak dlouho, jak ti bude vyhovovat.</p>
+            <p class="px-3" style="text-align: left;">Pro ty, kteří mají větší nároky na obsah a další funkce, jsme připravili <strong>možnost aktivovat</strong> si pravidelné <strong>předplatné Premium</strong> od 149 Kč měsíčně, které lze kdykoliv zrušit. InLege je však navržené tak, aby bylo i v bezplatné verzi užitečné a pomáhalo ti efektivně se připravovat na zkoušky.</p>
+            <p><button class="btn btn-outline-danger" data-bs-dismiss="modal">Zavřít</button></p>
+        </div>
+      </div>
+    </div>
+  </div>
     
     <script src="/js/validateForms.js"></script>

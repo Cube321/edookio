@@ -1,29 +1,97 @@
 
 let push = 0;
+let nextCardData = {};
+let previousCardData = {};
+let currentCardData = {};
 
 $(document).ready(function() {
-        //GET DATA FOR CARD
+    //GET DATA FOR CURRENT CARD
+    let currentCardUrl = "/"
+    currentCardUrl = $("#flip-card-inner").attr("currentCardUrl");
+    
+    $.ajax({
+        method: "GET",
+        url: currentCardUrl + "?requestType=primaryData"
+    })
+    .then(data => {
+        currentCardData = data;   
+    })
+    .catch(err => console.log(err));
+
+    //GET DATA FOR NEXT CARD
+    let nextCardUrl = "/"
+    if($("#btn-dalsi").length){
+        nextCardUrl = $("#btn-dalsi").attr("href");
+    }
+    if($("#btn-dalsi-rendered").length){
+        nextCardUrl = $("#btn-dalsi-rendered").attr("href");
+    }
+    $.ajax({
+        method: "GET",
+        url: nextCardUrl + "?requestType=primaryData"
+    })
+    .then(data => {
+        nextCardData = data;          
+    })
+    .catch(err => console.log(err));
+
+    //GET DATA FOR PREVIOUS CARD
+    let previousCardUrl = "/"
+    previousCardUrl = $("#predchozi-karticka-link").attr("name");
+    
+    $.ajax({
+        method: "GET",
+        url: previousCardUrl + "?requestType=primaryData"
+    })
+    .then(data => {
+        previousCardData = data;       
+    })
+    .catch(err => console.log(err));
+    
     function getNextCard(direction, side){
-        let nextCardUrl = "/"
-        if(direction === "next"){
-            if($("#btn-dalsi").length){
-                nextCardUrl = $("#btn-dalsi").attr("href");
-            }
-            if($("#btn-dalsi-rendered").length){
-                nextCardUrl = $("#btn-dalsi-rendered").attr("href");
-            }
-            
-        }
-        if(direction === "previous"){
-            nextCardUrl = $("#predchozi-karticka-link").attr("name");
-        }
+        
+        rebuildCard(nextCardData, side);
+    
         $.ajax({
             method: "GET",
-            url: nextCardUrl
+            url: `/category/${nextCardData.card.category}/section/${nextCardData.card.section}/cardAjax/${nextCardData.nextNum}`
         })
         .then(data => {
-            console.log(data);
-            if(side !== "front"){$("#flip-card").toggleClass('flipped');}
+            previousCardData = currentCardData;
+            currentCardData = nextCardData;
+            nextCardData = data;
+        })
+        .catch(err => console.log(err));  
+    }
+
+    function getPreviousCard(direction, side){
+        
+        rebuildCard(previousCardData, side);
+        let previousCardNum = previousCardData.nextNum - 2;
+        if(previousCardData.nextNum === 3){
+            previousCardNum = 0
+        }
+        if(previousCardData.nextNum === 2){
+            $("#predchozi-karticka-filler").removeClass("hide");
+            $("#predchozi-karticka-link").addClass("hide");
+        }
+
+    
+        $.ajax({
+            method: "GET",
+            url: `/category/${previousCardData.card.category}/section/${previousCardData.card.section}/cardAjax/${previousCardNum}?requestType=primaryData`
+        })
+        .then(data => {
+            nextCardData = currentCardData;
+            currentCardData = previousCardData;
+            previousCardData = data;
+            
+        })
+        .catch(err => console.log(err));  
+    }
+
+    function rebuildCard(data, side){
+        if(side !== "front"){$("#flip-card").toggleClass('flipped');}
             //conditional logic for content
             let starEmpty = "";
             let starFull = "";
@@ -31,11 +99,7 @@ $(document).ready(function() {
             let starPlaceholder = "";
             //handle request for first card when requesting previous card
             let previousCard = 0;
-            if(data.nextNum === 3){
-                previousCard = 0;
-            } else {
-                previousCard = data.nextNum - 2;
-            }
+
             if(data.user && data.user.isPremium && data.isCardSaved) {starFull = `<div id="save-star-div" name="${data.user.email}/${data.card._id}" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>`}
             if(data.user && data.user.isPremium && !data.isCardSaved) {starEmpty = `<div id="save-star-div" name="${data.user.email}/${data.card._id}" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>`}
             if(!data.user || !data.user.isPremium) {starActivateModal = `<div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg"></i></a></div>`}
@@ -94,8 +158,15 @@ $(document).ready(function() {
             $("#progressBarStatusMac").text(data.progressStatus + "%");
             $("#progressBarMobile").css('width', data.progressStatus + "%");
             $("#progressBarMac").css('width', data.progressStatus + "%");
-            $("#predchozi-karticka-link").attr("name", `/category/${data.card.category}/section/${data.card.section}/cardAjax/${previousCard}`);
+            $("#predchozi-karticka-link").attr("name", `/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum - 2}`);
+            $("#predchozi-karticka-filler").addClass("hide");
+            $("#predchozi-karticka-link").removeClass("hide");
 
+            //SERVIS BTNs 
+            $("#upravit-kartu-div").empty().append(`<a href="/cards/edit/${data.card._id}" class="text-muted" >Upravit kartu</a>`)
+            $("#odstranit-kartu-div").empty().append(`<a href="/cards/remove/${data.card._id}" class="text-muted mx-3" id="odstranit-kartu">Odstranit kartu</a>`)
+            $("#nahlasit-kartu-div").empty().append(`<a href="/cards/report/${data.card._id}" target="_blank" class="text-muted px-3" id="nahlasit-chybu">Nahlásit chybu</a>`)
+            
             $("#front-menu-row #btn-otocit").click((e) => {
                 e.preventDefault();
                 $("#flip-card").toggleClass('flipped');
@@ -193,8 +264,6 @@ $(document).ready(function() {
             })
 
             push = 0;
-        })
-        .catch(err => console.log(err));
     }
 
       $("#btn-otocit-rendered").click((e) => {
@@ -228,20 +297,13 @@ $(document).ready(function() {
         $("#flip-card #pageA").remove();
         if($("#flip-card").hasClass("flipped")){
             $("#flip-card #loaderB").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            getNextCard('previous');
+            getPreviousCard('previous');
         } else {
             $("#flip-card #loaderA").append("<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            getNextCard('previous','front');
+            getPreviousCard('previous','front');
         }
         
     })
-
-    /*
-    $("#rotate-back-mobile-rendered").click(() => {
-        $("#flip-card").toggleClass('flipped');
-        push--;
-    })
-    */
 
     
     $('#rotate-back-mobile-rendered').on('click', function(e) {

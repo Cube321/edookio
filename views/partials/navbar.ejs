@@ -19,10 +19,11 @@
           <% } %>
         </ul>
         <ul class="navbar-nav ms-auto">
-              <% if (!currentUser) { %>
+              
                 <li class="nav-item">
                   <a class="nav-link premium" href="/premium">Premium</a>
                 </li>
+                <% if (!currentUser) { %>
                 <li class="nav-item">
                   <a class="nav-link" href="/auth/user/login">Přihlásit se</a>
                 </li>
@@ -30,11 +31,6 @@
                   <a class="nav-link" href="/auth/user/new">Registrace</a>
                 </li>
               <% } else { %>
-                <li class="nav-item">
-                  <% if (!currentUser.isPremium){ %>
-                  <a class="nav-link premium" href="/premium">Premium</a>
-                  <% } %>
-                </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/cards/saved/">Uložené kartičky</a>
                 </li>
