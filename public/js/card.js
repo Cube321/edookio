@@ -117,7 +117,7 @@ $(document).ready(function() {
                         <div class="card-text m-4 text-center" id="pageA">${data.card.pageA}</div>
                     </div>
                 </div>
-                <div class="card-body flip-card-back pb-0 px-0">
+                <div class="card-body flip-card-back p-sm-3 pt-sm-4 px-0 pt-3">
                     <div class="back-main-content d-flex justify-content-center align-items-center text-gradient">
                         <div id="loaderB"></div>
                         <div class="card-text m-4" id="pageB">${data.card.pageB}</div>
@@ -187,7 +187,7 @@ $(document).ready(function() {
                 $("#pageB").remove();
                 if(data.numOfCards + 1 === data.nextNum){
                     let finishedPageRedirectUrl = $("#btn-dalsi").attr("href");
-                    window.location.replace(finishedPageRedirectUrl);
+                    window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData");
                 } else {
                     getNextCard("next");
                 }
@@ -219,7 +219,7 @@ $(document).ready(function() {
                         $("#pageB").remove();
                         if(data.numOfCards + 1 === data.nextNum){
                             let finishedPageRedirectUrl = $("#btn-dalsi").attr("href");
-                            window.location.replace(finishedPageRedirectUrl);
+                            window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData");
                         } else {
                             getNextCard("next");
                         }
@@ -271,15 +271,22 @@ $(document).ready(function() {
     }
 
     function checkIfDemoLimitReached(demoCardsSeen, user){
-        if(!user && demoCardsSeen > 12){
+        if(!user && demoCardsSeen > 5){
             $(".flip-card-inner").empty();
             $(".flip-card-inner").append(`
             <div class="card-body flip-card-front pb-0 px-0">
-                <h4>Tohle je limit pro demo verzi. Zaregistruj se, prosím.</h4>
+                <div class="row height-100 demo-finished-card">
+                <div class="col-12 d-flex flex-column justify-content-center align-items-center ">
+                    <p class="demo-finished-main text-center mb-4">Super! Tohle bylo tvých 5 ukázkových kartiček.</p>
+                    <p class="demo-finished-text text-center text-smaller text-muted mt-3 mb-4">Teď už víš, jak InLege funguje. Zaregistruj se a získej přístup k dalším <b>více než 1 500 kartičkám</b>. Je to zdarma!</p>
+                    <a href="/auth/user/new" class="btn btn-lg btn-danger my-3">Registrace zdarma</a>
+                </div>
+                </div>
             </div>
             `);
             $("#front-menu-row").remove();
             $("#back-menu-row").remove();
+            $("#mini-menu").remove();
         }
     }
 
@@ -367,7 +374,7 @@ $(document).ready(function() {
                     $("#pageB").remove();
                     if($("#btn-dalsi-last-card").length){
                             let finishedPageRedirectUrl = $("#btn-dalsi-last-card").attr("href");
-                            window.location.replace(finishedPageRedirectUrl);
+                            window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData");
                     } else {
                         getNextCard("next");
                     }

@@ -34,7 +34,6 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
         req.session.demoCardsSeen = 1;
     } else if (!user && req.query.requestType !== "primaryData") {
         req.session.demoCardsSeen++;
-        console.log(req.session.demoCardsSeen);
     }
     if(!Number.isInteger(cardNum)){
         throw Error("Zadané číslo karty není ve správném formátu.");
@@ -80,6 +79,10 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
             user.unfinishedSections = filteredUnfinishedSections;
             //add section to finished sections
             user.sections.push(foundSection._id);
+            //increase users cardsSeen by 1
+            if(req.query.requestType !== "primaryData"){
+                user.cardsSeen++;
+            }
             await user.save();
             //get name of next section
                 let nextSection = "notDefined";
@@ -100,7 +103,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
             
             return res.status(200).render('sections/finishedLive',{category, section: foundSection, nextSection});
         } else {
-            //user not logged in - in demo section
+            //user not logged in
             return res.status(200).render('sections/finishedDemo',{category, sectionName: foundSection.name});
         }
         
@@ -129,17 +132,40 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
         //is card already saved?
         isCardSaved = isCardInArray(user.savedCards, cardId.toString());
         //save - throws error if user flips card to fast (cca below 2 s) - error logged
-        user.save((err, user) => {
+        await user.save((err, user) => {
             if(err){
                 console.log(err);
             }
         });
     }
+    let iconPath = selectIconForSection(category);
     const sectionLength = foundSection.cards.length;
     if((cardNum === 1 && requestedPreviousCardOne === false) || req.query.continue === "continue"){
-        res.status(200).render('cards/showAjax', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved, user, numOfCards: foundSection.cards.length, demoCardsSeen: req.session.demoCardsSeen});
+        res.status(200).render('cards/showAjax', {
+            card: foundCard, 
+            nextNum, 
+            sectionName: foundSection.name, 
+            sectionLength, 
+            progressStatus, 
+            isCardSaved, 
+            user, 
+            numOfCards: foundSection.cards.length, 
+            demoCardsSeen: req.session.demoCardsSeen,
+            iconPath
+        });
     } else {
-        res.status(200).send({card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved, user, numOfCards: foundSection.cards.length, demoCardsSeen: req.session.demoCardsSeen});
+        res.status(200).send({
+            card: foundCard, 
+            nextNum, 
+            sectionName: foundSection.name, 
+            sectionLength, 
+            progressStatus, 
+            isCardSaved, 
+            user, 
+            numOfCards: foundSection.cards.length, 
+            demoCardsSeen: req.session.demoCardsSeen,
+            iconPath
+        });
     }
 }))
 
@@ -153,6 +179,16 @@ function isCardInArray(arrayOfIds, cardIdString) {
     } else {
         return false;
     }
+}
+
+function selectIconForSection(category){
+    let iconPath = "";
+    categories.forEach(cat => {
+        if(cat.value === category){
+            iconPath = `/img/${cat.icon}`
+        }
+    })
+    return iconPath;
 }
 
 

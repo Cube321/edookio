@@ -130,18 +130,18 @@
 #rotate-back-rendered {
   color: #E80F88;
   cursor: pointer;
-  zoom: 120%;
   height: 100%;
   min-width: 40px;
+  font-size: 1.2em;
 }
 
 #rotate-back-mobile,
 #rotate-back-mobile-rendered {
   color: #E80F88;
   cursor: pointer;
-  zoom: 120%;
   height: 100%;
   min-width: 40px;
+  font-size: 1.2em;
 }
 
 #btn-dalsi,
@@ -171,15 +171,7 @@
     color: #E80F88;
     height: 100%;
     min-width: 40px;
-    zoom: 120%;
-}
-
-.star-at-top {
-  min-width: 40px;
-  zoom: 120%;
-  display:flex;
-  justify-content: center;
-  align-items: center;
+    font-size: 1.2em;
 }
 
 .spinner-border-small {
@@ -204,12 +196,21 @@
     pointer-events: none; /* so the text is still selectable */
   }
 
+  /*DEMO FINISHED CARD*/
+  .demo-finished-card {
+    padding: 3rem;
+  }
+
+  .demo-finished-main {
+    font-size: 1.75rem;
+  }
+
   @media only screen and (max-width: 992px) {
     .nezobrazovat-na-mobilu {
       display: none;
     }
     .save-star {
-      zoom: 120%;
+      font-size: 1.2em;
     }
 
     #rotate-back-mobile,
@@ -218,7 +219,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-}
+    }
+
+    .demo-finished-card {
+      padding: 1rem;
+    }
+  
+    .demo-finished-main {
+      font-size: 1.25rem;
+    }
   }
 
   @media only screen and (min-width: 992px) {

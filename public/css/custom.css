@@ -292,6 +292,12 @@ form .form-control, .form-select {
     width: 7rem;
 }
 
+.icon-background-medium {
+    background-color: #EEEEEE;
+    height: 5rem;
+    width: 5rem;
+}
+
 .rounded-circle {
     border-radius: 50%!important;
 }
