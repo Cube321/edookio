@@ -6,6 +6,5 @@ module.exports.categories = [
     {value: "spravnipravo", text: "Správní právo", icon: "icon_sprava.png"},
     {value: "ustavnipravo", text: "Ústavní právo", icon: "icon_ustavko.png"},
     {value: "obchodnipravo", text: "Obchodní právo", icon: "icon_obchod.png"},
-    {value: "pravnickaanglictina", text: "Právnická angličtina", icon: "icon_anglictina.png"},
-    {value: "demo", text: "Demo verze"}
+    {value: "pravnickaanglictina", text: "Právnická angličtina", icon: "icon_anglictina.png"}
 ]

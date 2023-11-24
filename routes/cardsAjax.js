@@ -25,10 +25,17 @@ router.get('/category/:category/section/:sectionId/cardAjax/repeatSection', isLo
 }))
 
 //show Card of Section
-router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', isLoggedIn, catchAsync(async(req, res, next) => {
+router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsync(async(req, res, next) => {
     const { sectionId, category } = req.params;
     const {user} = req;
     let cardNum = parseInt(req.params.cardNum);
+    //DEMO MODE
+    if(!user && !req.session.demoCardsSeen && req.query.requestType !== "primaryData"){
+        req.session.demoCardsSeen = 1;
+    } else if (!user && req.query.requestType !== "primaryData") {
+        req.session.demoCardsSeen++;
+        console.log(req.session.demoCardsSeen);
+    }
     if(!Number.isInteger(cardNum)){
         throw Error("Zadané číslo karty není ve správném formátu.");
     }
@@ -130,9 +137,9 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', isLoggedI
     }
     const sectionLength = foundSection.cards.length;
     if((cardNum === 1 && requestedPreviousCardOne === false) || req.query.continue === "continue"){
-        res.status(200).render('cards/showAjax', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved, user, numOfCards: foundSection.cards.length});
+        res.status(200).render('cards/showAjax', {card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved, user, numOfCards: foundSection.cards.length, demoCardsSeen: req.session.demoCardsSeen});
     } else {
-        res.status(200).send({card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved, user, numOfCards: foundSection.cards.length});
+        res.status(200).send({card: foundCard, nextNum, sectionName: foundSection.name, sectionLength, progressStatus, isCardSaved, user, numOfCards: foundSection.cards.length, demoCardsSeen: req.session.demoCardsSeen});
     }
 }))
 

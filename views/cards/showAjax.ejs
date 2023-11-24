@@ -71,6 +71,11 @@
             <% } else { %>  
               <div class="border-grey flip-card-inner" id="flip-card-inner" currentCardUrl="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum - 1 %>">
             <% } %>
+            <% if (!currentUser && demoCardsSeen > 10) { %>
+              <div class="card-body flip-card-front pb-0 px-0">
+                <h4>Tohle je limit pro demo verzi. Zaregistruj se, prosím.</h4>
+              </div>
+            <% } else { %>
               <div class="card-body flip-card-front pb-0 px-0">
                 <div class="front-main-content d-flex justify-content-center align-items-center">
                   <div id="loaderA"></div>
@@ -83,6 +88,7 @@
                   <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
                 </div>
               </div>
+              <% } %>
             </div>
           </div>
         </div>
@@ -109,6 +115,9 @@
         
       </div>
       
+      <% if (!currentUser && demoCardsSeen > 10) { %>
+        <!-- empty space -->
+      <% } else { %>
       <!--FRONT CARD MENU-->
       <div class="row" id="front-menu-row">
         <div class="col-lg-6 offset-lg-2">
@@ -151,6 +160,7 @@
           </div>
         </div>
       </div>
+      <% } %>
 
       <div class="row">
         <div class="col-lg-6 offset-lg-2">

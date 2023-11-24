@@ -1,35 +1,11 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 
-<!-- DEMO banner - only for not registered users -->
-<% if (!currentUser){  %> 
-    <div class="row">
-        <div class="col-md-10 offset-md-1 mb-5">
-            <div class="card">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <h5 class="px-3 pt-3 pb-2 mb-0">Zaregistruj se a získej přístup ke stovkám kartiček zdarma</h5>
-                        <p class="text-muted px-3"><small>Rychlá a bezplatná registrace ti umožní využít potenciálu InLege naplno!</small></p>
-                    </div>
-                    <div class="col-lg-4 p-3 d-flex justify-content-around align-items-center">
-                        <a class="btn btn-danger" href="/auth/user/new">Zaregistrovat se</a>
-                        <% if(demoCat.basicSections.length > 0){ %> 
-                            <a class="btn btn-outline-danger" href="/category/demo/section/<%= demoCat.basicSections[0]%>/cardAJax/1">Vyzkoušet demo</a>
-                        <% } %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<% } %> 
-
-
 <div class="row mb-3">
     <!-- CATEGORY left box (ikon + name) -->
     <div class="col-md-3 offset-md-1 mb-3">
         <div class="card">
             <div class="card-body category-box d-flex flex-column align-items-center justify-content-center pt-4">
                 <div class="rounded-circle icon-background-large d-flex justify-content-center align-items-center">
-                    <% if(category.name === "demo"){ %> <img src="/img/icon_tresthmota.png" class="img-fit" alt="" /> <% } %>
                     <% if(category.name === "trestnipravo"){ %> <img src="/img/icon_tresthmota.png" class="img-fit" alt="" /> <% } %>
                     <% if(category.name === "obcanskepravo"){ %> <img src="/img/icon_civilhmota.png" class="img-fit" alt="" /> <% } %>
                     <% if(category.name === "spravnipravo"){ %> <img src="/img/icon_sprava.png" class="img-fit" alt="" /> <% } %>
@@ -78,7 +54,7 @@
                         <div class="col-3 d-flex justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
                                 <% if(!section.isPremium){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>    
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger">Spustit</a>    
                                 <% } else { %>
                                     <a href="/premium" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
                                 <% } %>  
@@ -147,7 +123,7 @@
                             </div>
                             <div class="col-3 d-flex justify-content-center align-items-center">
                                 <% if (!currentUser){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger disabled">Zdarma po registraci</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger">Spustit</a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger" style="float:right">Opakovat</a>
                                 <% } else if (section.isUnfinished) { %> 

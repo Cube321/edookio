@@ -17,10 +17,6 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
         req.flash('error','Kategorie neexistuje.');
         return res.status(404).redirect('back');
     }
-    let demoCat = {sections: []};
-    if(!req.user){
-        demoCat = await Category.findOne({name:"demo"});
-    }
     //asign name of category
     let title = "";
     categories.forEach(c => {
@@ -37,7 +33,7 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
         })   
     }
     //render category page
-    res.status(200).render('category', {category, title, demoCat});
+    res.status(200).render('category', {category, title});
 }))
 
 //create new Category - new approach - service moved out of the route

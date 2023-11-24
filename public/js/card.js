@@ -5,6 +5,7 @@ let previousCardData = {};
 let currentCardData = {};
 
 $(document).ready(function() {
+
     //GET DATA FOR CURRENT CARD
     let currentCardUrl = "/"
     currentCardUrl = $("#flip-card-inner").attr("currentCardUrl");
@@ -51,6 +52,8 @@ $(document).ready(function() {
     function getNextCard(direction, side){
         
         rebuildCard(nextCardData, side);
+
+        checkIfDemoLimitReached(nextCardData.demoCardsSeen, nextCardData.user);
     
         $.ajax({
             method: "GET",
@@ -67,6 +70,7 @@ $(document).ready(function() {
     function getPreviousCard(direction, side){
         
         rebuildCard(previousCardData, side);
+        
         let previousCardNum = previousCardData.nextNum - 2;
         if(previousCardData.nextNum === 3){
             previousCardNum = 0
@@ -264,6 +268,19 @@ $(document).ready(function() {
             })
 
             push = 0;
+    }
+
+    function checkIfDemoLimitReached(demoCardsSeen, user){
+        if(!user && demoCardsSeen > 12){
+            $(".flip-card-inner").empty();
+            $(".flip-card-inner").append(`
+            <div class="card-body flip-card-front pb-0 px-0">
+                <h4>Tohle je limit pro demo verzi. Zaregistruj se, prosím.</h4>
+            </div>
+            `);
+            $("#front-menu-row").remove();
+            $("#back-menu-row").remove();
+        }
     }
 
       $("#btn-otocit-rendered").click((e) => {

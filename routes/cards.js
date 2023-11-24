@@ -215,8 +215,7 @@ router.post('/cards/unsave/:userEmail/:cardId', isLoggedIn, catchAsync(async(req
 //show all saved cards
 router.get('/cards/saved', isLoggedIn, catchAsync(async(req, res) => {
     let foundUser = await User.findById(req.user._id).populate('savedCards').select('savedCards');
-    let categoriesWithoutDemo = categories.filter(cat => cat.value !== "demo");
-    res.render('cards/savedCards', {savedCards: foundUser.savedCards, categories: categoriesWithoutDemo});
+    res.render('cards/savedCards', {savedCards: foundUser.savedCards, categories});
 }))
 
 

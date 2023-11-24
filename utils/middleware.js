@@ -11,9 +11,6 @@ const middleware = {};
 
 middleware.isLoggedIn = async (req, res, next) => {
     req.session.returnTo = req.originalUrl;
-    if(req.params.category === "demo"){
-        return next();
-    }
     if (!req.isAuthenticated()) {
         req.flash('error','Pro přístup nemáte dostatečná oprávnění.');
         return res.redirect('/auth/user/login');
