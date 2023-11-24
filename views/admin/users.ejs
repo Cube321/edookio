@@ -186,7 +186,7 @@
             <% } else { %>
                 <div class="col-sm-1">-</div>
             <% } %>
-            <% if (user.isPremium && !user.premiumGrantedByAdmin) { %>
+            <% if (user.isPremium && !user.premiumGrantedByAdmin && user.plan !== "none") { %>
                 <div class="col-sm-4 text-center">
                     <p class="text-muted">- aktivní placené předplatné -</p>
                 </div>
