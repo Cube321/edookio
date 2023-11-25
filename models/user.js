@@ -18,6 +18,10 @@ const UserSchema = new Schema ({
         type: Boolean,
         default: false
     },
+    isEditor: {
+        type: Boolean,
+        default: false
+    },
     sections: Array,
     unfinishedSections: Array,
     dateOfRegistration: {

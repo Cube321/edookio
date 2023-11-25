@@ -143,11 +143,11 @@
                                             </div>
                                         </div>
                                         <div class="card-body cat-text d-flex flex-column justify-content-between">
+                                            <h5 class="card-title"><%= cat.text %></h5>
                                             <div>
-                                                <h5 class="card-title"><%= cat.text %></h5>
                                                 <p class="text-muted"><%= cat.numOfCards %>  kartiček</p>
+                                                <a href="/category/<%= cat.name %>" class="btn btn-sm btn-danger">Studovat</a>
                                             </div>
-                                            <a href="/category/<%= cat.name %>" class="btn btn-sm btn-danger">Studovat</a>
                                         </div>
                                     </div>
                                 </a>

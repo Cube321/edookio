@@ -5,7 +5,7 @@ const Section = require('../models/section');
 const Category = require('../models/category');
 const User = require('../models/user');
 const Card = require('../models/card');
-const { isLoggedIn, isAdmin, validateSection, isPremiumUser } = require('../utils/middleware');
+const { isLoggedIn, isAdmin, validateSection, isPremiumUser, isEditor } = require('../utils/middleware');
 const {categories} = require('../utils/categories')
 const mongoose = require('mongoose');
 
@@ -103,7 +103,7 @@ router.delete('/category/remove/:categoryId', isLoggedIn, isAdmin, catchAsync(as
 
 //SECTIONS IN CATEGORY
 //create new Section in Category
-router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdmin, catchAsync(async (req, res, next )=> {
+router.post('/category/:category/newSection', validateSection, isLoggedIn, isEditor, catchAsync(async (req, res, next )=> {
     //check if category exists
     const foundCategory = await Category.findOne({name: req.params.category});
     if(!foundCategory){
@@ -139,7 +139,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdm
 }))
 
 //remove Section from Category and delete its Cards
-router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res, next) => {
+router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
@@ -189,7 +189,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isAdmin, 
 }))
 
 //edit section (name, description, next section)
-router.get('/category/:category/editSection/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
@@ -197,7 +197,7 @@ router.get('/category/:category/editSection/:sectionId', isLoggedIn, isAdmin, ca
     res.render('sections/edit', {section: foundSection});
 }))
 
-router.put('/category/:category/editSection/:sectionId',isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.put('/category/:category/editSection/:sectionId',isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
@@ -212,7 +212,7 @@ router.put('/category/:category/editSection/:sectionId',isLoggedIn, isAdmin, cat
 }))
 
 //changing order of the sections
-router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {sectionId, category} = req.params;
     const foundCategory = await Category.findOne({name: category});
     if(!foundCategory){
@@ -229,7 +229,7 @@ router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isAdmin, catc
     }
     res.status(200).redirect(`/category/${category}`);
 }))
-router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {sectionId, category} = req.params;
     const foundCategory = await Category.findOne({name: category});
     if(!foundCategory){
@@ -247,7 +247,7 @@ router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isAdmin, ca
     res.status(200).redirect(`/category/${category}`);
 }))
 
-router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     let {category, sectionId, changeDirection} = req.params;
     let foundSection = await Section.findById(sectionId);
     if(!foundSection){

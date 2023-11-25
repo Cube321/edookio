@@ -20,6 +20,11 @@
               <a class="nav-link" href="/admin/categories">Kategorie</a>
             </li>
           <% } %>
+          <% if (currentUser && currentUser.isEditor) { %>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/listAllReports">Nahlášené chyby</a>
+            </li>
+          <% } %>
         </ul>
         <ul class="navbar-nav ms-auto">
               

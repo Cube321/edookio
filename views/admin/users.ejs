@@ -172,13 +172,13 @@
 
     </div>
     <div class="row">
-        <div class="col-11 offset-1 mb-3">
+        <div class="col-12 mb-3">
             <h5>Registrovaní uživatelé</h5>
         </div>
     </div>
     <% for(let user of users){ %> 
         <div class="row text-smaller">
-            <div class="col-sm-2 offset-1"><%= user.email %> </div>
+            <div class="col-sm-2"><%= user.email %> </div>
             <div class="col-sm-2">REG: <%= user.updatedDateOfRegistration %> </div>
             <div class="col-sm-1"><%= user.cardsSeen %></div>
             <% if(user.isPremium){ %> 
@@ -200,6 +200,13 @@
             </div>
             <div class="col-sm-2">
                 <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Odstranit uživatele</button></form>
+            </div>
+            <div class="col-sm-2">
+                <% if (!user.isEditor) { %>
+                    <form action="/admin/<%= user._id %>/makeEditor" method="POST"><button class="btn btn-sm btn-info">Make editor</button></form>
+                <% } else { %>
+                <form action="/admin/<%= user._id %>/removeEditor" method="POST"><button class="btn btn-sm btn-outline-info">Remove editor</button></form>
+                <% } %>
             </div>
             <% } %>
             <hr>

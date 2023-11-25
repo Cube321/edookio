@@ -9,11 +9,11 @@ const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
 const { categories } = require('../utils/categories');
-const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
+const { validateCard, isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 
 
 //show a specific card
-router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
+router.get('/cards/show/:id', isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const card = await Card.findById(id);
     if (!card){
@@ -28,7 +28,7 @@ router.get('/cards/show/:id', isLoggedIn, catchAsync(async (req, res, next) => {
 }))
 
 //render new card page (GET)
-router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isAdmin, catchAsync(async(req, res, next) => {
+router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
     const {category, sectionId} = req.params;
     const foundSection = await Section.findById(sectionId);
     if(!foundSection){
@@ -38,7 +38,7 @@ router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isAdmin
 }))
 
 //list all cards in section
-router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const section = await Section.findById(req.params.sectionId).populate('cards');
     if(!section){
         throw Error("Sekce s tímto ID neexistuje");
@@ -47,7 +47,7 @@ router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, is
 }))
 
 //publish section
-router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
@@ -59,7 +59,7 @@ router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isAdmin
 }))
 
 //add new card - save (POST)
-router.post('/category/:category/section/:sectionId/newCard', validateCard, isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+router.post('/category/:category/section/:sectionId/newCard', validateCard, isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
     const {pageA, pageB, author} = req.body;
     const {category, sectionId } = req.params;
     const newCard = new Card({
@@ -87,7 +87,7 @@ router.post('/category/:category/section/:sectionId/newCard', validateCard, isLo
 }))
 
 //edit card - form (GET)
-router.get('/cards/edit/:id', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+router.get('/cards/edit/:id', isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const card = await Card.findById(id);
     if (!card){
@@ -98,7 +98,7 @@ router.get('/cards/edit/:id', isLoggedIn, isAdmin, catchAsync(async (req, res, n
 }))
 
 //edit card - save (PUT)
-router.put('/cards/edit/:id', validateCard, isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+router.put('/cards/edit/:id', validateCard, isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const {pageA, pageB, author} = req.body;
     const foundCard = await Card.findByIdAndUpdate(id, {pageA, pageB, author});
@@ -110,7 +110,7 @@ router.put('/cards/edit/:id', validateCard, isLoggedIn, isAdmin, catchAsync(asyn
 }))
 
 //remove card (GET)
-router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+router.get('/cards/remove/:id', isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
     const {id} = req.params;
     const foundCard = await Card.findById(id);
     if(!foundCard){
@@ -129,14 +129,16 @@ router.get('/cards/remove/:id', isLoggedIn, isAdmin, catchAsync(async (req, res,
     res.status(201).redirect(`/category/${foundCard.category}/section/${foundCard.section}/listAllCards`);
 }))
 
-//NAHLÁSTI CHYBU NA KARTĚ 
 
+
+
+//NAHLÁSTI CHYBU NA KARTĚ 
 //render success page
 router.get('/cards/report/success', (req,res) => {
     res.status(200).render('cards/reportSubmited')
 })
 
-router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isAdmin, catchAsync(async(req,res) => {
+router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isEditor, catchAsync(async(req,res) => {
     const foundCard = await Card.findById(req.params.cardId);
     if(!foundCard){
         throw Error("Kartička s tímto ID neexistuje");
@@ -182,6 +184,11 @@ router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
     res.status(201).redirect('/cards/report/success');
 }))
 
+
+
+
+
+//FAVOURITE CARDS LOGIC
 //save card to favourites
 router.post('/cards/save/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, res) => {
     let foundUser = await User.findOne({email: req.params.userEmail});
@@ -221,7 +228,6 @@ router.get('/cards/saved', isLoggedIn, catchAsync(async(req, res) => {
 
 
 //HELPERS
-
 function isCardInArray(arrayOfIds, cardIdString) {
     let arrayOfStrings = arrayOfIds.map(item => item.toString());
     let isIncluded = arrayOfStrings.includes(cardIdString);

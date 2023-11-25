@@ -139,10 +139,11 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
         if(unfinishedSectionIndex > -1){user.unfinishedSections[unfinishedSectionIndex].lastCard = cardNum};
         //mark modified nested objects - otherwise Mongoose does not see it and save it
         user.markModified('unfinishedSections');
+        await user.save();
+    }
+    if(user){
         //is card already saved?
         isCardSaved = isCardInArray(user.savedCards, cardId.toString());
-        //save - throws error if user flips card to fast (cca below 2 s) - error logged
-        await user.save();
     }
     let iconPath = selectIconForSection(category);
     const sectionLength = foundSection.cards.length;
@@ -175,8 +176,10 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     }
 }))
 
-//HELPERS
 
+
+
+//HELPERS
 function isCardInArray(arrayOfIds, cardIdString) {
     let arrayOfStrings = arrayOfIds.map(item => item.toString());
     let isIncluded = arrayOfStrings.includes(cardIdString);

@@ -5,7 +5,7 @@ const User = require('../models/user');
 const Card = require('../models/card');
 const Category = require('../models/category');
 const Section = require('../models/section'); 
-const { isLoggedIn, isAdmin } = require('../utils/middleware');
+const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 const Stripe = require('../utils/stripe');
 const { findByIdAndDelete } = require('../models/user');
 const moment = require('moment');
@@ -90,7 +90,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
 }))
 
 //show all reported cards
-router.get('/admin/listAllReports', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+router.get('/admin/listAllReports', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const cards = await Card.find({ factualMistakeReports: { $exists: true, $ne: [] } });
     res.status(200).render('admin/reports', {cards});
 }))
@@ -142,6 +142,10 @@ router.get('/premium', (req, res) => {
     res.status(200).render('premium');
 })
 
+
+
+
+//EMAIL FROM ADMIN TO USERS
 //email (render)
 router.get('/admin/email', isLoggedIn, isAdmin, (req, res) => {
     res.status(200).render('admin/email')
@@ -194,6 +198,10 @@ router.get('/admin/email/unsubscribe', catchAsync(async(req, res) => {
     }
 }))
 
+
+
+
+//DELETE PROFILE LOGIC
 //delete account - ADMIN ROUTE
 router.delete('/admin/:userId/deleteUser',isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     await User.findByIdAndDelete(req.params.userId);
@@ -214,6 +222,9 @@ router.get('/auth/user/deleteMyAccount',isLoggedIn, catchAsync(async(req, res) =
     }
 }))
 
+
+
+//CATEGORIES ADMIN VIEW
 //list all categorie ADMIN + helper
 router.get('/admin/categories', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     let categories = await Category.find({});
@@ -227,5 +238,28 @@ function sortByOrderNum(array) {
     // Return the sorted array
     return array;
   }
+
+
+//EDITOR PERMISIONS
+//give editor permisions to a user
+router.post("/admin/:userId/makeEditor", isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    let user = await User.findById(userId);
+    user.isEditor = true;
+    await user.save();
+    req.flash('success','Editorská oprávnění udělena.')
+    res.redirect('/admin/listAllUsers');
+}))
+
+//EDITOR PERMISIONS
+//remove editor permisions from a user
+router.post("/admin/:userId/removeEditor", isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    let user = await User.findById(userId);
+    user.isEditor = false;
+    await user.save();
+    req.flash('success','Editorská oprávnění byle odebrána.')
+    res.redirect('/admin/listAllUsers');
+}))
 
 module.exports = router;

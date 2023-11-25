@@ -179,7 +179,7 @@
         <% } else { %>
         <div class="col-lg-6 offset-lg-2" id="mini-menu">
           <div class="text-center mt-4 servis-btns d-flex justify-content-around align-items-center">
-            <% if (currentUser && currentUser.admin) { %>
+            <% if (currentUser && currentUser.isEditor) { %>
               <div id="upravit-kartu-div">
                 <a href="/cards/edit/<%= card._id%>" class="text-muted" >Upravit kartu</a>
               </div>

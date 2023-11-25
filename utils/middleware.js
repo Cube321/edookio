@@ -44,6 +44,15 @@ middleware.isAdmin = (req, res, next) => {
     }
 }
 
+middleware.isEditor = (req, res, next) => {
+    if(req.user.isEditor || req.user.admin){
+        next();
+    } else {
+        req.flash('error','Tuto operaci může provést pouze editor nebo administrátor.');
+        res.redirect('back');
+    }
+}
+
 middleware.isPremiumUser = async (req, res, next) => {
     if(req.user && req.user.isPremium){
         await checkAndUpdatePremiumEndDate(req.user); 

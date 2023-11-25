@@ -247,6 +247,7 @@ $(document).ready(function() {
                         $("#main-container #save-star-div").empty()
                         $("#main-container #save-star-div").removeClass("clicked");
                         $("#main-container #save-star-div").append("<i class='far fa-star fa-lg'></i>")
+                        currentCardData.isCardSaved = false;
                     })
                     .catch(err => console.log(err)); 
                 //add card to saved
@@ -262,6 +263,7 @@ $(document).ready(function() {
                         $("#main-container #save-star-div").empty()
                         $("#main-container #save-star-div").addClass("clicked");
                         $("#main-container #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
+                        currentCardData.isCardSaved = true;
                     })
                     .catch(err => console.log(err)); 
                 }
@@ -386,40 +388,6 @@ $(document).ready(function() {
     
 
     //saving card to favourites (page rendered)
-    $("#save-star-div-rendered-top").click(() => {
-        //remove card from saved
-        if($("#save-star-div-rendered-top").hasClass("clicked")){
-            $("#save-star-div-rendered-top").empty();
-            $("#save-star-div-rendered-top").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div-rendered-top').attr('name');
-            $.ajax({
-                method: "POST",
-                url: `/cards/unsave/${saveUrl}`
-            })
-            .then(res => {
-                $("#save-star-div-rendered-top").empty()
-                $("#save-star-div-rendered-top").removeClass("clicked");
-                $("#save-star-div-rendered-top").append("<i class='far fa-star fa-lg'></i>")
-            })
-            .catch(err => console.log(err)); 
-        //add card to saved
-        } else {
-            $("#save-star-div-rendered-top").empty();
-            $("#save-star-div-rendered-top").append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-            const saveUrl = $('#save-star-div-rendered-top').attr('name');
-            $.ajax({
-                method: "POST",
-                url: `/cards/save/${saveUrl}`
-            })
-            .then(res => {
-                $("#save-star-div-rendered-top").empty()
-                $("#save-star-div-rendered-top").addClass("clicked");
-                $("#save-star-div-rendered-top").append("<i class='fas fa-star fa-lg'></i>")
-            })
-            .catch(err => console.log(err)); 
-        }
-    })
-
     $("#save-star-div-rendered-bottom").click(() => {
         //remove card from saved
         if($("#save-star-div-rendered-bottom").hasClass("clicked")){
@@ -434,6 +402,7 @@ $(document).ready(function() {
                 $("#save-star-div-rendered-bottom").empty()
                 $("#save-star-div-rendered-bottom").removeClass("clicked");
                 $("#save-star-div-rendered-bottom").append("<i class='far fa-star fa-lg'></i>")
+                currentCardData.isCardSaved = false;
             })
             .catch(err => console.log(err)); 
         //add card to saved
@@ -449,6 +418,7 @@ $(document).ready(function() {
                 $("#save-star-div-rendered-bottom").empty()
                 $("#save-star-div-rendered-bottom").addClass("clicked");
                 $("#save-star-div-rendered-bottom").append("<i class='fas fa-star fa-lg'></i>")
+                currentCardData.isCardSaved = true;
             })
             .catch(err => console.log(err)); 
         }
