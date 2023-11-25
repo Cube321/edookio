@@ -12,6 +12,14 @@ const CategorySchema = new Schema({
     numOfCards: {
         type: Number,
         default: 0
+    },
+    text: {
+        type: String,
+        default: ""
+    },
+    icon: {
+        type: String,
+        default: ""
     }
 
 })

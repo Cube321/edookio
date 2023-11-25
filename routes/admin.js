@@ -214,4 +214,10 @@ router.get('/auth/user/deleteMyAccount',isLoggedIn, catchAsync(async(req, res) =
     }
 }))
 
+//list all categorie ADMIN
+router.get('/admin/categories', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let categories = await Category.find({});
+    res.render('admin/categories', {categories});
+}))
+
 module.exports = router;

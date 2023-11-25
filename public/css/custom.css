@@ -325,6 +325,20 @@ form .form-control, .form-select {
     color: #6C657D;
 }
 
+/* ADMIN CATEGORIES PAGE*/
+.admin-category-row th {
+    font-weight: normal
+}
+
+.delete-btn {
+    color:#E80F88;
+    border: 1px solid #E80F88;
+    padding: 0 3px;
+    margin: 0 5px;
+    border-radius: 5px;
+    background: none;
+}
+
 @media only screen and (max-width: 992px) {
     .nezobrazovat-na-mobilu-landing {
       display: none;

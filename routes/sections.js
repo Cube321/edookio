@@ -9,7 +9,7 @@ const { isLoggedIn, isAdmin, validateSection, isPremiumUser } = require('../util
 const {categories} = require('../utils/categories')
 const mongoose = require('mongoose');
 
-//show sections of category
+//SHOW SECTIONS OF CATEGORY
 router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, next) => {
 
     const category = await Category.findOne({name: req.params.category}).populate('basicSections').populate('premiumSections').populate('sections').exec();
@@ -36,23 +36,72 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     res.status(200).render('category', {category, title});
 }))
 
-//create new Category - new approach - service moved out of the route
-router.get('/category/new/:categoryName', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
-    const { categoryName } = req.params;
-    await categoryService.create(categoryName);
-    res.status(201).redirect(`/category/${categoryName}`);
+
+
+
+
+//CATEGORY (create, edit, delete)
+//create new Category - post ROUTE
+router.post('/category/new', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+    let {text, value, icon} = req.body;
+    const foundCategory = await Category.find({name: value});
+    if(foundCategory.length > 0){
+        req.flash('error','Kategorie již existuje.')
+        return res.redirect('/admin/categories');
+    }
+    const newCategory = new Category({name: value, sections: [], text, icon});
+    let savedCategory = await newCategory.save();
+    console.log(savedCategory);
+    res.status(201).redirect(`/admin/categories`);
 }))
 
-const categoryService = {};
-categoryService.create = async (categoryName) => {
-    const foundCategory = await Category.find({name: categoryName});
-    if(foundCategory.length > 0){
-        throw new Error('Kategorie již existuje!');
+//edit Category - render form
+router.get('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {categoryId} = req.params;
+    const foundCategory = await Category.findById(categoryId);
+    if(!foundCategory){
+        req.flash('error','Kategorie nebyla nelezena.')
+        return res.redirect('/admin/categories');
     }
-    const newCategory = new Category({name: categoryName, sections: []});
-    await newCategory.save();
-}
+    res.status(200).render('admin/categoriesEdit', {category: foundCategory})
+}))
 
+//edit Category - update in the DB
+router.put('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+    let {categoryId} = req.params;
+    let {text, icon} = req.body;
+    const foundCategory = await Category.findById(categoryId);
+    if(!foundCategory){
+        req.flash('error','Kategorie nebyla nalezena.')
+        return res.redirect('/admin/categories');
+    }
+    await Category.findByIdAndUpdate(categoryId, {text, icon});
+    res.status(201).redirect(`/admin/categories`);
+}))
+
+//remove Category - delete from DB
+router.delete('/category/remove/:categoryId', isLoggedIn, isAdmin, catchAsync(async(req, res)=> {
+    let {categoryId} = req.params;
+    const foundCategory = await Category.findById(categoryId);
+    if(!foundCategory){
+        req.flash('error','Kategorie nebyla nalezena.')
+        return res.redirect('/admin/categories');
+    }
+    if (foundCategory.sections.length === 0){
+        await Category.findByIdAndDelete(categoryId);
+        req.flash('success','Kategorie byla odstraněna.');
+    } else {
+        req.flash('error',"Kategorie obsahuje balíčky. Nejdříve odstraň balíčky, poté bude možné kategorii smazat.");
+    }
+    res.status(200).redirect('/admin/categories');
+}))
+
+
+
+
+
+
+//SECTIONS IN CATEGORY
 //create new Section in Category
 router.post('/category/:category/newSection', validateSection, isLoggedIn, isAdmin, catchAsync(async (req, res, next )=> {
     //check if category exists
