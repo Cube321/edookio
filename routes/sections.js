@@ -43,13 +43,13 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
 //CATEGORY (create, edit, delete)
 //create new Category - post ROUTE
 router.post('/category/new', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
-    let {text, value, icon} = req.body;
+    let {text, value, icon, orderNum} = req.body;
     const foundCategory = await Category.find({name: value});
     if(foundCategory.length > 0){
         req.flash('error','Kategorie již existuje.')
         return res.redirect('/admin/categories');
     }
-    const newCategory = new Category({name: value, sections: [], text, icon});
+    const newCategory = new Category({name: value, sections: [], text, icon, orderNum});
     let savedCategory = await newCategory.save();
     console.log(savedCategory);
     res.status(201).redirect(`/admin/categories`);
@@ -67,15 +67,15 @@ router.get('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async(r
 }))
 
 //edit Category - update in the DB
-router.put('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async (req, res, next) => {
+router.put('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     let {categoryId} = req.params;
-    let {text, icon} = req.body;
+    let {text, icon, orderNum} = req.body;
     const foundCategory = await Category.findById(categoryId);
     if(!foundCategory){
         req.flash('error','Kategorie nebyla nalezena.')
         return res.redirect('/admin/categories');
     }
-    await Category.findByIdAndUpdate(categoryId, {text, icon});
+    await Category.findByIdAndUpdate(categoryId, {text, icon, orderNum});
     res.status(201).redirect(`/admin/categories`);
 }))
 

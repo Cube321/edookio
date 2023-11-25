@@ -7,31 +7,21 @@ const catchAsync = require('../utils/catchAsync');
 const { isPremiumUser } = require('../utils/middleware');
 
 
-//show homepage
+//SHOW HOMEPAGE + helper
 router.get('/', isPremiumUser, catchAsync(async(req, res) => {
     const categories = await Category.find({});
-    let numOfCategories = categories.length - 1;
+    let numOfCategories = categories.length;
     const numOfCards = await Card.count();
     const numOfSections = await Section.count();
-    let trestnipravo = "";
-    let obcanskepravo = "";
-    let spravnipravo = "";
-    let ustavnipravo = "";
-    let obchodnipravo = "";
-    let pravnickaanglictina = "";
-    let trestniproces = "";
-    let civilniproces = "";
-    categories.forEach(cat => {
-        if(cat.name === "trestnipravo"){trestnipravo = cat};
-        if(cat.name === "obcanskepravo"){obcanskepravo = cat};
-        if(cat.name === "spravnipravo"){spravnipravo = cat};
-        if(cat.name === "ustavnipravo"){ustavnipravo = cat};
-        if(cat.name === "obchodnipravo"){obchodnipravo = cat};
-        if(cat.name === "pravnickaanglictina"){pravnickaanglictina = cat};
-        if(cat.name === "trestniproces"){trestniproces = cat};
-        if(cat.name === "civilniproces"){civilniproces = cat};
-    })
-    res.status(200).render('index', {trestnipravo, obcanskepravo, spravnipravo, ustavnipravo, obchodnipravo, pravnickaanglictina, trestniproces, civilniproces, numOfCards, numOfSections, numOfCategories});
+    sortByOrderNum(categories);
+    res.status(200).render('index', {categories, numOfCards, numOfSections, numOfCategories});
 }))
+
+function sortByOrderNum(array) {
+    // Use the Array.prototype.sort() method to sort the array
+    array.sort((a, b) => a.orderNum - b.orderNum);
+    // Return the sorted array
+    return array;
+  }
 
 module.exports = router;

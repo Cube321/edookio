@@ -214,10 +214,18 @@ router.get('/auth/user/deleteMyAccount',isLoggedIn, catchAsync(async(req, res) =
     }
 }))
 
-//list all categorie ADMIN
+//list all categorie ADMIN + helper
 router.get('/admin/categories', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     let categories = await Category.find({});
+    sortByOrderNum(categories);
     res.render('admin/categories', {categories});
 }))
+
+function sortByOrderNum(array) {
+    // Use the Array.prototype.sort() method to sort the array
+    array.sort((a, b) => a.orderNum - b.orderNum);
+    // Return the sorted array
+    return array;
+  }
 
 module.exports = router;

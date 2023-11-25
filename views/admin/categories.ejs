@@ -9,6 +9,7 @@
         <div class="col-md-9">
             <table class="w-100">
                 <tr>
+                    <th><p>Poř.</p></th>
                     <th><p>Název kategorie</p></th>
                     <th><p>Označení</p></th>
                     <th><p>Ikona</p></th>
@@ -17,6 +18,7 @@
                 </tr>
                 <% categories.forEach(cat => { %>
                     <tr class="admin-category-row">
+                        <th><%= cat.orderNum %></th>
                         <th><%= cat.text %></th>
                         <th><%= cat.name %></th>
                         <th><%= cat.icon %></th>
@@ -63,6 +65,10 @@
                 <div class="form-group">
                     <label for="icon">Ikona</label>
                     <input class="form-control" id="icon" name="icon" rows="1" placeholder="icon_mezinarodko.png" required></input>
+                </div>
+                <div class="form-group">
+                    <label for="orderNum">Pořadí</label>
+                    <input class="form-control" id="orderNum" name="orderNum" rows="1" placeholder="0" required></input>
                 </div>
                 <button class="btn btn-danger mt-5">Vytvořit kategorii</button>
             </form>

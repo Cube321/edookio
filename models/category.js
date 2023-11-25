@@ -20,6 +20,10 @@ const CategorySchema = new Schema({
     icon: {
         type: String,
         default: ""
+    },
+    orderNum: {
+        type: Number,
+        default: -1
     }
 
 })
