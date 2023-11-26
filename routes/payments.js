@@ -17,18 +17,18 @@ const productToPriceMap = {
 //Stripe checkout
 router.post('/payment/checkout', isLoggedIn, catchAsync(async (req, res) => {
     let session;
-    if(req.body.product === "monthly")(
+    if(req.body.product === "monthly"){
         session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.MONTHLY)
-    )
-    if(req.body.product === "halfyear")(
+      }
+    if(req.body.product === "halfyear"){
       session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.HALFYEAR)
-    )
-    if(req.body.product === "yearly")(
+    }
+    if(req.body.product === "yearly"){
         session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.YEARLY)
-    )
-    if(req.body.product === "daily")(
+      }
+    if(req.body.product === "daily"){
       session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.DAILY)
-    )
+    }
     res.status(200).send({ sessionId: session.id })
   }))
 
