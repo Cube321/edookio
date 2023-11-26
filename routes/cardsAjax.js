@@ -135,7 +135,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
         user.cardsSeen++;
         //update lastSeenCard in unifnishedSection
         let unfinishedSectionIndex = user.unfinishedSections.findIndex(x => x.sectionId.toString() == foundSection._id.toString());
-        if(unfinishedSectionIndex > -1){user.unfinishedSections[unfinishedSectionIndex].lastCard = cardNum};
+        if(unfinishedSectionIndex > -1 && req.query.continue !== "continue"){user.unfinishedSections[unfinishedSectionIndex].lastCard = cardNum - 1};
         //mark modified nested objects - otherwise Mongoose does not see it and save it
         user.markModified('unfinishedSections');
         await user.save();
