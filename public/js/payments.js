@@ -9,7 +9,12 @@ $(document).ready(function() {
   
   const checkoutButtonDaily = $('#checkout-button-daily')
   
-  checkoutButtonDaily.click(function () {
+  checkoutButtonDaily.click(function (e) {
+    e.preventDefault();
+    $(this).addClass("disabled");
+    $(this).empty();
+    $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+    
     const product = "daily";
 
     fetch('/payment/checkout', {
