@@ -45,7 +45,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let premiumActivationsInLastWeek = 0;
     let premiumUpdatesInLastWeek = 0;
     let premiumDeactivationsInLastWeek = 0;
-    let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfNeuvedeno: 0};
+    let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     users.forEach(user => {
         let newUser = user;
         newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
@@ -68,6 +68,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         if(user.faculty === "PrF MUNI"){faculties.prfMuni++};
         if(user.faculty === "PrF ZČU"){faculties.prfZcu++};
         if(user.faculty === "Jiná"){faculties.prfJina++};
+        if(user.faculty === "Uchazeč"){faculties.prfUchazec++};
         if(user.faculty === "Nestuduji"){faculties.prfNestuduji++};
         if(user.faculty === "Neuvedeno"){faculties.prfNeuvedeno++};
     })
@@ -251,7 +252,6 @@ router.post("/admin/:userId/makeEditor", isLoggedIn, isAdmin, catchAsync(async(r
     res.redirect('/admin/listAllUsers');
 }))
 
-//EDITOR PERMISIONS
 //remove editor permisions from a user
 router.post("/admin/:userId/removeEditor", isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     let {userId} = req.params;

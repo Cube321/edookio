@@ -9,6 +9,7 @@ const mail = require('../mail/mail_inlege');
 
 const productToPriceMap = {
     YEARLY: process.env.PRODUCT_YEARLY,
+    HALFYEAR: process.env.PRODUCT_HALFYEAR,
     MONTHLY: process.env.PRODUCT_MONTHLY,
     DAILY: process.env.PRODUCT_DAILY
   }
@@ -19,12 +20,15 @@ router.post('/payment/checkout', isLoggedIn, catchAsync(async (req, res) => {
     if(req.body.product === "monthly")(
         session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.MONTHLY)
     )
+    if(req.body.product === "halfyear")(
+      session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.HALFYEAR)
+    )
     if(req.body.product === "yearly")(
         session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.YEARLY)
     )
     if(req.body.product === "daily")(
       session = await Stripe.createCheckoutSession(req.user.billingId, productToPriceMap.DAILY)
-  )
+    )
     res.status(200).send({ sessionId: session.id })
   }))
 
@@ -49,7 +53,6 @@ router.post('/webhook', async (req, res) => {
     }
     
     const data = event.data.object
-    console.log(event.type);
 
   switch (event.type) {
     //create new subscription
@@ -97,7 +100,26 @@ router.post('/webhook', async (req, res) => {
               mail.adminInfoNewSubscription(user);
           }
           user.isPremium = true;
-          //if on yearly and changes to monhtly, will loose the prepaid period - bug - fix
+          //if on yearly and changes to monhtly, will loose the prepaid period
+        }
+
+        if (!data.canceled_at && data.plan.id == productToPriceMap.HALFYEAR) {
+          user.plan = "halfyear";
+          user.endDate = moment(today).add('6','month').format();
+          //format endDate
+          const endDate = moment(user.endDate).locale('cs').format('LL');
+          //info emails
+          if(user.isPremium){
+            mail.subscriptionUpdated(user.email, endDate);
+            mail.adminInfoSubscriptionUpdated(user, endDate);
+            //update date on user
+            user.premiumDateOfUpdate = moment();
+          } else {
+              mail.subscriptionCreated(user.email);
+              mail.adminInfoNewSubscription(user);
+          }
+          user.isPremium = true;
+          //if on halfyear changes to monhtly, will loose the prepaid period
         }
 
         if (!data.canceled_at && data.plan.id == productToPriceMap.DAILY) {

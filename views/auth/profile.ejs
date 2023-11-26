@@ -51,8 +51,12 @@
                         <div class="col-8">
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="mb-0">aktivní do <%= endDate %> </p>
-                                <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin === true){ %>
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning">
+                                <% if(user.plan === "yearly" && user.premiumGrantedByAdmin !== true){ %>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning-year">
+                                        Správa předplatného
+                                    </button>
+                                <% } else if (user.plan === "halfyear" && user.premiumGrantedByAdmin !== true) { %>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning-halfyear">
                                         Správa předplatného
                                     </button>
                                 <% } else if (!user.premiumGrantedByAdmin === true){ %>
@@ -75,19 +79,22 @@
                         </div>
                         <div class="col-8">
                             <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">zrušeno (aktivní do konce období)</p>
+                                <p class="mb-0">Premium zrušeno (aktivní do konce období)</p>
                             <% }%>  
                             <% if(user.plan === "monthly" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">měsíční (další platba <%= endDate %>)</p>
+                                <p class="mb-0">Premium měsíční (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.plan === "halfyear" && !user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium půlroční (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">roční (další platba <%= endDate %>)</p>
+                                <p class="mb-0">Premium roční (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.plan === "daily" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">denní (další platba <%= endDate %>)</p>
+                                <p class="mb-0">Premium denní (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">zdarma do konce období</p>
+                                <p class="mb-0">Premium zdarma do konce období</p>
                             <% }%> 
                         </div> 
                         <hr />
@@ -120,8 +127,8 @@
     </div>
 </div>
 
-<!-- Modal Warning -->
-<div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+<!-- Modal Warning YEAR to SHORTER PERIOD -->
+<div class="modal fade" id="modal-warning-year" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -130,13 +137,42 @@
         </div>
         <div class="modal-body">
           <p>
-            Chcete-li změnit <b>roční předplatné na měsíční</b>, učiňte tak prosím až ke konci ročního období. Platební systém bohužel neumí zachovat informaci o předplaceném období a změnou na měsíční tak dojde ke ztrátě předplaceného období.
+            Chcete-li změnit <b>roční předplatné na měsíční nebo půlroční</b>, učiňte tak prosím až ke konci ročního období. Platební systém bohužel neumí zachovat informaci o předplaceném období a změnou tak dojde ke ztrátě předplaceného období.
           </p>
           <p>
-            <b>Změnou období z ročního na měsíční berete na vědomí a přijímáte, že dojde ke zkrácení předplaceného období na 1 měsíc.</b>
+            <b>Změnou období z ročního na půlroční nebo měsíční berete na vědomí a přijímáte, že dojde ke zkrácení předplaceného období na 1 měsíc.</b>
           </p>
           <p>
-            Chcete-li předplatné zrušit, zůstane Vám aktivní do konce předplaceného období.
+            Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+          <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+            Pokračovat
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Warning HALFYEAR to MONTH -->
+<div class="modal fade" id="modal-warning-halfyear" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upozornění</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Chcete-li změnit <b>půlroční předplatné na měsíční</b>, učiňte tak prosím až ke konci ročního období. Platební systém bohužel neumí zachovat informaci o předplaceném období a změnou tak dojde ke ztrátě předplaceného období.
+          </p>
+          <p>
+            <b>Změnou období z půlročního na měsíční berete na vědomí a přijímáte, že dojde ke zkrácení předplaceného období na 1 měsíc.</b>
+          </p>
+          <p>
+            Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.
           </p>
         </div>
         <div class="modal-footer">

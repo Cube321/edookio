@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 //SHOW SECTIONS OF CATEGORY
 router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, next) => {
 
-    const category = await Category.findOne({name: req.params.category}).populate('basicSections').populate('premiumSections').populate('sections').exec();
+    const category = await Category.findOne({name: req.params.category}).populate('sections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
         return res.status(404).redirect('back');
@@ -127,12 +127,6 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isEdi
     })
     const savedSection = await newSection.save();
     foundCategory.sections.push(savedSection._id);
-    if(savedSection.isPremium){
-        foundCategory.premiumSections.push(savedSection._id);
-    } 
-    if(!savedSection.isPremium){
-        foundCategory.basicSections.push(savedSection._id);
-    } 
     await foundCategory.save();
     req.flash('success',`Sekce ${savedSection.name} byla vytvořena.`);
     res.status(200).redirect(`/category/${savedSection.category}`);
@@ -144,20 +138,10 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor,
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
     if(!foundSection){
-        throw Error("Sekce s tímto ID neexistuje");
+        throw Error("Balíček s tímto ID neexistuje");
     }
-    let updatedCategory;
-    //remove sections from category arrays
-    if(!foundSection.isPremium){
-        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {basicSections: sectionId, sections: sectionId}});
-        console.log('removed basic section from category array');
-    } 
-    if(foundSection.isPremium){
-        updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {premiumSections: sectionId, sections: sectionId}});
-        console.log('removed premium section from category array');
-    } 
-
-    
+    //remove sections from category array
+    let updatedCategory = await Category.findOneAndUpdate({name: category}, {$pull: {sections: sectionId}});
     if(!updatedCategory){
         throw Error("Kategorie s tímto ID neexistuje");
     }
@@ -174,14 +158,14 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor,
     for (let user of foundUsersUnfinished) {
         let updatedSections = user.unfinishedSections.filter(section => section.sectionId !== searchQuery.toString())
         user.unfinishedSections = updatedSections;
-        user.save();
+        await user.save();
     } 
     //remove section from list of finished sections of all users
     let foundUsersFinished = await User.find({ sections: searchQuery});
     for (let user of foundUsersFinished) {
         let updatedSections = user.sections.filter(section => section.toString() !== searchQuery.toString())
         user.sections = updatedSections;
-        user.save();
+        await user.save();
     } 
     //flash a redirect
     req.flash('success','Sekce byla odstraněna.');
@@ -247,6 +231,7 @@ router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isEditor, c
     res.status(200).redirect(`/category/${category}`);
 }))
 
+//changing status of the section from FREE to PREMIUM and back
 router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     let {category, sectionId, changeDirection} = req.params;
     let foundSection = await Section.findById(sectionId);
@@ -262,7 +247,5 @@ router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLo
     await foundSection.save();
     res.status(200).redirect(`/category/${category}`);
 }))
-
-
 
 module.exports = router;

@@ -50,6 +50,29 @@ $(document).ready(function() {
         .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
     })
 
+    //Halfyear Subscription
+    const checkoutButtonHalfyear = $('#checkout-button-halfyear')
+    
+    checkoutButtonHalfyear.click(function (e) {
+      e.preventDefault();
+      $(this).addClass("disabled");
+      $(this).empty();
+      $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
+      const product = "halfyear";
+
+      fetch('/payment/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          product
+        })
+      })
+        .then((result) => result.json())
+        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
+    })
+
     //Yearly Subscription
     const checkoutButtonYearly = $('#checkout-button-yearly')
   

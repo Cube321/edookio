@@ -107,6 +107,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-10">
+                        <p>Hlásím se ke studiu</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfUchazec %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
                         <p>Neuvedeno</p>
                     </div>
                     <div class="col-md-2">
@@ -199,7 +207,7 @@
                 <a href="/admin/<%=user._id%>/upgradeToPremium/addDecade">P10R</a>
             </div>
             <div class="col-sm-2">
-                <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Odstranit uživatele</button></form>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal<%=user._id%>" class="btn btn-sm btn-warning">Odstranit uživatele</a>
             </div>
             <div class="col-sm-2">
                 <% if (!user.isEditor) { %>
@@ -210,6 +218,20 @@
             </div>
             <% } %>
             <hr>
+        </div>
+        <!-- MODAL - Delete user confirmation -->
+        <div class="modal fade" id="deleteUserModal<%=user._id%>" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Opravdu chcete odstranit uživatele <%=user.email%>?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body d-flex justify-content-center align-items-center">
+                        <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Ano, odstranit uživatele</button></form>
+                    </div>
+                </div>
+            </div>
         </div>
     <% } %> 
 </div>

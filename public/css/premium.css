@@ -115,6 +115,12 @@
     color: white;
 }
 
+.premium-plan-card .monthly-equivalent {
+    font-size: smaller;
+    color: white;
+    font-style: italic;
+}
+
 .price-tag-inner .price {
     font-weight: 600;
     font-size:x-large;
