@@ -12,7 +12,9 @@ mail.welcome = function(email, callback){
         subject: "Vítej na InLege",
         html: `
         <p style="font-family:Helvetica Neue">Ahoj,<p>
-        <p style="font-family:Helvetica Neue">tvá registrace na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> byla dokončena! Doufáme, že se InLege zařadí mezi nástroje a pomůcky, které při studiu práva používáš pravidelně.</p>
+        <p style="font-family:Helvetica Neue">tvá registrace na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> byla dokončena! Doufáme, že ti aplikace bude dobře sloužit a studium práva ti zpříjemní.</p>
+        <p style="font-family:Helvetica Neue">InLege jsme spustili teprve v prosinci 2023 a určitě je ještě co vylepšovat. Pokud bys měl/a jakékoliv nápady a připomínky, neváhej prosím využít tlačítko "Zaslat feedback" v patičce webu. Díky!</p>
+        <p style="font-family:Helvetica Neue">S pozdravem <br />Jakub Spáčil</p>
         <p style="font-family:Helvetica Neue">S pozdravem <br />Tým <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege.cz</a></p>
         `
       };

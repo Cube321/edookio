@@ -6,7 +6,6 @@ const Category = require('../models/category');
 const User = require('../models/user');
 const Card = require('../models/card');
 const { isLoggedIn, isAdmin, validateSection, isPremiumUser, isEditor } = require('../utils/middleware');
-const {categories} = require('../utils/categories')
 const mongoose = require('mongoose');
 
 //SHOW SECTIONS OF CATEGORY
@@ -19,8 +18,9 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     }
     //asign name of category
     let title = "";
+    let categories = await Category.find({});
     categories.forEach(c => {
-        if(c.value === req.params.category){title = c.text};
+        if(c.name === req.params.category){title = c.text};
     })
     //add data to user's unfinishedSections
     if(req.user){

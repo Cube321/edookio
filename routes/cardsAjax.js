@@ -8,8 +8,7 @@ const Section = require('../models/section');
 const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
-const { categories } = require('../utils/categories');
-const { validateCard, isLoggedIn, isAdmin } = require('../utils/middleware');
+const { validateCard, isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 
 //repeat section - filter section out of the array of finished sections
 router.get('/category/:category/section/:sectionId/cardAjax/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
@@ -145,7 +144,8 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
         //is card already saved?
         isCardSaved = isCardInArray(user.savedCards, cardId.toString());
     }
-    let iconPath = selectIconForSection(category);
+    let categories = await Category.find({});
+    let iconPath = selectIconForSection(category, categories);
     const sectionLength = foundSection.cards.length;
     if((cardNum === 1 && requestedPreviousCardOne === false) || req.query.continue === "continue"){
         res.status(200).render('cards/showAjax', {
@@ -176,7 +176,22 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     }
 }))
 
-
+//show one specific card (for editors only)
+router.get('/cards/show/:id', isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
+    const {id} = req.params;
+    const card = await Card.findById(id);
+    if (!card){
+        req.flash('error','Kartička nebyla nalezena.');
+        return res.redirect('/');
+    }
+    const section = await Section.findById(card.section);
+    let categories = await Category.find({});
+    const sectionLength = section.cards.length;
+    const nextNum = 1;
+    let isCardSaved = isCardInArray(req.user.savedCards, id);
+    let iconPath = selectIconForSection(card.category, categories);
+    res.status(200).render('cards/showAjax', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0, isCardSaved, iconPath});
+}))
 
 
 //HELPERS
@@ -190,10 +205,10 @@ function isCardInArray(arrayOfIds, cardIdString) {
     }
 }
 
-function selectIconForSection(category){
+function selectIconForSection(category, categories){
     let iconPath = "";
     categories.forEach(cat => {
-        if(cat.value === category){
+        if(cat.name === category){
             iconPath = `/img/${cat.icon}`
         }
     })

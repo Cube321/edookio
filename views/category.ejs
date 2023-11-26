@@ -6,14 +6,7 @@
         <div class="card">
             <div class="card-body category-box d-flex flex-column align-items-center justify-content-center pt-4">
                 <div class="rounded-circle icon-background-large d-flex justify-content-center align-items-center">
-                    <% if(category.name === "trestnipravo"){ %> <img src="/img/icon_tresthmota.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "obcanskepravo"){ %> <img src="/img/icon_civilhmota.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "spravnipravo"){ %> <img src="/img/icon_sprava.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "ustavnipravo"){ %> <img src="/img/icon_ustavko.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "obchodnipravo"){ %> <img src="/img/icon_obchod.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "pravnickaanglictina"){ %> <img src="/img/icon_anglictina.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "trestniproces"){ %> <img src="/img/icon_trestproces.png" class="img-fit" alt="" /> <% } %>
-                    <% if(category.name === "civilniproces"){ %> <img src="/img/icon_civilproces.png" class="img-fit" alt="" /> <% } %>
+                    <img src="/img/<%= category.icon %>" class="img-fit" alt="" />
                 </div>
                 <h4 class="mt-4 mb-2"><%= title %> </h4>
                 <div>

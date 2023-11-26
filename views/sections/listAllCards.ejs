@@ -11,16 +11,17 @@
             <h5>Sekce: <%= section.name %> </h5>
         </div>
     </div>
-    <% for(let card of section.cards){ %> 
+    <% section.cards.forEach((card, i) => { %> 
         <div class="row">
-            <div class="col-sm-3 offset-1 text-small"><%- card.pageA %> </div>
+            <div class="col-sm-1 text-small text-center"><%= i + 1%></div>
+            <div class="col-sm-3 text-small"><%- card.pageA %> </div>
             <div class="col-sm-5 text-small"><%- card.pageB %> </div>
             <div class="col-sm-1"><a href="/cards/edit/<%= card._id%>">Upravit</a></div>
             <div class="col-sm-1"><a href="/cards/remove/<%= card._id%>">Odstranit</a></div>
             <div class="col-sm-1"><a href="/cards/show/<%= card._id%>">Zobrazit</a></div>
             <hr>
         </div>
-    <% } %> 
+    <% }) %> 
     <div class="row">
         <div class="col-12 d-flex justify-content-between mt-4">
             <a href="/category/<%= section.category %>" class="btn btn-sm btn-danger">Zpět na kategorii</a>

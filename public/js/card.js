@@ -9,7 +9,6 @@ $(document).ready(function() {
     //GET DATA FOR CURRENT CARD
     let currentCardUrl = "/"
     currentCardUrl = $("#flip-card-inner").attr("currentCardUrl");
-    
     $.ajax({
         method: "GET",
         url: currentCardUrl + "?requestType=primaryData"
@@ -38,8 +37,9 @@ $(document).ready(function() {
 
     //GET DATA FOR PREVIOUS CARD
     let previousCardUrl = "/"
-    previousCardUrl = $("#predchozi-karticka-link").attr("name");
-    
+    if($("#predchozi-karticka-link").length){
+        previousCardUrl = $("#predchozi-karticka-link").attr("name");
+    }
     $.ajax({
         method: "GET",
         url: previousCardUrl + "?requestType=primaryData"

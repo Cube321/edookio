@@ -8,24 +8,7 @@ const Section = require('../models/section');
 const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
-const { categories } = require('../utils/categories');
 const { validateCard, isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
-
-
-//show a specific card
-router.get('/cards/show/:id', isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
-    const {id} = req.params;
-    const card = await Card.findById(id);
-    if (!card){
-        req.flash('error','Kartička nebyla nalezena.');
-        return res.redirect('/');
-    }
-    const section = await Section.findById(card.section);
-    const sectionLength = section.cards.length;
-    const nextNum = 1;
-    let isCardSaved = isCardInArray(req.user.savedCards, id);
-    res.status(200).render('cards/showAjax', {card, sectionName: section.name, nextNum, sectionLength, progressStatus: 0, isCardSaved});
-}))
 
 //render new card page (GET)
 router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
@@ -94,7 +77,7 @@ router.get('/cards/edit/:id', isLoggedIn, isEditor, catchAsync(async (req, res, 
         req.flash('error','Kartička nebyla nalezena.');
         return res.redirect('/');
     }
-    res.status(200).render('cards/edit', {card, categories});
+    res.status(200).render('cards/edit', {card});
 }))
 
 //edit card - save (PUT)
@@ -222,7 +205,11 @@ router.post('/cards/unsave/:userEmail/:cardId', isLoggedIn, catchAsync(async(req
 //show all saved cards
 router.get('/cards/saved', isLoggedIn, catchAsync(async(req, res) => {
     let foundUser = await User.findById(req.user._id).populate('savedCards').select('savedCards');
-    res.render('cards/savedCards', {savedCards: foundUser.savedCards, categories});
+    let categories = await Category.find({});
+    // Remove objects with orderNum below 0
+    const filteredArray = categories.filter(obj => obj.orderNum > 0);
+    sortByOrderNum(filteredArray);
+    res.render('cards/savedCards', {savedCards: foundUser.savedCards, categories: filteredArray});
 }))
 
 
@@ -237,6 +224,13 @@ function isCardInArray(arrayOfIds, cardIdString) {
         return false;
     }
 }
+
+function sortByOrderNum(array) {
+    // Use the Array.prototype.sort() method to sort the array
+    array.sort((a, b) => a.orderNum - b.orderNum);
+    // Return the sorted array
+    return array;
+  }
 
 
 

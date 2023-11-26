@@ -46,6 +46,13 @@
     background-color: #E80F88!important;
 }
 
+.form-control:focus,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger:hover {
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
+}
+
 
 a {
     color: #E80F88;

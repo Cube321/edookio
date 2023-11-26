@@ -48,7 +48,7 @@
                                         <ul class="navbar-nav">
                                             <% for(let cat of categories){ %>
                                                 <li class="nav-item nav-item-saved-cards">
-                                                <a class="nav-link nav-link-saved-cards" href="#<%= cat.value %>"><%= cat.text %></a>
+                                                <a class="nav-link nav-link-saved-cards" href="#<%= cat.name %>"><%= cat.text %></a>
                                             </li>
                                             <% } %>
                                         </ul>
@@ -67,7 +67,7 @@
                     <div class="col-lg-8 offset-lg-2">
                         <div class="card">
                             <div class="row p-3 pb-0">
-                                <div class="col-12" id="<%= cat.value %>">
+                                <div class="col-12" id="<%= cat.name %>">
                                     <h5 class="d-flex align-items-center px-4">
                                         <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
                                             <img class="img-fit" src="/img/<%= cat.icon%>" alt="">
@@ -76,7 +76,7 @@
                                     </h5>
                                     <div class="accordion accordion-flush" id="accordion-cards">
                                         <% for(let card of savedCards){ %>
-                                                <% if (card.category === cat.value) { %>
+                                                <% if (card.category === cat.name) { %>
                                                     <div id="accordion-<%= card._id %>" class="accordion-item" style="font-size:0.9rem">
                                                         <h2 class="accordion-header">
                                                             <button class="accordion-button collapsed px-4" type="button"
