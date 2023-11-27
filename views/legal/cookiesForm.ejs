@@ -1,0 +1,52 @@
+<% layout ('layouts/boilerplate.ejs') %>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="card p-3">
+                    <div class="row p-3 pb-0">
+                        <div class="col-12">
+                            <h3>Cookies a ochrana soukromí</h3>
+                            <p class="my-4">Na našem webu využíváme soubory cookies, které mohou obsahovat osobní informace. My a někteří poskytovatelé služeb, které využíváme, máme možnost přistupovat k těmto údajům, upravovat je, ukládat a mazat. Tyto informace nám slouží k provozování a zlepšování našich služeb. Pro některé účely zpracování těchto dat potřebujeme váš souhlas. Váš souhlas můžete kdykoliv změnit nebo odvolat.</p>
+                        </div>
+                    </div>
+                    <div class="row p-3 pt-0">
+                        <div class="col-lg-12">
+                            <form action="/legal/cookies" method="POST">
+                                <div class="form-check  mb-3">
+                                    <input class="form-check-input" type="checkbox" value="yes" id="nezbytne" name="nezbytne" checked disabled>
+                                    <label class="form-check-label" for="nezbytne">
+                                      <strong>Nezbytné cookies</strong> (Technické cookies nezbytné pro fungování webu. Neobsahují žádné osobní údaje.)
+                                    </label>
+                                  </div>
+                                  <div class="form-check  mb-3">
+                                    <input class="form-check-input" type="checkbox" value="yes" id="analyticke" name="analyticke" 
+                                    <% if (cookiesAnalyticke) { %>
+                                        checked
+                                    <% } %>
+                                    >
+                                    <label class="form-check-label" for="analyticke">
+                                      <strong>Analytické cookies</strong> (Slouží k analýze uživatelské aktivity a pracují pouze s anonymními daty.)
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="yes" id="marketingove" name="marketingove"
+                                    <% if (cookiesMarketingove) { %>
+                                        checked
+                                    <% } %>
+                                    >
+                                    <label class="form-check-label" for="marketingove">
+                                      <strong>Marketingové cookies</strong> (Pomáhají nám s marketingem, například měřením úspěšnosti reklamních kampaní.)
+                                    </label>
+                                  </div>
+                                <button type="submit" class="btn btn-danger mt-3">Uložit nastavení</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/js/jquery.min.js"></script>

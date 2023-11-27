@@ -24,4 +24,12 @@ function sortByOrderNum(array) {
     return array;
   }
 
+
+
+
+  //SHOW ABOUT page
+router.get('/about', catchAsync(async(req, res) => {
+  res.status(200).render('about');
+}))
+
 module.exports = router;

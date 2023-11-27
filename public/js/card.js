@@ -53,7 +53,7 @@ $(document).ready(function() {
         
         rebuildCard(nextCardData, side);
 
-        checkIfDemoLimitReached(nextCardData.demoCardsSeen, nextCardData.user);
+        checkIfDemoLimitReached(nextCardData.demoCardsSeen + 1, nextCardData.user);
     
         $.ajax({
             method: "GET",
@@ -63,6 +63,9 @@ $(document).ready(function() {
             previousCardData = currentCardData;
             currentCardData = nextCardData;
             nextCardData = data;
+            $("#btn-dalsi-filler").addClass("hide");
+            $("#btn-dalsi").removeClass("hide");
+            $("#data-loaded-wrapper").append('<div id="data-loaded"></div>');
         })
         .catch(err => console.log(err));  
     }
@@ -78,6 +81,7 @@ $(document).ready(function() {
         if(previousCardData.nextNum === 2){
             $("#predchozi-karticka-filler").removeClass("hide");
             $("#predchozi-karticka-link").addClass("hide");
+            $("#data-loaded-wrapper").append('<div id="data-loaded"></div>');
         }
 
     
@@ -89,6 +93,9 @@ $(document).ready(function() {
             nextCardData = currentCardData;
             currentCardData = previousCardData;
             previousCardData = data;
+            $("#btn-dalsi-filler").addClass("hide");
+            $("#btn-dalsi").removeClass("hide");
+            $("#data-loaded-wrapper").append('<div id="data-loaded"></div>');
             
         })
         .catch(err => console.log(err));  
@@ -96,6 +103,7 @@ $(document).ready(function() {
 
     function rebuildCard(data, side){
         if(side !== "front"){$("#flip-card").toggleClass('flipped');}
+            $("#data-loaded").remove();
             //conditional logic for content
             let starEmpty = "";
             let starFull = "";
@@ -111,7 +119,7 @@ $(document).ready(function() {
             $("#flip-card").empty();
             $("#flip-card").append(`
             <div class="border-grey flip-card-inner">
-                <div class="card-body flip-card-front pb-0 px-0">
+                <div class="card-body flip-card-front p-sm-3 pt-sm-4 px-0 pt-3">
                     <div class="front-main-content d-flex justify-content-center align-items-center">
                         <div id="loaderA"></div>
                         <div class="card-text m-4 text-center" id="pageA">${data.card.pageA}</div>
@@ -143,7 +151,8 @@ $(document).ready(function() {
                     ${starActivateModal}
                 </div>
                 <div>
-                    <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
+                    <a class="btn btn-lg btn-danger easy-btn disabled" id="btn-dalsi-filler">Další</a>
+                    <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn hide" id="btn-dalsi">Další</a>
                 </div>
                 <div>
                     <a href="#" class="nezobrazovat-na-mobilu" id="rotate-back"><i class="fas fa-sync-alt fa-lg"></i></a>
@@ -201,12 +210,11 @@ $(document).ready(function() {
                 $("#predchozi-karticka-link").toggleClass('back');
                 push--;
             })
-
+            let click = 0;
             //flip with space
             document.body.onkeyup = function(e) {
-                if (e.key == " " ||
-                    e.code == "Space"      
-                ) {
+                if ((e.key == " " || e.code == "Space") && $("#data-loaded").length) {
+                    console.log(click);
                     push++;
                     if(push === 1){
                         $("#flip-card").toggleClass('flipped');
@@ -289,6 +297,7 @@ $(document).ready(function() {
             $("#front-menu-row").remove();
             $("#back-menu-row").remove();
             $("#mini-menu").remove();
+            push = 3;
         }
     }
 
@@ -359,10 +368,8 @@ $(document).ready(function() {
         })
 
         //flip with space
-        document.body.onkeyup = function(e) {
-            if (e.key == " " ||
-                e.code == "Space"      
-            ) {
+        document.body.onkeyup = function(e) { 
+            if ((e.key == " " || e.code == "Space") && (nextCardData.user || nextCardData.demoCardsSeen + 1 < 6)) {
                 e.preventDefault();
                 push++;
                 if(push === 1){

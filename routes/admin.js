@@ -132,12 +132,6 @@ router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catch
     res.status(201).redirect('/admin/listAllUsers');
 }))
 
-//cookies
-router.get("/cookies-agreed",function(req, res){
-	req.session.cookiesAgreed = true;
-	res.sendStatus(200);
-});
-
 //premium explanation page
 router.get('/premium', (req, res) => {
     res.status(200).render('premium');

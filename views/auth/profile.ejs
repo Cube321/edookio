@@ -3,48 +3,51 @@
     <div class="row">
         <div class="col-lg-8 offset-lg-2">
             <div class="card profile-card">
-                <div class="row p-3 pb-0">
-                    <div class="col-12">
-                        <h3>Můj účet</h3>
+                <div class="row p-3 pb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                            <img src="/img/icon_student.png" class="img-fit" alt="">
+                        </div>
+                        <h3 class="px-3">Můj účet</h3>
                     </div>
                 </div>
                 <div class="row p-3">
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Jméno</p>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 d-flex align-items-center">
                         <%= user.firstname %> <%= user.lastname %> 
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>E-mail</p>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 d-flex align-items-center">
                         <%= user.email %> 
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Fakulta</p>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 d-flex align-items-center">
                         <%= user.faculty %> 
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Počet nastudovaných kartiček</p>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 d-flex align-items-center">
                         <%= user.cardsSeen %> 
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Datum registrace</p>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8 d-flex align-items-center">
                         <%= dateOfRegistration %> 
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Předplatné</p>
                     </div>
                     <% if(user.isPremium){ %>
@@ -70,10 +73,10 @@
                     <% } %>
                     <hr />
                     <% if(user.isPremium){ %> 
-                        <div class="col-4 fw-bold">
+                        <div class="col-4 fw-bold d-flex align-items-center">
                             <p>Typ předplatného</p>
                         </div>
-                        <div class="col-8">
+                        <div class="col-8 d-flex align-items-center">
                             <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
                                 <p class="mb-0">Premium zrušeno (aktivní do konce období)</p>
                             <% }%>  
@@ -95,20 +98,20 @@
                         </div> 
                         <hr />
                     <% } %> 
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Heslo</p>
                     </div>
-                    <div class="col-8 d-flex justify-content-end align-items-start">
-                        <a href="/auth/user/changePassword" class="btn btn-danger btn-sm">Změnit heslo</a>
+                    <div class="col-8 d-flex justify-content-end align-items-center">
+                        <a href="/auth/user/changePassword" class="btn btn-danger btn-sm" style="margin-bottom: 5px">Změnit heslo</a>
                         <!--the following input transfers customer billing ID to Javascript -->
                         <input type="text" id="customerID" name="customerID" value="<%= user.billingId %>" style="display:none" />
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold">
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Odstranit účet</p>
                     </div>
                     <% if(user.isPremium && user.plan !== "none"){ %> 
-                        <div class="col-8">
+                        <div class="col-8 d-flex align-items-center">
                             před odstraněním účtu je nutné zrušit předplatné
                         </div>
                     <% } else { %>

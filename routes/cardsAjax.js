@@ -31,7 +31,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     const {user} = req;
     let cardNum = parseInt(req.params.cardNum);
     //DEMO MODE
-    if(!user && !req.session.demoCardsSeen && req.query.requestType !== "primaryData"){
+    if(!user && !req.session.demoCardsSeen){
         req.session.demoCardsSeen = 1;
     } else if (!user && req.query.requestType !== "primaryData") {
         req.session.demoCardsSeen++;
@@ -39,7 +39,6 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     if(!Number.isInteger(cardNum)){
         throw Error("Zadané číslo karty není ve správném formátu.");
     }
-
     //handle request for previous card if that card is #1
     let requestedPreviousCardOne = false;
     if(cardNum === 0){

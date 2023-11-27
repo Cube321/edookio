@@ -192,12 +192,13 @@ form .form-control, .form-select {
  }
 
 /* PROFILE */
-.profile-card {
-    font-size: smaller; 
-}
 
 .profile-card .col-8 {
     color: #6C657D;
+}
+
+.profile-card p {
+    margin: 5px 0;
 }
 
 /* COOKIES */
@@ -205,7 +206,7 @@ form .form-control, .form-select {
 .cookies-warning {
 	position: fixed;
   bottom: 0;
-  padding: 2px 15px;
+  padding: 3px 25px;
 	width: 100%;
 	text-align: center;
 	z-index: 100;
@@ -220,6 +221,7 @@ form .form-control, .form-select {
       -ms-flex-align: center;
           align-items: center;
   border-top: 3px solid white;
+  border-top: 3px solid #E80F88;
 }
 
 .cookies-warning p {
@@ -230,10 +232,6 @@ form .form-control, .form-select {
 
 .cookies-warning a {
   text-decoration: none;
-}
-
-.cookies-warning a:hover {
-  color: white;
 }
 
 .cookies-warning .btn-agree {
@@ -248,11 +246,13 @@ form .form-control, .form-select {
             transition-duration: 0.3s;
     font-weight: bold;
     font-size: 1rem;
+    border: 2px solid #E80F88;
+    color: #E80F88
 }
 
 .cookies-warning .btn-agree:hover {
-    color: black;
-    background: white;
+    color: white;
+    background: #E80F88;
     text-decoration: none;
 }
 
@@ -292,6 +292,12 @@ form .form-control, .form-select {
     background-color: #EEEEEE;
     height: 3.5rem;
     width: 3.5rem;
+}
+
+.icon-background-medium {
+    background-color: #EEEEEE;
+    height: 5rem;
+    width: 5rem;
 }
 
 .icon-background-large {
@@ -358,6 +364,10 @@ form .form-control, .form-select {
 
     .nav-item-saved-cards {
         text-align: left;
+    }
+
+    .profile-card {
+        font-size: smaller; 
     }
   }
 

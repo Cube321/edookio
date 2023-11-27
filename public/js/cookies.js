@@ -6,7 +6,7 @@
 				url: "/cookies-agreed"
 			})
 			.then(res => {
-				$(".cookies-warning").addClass("d-none");
+				$(".cookies-warning").fadeOut();
 			})
 			.catch(err => console.log(err));
 		});

@@ -21,6 +21,10 @@ router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     res.status(200).render('auth/profile', {user, endDate, dateOfRegistration});
 }))
 
+
+
+
+//PROVIDE FEEDBACK LOGIC
 //render feedback form
 router.get('/legal/feedback', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
@@ -33,6 +37,32 @@ router.post('/legal/feedback', isLoggedIn, catchAsync(async(req, res) => {
     mail.sendFeedback(email, name, text);
     req.flash('success','Feedback byl odeslán. Díky!')
     res.status(201).redirect(`/legal/feedback`);
+}))
+
+
+
+
+//COOKIES LOGIC
+//route after main "Povolit vše" btn clicked
+router.get("/cookies-agreed",function(req, res){
+	req.session.cookiesAgreed = true;
+    req.session.cookiesAnalyticke = true;
+    req.session.cookiesMarketingove = true;
+	res.sendStatus(200);
+});
+
+//cookies consent form RENDER
+router.get('/legal/cookies', catchAsync(async(req, res) => {
+    let {cookiesAnalyticke, cookiesMarketingove} = req.session;
+    res.status(200).render('legal/cookiesForm', {cookiesAnalyticke, cookiesMarketingove});
+}))
+
+//cookies consent form POST
+router.post('/legal/cookies', catchAsync(async(req, res) => {
+    let {analyticke, marketingove} = req.body;
+    if(analyticke){req.session.cookiesAnalyticke = true} else {req.session.cookiesAnalyticke = false}
+    if(marketingove){req.session.cookiesMarketingove = true} else {req.session.cookiesMarketingove = false}
+    res.status(200).redirect('/legal/cookies');
 }))
 
 //register form user (GET)
