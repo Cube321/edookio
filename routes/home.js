@@ -25,6 +25,13 @@ function sortByOrderNum(array) {
   }
 
 
+//SHOW PREMIUM PAGE
+//premium explanation page
+router.get('/premium', (req, res) => {
+  res.status(200).render('premium');
+})
+
+
 
 
   //SHOW ABOUT page
