@@ -78,6 +78,7 @@ router.post('/webhook', async (req, res) => {
           } else {
               mail.subscriptionCreated(user.email);
               mail.adminInfoNewSubscription(user);
+              user.premiumDateOfActivation = moment();
           }
           user.isPremium = true;
         }
@@ -96,6 +97,7 @@ router.post('/webhook', async (req, res) => {
           } else {
               mail.subscriptionCreated(user.email);
               mail.adminInfoNewSubscription(user);
+              user.premiumDateOfActivation = moment();
           }
           user.isPremium = true;
           //if on yearly and changes to monhtly, will loose the prepaid period
@@ -115,6 +117,7 @@ router.post('/webhook', async (req, res) => {
           } else {
               mail.subscriptionCreated(user.email);
               mail.adminInfoNewSubscription(user);
+              user.premiumDateOfActivation = moment();
           }
           user.isPremium = true;
           //if on halfyear changes to monhtly, will loose the prepaid period
@@ -134,6 +137,7 @@ router.post('/webhook', async (req, res) => {
           } else {
               mail.subscriptionCreated(user.email);
               mail.adminInfoNewSubscription(user);
+              user.premiumDateOfActivation = moment();
           }
           user.isPremium = true;
         }
