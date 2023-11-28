@@ -17,6 +17,10 @@
     font-size: 0.875rem;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
 .grey-highlight {
     background-color: #EEEEEE;
     border-radius: 10px;
@@ -151,7 +155,6 @@ form .form-control, .form-select {
 .price-tag-inner {
     border-radius: 5px;
     text-align: center;
-    color: #E80F88;
     transition: all 0.3s;
 }
 
@@ -173,7 +176,6 @@ form .form-control, .form-select {
     margin-left: 1rem;
     margin-right: 1rem;
     font-size: 0.9rem;
-    color: #6C657D
 }
 
 .price-tag-inner .price {
@@ -183,7 +185,6 @@ form .form-control, .form-select {
 
 .price-tag-inner .period {
     font-size: smaller;
-    color: #6C657D
 }
 
 .spinner-border-small {
@@ -237,7 +238,7 @@ form .form-control, .form-select {
 .cookies-warning .btn-agree {
     text-decoration: none;
 	color: black;
-	background: white;
+	background: #E80F88;
     padding: 5px 20px;
     border-radius: 16px;
     margin: 5px;
@@ -247,12 +248,12 @@ form .form-control, .form-select {
     font-weight: bold;
     font-size: 1rem;
     border: 2px solid #E80F88;
-    color: #E80F88
+    color: white
 }
 
 .cookies-warning .btn-agree:hover {
-    color: white;
-    background: #E80F88;
+    color: #E80F88;
+    background: white;
     text-decoration: none;
 }
 

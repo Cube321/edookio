@@ -48,7 +48,12 @@
                                 <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
                                     <img src="/img/icon_cards.png" class="img-fit" alt="">
                                 </div>
-                                <h3 class="px-3">Uložené kartičky</h3>
+                                <div>
+                                    <h3 class="px-3">Uložené kartičky</h3>
+                                    <% if (currentUser && savedCards.length < 3) { %>
+                                        <p class="px-3 text-muted">Kliknutím na ikonku <i class="far fa-star fa-lg"></i> si kartičky můžeš ukládat a poté na této stránce procházet.</p>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     </div>

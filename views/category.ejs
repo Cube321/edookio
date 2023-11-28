@@ -2,7 +2,7 @@
 
 <div class="row mb-3">
     <!-- CATEGORY left box (ikon + name) -->
-    <div class="col-md-3 offset-md-1 mb-3">
+    <div class="col-md-4 col-lg-3 offset-lg-1 mb-3">
         <div class="card">
             <div class="card-body category-box d-flex flex-column align-items-center justify-content-center pt-4">
                 <div class="rounded-circle icon-background-large d-flex justify-content-center align-items-center">
@@ -17,7 +17,7 @@
     </div>
 
     <!-- CATEGORY - list of sections -->
-    <div class="col-md-7 section-list">
+    <div class="col-md-8 col-lg-7 section-list">
 
         <!-- BALICKY -->
         <div class="card">
@@ -50,18 +50,18 @@
                         <div class="col-3 d-flex justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
                                 <% if(!section.isPremium){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger">Spustit</a>    
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>    
                                 <% } else { %>
                                     <a href="/premium" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
                                 <% } %>  
                             <% } else if(!currentUser.isPremium && section.isPremium){ %> 
                                 <a href="/premium" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
                             <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger" style="float:right">Opakovat</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
                             <% } else if (section.isUnfinished) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-secondary" style="float:right">Pokračovat</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-secondary btn-pokracovat" style="float:right">Pokračovat</a>
                             <% } else { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger" style="float:right">Spustit</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
                             <% } %>
                         </div>
                         <div class="col-2">
@@ -121,13 +121,13 @@
                             </div>
                             <div class="col-3 d-flex justify-content-center align-items-center">
                                 <% if (!currentUser){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger">Spustit</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger" style="float:right">Opakovat</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
                                 <% } else if (section.isUnfinished) { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-secondary" style="float:right">Pokračovat</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-secondary btn-pokracovat" style="float:right">Pokračovat</a>
                                 <% } else { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger" style="float:right">Spustit</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
                                 <% } %>
                             </div>
                             <div class="col-2 d-flex justify-content-evenly align-items-center">
@@ -208,8 +208,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-2 mt-2">
-                            <button class="btn btn-danger w-100">Přidat</button>
+                        <div class="col-12 my-2">
+                            <button class="btn btn-danger">Přidat</button>
                         </div>
                     </div>
                 </form>

@@ -1,4 +1,10 @@
+.colorA {
+    background-color: rgba(230, 15, 133, 0.1);
+}
 
+.colorB {
+    background-color: rgba(230, 15, 133, 0.3);
+}
 
 .main-header-premium {
     background: linear-gradient( rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url(../img/bg_cover5.jpeg) no-repeat center center; 
@@ -64,22 +70,30 @@
 
 
 .price-tag-inner {
-    border-radius: 5px;
     text-align: center;
-    color: #E80F88;
     transition: all 0.3s;
+    border-radius: 10px;
+    padding: 10px 20px;
+    background-color: white;
+    border: 1px solid #EEEEEE;
 }
 
 .premium-plan-card {
     transition: all 0.3s;
-    border-color: #E80F88;
-    border-top-color:#E80F88;
-    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid #EEEEEE;
     width: 280px;
 }
 
 .premium-plan-card:hover {
-    transform: translateY(-1rem);
+    border: 1px solid #E80F88
+}
+
+.premium-plan-card:hover .custom-hr {
+    background-color: #E80F88
+}
+
+.premium-recomended {
+    border: 1px solid #E80F88
 }
 
 .premium-plan-card .card-header {
@@ -88,15 +102,10 @@
     color: white;
     font-size: x-large;
     border-bottom: none;
-
 }
 
-.height-100 {
-    height: 100%;
-}
-
-.height-85 {
-    height: 85%;
+.premium-plan-card .card-header p {
+    color: white;
 }
 
 .premium-plan-card .card-header-title {
@@ -112,23 +121,92 @@
     margin-left: 1rem;
     margin-right: 1rem;
     font-size: 1rem;
-    color: white;
+}
+
+.premium-plan-card .co-ziskas-text {
+    color: #E80F88
+}
+
+.custom-hr {
+    border: none;
+    height: 1px!important;
+    background-color: #EEEEEE;  /* Modern Browsers */
+    opacity: 1;
+    border-radius: 10px;
+  }
+
+  .custom-hr-recommended {
+    border: none;
+    height: 1px!important;
+    background-color: #E80F88;  /* Modern Browsers */
+    opacity: 1;
+    border-radius: 10px;
+  }
+  
+
+/*
+.premium-recomended {
+    border-color: #e8b80f;
+    border-top-color:#e8b80f;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.premium-recomended .card-header {
+    background-color:#e8b80f;
+}
+
+.premium-recomended p {
+    color:white;
+}
+
+.premium-recomended .premium-card-text p {
+    color: white
+}
+
+.premium-recomended .price {
+    color: #e8b80f
+}
+
+.premium-recomended .price-tag-inner {
+    color: #e8b80f
+}
+
+.premium-plan-card:hover {
+    transform: translateY(-1rem);
+} 
+*/
+
+.height-100 {
+    height: 100%;
+}
+
+.height-85 {
+    height: 85%;
 }
 
 .premium-plan-card .monthly-equivalent {
     font-size: smaller;
-    color: white;
     font-style: italic;
+    margin-top: 5px;
 }
 
 .price-tag-inner .price {
     font-weight: 600;
     font-size:x-large;
+    color:#E80F88
 }
 
 .price-tag-inner .period {
     font-size: smaller;
-    color: white
+}
+
+.premium-card-btn-div {
+    border-end-end-radius: 5px;
+    border-end-start-radius: 5px;
+}
+
+.premium-card-info-div {
+
 }
 
 .text-small {

@@ -25,26 +25,6 @@ router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
 
 
 
-//PROVIDE FEEDBACK LOGIC
-//render feedback form
-router.get('/legal/feedback', catchAsync(async(req, res) => {
-    let user = {};
-    if(req.user){
-        user = req.user;
-    }
-    res.status(200).render('legal/feedback', {user});
-}))
-
-//send feedback
-router.post('/legal/feedback', catchAsync(async(req, res) => {
-    const {email, name, text} = req.body;
-    mail.sendFeedback(email, name, text);
-    req.flash('success','Feedback byl odeslán. Díky!')
-    res.status(201).redirect(`/legal/feedback`);
-}))
-
-
-
 
 //COOKIES LOGIC
 //route after main "Povolit vše" btn clicked
@@ -53,6 +33,14 @@ router.get("/cookies-agreed",function(req, res){
     req.session.cookiesAnalyticke = true;
     req.session.cookiesMarketingove = true;
 	res.sendStatus(200);
+});
+
+router.get("/cookies-agreed-form",function(req, res){
+	req.session.cookiesAgreed = true;
+    req.session.cookiesAnalyticke = true;
+    req.session.cookiesMarketingove = true;
+    req.flash('success','Nastavení cookies bylo uloženo.');
+	res.status(200).redirect('/');
 });
 
 //cookies consent form RENDER
@@ -67,7 +55,7 @@ router.post('/legal/cookies', catchAsync(async(req, res) => {
     if(analyticke){req.session.cookiesAnalyticke = true} else {req.session.cookiesAnalyticke = false}
     if(marketingove){req.session.cookiesMarketingove = true} else {req.session.cookiesMarketingove = false}
     req.flash('success','Nastavení cookies bylo uloženo.');
-    res.status(200).redirect('/legal/cookies');
+    res.status(200).redirect('/');
 }))
 
 
@@ -102,7 +90,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         let admin = false;
         if(key === process.env.adminRegKey) {
             admin = true;
-            faculty = "Neuvedeno";
+            faculty = "neuvedeno";
         }
         //register user
         const passChangeId = uuid.v1();
@@ -130,7 +118,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         mail.welcome(newUser.email);
         mail.adminInfoNewUser(newUser);
         //
-        req.flash('success', 'Registrace proběhla úspěšně.');
+        req.flash('success', 'Skvělé! Registrace proběhla úspěšně.');
         if(req.query.requiresPremium){
             res.status(201).redirect('/premium'); 
         } else {
@@ -146,6 +134,11 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
     }
 }))
 
+
+
+
+
+//LOGIN LOGIC
 //login form (GET)
 router.get('/auth/user/login', (req, res) => {
     res.status(200).render('auth/login_form');
@@ -154,10 +147,6 @@ router.get('/auth/user/login', (req, res) => {
 //login request (POST)
 router.post('/auth/user/login', passport.authenticate('local', {failureFlash: 'Nesprávné heslo nebo e-mail.', failureRedirect: '/auth/user/login'}), catchAsync(async (req, res) => {
     res.status(200).redirect('/');
-    //let redirectUrl = req.session.returnTo || '/';
-    //delete req.session.returnTo;
-    //if(redirectUrl === "/auth/user/logout"){redirectUrl = "/"};
-    //res.status(200).redirect(redirectUrl);
 }))
 
 //logout request (GET)
@@ -169,6 +158,12 @@ router.get('/auth/user/logout', isLoggedIn, (req, res, next) => {
     res.status(200).redirect('/');
 })
 
+
+
+
+
+
+//PASSWORD RELATED ROUTES
 //change password (GET)
 router.get('/auth/user/changePassword', isLoggedIn, (req, res) => {
     res.status(200).render('auth/change_password');
@@ -200,7 +195,7 @@ router.get('/auth/user/requestPassword', (req, res) => {
     res.status(200).render('auth/request_password');
 })
 
-//request forgotten password (POST) - NEDOKONČENO - Je třeba zaslat e-mail s linkem na změnu hesla a vytvořit nějaké id, aby to nemohl udělat kdokoliv
+//request forgotten password (POST)
 router.post('/auth/user/requestPassword', catchAsync(async(req, res) => {
     const user = await User.findOne({email: req.body.email});
     //check if user exists
@@ -254,9 +249,11 @@ router.post('/auth/user/setPassword/:passChangeId', catchAsync(async(req, res) =
 
 
 
+
+
 //DELETE ACOUNT LOGIC (user's route)
 //delete account - USER ROUTE (deleting user's own account)
-router.get('/auth/user/deleteMyAccount',isLoggedIn, catchAsync(async(req, res) => {
+router.get('/auth/user/deleteMyAccount', isLoggedIn, catchAsync(async(req, res) => {
     let foundUser = await User.findById(req.user._id);
     if(foundUser.plan === "none"){
         await User.findByIdAndDelete(req.user._id);

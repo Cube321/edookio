@@ -258,4 +258,27 @@ router.post("/admin/:userId/removeEditor", isLoggedIn, isAdmin, catchAsync(async
     res.redirect('/admin/listAllUsers');
 }))
 
+
+
+
+
+//PROVIDE FEEDBACK LOGIC
+//render feedback form
+router.get('/legal/feedback', catchAsync(async(req, res) => {
+    let user = {};
+    if(req.user){
+        user = req.user;
+    }
+    res.status(200).render('legal/feedback', {user});
+}))
+
+
+//send feedback
+router.post('/legal/feedback', catchAsync(async(req, res) => {
+    const {email, name, text} = req.body;
+    mail.sendFeedback(email, name, text);
+    req.flash('success','Feedback byl odeslán. Díky!')
+    res.status(201).redirect(`/legal/feedback`);
+}))
+
 module.exports = router;

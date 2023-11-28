@@ -1,8 +1,9 @@
 <% if(cookiesAgreed !== true && !currentUser){ %>
     <div class="cookies-warning" id="cookies-warning">
-        <p class="">
-            Aplikace InLege potřebuje pro správné fungování cookies. | <a href="/legal/cookies">Nastavení cookies</a>
-        </p>
-        <a href="#" class="btn-agree" id="btn-agree">Povolit vše</a>
+        <div class="d-flex justify-content-between align-items-center">
+            <p class="px-md-2">Aplikace InLege potřebuje pro správné fungování cookies.</p>
+            <a href="#" class="btn-agree my-2" id="btn-agree">Povolit vše</a>
+            <a class="my-3" href="/legal/cookies">Nastavení cookies</a>
+        </div>
     </div>
 <% } %>

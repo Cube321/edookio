@@ -151,7 +151,7 @@ $(document).ready(function() {
                     ${starActivateModal}
                 </div>
                 <div>
-                    <a class="btn btn-lg btn-danger easy-btn disabled" id="btn-dalsi-filler">Další</a>
+                    <a class="btn btn-lg btn-danger easy-btn disabled" id="btn-dalsi-filler"><div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div></a>
                     <a href="/category/${data.card.category}/section/${data.card.section}/cardAjax/${data.nextNum}" class="btn btn-lg btn-danger easy-btn hide" id="btn-dalsi">Další</a>
                 </div>
                 <div>
@@ -213,7 +213,7 @@ $(document).ready(function() {
             let click = 0;
             //flip with space
             document.body.onkeyup = function(e) {
-                if ((e.key == " " || e.code == "Space") && $("#data-loaded").length) {
+                if ((e.key == " " || e.code == "Space") && ($("#data-loaded").length || push === 0)) {
                     console.log(click);
                     push++;
                     if(push === 1){
@@ -288,8 +288,8 @@ $(document).ready(function() {
                 <div class="row height-100 demo-finished-card">
                 <div class="col-12 d-flex flex-column justify-content-center align-items-center ">
                     <p class="demo-finished-main text-center mb-4">Super! Tohle bylo tvých 5 ukázkových kartiček.</p>
-                    <p class="demo-finished-text text-center text-smaller text-muted mt-3 mb-4">Teď už víš, jak InLege funguje. Zaregistruj se a získej přístup k dalším <b>více než 1 500 kartičkám</b>. Je to zdarma!</p>
-                    <a href="/auth/user/new" class="btn btn-lg btn-danger my-3">Registrace zdarma</a>
+                    <p class="demo-finished-text text-center text-smaller text-muted mt-3 mb-4">Teď už víš, jak InLege funguje. Vytvoř si účet a získej přístup k dalším <b>více než 1 500 kartičkám</b>. Je to zdarma!</p>
+                    <a href="/auth/user/new" class="btn btn-lg btn-danger my-3">Vytvořit účet zdarma</a>
                 </div>
                 </div>
             </div>
