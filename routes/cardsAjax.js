@@ -10,7 +10,7 @@ const Category = require('../models/category');
 const moment = require('moment');
 const { validateCard, isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 
-//repeat section - filter section out of the array of finished sections
+//repeat section (incl. filter section out of the array of finished sections)
 router.get('/category/:category/section/:sectionId/cardAjax/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
     const foundSection = await Section.findById(req.params.sectionId);

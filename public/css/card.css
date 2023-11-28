@@ -56,8 +56,12 @@
     max-height: 100%;
   }
 
-  .card-text p {
+  .card-text p:nth-child(1) {
     margin-bottom: 0;
+  }
+
+  .card-text p:nth-child(2) {
+    margin-top: 1rem;
   }
 
 /* SHOW CARD PAGE */

@@ -18,6 +18,26 @@
             </div>
         </div>
     </div>
+    <% for(let cat of categories){ %>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card">
+                        <div class="row p-3 pb-0">
+                            <div class="col-12" id="<%= cat.name %>">
+                                <h5 class="d-flex align-items-center">
+                                    <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                                        <img class="img-fit" src="/img/<%= cat.icon%>" alt="">
+                                    </div>
+                                        <span class="p-3"><%= cat.text%></span>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
 <% } else { %>
         <div class="container nezobrazovat-na-mobilu-landing">
             <div class="row">

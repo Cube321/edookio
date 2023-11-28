@@ -43,7 +43,6 @@ router.get('/payment/failed', (req, res) => {
 })
 
 router.post('/webhook', async (req, res) => {
-    console.log('HIT THE HOOK');
     let event
     try {
       event = Stripe.createWebhook(req.body, req.header('Stripe-Signature'))
@@ -55,7 +54,6 @@ router.post('/webhook', async (req, res) => {
     const data = event.data.object
 
   switch (event.type) {
-    //create new subscription
       //manage subscription (new/update/cancel)
       case "customer.subscription.updated":{
         //changed payment period
@@ -127,7 +125,6 @@ router.post('/webhook', async (req, res) => {
           user.endDate = moment(today).add('1','day').format();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
-          //info emails
           //info emails
           if(user.isPremium){
             mail.subscriptionUpdated(user.email, endDate);

@@ -163,6 +163,7 @@ app.use((err, req, res, next) => {
     //res.status(statusCode).render('error', {message, stack});
     if(err.name === "CastError"){
         req.flash('error', "Záznam nebyl v databázi nalezen - pravděpodobně nesprávný formát ID");
+        console.log(err);
         return res.status(404).redirect('/');
     }
     req.flash('error', err.message);

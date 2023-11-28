@@ -14,7 +14,7 @@ router.get('/category/:category', isPremiumUser, catchAsync(async (req, res, nex
     const category = await Category.findOne({name: req.params.category}).populate('sections').exec();
     if(!category){
         req.flash('error','Kategorie neexistuje.');
-        return res.status(404).redirect('back');
+        return res.status(404).redirect('/');
     }
     //asign name of category
     let title = "";
@@ -133,7 +133,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isEdi
 }))
 
 //remove Section from Category and delete its Cards
-router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
+router.delete('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
@@ -172,7 +172,7 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor,
     res.status(200).redirect(`/category/${category}`);
 }))
 
-//edit section (name, description, next section)
+//edit section RENDER
 router.get('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
@@ -181,7 +181,8 @@ router.get('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, c
     res.render('sections/edit', {section: foundSection});
 }))
 
-router.put('/category/:category/editSection/:sectionId',isLoggedIn, isEditor, catchAsync(async(req, res) => {
+//edit section UPDATE
+router.put('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
@@ -196,6 +197,7 @@ router.put('/category/:category/editSection/:sectionId',isLoggedIn, isEditor, ca
 }))
 
 //changing order of the sections
+//UP
 router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {sectionId, category} = req.params;
     const foundCategory = await Category.findOne({name: category});
@@ -213,6 +215,7 @@ router.get('/category/:category/sectionUp/:sectionId', isLoggedIn, isEditor, cat
     }
     res.status(200).redirect(`/category/${category}`);
 }))
+//DOWN
 router.get('/category/:category/sectionDown/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {sectionId, category} = req.params;
     const foundCategory = await Category.findOne({name: category});
@@ -247,5 +250,27 @@ router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLo
     await foundSection.save();
     res.status(200).redirect(`/category/${category}`);
 }))
+
+//publish section
+router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isEditor, catchAsync(async(req, res) => {
+    const foundSection = await Section.findById(req.params.sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    foundSection.isPublic = true;
+    await foundSection.save();
+    req.flash('success','Sekce byla zveřejněna');
+    res.status(200).redirect(`/category/${req.params.category}`);
+}))
+
+//list all cards in section
+router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isEditor, catchAsync(async(req, res) => {
+    const section = await Section.findById(req.params.sectionId).populate('cards');
+    if(!section){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    res.status(200).render('sections/listAllCards', {section});
+}))
+
 
 module.exports = router;

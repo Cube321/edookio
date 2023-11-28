@@ -94,7 +94,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-body d-flex justify-content-center align-items-center">
-                                    <a href="/category/<%= category.name %>/removeSection/<%= section._id %>/" class="btn btn-danger">Ano, odstranit</a>
+                                    <form action="/category/<%= category.name %>/removeSection/<%= section._id %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-danger">Ano, odstranit</button>
+                                    </form>
                                 </div>
                             </div>
                             </div>

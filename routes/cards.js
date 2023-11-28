@@ -8,8 +8,9 @@ const Section = require('../models/section');
 const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
-const { validateCard, isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
+const { validateCard, isLoggedIn, isEditor } = require('../utils/middleware');
 
+//CARDS (add, edit, remove)
 //render new card page (GET)
 router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
     const {category, sectionId} = req.params;
@@ -18,27 +19,6 @@ router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isEdito
         throw Error("Sekce s tímto ID neexistuje");
     }
     res.status(200).render('cards/new', {category, sectionId, sectionName: foundSection.name});
-}))
-
-//list all cards in section
-router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isEditor, catchAsync(async(req, res) => {
-    const section = await Section.findById(req.params.sectionId).populate('cards');
-    if(!section){
-        throw Error("Sekce s tímto ID neexistuje");
-    }
-    res.status(200).render('sections/listAllCards', {section});
-}))
-
-//publish section
-router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isEditor, catchAsync(async(req, res) => {
-    const foundSection = await Section.findById(req.params.sectionId);
-    if(!foundSection){
-        throw Error("Sekce s tímto ID neexistuje");
-    }
-    foundSection.isPublic = true;
-    await foundSection.save();
-    req.flash('success','Sekce byla zveřejněna');
-    res.status(200).redirect(`/category/${req.params.category}`);
 }))
 
 //add new card - save (POST)
@@ -115,12 +95,37 @@ router.get('/cards/remove/:id', isLoggedIn, isEditor, catchAsync(async (req, res
 
 
 
-//NAHLÁSTI CHYBU NA KARTĚ 
-//render success page
-router.get('/cards/report/success', (req,res) => {
-    res.status(200).render('cards/reportSubmited')
-})
 
+
+
+//NAHLÁSTI CHYBU NA KARTĚ 
+//render report form
+router.get('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
+    const foundCard = await Card.findById(req.params.cardId);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
+    res.status(200).render('cards/report', {card: foundCard});
+}))
+
+//save the report
+router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
+    const foundCard = await Card.findById(req.params.cardId);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
+    const newReport = {
+        date: Date.now(),
+        reportMsg: req.body.reportMsg,
+        solved: false,
+        user: req.user.email
+    }
+    foundCard.factualMistakeReports.push(newReport);
+    await foundCard.save();
+    res.status(201).render('cards/reportSubmited');
+}))
+
+//mark as solved
 router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isEditor, catchAsync(async(req,res) => {
     const foundCard = await Card.findById(req.params.cardId);
     if(!foundCard){
@@ -140,32 +145,6 @@ router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isEditor, catc
     res.status(200).redirect('/admin/listAllReports');
 }))
 
-//render report form
-router.get('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
-    const foundCard = await Card.findById(req.params.cardId);
-    if(!foundCard){
-        throw Error("Kartička s tímto ID neexistuje");
-    }
-    res.status(200).render('cards/report', {card: foundCard});
-}))
-
-//receive the message
-router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
-    const foundCard = await Card.findById(req.params.cardId);
-    if(!foundCard){
-        throw Error("Kartička s tímto ID neexistuje");
-    }
-    const newReport = {
-        date: Date.now(),
-        reportMsg: req.body.reportMsg,
-        solved: false,
-        user: req.user.email
-    }
-    foundCard.factualMistakeReports.push(newReport);
-    await foundCard.save();
-    console.log(foundCard);
-    res.status(201).redirect('/cards/report/success');
-}))
 
 
 
@@ -183,14 +162,14 @@ router.post('/cards/save/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, 
         foundUser.savedCards.push(req.params.cardId);
         await foundUser.save();
     }
-    res.status(200).sendStatus(200);
+    res.sendStatus(200);
 }))
 
 //remove card from favourites
 router.post('/cards/unsave/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, res) => {
     if(req.params.userEmail !== req.user.email){
         req.flash('error','Kartičku z uložených může odebrat jen uživatel, který ji uložil.')
-        return res.redirect('back');
+        return res.sendStatus(403);
     }
     let foundUser = await User.findOne({email: req.params.userEmail});
     if(!foundUser){

@@ -3,13 +3,14 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
 const passport = require('passport');
-const { isLoggedIn, isPremiumUser } = require('../utils/middleware');
+const { isLoggedIn } = require('../utils/middleware');
 const { validateUser } = require('../utils/middleware');
 const uuid = require('uuid');
 const mail = require('../mail/mail_inlege');
 const Stripe = require('../utils/stripe');
 const moment = require('moment');
 
+//PROFILE (show)
 //my profile view page
 router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
@@ -26,13 +27,16 @@ router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
 
 //PROVIDE FEEDBACK LOGIC
 //render feedback form
-router.get('/legal/feedback', isLoggedIn, catchAsync(async(req, res) => {
-    const {user} = req;
+router.get('/legal/feedback', catchAsync(async(req, res) => {
+    let user = {};
+    if(req.user){
+        user = req.user;
+    }
     res.status(200).render('legal/feedback', {user});
 }))
 
 //send feedback
-router.post('/legal/feedback', isLoggedIn, catchAsync(async(req, res) => {
+router.post('/legal/feedback', catchAsync(async(req, res) => {
     const {email, name, text} = req.body;
     mail.sendFeedback(email, name, text);
     req.flash('success','Feedback byl odeslán. Díky!')
@@ -62,6 +66,7 @@ router.post('/legal/cookies', catchAsync(async(req, res) => {
     let {analyticke, marketingove} = req.body;
     if(analyticke){req.session.cookiesAnalyticke = true} else {req.session.cookiesAnalyticke = false}
     if(marketingove){req.session.cookiesMarketingove = true} else {req.session.cookiesMarketingove = false}
+    req.flash('success','Nastavení cookies bylo uloženo.');
     res.status(200).redirect('/legal/cookies');
 }))
 
