@@ -2,9 +2,7 @@
     background-color: rgba(230, 15, 133, 0.1);
 }
 
-.colorB {
-    background-color: rgba(230, 15, 133, 0.3);
-}
+
 
 .main-header-premium {
     background: linear-gradient( rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url(../img/bg_cover5.jpeg) no-repeat center center; 
@@ -73,9 +71,8 @@
     text-align: center;
     transition: all 0.3s;
     border-radius: 10px;
-    padding: 10px 20px;
-    background-color: white;
-    border: 1px solid #EEEEEE;
+    padding: 0px 10px;
+    background-color: none;
 }
 
 .premium-plan-card {
@@ -187,7 +184,6 @@
 .premium-plan-card .monthly-equivalent {
     font-size: smaller;
     font-style: italic;
-    margin-top: 5px;
 }
 
 .price-tag-inner .price {

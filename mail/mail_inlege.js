@@ -227,7 +227,7 @@ mail.sendPremiumEnded = function(email, callback){
 mail.sendFeedback = function(email, name, text, callback){
   const msg = {
       from: 'info@inlege.cz', 
-      to: process.env.ADMIN_MAIL,
+      to: 'jakub@inlege.cz',
       subject: "Zpětná vazba (formulář)",
       html: `
           <h3 style="font-family:Helvetica Neue">Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</h3>

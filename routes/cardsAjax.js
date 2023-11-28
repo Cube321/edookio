@@ -105,7 +105,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
                     if(foundSection.nextSection === "lastSection"){
                         nextSection = {name: "lastSection"};
                     } else {
-                        nextSection = {name: "notValidId - udelejte prosim screen teto obrazovky a zaslete jej na mail info@inlege.cz"};
+                        nextSection = {name: "notValidId - udelejte prosim screen teto obrazovky a zaslete jej na mail jakub@inlege.cz"};
                     }
                 }
             

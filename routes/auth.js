@@ -118,7 +118,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         mail.welcome(newUser.email);
         mail.adminInfoNewUser(newUser);
         //
-        req.flash('success', 'Skvělé! Registrace proběhla úspěšně.');
+        req.flash('success', 'Skvělé! Účet byl vytvořen.');
         if(req.query.requiresPremium){
             res.status(201).redirect('/premium'); 
         } else {
