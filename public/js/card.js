@@ -240,7 +240,7 @@ $(document).ready(function() {
                 $("#flip-card .back-main-content").removeClass('text-gradient');
             })
 
-            //saving card to favourites (page rendered)
+            //saving card to favourites
             $("#main-container #save-star-div").click(() => {
                 //remove card from saved
                 if($("#main-container #save-star-div").hasClass("clicked")){
@@ -271,6 +271,14 @@ $(document).ready(function() {
                         $("#main-container #save-star-div").empty()
                         $("#main-container #save-star-div").addClass("clicked");
                         $("#main-container #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
+                        if(res.isFirstSave){
+                            $("#card-nav").append(`
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                Ukládání kartiček a jejich následné zobrazení je funkce dostupná <b>pouze s předplatným Premium</b>. Tvé předplatné je aktivní a kartička byla uložena.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            `)
+                        }
                         currentCardData.isCardSaved = true;
                     })
                     .catch(err => console.log(err)); 
@@ -425,6 +433,14 @@ $(document).ready(function() {
                 $("#save-star-div-rendered-bottom").empty()
                 $("#save-star-div-rendered-bottom").addClass("clicked");
                 $("#save-star-div-rendered-bottom").append("<i class='fas fa-star fa-lg'></i>")
+                if(res.isFirstSave){
+                    $("#card-nav").append(`
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        Ukládání kartiček a jejich následné zobrazení je funkce dostupná <b>pouze s předplatným Premium</b>. Tvé předplatné je aktivní a kartička byla uložena.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    `)
+                }
                 currentCardData.isCardSaved = true;
             })
             .catch(err => console.log(err)); 

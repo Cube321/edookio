@@ -157,12 +157,17 @@ router.post('/cards/save/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, 
     if(!foundUser){
         return res.sendStatus(404);
     }
+    let isFirstSave = false;
     let isCardAlreadySaved = isCardInArray(foundUser.savedCards, req.params.cardId);
     if(!isCardAlreadySaved){
+        if(foundUser.isFirstSave === true){
+            isFirstSave = true;
+            foundUser.isFirstSave = false;
+        }
         foundUser.savedCards.push(req.params.cardId);
         await foundUser.save();
     }
-    res.sendStatus(200);
+    res.status(200).send({isFirstSave});
 }))
 
 //remove card from favourites
@@ -178,7 +183,7 @@ router.post('/cards/unsave/:userEmail/:cardId', isLoggedIn, catchAsync(async(req
     let updatedSavedCards = foundUser.savedCards.filter((item) => item.toString() !== req.params.cardId);
     foundUser.savedCards = updatedSavedCards;
     await foundUser.save();
-    res.status(200).sendStatus(200);
+    res.sendStatus(200);
 }))
 
 //show all saved cards

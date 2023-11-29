@@ -41,6 +41,10 @@ const UserSchema = new Schema ({
         type: Boolean,
         default: false
     },
+    isFirstSave: {
+        type: Boolean,
+        default: true
+    },
     premiumGrantedByAdmin: {
         type: Boolean,
         default: false
