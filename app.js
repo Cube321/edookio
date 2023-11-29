@@ -20,6 +20,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
+const Category = require('./models/category');
 
 
 app.use("/webhook", bodyParser.raw({ type: "application/json" }))
@@ -129,6 +130,31 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+
+
+
+// Middleware to fetch categories
+app.use(async (req, res, next) => {
+    try {
+      const categories = await Category.find().select('text orderNum name');
+      sortByOrderNum(categories);
+      res.locals.categories = categories;
+      next();
+    } catch (err) {
+      next(err);
+    }
+  });
+//helper - order categories by OrderNum function
+function sortByOrderNum(array) {
+    // Use the Array.prototype.sort() method to sort the array
+    array.sort((a, b) => a.orderNum - b.orderNum);
+    // Return the sorted array
+    return array;
+  }
+
+
+
 
 //has to follow after app.use(flash())
 app.use((req, res, next) => {

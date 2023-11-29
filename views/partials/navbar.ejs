@@ -28,8 +28,17 @@
                 <li class="nav-item">
                   <a class="nav-link premium" href="/premium">Premium</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/#categories-row">Vybrat předmět</a>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Vybrat předmět
+                  </a>
+                  <ul class="dropdown-menu vybrat-predmet">
+                    <% categories.forEach(cat => { %>
+                      <% if (cat.orderNum > -1){ %>
+                        <li><a class="dropdown-item" href="/category/<%= cat.name %>"><%= cat.text %></a></li>
+                      <% } %>
+                   <% }); %>
+                  </ul>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/about">O projektu</a>
