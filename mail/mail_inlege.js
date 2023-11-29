@@ -717,6 +717,7 @@ mail.sendTestEmail = function(email, subject, text, callback){
       subject: subject,
       html: `${text}
               <br />
+              
               <p style="font-size:0.8rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
     };
   //send the mail
