@@ -52,10 +52,10 @@
                                 <% if(!section.isPremium){ %> 
                                     <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>    
                                 <% } else { %>
-                                    <a href="/premium" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
+                                    <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
                                 <% } %>  
                             <% } else if(!currentUser.isPremium && section.isPremium){ %> 
-                                <a href="/premium" class="btn btn-sm btn-warning disabled" style="float:right">Premium</a>
+                                <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
                             <% } else if(currentUser.sections.includes(section._id)) { %> 
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
                             <% } else if (section.isUnfinished) { %> 
