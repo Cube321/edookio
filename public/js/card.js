@@ -272,7 +272,7 @@ $(document).ready(function() {
                         $("#main-container #save-star-div").addClass("clicked");
                         $("#main-container #save-star-div").append("<i class='fas fa-star fa-lg'></i>")
                         if(res.isFirstSave){
-                            $("#card-nav").append(`
+                            $("#warning-div").append(`
                             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                 Ukládání kartiček a jejich následné zobrazení je funkce dostupná <b>pouze s předplatným Premium</b>. Tvé předplatné je aktivní a kartička byla uložena.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -434,7 +434,7 @@ $(document).ready(function() {
                 $("#save-star-div-rendered-bottom").addClass("clicked");
                 $("#save-star-div-rendered-bottom").append("<i class='fas fa-star fa-lg'></i>")
                 if(res.isFirstSave){
-                    $("#card-nav").append(`
+                    $("#warning-div").append(`
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         Ukládání kartiček a jejich následné zobrazení je funkce dostupná <b>pouze s předplatným Premium</b>. Tvé předplatné je aktivní a kartička byla uložena.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
