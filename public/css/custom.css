@@ -1,4 +1,6 @@
-
+body {
+    font-family: 'Nunito', sans-serif;
+}
 
 .navbar-brand img {
     margin-bottom: 4px;
@@ -177,7 +179,6 @@ form .form-control, .form-select {
 .premium-plan-card .card-header {
     background-color:#E80F88;
     text-align: center;
-    color: white;
     font-size: large;
     border-bottom: none;
 }

@@ -1,3 +1,7 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
 .colorA {
     background-color: rgba(230, 15, 133, 0.23);
 }
@@ -81,24 +85,15 @@
 
 .premium-plan-card {
     transition: all 0.3s;
-    border: 1px solid #E80F88;
+    border: 1px solid #D3D7E1;
     width: 280px;
 }
 
-.premium-recomended {
-    border: 1px solid #E80F88
-}
-
 .premium-plan-card .card-header {
-    background-color:#E80F88;
+    background-color:#F0F4FA;
     text-align: center;
-    color: white;
     font-size: x-large;
     border-bottom: none;
-}
-
-.premium-plan-card .card-header p {
-    color: white;
 }
 
 .premium-plan-card .card-header-title {
@@ -116,22 +111,18 @@
     font-size: 1rem;
 }
 
-.premium-plan-card .co-ziskas-text {
-    color: #E80F88
+.premium-card-list {
+    list-style: none;
+}
+
+.premium-card-list .fa-check-circle {
+    color: #9ae80f;
 }
 
 .custom-hr {
     border: none;
     height: 1px!important;
-    background-color: #E80F88;  /* Modern Browsers */
-    opacity: 1;
-    border-radius: 10px;
-  }
-
-  .custom-hr-recommended {
-    border: none;
-    height: 1px!important;
-    background-color: #E80F88;  /* Modern Browsers */
+    background-color: #D3D7E1;  /* Modern Browsers */
     opacity: 1;
     border-radius: 10px;
   }
@@ -185,7 +176,6 @@
 .price-tag-inner .price {
     font-weight: 600;
     font-size:x-large;
-    color:#E80F88
 }
 
 .price-tag-inner .period {

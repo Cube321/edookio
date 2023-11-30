@@ -1,3 +1,7 @@
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
 /* NEW CARD DESIGN*/
 .flip-card {
     width: 100%;
