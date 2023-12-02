@@ -1,7 +1,7 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row text-smaller">
-        <div class="offset-1 col-md-4 mb-3 pt-3">
+        <div class="col-md-4 mb-3 pt-3">
             <div class="card stats p-3">
             <h5 class="mb-3">Statistiky</h5>
             <div class="row">
@@ -187,10 +187,13 @@
     <% for(let user of users){ %> 
         <div class="row text-smaller">
             <div class="col-sm-2"><%= user.email %> </div>
+            <div class="col-sm-1">
+                <div><%= user.faculty %></div>
+            </div>
             <div class="col-sm-2">REG: <%= user.updatedDateOfRegistration %> </div>
             <div class="col-sm-1"><%= user.cardsSeen %></div>
             <% if(user.isPremium){ %> 
-                <div class="col-sm-1">Premium</div>
+                <div class="col-sm-1">Premium <% if(user.premiumGrantedByAdmin){ %>(A) <% } %></div>
             <% } else { %>
                 <div class="col-sm-1">-</div>
             <% } %>
@@ -199,17 +202,10 @@
                     <p class="text-muted">- aktivní placené předplatné -</p>
                 </div>
             <% } else { %>
-            <div class="col-sm-2">
-                <a href="/admin/<%=user._id%>/upgradeToPremium/addDay">P1D</a> 
-                <a href="/admin/<%=user._id%>/upgradeToPremium/addMonth">P1M</a> 
-                <a href="/admin/<%=user._id%>/upgradeToPremium/add6Weeks">P6W</a> 
-                <a href="/admin/<%=user._id%>/upgradeToPremium/addYear">P1R</a> 
-                <a href="/admin/<%=user._id%>/upgradeToPremium/addDecade">P10R</a>
+            <div class="col-sm-1 d-flex justify-content-center align-items-center">
+                <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
             </div>
-            <div class="col-sm-2">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal<%=user._id%>" class="btn btn-sm btn-warning">Odstranit uživatele</a>
-            </div>
-            <div class="col-sm-2">
+            <div class="col-sm-2 d-flex justify-content-center align-items-center">
                 <% if (!user.isEditor) { %>
                     <form action="/admin/<%= user._id %>/makeEditor" method="POST"><button class="btn btn-sm btn-info">Make editor</button></form>
                 <% } else { %>
@@ -218,20 +214,6 @@
             </div>
             <% } %>
             <hr>
-        </div>
-        <!-- MODAL - Delete user confirmation -->
-        <div class="modal fade" id="deleteUserModal<%=user._id%>" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title">Opravdu chcete odstranit uživatele <%=user.email%>?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body d-flex justify-content-center align-items-center">
-                        <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-warning">Ano, odstranit uživatele</button></form>
-                    </div>
-                </div>
-            </div>
         </div>
     <% } %> 
 </div>

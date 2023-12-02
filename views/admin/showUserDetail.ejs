@@ -1,0 +1,281 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card profile-card">
+                <div class="row p-3 pb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                            <img src="/img/icon_student.png" class="img-fit" alt="">
+                        </div>
+                        <h3 class="px-3">Detail uživatele</h3>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Jméno</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.firstname %> <%= user.lastname %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>E-mail</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.email %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>ID</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user._id %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Fakulta</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.faculty %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Počet nastudovaných kartiček</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.cardsSeen %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Datum registrace</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= dateOfRegistration %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Naposledy aktivní</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= lastActive %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Zrušen newsletter</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.hasUnsubscribed %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Předplatné</p>
+                    </div>
+                    <% if(user.isPremium){ %>
+                        <div class="col-8">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-0">aktivní do <%= endDate %> </p>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="col-8 d-flex justify-content-between align-items-center">
+                            <p class="">žádné</p>
+                        </div>
+                    <% } %>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Premium nastaveno adminem</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.premiumGrantedByAdmin %> 
+                    </div>
+                    <hr />
+                    <% if(user.isPremium){ %> 
+                        <div class="col-4 fw-bold d-flex align-items-center">
+                            <p>Typ předplatného</p>
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium zrušeno (aktivní do konce období)</p>
+                            <% }%>  
+                            <% if(user.plan === "monthly" && !user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium měsíční (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.plan === "halfyear" && !user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium půlroční (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium roční (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.plan === "daily" && !user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium denní (další platba <%= endDate %>)</p>
+                            <% }%> 
+                            <% if(user.premiumGrantedByAdmin){ %>
+                                <p class="mb-0">Premium zdarma do konce období</p>
+                            <% }%> 
+                        </div> 
+                        <hr />
+                    <% } %> 
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Datum aktivace předplatného</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.premiumDateOfActivation %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Datum prodloužení předplatného</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.premiumDateOfUpdate %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Datum ukončení předplatného</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.premiumDateOfCancelation %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Nastavit předplatné</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <a href="/admin/<%=user._id%>/upgradeToPremium/addDay" class="grant-premium-link">P1D</a> 
+                        <a href="/admin/<%=user._id%>/upgradeToPremium/addMonth" class="grant-premium-link">P1M</a> 
+                        <a href="/admin/<%=user._id%>/upgradeToPremium/add6Weeks" class="grant-premium-link">P6W</a> 
+                        <a href="/admin/<%=user._id%>/upgradeToPremium/addYear" class="grant-premium-link">P1R</a> 
+                        <a href="/admin/<%=user._id%>/upgradeToPremium/addDecade" class="grant-premium-link">P10R</a>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Zrušit předplatné</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <% if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){ %> 
+                            <div class="col-8 d-flex align-items-center">
+                                uživatel má stále aktivní předplatné na Stripe
+                            </div>
+                        <% } else { %>
+                            <div class="col-8">
+                                <form action="/admin/<%= user._id %>/downgradeToFree?_method=PUT" method="POST"><button class="btn btn-sm btn-outline-danger">Zrušit předplatné</button></form>
+                            </div>
+                        <% } %>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Administrátor</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.admin %> 
+                    </div>
+                    <hr>
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Editor</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.isEditor %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-start">
+                        <p>Dokončené sekce</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <ul>
+                        <% user.sections.forEach(section => { %>
+                            <li><%= section.name  %></li>
+                        <% }) %>
+                        </ul>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-start">
+                        <p>Nedokončené sekce</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <ul>
+                        <% user.unfinishedSections.forEach(section => { %>
+                            <li><span class="unfinishedSectionId" style="cursor: pointer;""><%= section.sectionId  %></span> | poslední karta: <%= section.lastCard  %></li>
+                        <% }) %>
+                        </ul>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Počet uložených kartiček</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.savedCards.length %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Stripe Billing ID</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.billingId %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Odstranit účet</p>
+                    </div>
+                    <% if(user.isPremium && user.plan !== "none"){ %> 
+                        <div class="col-8 d-flex align-items-center">
+                            před odstraněním účtu je nutné zrušit předplatné
+                        </div>
+                    <% } else { %>
+                        <div class="col-8 d-flex justify-content-end align-items-start">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal" class="btn btn-outline-danger btn-sm">Odstranit účet</a>
+                            
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Warning YEAR to SHORTER PERIOD -->
+<div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upozornění</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Chcete-li předplatné změnit na jiné platební obdobní, bude Vám při změně na kratší období nevyčerpaná hodnota předplatného přímo úměrná zůstatku období převedena na kredit, který bude poté možné použít k nákupu dalšího předplatného.
+          </p>
+          <p>
+            Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+          <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+            Pokračovat
+        </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL - Delete user confirmation -->
+  <div class="modal fade" id="deleteUserModal" tabindex="-1">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Opravdu chcete odstranit účet <%= user.email %>?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body d-flex justify-content-center align-items-center">
+            <div class="modal-body d-flex justify-content-center align-items-center">
+                <form action="/admin/<%= user._id %>/deleteUser?_method=DELETE" method="POST"><button class="btn btn-sm btn-danger">Ano, odstranit</button></form>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script src="/js/jquery.min.js" ></script>
+<script type="text/javascript" src="https://js.stripe.com/v3/"></script>
+<script type="text/javascript" src="/js/profile.js"></script>
+<script type="text/javascript" src="/js/showUserDetail.js"></script>

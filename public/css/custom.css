@@ -341,6 +341,14 @@ form .form-control, .form-select {
     margin-bottom: 5px;
 }
 
+/*SHOW USER DETAIL*/
+.grant-premium-link {
+    border: 1px solid #E80F88; 
+    padding: 2px 5px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
 /* FOOTER */
 .footer-link {
     color: #6C657D;

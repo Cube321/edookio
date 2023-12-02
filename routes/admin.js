@@ -70,6 +70,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         if(user.faculty === "Nestuduji"){faculties.prfNestuduji++};
         if(user.faculty === "Neuvedeno"){faculties.prfNeuvedeno++};
     })
+    updatedUsers.reverse();
     res.status(200).render('admin/users', {
         users: updatedUsers, 
         premiumUsersCount, 
@@ -89,6 +90,33 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
 }))
 
 
+//DETAIL OF A USER (show)
+//show details of user to admin
+router.get('/admin/:userId/showDetail', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let user = await User.findById(req.params.userId).populate('sections', 'name');
+    if(!user){
+        req.flash('error','Uživatel nebyl nalezen.');
+        return res.redirect('/admin/listAllUsers');
+    }
+    let endDate = "";
+    let dateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
+    let lastActive = moment(user.lastActive).locale('cs').format('LLLL');
+    if(user.isPremium){
+        endDate = moment(user.endDate).locale('cs').format('LL')
+    }
+    res.status(200).render('admin/showUserDetail', {user, endDate, dateOfRegistration, lastActive});
+}))
+
+//get section name over AJAX based on sectionId (for showUserDetail page)
+router.get('/admin/:sectionId/getNameOfSection', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let section = await Section.findById(req.params.sectionId).select('name');
+    if(!section){
+        return res.sendStatus(404);
+    }
+    res.status(200).send(section);
+}))
+
+
 
 //EDITOR - SHOW REPORTED CARDS
 //show all reported cards
@@ -100,7 +128,7 @@ router.get('/admin/listAllReports', isLoggedIn, isEditor, catchAsync(async(req, 
 
 
 
-//ADMIN - Upgrade to PREMIUM
+//ADMIN - Upgrade to PREMIUM and downgrade to FREE
 //upgrade to premium - ADMIN ROUTE
 router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     const user = await User.findById(req.params.userId);
@@ -137,6 +165,28 @@ router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catch
     res.status(201).redirect('/admin/listAllUsers');
 }))
 
+//downgrade to FREE - ADMIN ROUTE
+router.put('/admin/:userId/downgradeToFree/', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let user = await User.findById(req.params.userId);
+    if(!user){
+        throw Error("Uživatel s tímto ID neexistuje");
+    }
+    if(user.plan === "none" || user.premiumGrantedByAdmin){
+        user.isPremium = false;
+        user.premiumGrantedByAdmin = false;
+        user.endDate = null;
+        user.premiumDateOfActivation = null;
+        user.premiumDateOfUpdate = null;
+        user.premiumDateOfCancelation = null;
+        user.plan = "none";
+    } else {
+        req.flash('error','Uživatel má stále aktivní předplatné na Stripe. Před odebráním Premium je třeba, aby jej uživatel zrušil (Můj účet -> Správa předplatného).');
+        return res.status(200).redirect(`/admin/${user._id}/showDetail`);
+    }
+    await user.save();    
+    req.flash('success','Premium ukončeno. Uživateli byl nastaven balíček Free.');
+    res.status(201).redirect(`/admin/${user._id}/showDetail`);
+}))
 
 
 

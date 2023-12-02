@@ -38,6 +38,18 @@
     background-color: #AF0171;
 }
 
+.btn-warning {
+    color: white;
+}
+
+.btn-warning:hover {
+    color: white;
+}
+
+.btn-warning:active, .btn-warning:focus {
+    color: white;
+}
+
 .btn-info {
     color: white;
 }

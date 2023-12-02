@@ -22,7 +22,7 @@ const UserSchema = new Schema ({
         type: Boolean,
         default: false
     },
-    sections: Array,
+    sections: [{ type : Schema.Types.ObjectId, ref: 'Section'}],
     unfinishedSections: Array,
     dateOfRegistration: {
         type: Date
