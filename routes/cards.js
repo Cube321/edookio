@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const ExpressError = require('../utils/ExpressError');
 const Card = require('../models/card');
 const Section = require('../models/section');
+const Stats = require('../models/stats');
 const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
@@ -198,6 +199,15 @@ router.get('/cards/saved', isLoggedIn, catchAsync(async(req, res) => {
 
 
 
+
+//STATS - demo limit reached count
+router.get('/stats/demoLimitReached', catchAsync(async(req, res) => {
+    incrementEventCount('demoLimitReached');
+    res.sendStatus(200);
+}))
+
+
+
 //HELPERS
 function isCardInArray(arrayOfIds, cardIdString) {
     let arrayOfStrings = arrayOfIds.map(item => item.toString());
@@ -214,6 +224,18 @@ function sortByOrderNum(array) {
     array.sort((a, b) => a.orderNum - b.orderNum);
     // Return the sorted array
     return array;
+  }
+
+async function incrementEventCount(eventName) {
+    try {
+      await Stats.findOneAndUpdate(
+        { eventName },
+        { $inc: { eventCount: 1 } },
+        { upsert: true, new: true }
+      );
+    } catch (err) {
+      console.error('Error updating event count:', err);
+    }
   }
 
 

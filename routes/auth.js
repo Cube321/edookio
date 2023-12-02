@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
+const Stats = require('../models/stats');
 const passport = require('passport');
 const { isLoggedIn } = require('../utils/middleware');
 const { validateUser } = require('../utils/middleware');
@@ -118,6 +119,9 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         mail.welcome(newUser.email);
         mail.adminInfoNewUser(newUser);
         //
+        if(req.session.demoCardsSeen && req.session.demoCardsSeen > 5){
+            incrementEventCount('registeredAfterDemoLimit');
+        }
         req.flash('success', 'Skvělé! Účet byl vytvořen.');
         if(req.query.requiresPremium){
             res.status(201).redirect('/premium'); 
@@ -133,6 +137,18 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         res.status(400).redirect('back');
     }
 }))
+
+async function incrementEventCount(eventName) {
+    try {
+      await Stats.findOneAndUpdate(
+        { eventName },
+        { $inc: { eventCount: 1 } },
+        { upsert: true, new: true }
+      );
+    } catch (err) {
+      console.error('Error updating event count:', err);
+    }
+  }
 
 
 

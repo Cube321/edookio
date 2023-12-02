@@ -305,6 +305,13 @@ $(document).ready(function() {
             $("#front-menu-row").remove();
             $("#back-menu-row").remove();
             $("#mini-menu").remove();
+            $.ajax({
+                method: "GET",
+                url: `/stats/demoLimitReached`
+            })
+            .then(res => {
+                console.log(res);
+            })
             push = 3;
         }
     }

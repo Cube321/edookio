@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Card = require('../models/card');
 const Category = require('../models/category');
 const Section = require('../models/section'); 
+const Stats = require('../models/stats'); 
 const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 const moment = require('moment');
 const mail = require('../mail/mail_inlege');
@@ -13,6 +14,9 @@ const mail = require('../mail/mail_inlege');
 //show all registered users
 router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
+    const demoLimitReachedStats = await Stats.findOne({eventName: 'demoLimitReached'});
+    registeredAfterDemoLimitStats = await Stats.findOne({eventName: 'registeredAfterDemoLimit'});
+    if(!registeredAfterDemoLimitStats){registeredAfterDemoLimitStats = {eventCount: 0}}
     
     //count free and premium sections and cards separately
     const sectionsPremium = await Section.find({isPremium: true}).select('cards');
@@ -31,9 +35,10 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         let cardsTotal = cardsFreeCount + cardsPremiumCount
         let freeCardRatio =  Math.round(100 / cardsTotal * cardsFreeCount);
 
-        //count ratios - sections
+        //count ratios
         let sectionsTotal = sectionsFreeCount + sectionsPremiumCount
         let freeSectionRatio =  Math.round(100 / sectionsTotal * sectionsFreeCount);
+        let demoLimitRegistrationRatio = Math.round(100 / demoLimitReachedStats.eventCount * registeredAfterDemoLimitStats.eventCount);
 
     let updatedUsers = [];
     //count all users and premium users and count faculties
@@ -46,6 +51,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     users.forEach(user => {
         let newUser = user;
+        //mark user as active in the last 48 hours
+        if(newUser.lastActive && moment(newUser.lastActive).isAfter(moment().subtract(48, 'hour'))){newUser.activeInLast48Hours = true};
         newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
         updatedUsers.push(newUser);
         //count Registered users
@@ -85,7 +92,10 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         sectionsFreeCount,
         sectionsPremiumCount,
         freeCardRatio,
-        freeSectionRatio
+        freeSectionRatio,
+        demoLimitReachedStats,
+        registeredAfterDemoLimitStats,
+        demoLimitRegistrationRatio
     });
 }))
 

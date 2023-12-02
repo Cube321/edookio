@@ -52,6 +52,31 @@
                     <%= premiumDeactivationsInLastWeek %>
                 </div>
             </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Demo limit zobrazen</p>
+                </div>
+                <div class="col-md-2">
+                    <%= demoLimitReachedStats.eventCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Zaregistrovaných po demo</p>
+                </div>
+                <div class="col-md-2">
+                    <%= registeredAfterDemoLimitStats.eventCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Poměr dokončené demo/registrace</p>
+                </div>
+                <div class="col-md-2">
+                    <%= demoLimitRegistrationRatio %> %
+                </div>
+            </div>
             </div>
         </div>
         <div class="col-md-3 mb-3 pt-3">
@@ -186,7 +211,12 @@
     </div>
     <% for(let user of users){ %> 
         <div class="row text-smaller">
-            <div class="col-sm-2"><%= user.email %> </div>
+            <div class="col-sm-2 d-flex justify-content-between align-items-start">
+                <p class="mb-0"><%= user.email %></p>
+                <% if (user.activeInLast48Hours) { %>
+                    <span style="color:green"><b>A</b></span>
+                <% } %> 
+            </div>
             <div class="col-sm-1">
                 <div><%= user.faculty %></div>
             </div>
