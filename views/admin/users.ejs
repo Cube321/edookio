@@ -190,7 +190,10 @@
             <div class="col-sm-1">
                 <div><%= user.faculty %></div>
             </div>
-            <div class="col-sm-2">REG: <%= user.updatedDateOfRegistration %> </div>
+            <div class="col-sm-2">
+                R: <%= user.updatedDateOfRegistration %> |
+                SC: <%= user.savedCards.length %>
+            </div>
             <div class="col-sm-1"><%= user.cardsSeen %></div>
             <% if(user.isPremium){ %> 
                 <div class="col-sm-1">Premium <% if(user.premiumGrantedByAdmin){ %>(A) <% } %></div>
@@ -198,20 +201,23 @@
                 <div class="col-sm-1">-</div>
             <% } %>
             <% if (user.isPremium && !user.premiumGrantedByAdmin && user.plan !== "none") { %>
-                <div class="col-sm-4 text-center">
-                    <p class="text-muted">- aktivní placené předplatné -</p>
+                <div class="col-sm-1 d-flex justify-content-center align-items-center">
+                    <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <p class="text-muted">- placené Premium -</p>
                 </div>
             <% } else { %>
-            <div class="col-sm-1 d-flex justify-content-center align-items-center">
-                <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
-            </div>
-            <div class="col-sm-2 d-flex justify-content-center align-items-center">
-                <% if (!user.isEditor) { %>
-                    <form action="/admin/<%= user._id %>/makeEditor" method="POST"><button class="btn btn-sm btn-info">Make editor</button></form>
-                <% } else { %>
-                <form action="/admin/<%= user._id %>/removeEditor" method="POST"><button class="btn btn-sm btn-outline-info">Remove editor</button></form>
-                <% } %>
-            </div>
+                <div class="col-sm-1 d-flex justify-content-center align-items-center">
+                    <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
+                </div>
+                <div class="col-sm-2 d-flex justify-content-center align-items-center">
+                    <% if (!user.isEditor) { %>
+                        <form action="/admin/<%= user._id %>/makeEditor" method="POST"><button class="btn btn-sm btn-info">Make editor</button></form>
+                    <% } else { %>
+                    <form action="/admin/<%= user._id %>/removeEditor" method="POST"><button class="btn btn-sm btn-outline-info">Remove editor</button></form>
+                    <% } %>
+                </div>
             <% } %>
             <hr>
         </div>

@@ -196,7 +196,7 @@ $(document).ready(function() {
                 $("#pageB").remove();
                 if(data.numOfCards + 1 === data.nextNum){
                     let finishedPageRedirectUrl = $("#btn-dalsi").attr("href");
-                    window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData");
+                    window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData&redirectToFinished=yes");
                 } else {
                     getNextCard("next");
                 }
@@ -227,7 +227,7 @@ $(document).ready(function() {
                         $("#pageB").remove();
                         if(data.numOfCards + 1 === data.nextNum){
                             let finishedPageRedirectUrl = $("#btn-dalsi").attr("href");
-                            window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData");
+                            window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData&redirectToFinished=yes");
                         } else {
                             getNextCard("next");
                         }
@@ -391,7 +391,7 @@ $(document).ready(function() {
                     $("#pageB").remove();
                     if($("#btn-dalsi-last-card").length){
                             let finishedPageRedirectUrl = $("#btn-dalsi-last-card").attr("href");
-                            window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData");
+                            window.location.replace(finishedPageRedirectUrl + "?requestType=primaryData&redirectToFinished=yes");
                     } else {
                         getNextCard("next");
                     }
