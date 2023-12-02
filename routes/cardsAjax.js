@@ -80,13 +80,11 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     //section finished logic
     if(foundSection.cards.length === cardNumEdited){
         if(req.user){
-            if(req.query.redirectToFinished === "yes"){
-                //remove section from unfinishedSections
-                const filteredUnfinishedSections = user.unfinishedSections.filter(section => section.sectionId.toString() !== foundSection._id.toString());
-                user.unfinishedSections = filteredUnfinishedSections;
-                //add section to finished sections
-                user.sections.push(foundSection._id);
-            }
+            //remove section from unfinishedSections
+            const filteredUnfinishedSections = user.unfinishedSections.filter(section => section.sectionId.toString() !== foundSection._id.toString());
+            user.unfinishedSections = filteredUnfinishedSections;
+            //add section to finished sections
+            user.sections.push(foundSection._id);
             //increase users cardsSeen by 1
             if(req.query.requestType !== "primaryData"){
                 user.cardsSeen++;
