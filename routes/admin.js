@@ -48,6 +48,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let premiumActivationsInLastWeek = 0;
     let premiumUpdatesInLastWeek = 0;
     let premiumDeactivationsInLastWeek = 0;
+    let unsubscribedUsersCount = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     users.forEach(user => {
         let newUser = user;
@@ -59,6 +60,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         registeredUsersCount = users.length;
         //count Premium users
         if(user.isPremium === true){premiumUsersCount++};
+        //count unsubscribed users
+        if(user.hasUnsubscribed === true){unsubscribedUsersCount++};
         //count users active in the last week
         if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){usersActiveInLastWeek++};
         //count premium activations in the last week
@@ -95,7 +98,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         freeSectionRatio,
         demoLimitReachedStats,
         registeredAfterDemoLimitStats,
-        demoLimitRegistrationRatio
+        demoLimitRegistrationRatio,
+        unsubscribedUsersCount
     });
 }))
 
@@ -114,6 +118,10 @@ router.get('/admin/:userId/showDetail', isLoggedIn, isAdmin, catchAsync(async(re
     if(user.isPremium){
         endDate = moment(user.endDate).locale('cs').format('LL')
     }
+    //remove duplicate finished sections from user.sections
+    let uniqueFinishedSectionsSet = new Set(user.sections);
+    user.sections = [...uniqueFinishedSectionsSet];
+    //render view
     res.status(200).render('admin/showUserDetail', {user, endDate, dateOfRegistration, lastActive});
 }))
 

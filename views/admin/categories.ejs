@@ -20,7 +20,7 @@
                 <% categories.forEach(cat => { %>
                     <tr class="admin-category-row">
                         <th><%= cat.orderNum %></th>
-                        <th><%= cat.text %></th>
+                        <th><a href="/category/<%= cat.name %>"><%= cat.text %></a></th>
                         <th><%= cat.name %></th>
                         <th><%= cat.icon %></th>
                         <th><%= cat.sections.length %></th>

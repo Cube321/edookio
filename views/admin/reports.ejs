@@ -8,18 +8,20 @@
     <% for(let card of cards){ %> 
         <div class="row">
             <div class="col-sm-2 offset-1"><%- card.pageA %> </div>
-            <div class="col-sm-4"><%- card.pageB %> </div>
+            <div class="col-sm-4">
+                <%- card.pageB %> 
+                <a href="/cards/edit/<%= card._id %>" target="_blank" class="btn btn-sm btn-outline-danger">Upravit kartičku</a>
+            </div>
             <div class="col-sm-5">
                 <% for(let report of card.factualMistakeReports){ %>
                     <% if (!report.solved) { %>
                         <div class="card my-2 p-2 d-flex flex-row justify-content-between align-items-center">
                             <p class="mb-0"><%= report.reportMsg %></p>
-                            <a href="/cards/report/solved/<%= card._id %>/<%= report.user %>" class="btn btn-sm btn-outline-danger">Označit jako vyřešené</a>
-                        </div>
-                    <% } %>  
-                    <% if (report.solved) { %>
-                        <div class="card my-2 p-2 color-1 d-flex flex-row justify-content-end align-items-center">
-                            <p class="mb-0"><i class="far fa-check-circle"></i> Vyřešeno</p>
+                            <div>
+                                <p class="mb-0 text-small"><%= report.date %></p>
+                                <p class="mb-0 text-small"><%= report.user %></p>
+                                <a href="/cards/report/solved/<%= card._id %>/<%= report.user %>" class="btn btn-sm btn-outline-danger">Označit jako vyřešené</a>
+                            </div>
                         </div>
                     <% } %>  
                 <% } %> 
