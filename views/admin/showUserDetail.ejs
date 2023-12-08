@@ -45,6 +45,7 @@
                     </div>
                     <div class="col-8 d-flex align-items-center">
                         <%= user.cardsSeen %> 
+                        <a href="/admin/<%= user._id %>/cardsSeenToZero" class="btn btn-sm btn-outline-danger mx-3">Vynulovat</a>
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
@@ -174,7 +175,16 @@
                         <p>Editor</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">
-                        <%= user.isEditor %> 
+                        <div>
+                            <%= user.isEditor %> 
+                        </div>
+                        <div class="mx-3">
+                            <% if (!user.isEditor) { %>
+                                <form action="/admin/<%= user._id %>/makeEditor" method="POST"><button class="btn btn-sm btn-info">Nastavit editorská oprávnění</button></form>
+                            <% } else { %>
+                            <form action="/admin/<%= user._id %>/removeEditor" method="POST"><button class="btn btn-sm btn-outline-info">Odebrat editorská oprávnění</button></form>
+                            <% } %>
+                        </div>
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-start">

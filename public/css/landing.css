@@ -5,7 +5,6 @@ body {
 }
 
 .main-header {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/bg_cover5.jpeg) no-repeat center center; 
     background-size: cover;
     min-height: 450px;
     color: white;
@@ -165,7 +164,7 @@ body {
 }
 
 .reason-content {
-    padding-top: 3px;
+    padding-top: 0.5rem;
 }
 
 @media only screen and (max-width: 992px) {

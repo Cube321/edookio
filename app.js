@@ -21,6 +21,7 @@ const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
 const Category = require('./models/category');
+const texts = require(`./utils/texts.${process.env.PROJECT}`);
 
 
 app.use("/webhook", bodyParser.raw({ type: "application/json" }))
@@ -141,6 +142,7 @@ app.use(async (req, res, next) => {
       const categories = await Category.find().select('text orderNum name');
       sortByOrderNum(categories);
       res.locals.categories = categories;
+      res.locals.texts = texts;
       next();
     } catch (err) {
       next(err);

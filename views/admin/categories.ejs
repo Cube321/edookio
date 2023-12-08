@@ -33,21 +33,6 @@
                                 </form>
                             <% } %>
                         </th>
-                        <div class="title">
-                            
-                        </div>
-                        <div class="value">
-                            
-                        </div>
-                        <div class="icon">
-                            
-                        </div>
-                        <div class="numOfSection">
-                            
-                        </div>
-                        <div class="numOfCards">
-                            
-                        </div>
                     </tr>
                 <% }) %>
             </table>
@@ -73,6 +58,47 @@
                 </div>
                 <button class="btn btn-danger mt-5">Vytvořit kategorii</button>
             </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Balíčky dle počtu spuštění</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="w-100">
+                <tr>
+                    <th><p>Poř.</p></th>
+                    <th><p>Balíček</p></th>
+                    <th><p>Kategorie</p></th>
+                    <th><p>Fr./Pr.</p></th>
+                    <th><p>Spuštění</p></th>
+                    <th><p>Dokončení</p></th>
+                    <th><p>Poměr S/D</p></th>
+                    <th><p>Opakování</p></th>
+                    <th title="Reset counters"><p>Reset</p></th>
+                </tr>
+                <% sections.forEach((sec, i) => { %>
+                    <tr class="admin-category-row">
+                        <th><%= i + 1 %></th>
+                        <th title="<%= sec.shortDescription %>"><%= sec.name %></th>
+                        <th><%= sec.category %></th>
+                        <th>
+                            <% if (!sec.isPremium) { %>
+                                F
+                            <% } else { %>
+                                P
+                            <% } %>
+                        </th>
+                        <th><%= sec.countStarted %></th>
+                        <th><%= sec.countFinished %></th>
+                        <th><%= sec.SDratio %> %</th>
+                        <th><%= sec.countRepeated %></th>
+                        <th><a href="/admin/<%= sec._id %>/resetCounters" class="btn btn-sm btn-danger"><i class="fas fa-undo-alt"></i></a></th>
+                    </tr>
+                <% }) %>
+            </table>
         </div>
     </div>
 </div>

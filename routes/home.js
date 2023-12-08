@@ -28,7 +28,23 @@ function sortByOrderNum(array) {
 //SHOW PREMIUM PAGE
 //premium explanation page
 router.get('/premium', (req, res) => {
-  res.status(200).render('premium');
+  if(process.env.XMAS === "on"){
+    res.status(200).redirect('/vanoce');
+  } else {
+    res.status(200).render('premium');
+  }
+})
+
+router.get('/vanoce', (req, res) => {
+  if(process.env.XMAS === "on" || req.user.admin){
+    //render Xmas Premium if Xmas = on or user is admin
+    res.status(200).render('premiumXmas');
+  } else {
+    //else redirect to classic Premium
+    req.flash('error','Vánoční nabídka není v této chvíli dostupná.');
+    res.redirect('/premium');
+  }
+  
 })
 
 

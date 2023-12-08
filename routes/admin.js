@@ -49,6 +49,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let premiumUpdatesInLastWeek = 0;
     let premiumDeactivationsInLastWeek = 0;
     let unsubscribedUsersCount = 0;
+    let totalCardsSeen = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     users.forEach(user => {
         let newUser = user;
@@ -79,6 +80,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         if(user.faculty === "Uchazeč"){faculties.prfUchazec++};
         if(user.faculty === "Nestuduji"){faculties.prfNestuduji++};
         if(user.faculty === "Neuvedeno"){faculties.prfNeuvedeno++};
+        totalCardsSeen = totalCardsSeen + user.cardsSeen;
     })
     updatedUsers.reverse();
     res.status(200).render('admin/users', {
@@ -99,7 +101,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         demoLimitReachedStats,
         registeredAfterDemoLimitStats,
         demoLimitRegistrationRatio,
-        unsubscribedUsersCount
+        unsubscribedUsersCount,
+        totalCardsSeen
     });
 }))
 
@@ -123,6 +126,14 @@ router.get('/admin/:userId/showDetail', isLoggedIn, isAdmin, catchAsync(async(re
     user.sections = [...uniqueFinishedSectionsSet];
     //render view
     res.status(200).render('admin/showUserDetail', {user, endDate, dateOfRegistration, lastActive});
+}))
+
+//set user.cardsSeen to 0
+router.get('/admin/:userId/cardsSeenToZero', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    await User.findByIdAndUpdate(userId, {cardsSeen: 0});
+    req.flash('success','Vynulováno.');
+    res.redirect(`/admin/${userId}/showDetail`);
 }))
 
 //get section name over AJAX based on sectionId (for showUserDetail page)
@@ -279,10 +290,16 @@ router.delete('/admin/:userId/deleteUser',isLoggedIn, isAdmin, catchAsync(async(
 router.get('/admin/categories', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     //get all categories
     let categories = await Category.find({});
+    //get all sections
+    let sections = await Section.find({});
     //sort all categories by OrderNum
     sortByOrderNum(categories);
+    //count S/D ratio for each section
+    countSDratio(sections);
+    //sort all sections by countStarted
+    sortByCountStarted(sections);
     //render view
-    res.render('admin/categories', {categories});
+    res.render('admin/categories', {categories, sections});
 }))
 
 //helper - order categories by OrderNum function
@@ -292,6 +309,29 @@ function sortByOrderNum(array) {
     // Return the sorted array
     return array;
   }
+
+//helper - order sections by countStarted function
+function sortByCountStarted(array) {
+    // Use the Array.prototype.sort() method to sort the array
+    array.sort((a, b) => b.countStarted - a.countStarted);
+    // Return the sorted array
+    return array;
+  }
+  function countSDratio(array){
+    array.forEach(sec => {
+        sec.SDratio = Math.round(sec.countFinished / sec.countStarted * 100);
+    })
+    return array;
+  }
+
+  //reset counters on section
+  router.get('/admin/:sectionId/resetCounters', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    //reset counters on section
+    await Section.findByIdAndUpdate(req.params.sectionId, {countStarted: 0, countFinished: 0, countRepeated: 0});
+    //redirect back
+    req.flash('success','Statistiky sekce byly vynulovány.')
+    res.status(201).redirect('/admin/categories');
+  }))
 
 
 

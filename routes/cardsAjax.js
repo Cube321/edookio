@@ -20,6 +20,7 @@ router.get('/category/:category/section/:sectionId/cardAjax/repeatSection', isLo
     const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
     user.sections = filteredSections;
     foundSection.countRepeated++;
+    foundSection.countStarted++;
     await foundSection.save();
     await user.save();
     res.status(200).redirect(`/category/${req.params.category}/section/${req.params.sectionId}/cardAjax/1?repeat=repeat`);
