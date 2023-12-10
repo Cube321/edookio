@@ -151,7 +151,7 @@ router.post('/webhook', async (req, res) => {
           mail.subscriptionCanceled(user.email, endDate);
           mail.adminInfoSubscriptionCanceled(user, endDate);
         }
-  
+        user.premiumGrantedByAdmin = false;
         await user.save()
         break
     }

@@ -55,6 +55,7 @@ router.post('/legal/cookies', catchAsync(async(req, res) => {
     let {analyticke, marketingove} = req.body;
     if(analyticke){req.session.cookiesAnalyticke = true} else {req.session.cookiesAnalyticke = false}
     if(marketingove){req.session.cookiesMarketingove = true} else {req.session.cookiesMarketingove = false}
+    req.session.cookiesAgreed = true;
     req.flash('success','Nastavení cookies bylo uloženo.');
     res.status(200).redirect('/');
 }))

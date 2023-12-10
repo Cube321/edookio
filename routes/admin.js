@@ -243,7 +243,14 @@ router.post('/admin/email', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
                 mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
             }
         })
-    
+    //send to Free users and those premiumGrantedByAdmin
+    } else if (groupChoice === "radioFree"){
+        //send email to subscribed users
+        allUsers.forEach(user => {
+            if (user.hasUnsubscribed === false && (!user.isPremium || user.premiumGrantedByAdmin)){
+                mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
+            }
+        })
     } else if (groupChoice === "radioTest"){
         mail.sendTestEmail('pravnicime@gmail.com', subjectAll, textAll);
     //should never run, implies some problem with radio buttons

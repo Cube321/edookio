@@ -192,7 +192,7 @@ router.get('/cards/saved', isLoggedIn, catchAsync(async(req, res) => {
     let foundUser = await User.findById(req.user._id).populate('savedCards').select('savedCards');
     let categories = await Category.find({});
     // Remove objects with orderNum below 0
-    const filteredArray = categories.filter(obj => obj.orderNum > 0);
+    const filteredArray = categories.filter(obj => obj.orderNum > -1);
     sortByOrderNum(filteredArray);
     res.render('cards/savedCards', {savedCards: foundUser.savedCards, categories: filteredArray});
 }))
