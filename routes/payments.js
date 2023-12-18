@@ -66,6 +66,14 @@ router.post('/webhook', async (req, res) => {
     
     const data = event.data.object
 
+    if(data.plan.id == process.env.PRODUCT_YEARLY_XMAS ||
+       data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS ||
+       data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
+       data.plan.id == process.env.PRODUCT_DAILY_XMAS
+      ) {
+        xmasDiscount = true;
+      }
+
   switch (event.type) {
       //manage subscription (new/update/cancel)
       case "customer.subscription.updated":{
@@ -77,7 +85,7 @@ router.post('/webhook', async (req, res) => {
           return res.sendStatus(404);
         }
         let today = Date.now();
-        if (!data.canceled_at && (data.plan.id == productToPriceMap.YEARLY || data.plan.id == process.env.PRODUCT_YEARLY_XMAS)) {
+        if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_YEARLY || data.plan.id == process.env.PRODUCT_YEARLY_XMAS)) {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();
           //format endDate
@@ -97,7 +105,7 @@ router.post('/webhook', async (req, res) => {
           user.isPremium = true;
         }
   
-        if (!data.canceled_at && (data.plan.id == productToPriceMap.MONTHLY || data.plan.id == process.env.PRODUCT_MONTHLY_XMAS)) {
+        if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_MONTHLY || data.plan.id == process.env.PRODUCT_MONTHLY_XMAS)) {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
           //format endDate
@@ -118,7 +126,7 @@ router.post('/webhook', async (req, res) => {
           //if on yearly and changes to monhtly, will loose the prepaid period
         }
 
-        if (!data.canceled_at && (data.plan.id == productToPriceMap.HALFYEAR || data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS)) {
+        if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_HALFYEAR || data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS)) {
           user.plan = "halfyear";
           user.endDate = moment(today).add('6','month').format();
           //format endDate
@@ -139,7 +147,7 @@ router.post('/webhook', async (req, res) => {
           //if on halfyear changes to monhtly, will loose the prepaid period
         }
 
-        if (!data.canceled_at && (data.plan.id == productToPriceMap.DAILY || data.plan.id == process.env.PRODUCT_DAILY_XMAS)) {
+        if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_DAILY || data.plan.id == process.env.PRODUCT_DAILY_XMAS)) {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
           //format endDate
