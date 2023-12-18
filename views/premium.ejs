@@ -375,7 +375,11 @@
     <script src="/js/jquery.min.js" ></script>
     <script src="https://kit.fontawesome.com/c9f8e59b45.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
-    <script type="text/javascript" src="/js/payments.js"></script>
+    <% if (stripeEnv === "development") { %>
+        <script type="text/javascript" src="/js/payments.dev.js"></script>
+    <% } else { %>
+        <script type="text/javascript" src="/js/payments.js"></script>
+    <% } %>
     <script type="text/javascript" src="/js/cookies.js"></script>
 </body>
 </html>
