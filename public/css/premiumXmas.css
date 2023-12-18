@@ -5,3 +5,48 @@
     color: white;
     background-blend-mode: darken;
 }
+
+  .xmas-old-price {
+    font-size: 1rem;
+  }
+
+  .lower-opacity {
+    opacity: 0.5
+  }
+
+  .xmas-price-title {
+    font-size: 1.25rem !important;
+  }
+
+  /* PROFILE - PREMIUM OFFERS*/
+.price-table-wrapper-1 {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+/* PROFILE - PREMIUM OFFERS*/
+.price-table-wrapper-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* PROFILE - PREMIUM OFFERS*/
+.price-table-wrapper-3 {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+@media only screen and (max-width: 992px) {
+    .price-table-wrapper,
+    .price-table-wrapper-1,
+    .price-table-wrapper-2,
+    .price-table-wrapper-3 {
+        flex-direction: column;
+    }
+    .premium-plan-card {
+        width: 90%;
+    }
+  }

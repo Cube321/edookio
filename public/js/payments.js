@@ -3,7 +3,7 @@ $(document).ready(function() {
   const PUBLISHABLE_KEY_DEV = 'pk_test_51M7LRDAaRhuCsgZoSmUjyXiHbiKnXBc3g4YgwigzTCTfFpUMAB6NizhS3tL8WzxE9ICPRJl5Rzz6KiCJaxCVczwc00ZEs1F1zJ'
 
     const stripe = Stripe(
-      PUBLISHABLE_KEY)
+      PUBLISHABLE_KEY_DEV)
 
 	//Stripe payment
   //TEST DAILY

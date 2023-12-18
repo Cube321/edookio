@@ -7,12 +7,25 @@ const User = require('../models/user');
 const moment = require('moment');
 const mail = require('../mail/mail_inlege');
 
-const productToPriceMap = {
-    YEARLY: process.env.PRODUCT_YEARLY,
-    HALFYEAR: process.env.PRODUCT_HALFYEAR,
-    MONTHLY: process.env.PRODUCT_MONTHLY,
-    DAILY: process.env.PRODUCT_DAILY
+let productToPriceMap = {
+  YEARLY: process.env.PRODUCT_YEARLY,
+  HALFYEAR: process.env.PRODUCT_HALFYEAR,
+  MONTHLY: process.env.PRODUCT_MONTHLY,
+  DAILY: process.env.PRODUCT_DAILY
+}
+
+let xmasDiscount = false;
+
+if(process.env.XMAS === "on"){
+  productToPriceMap = {
+    YEARLY: process.env.PRODUCT_YEARLY_XMAS,
+    HALFYEAR: process.env.PRODUCT_HALFYEAR_XMAS,
+    MONTHLY: process.env.PRODUCT_MONTHLY_XMAS,
+    DAILY: process.env.PRODUCT_DAILY_XMAS
   }
+  xmasDiscount = true;
+}
+
 
 //Stripe checkout
 router.post('/payment/checkout', isLoggedIn, catchAsync(async (req, res) => {
@@ -64,7 +77,7 @@ router.post('/webhook', async (req, res) => {
           return res.sendStatus(404);
         }
         let today = Date.now();
-        if (!data.canceled_at && data.plan.id == productToPriceMap.YEARLY) {
+        if (!data.canceled_at && (data.plan.id == productToPriceMap.YEARLY || data.plan.id == process.env.PRODUCT_YEARLY_XMAS)) {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();
           //format endDate
@@ -80,10 +93,11 @@ router.post('/webhook', async (req, res) => {
               mail.adminInfoNewSubscription(user);
               user.premiumDateOfActivation = moment();
           }
+          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
         }
   
-        if (!data.canceled_at && data.plan.id == productToPriceMap.MONTHLY) {
+        if (!data.canceled_at && (data.plan.id == productToPriceMap.MONTHLY || data.plan.id == process.env.PRODUCT_MONTHLY_XMAS)) {
           user.plan = "monthly";
           user.endDate = moment(today).add('1','month').format();
           //format endDate
@@ -99,11 +113,12 @@ router.post('/webhook', async (req, res) => {
               mail.adminInfoNewSubscription(user);
               user.premiumDateOfActivation = moment();
           }
+          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
           //if on yearly and changes to monhtly, will loose the prepaid period
         }
 
-        if (!data.canceled_at && data.plan.id == productToPriceMap.HALFYEAR) {
+        if (!data.canceled_at && (data.plan.id == productToPriceMap.HALFYEAR || data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS)) {
           user.plan = "halfyear";
           user.endDate = moment(today).add('6','month').format();
           //format endDate
@@ -119,11 +134,12 @@ router.post('/webhook', async (req, res) => {
               mail.adminInfoNewSubscription(user);
               user.premiumDateOfActivation = moment();
           }
+          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
           //if on halfyear changes to monhtly, will loose the prepaid period
         }
 
-        if (!data.canceled_at && data.plan.id == productToPriceMap.DAILY) {
+        if (!data.canceled_at && (data.plan.id == productToPriceMap.DAILY || data.plan.id == process.env.PRODUCT_DAILY_XMAS)) {
           user.plan = "daily";
           user.endDate = moment(today).add('1','day').format();
           //format endDate
@@ -139,6 +155,7 @@ router.post('/webhook', async (req, res) => {
               mail.adminInfoNewSubscription(user);
               user.premiumDateOfActivation = moment();
           }
+          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
         }
         
@@ -150,6 +167,7 @@ router.post('/webhook', async (req, res) => {
           const endDate = moment(user.endDate).locale('cs').format('LL');
           mail.subscriptionCanceled(user.email, endDate);
           mail.adminInfoSubscriptionCanceled(user, endDate);
+          user.xmasDiscount = false;
         }
         user.premiumGrantedByAdmin = false;
         await user.save()

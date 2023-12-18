@@ -9,6 +9,7 @@ const Stats = require('../models/stats');
 const User = require('../models/user');
 const Category = require('../models/category');
 const moment = require('moment');
+const mail = require('../mail/mail_inlege');
 const { validateCard, isLoggedIn, isEditor } = require('../utils/middleware');
 
 //CARDS (add, edit, remove)
@@ -126,26 +127,36 @@ router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
     res.status(201).render('cards/reportSubmited');
 }))
 
+//show all reported cards
+router.get('/admin/listAllReports', isLoggedIn, isEditor, catchAsync(async(req, res) => {
+    const cards = await Card.find({ factualMistakeReports: { $exists: true, $ne: [] } });
+    res.status(200).render('admin/reports', {cards});
+}))
+
 //mark as solved
 router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isEditor, catchAsync(async(req,res) => {
     const foundCard = await Card.findById(req.params.cardId);
     if(!foundCard){
         throw Error("Kartička s tímto ID neexistuje");
     }
-    const updatedReports = foundCard.factualMistakeReports.map(report => {
-        if(report.user === req.params.userEmail){
-            report.solved = true;
-            return report;
-        } else {
-            return report;
-        }
-    });
-    foundCard.factualMistakeReports = updatedReports;
+    foundCard.factualMistakeReports = [];
     await Card.findByIdAndUpdate(req.params.cardId, foundCard);
-    console.log(foundCard);
+    mail.sendThankYou(req.params.userEmail, foundCard.pageA);
+    req.flash('success','Označeno jako vyřešené a e-mail s poděkováním byl odeslán uživateli.');
     res.status(200).redirect('/admin/listAllReports');
 }))
 
+//delete report
+router.get('/cards/report/delete/:cardId', isLoggedIn, isEditor, catchAsync(async(req,res) => {
+    const foundCard = await Card.findById(req.params.cardId);
+    if(!foundCard){
+        throw Error("Kartička s tímto ID neexistuje");
+    }
+    foundCard.factualMistakeReports = [];
+    await Card.findByIdAndUpdate(req.params.cardId, foundCard);
+    req.flash('success','Report odstraněn.');
+    res.status(200).redirect('/admin/listAllReports');
+}))
 
 
 

@@ -29,8 +29,9 @@
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Fakulta</p>
                     </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <%= user.faculty %> 
+                    <div class="col-8 d-flex justify-content-between align-items-center">
+                        <p class=""><%= user.faculty %></p>
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-faculty" style="margin-bottom: 5px">Změnit</button>
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
@@ -56,6 +57,10 @@
                                 <p class="mb-0">aktivní do <%= endDate %> </p>
                                 <% if((user.plan === "yearly" || user.plan === "halfyear") && user.premiumGrantedByAdmin !== true){ %>
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning">
+                                        Správa předplatného
+                                    </button>
+                                <% } else if (user.xmasDiscount){ %>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-xmas">
                                         Správa předplatného
                                     </button>
                                 <% } else if (!user.premiumGrantedByAdmin === true){ %>
@@ -98,6 +103,16 @@
                         </div> 
                         <hr />
                     <% } %> 
+                    <% if (user.xmasDiscount) { %>
+                        
+                        <div class="col-4 fw-bold d-flex align-items-center">
+                            <p>Vánoční sleva</p>
+                        </div>
+                        <div class="col-8 d-flex align-items-center">
+                            Aktivní (- 50 %)
+                        </div>
+                        <hr />
+                    <% } %>
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Heslo</p>
                     </div>
@@ -126,31 +141,58 @@
     </div>
 </div>
 
-<!-- Modal Warning YEAR to SHORTER PERIOD -->
-<div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Upozornění</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<% if (currentUser && !currentUser.xmasDiscount) { %>
+    <!-- Modal Warning YEAR to SHORTER PERIOD -->
+    <div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Upozornění</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>
+                Chcete-li předplatné změnit na jiné platební obdobní, bude Vám při změně na kratší období nevyčerpaná hodnota předplatného přímo úměrná zůstatku období převedena na kredit, který bude poté možné použít k nákupu dalšího předplatného.
+            </p>
+            <p>
+                Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.
+            </p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+                Pokračovat
+            </button>
+            </div>
         </div>
-        <div class="modal-body">
-          <p>
-            Chcete-li předplatné změnit na jiné platební obdobní, bude Vám při změně na kratší období nevyčerpaná hodnota předplatného přímo úměrná zůstatku období převedena na kredit, který bude poté možné použít k nákupu dalšího předplatného.
-          </p>
-          <p>
-            Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.
-          </p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-          <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
-            Pokračovat
-        </button>
-        </div>
-      </div>
     </div>
-  </div>
+<% } %>
+
+<% if (currentUser && currentUser.xmasDiscount) { %>
+    <!-- Modal Warning XMAS DISCOUNT -->
+    <div class="modal fade" id="modal-xmas" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Vánoční sleva 50 % je aktivní</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Na tvém účtu je aktivní předplatné s vánoční slevou 50 %.</p>
+            <p>Účtujeme ti proto pravidelně <b>poloviční ceny</b> než ostatním uživatelům. Zrušením předplatného nebo přechodem na jiné období tuto slevu ztratíš.</p>
+            <p>Chceš opravdu pokračovat?</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+                Pokračovat
+            </button>
+            </div>
+        </div>
+        </div>
+    </div>
+<% } %>
 
   <!-- MODAL - Delete user confirmation -->
   <div class="modal fade" id="deleteUserModal" tabindex="-1">
@@ -163,6 +205,38 @@
         <div class="modal-body d-flex justify-content-center align-items-center">
             <a href="/auth/user/deleteMyAccount" class="btn btn-danger">Ano, odstranit</a>
         </div>
+    </div>
+    </div>
+</div>
+
+<!-- Change faculty modal -->
+<div class="modal fade" id="modal-faculty" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title">Změnit fakultu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/auth/user/changeFaculty" method="POST">
+            <div class="modal-body">
+                <select class="form-select" name="faculty" id="faculty">
+                    <option selected value="Neuvedeno">Neuvedeno</option>
+                    <option value="PrF UP">Studuji PrF UP</option>
+                    <option value="PrF UK">Studuji PrF UK</option>
+                    <option value="PrF MUNI">Studuji PrF MUNI</option>
+                    <option value="PrF ZČU">Studuji PrF ZČU</option>
+                    <option value="Jiná">Jiná</option>
+                    <option value="Uchazeč">Hlásím se ke studiu</option>
+                    <option value="Nestuduji">Již nestuduji</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+                Uložit
+            </button>
+            </div>
+        </form>
     </div>
     </div>
 </div>

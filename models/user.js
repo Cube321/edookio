@@ -64,6 +64,7 @@ const UserSchema = new Schema ({
         type: Boolean,
         default: false
     },
+    xmasDiscount: {type: Boolean, default: false},
     savedCards: [{ type : Schema.Types.ObjectId, ref: 'Card'}]
 })
 

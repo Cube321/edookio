@@ -43,6 +43,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let updatedUsers = [];
     //count all users and premium users and count faculties
     let premiumUsersCount = 0;
+    let activePremiumSubscriptions = 0;
     let registeredUsersCount = 0;
     let usersActiveInLastWeek = 0;
     let premiumActivationsInLastWeek = 0;
@@ -61,6 +62,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         registeredUsersCount = users.length;
         //count Premium users
         if(user.isPremium === true){premiumUsersCount++};
+        //count users who are paying for Premium and have not canceled
+        if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activePremiumSubscriptions++}
         //count unsubscribed users
         if(user.hasUnsubscribed === true){unsubscribedUsersCount++};
         //count users active in the last week
@@ -102,7 +105,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         registeredAfterDemoLimitStats,
         demoLimitRegistrationRatio,
         unsubscribedUsersCount,
-        totalCardsSeen
+        totalCardsSeen,
+        activePremiumSubscriptions
     });
 }))
 
@@ -145,14 +149,6 @@ router.get('/admin/:sectionId/getNameOfSection', isLoggedIn, isAdmin, catchAsync
     res.status(200).send(section);
 }))
 
-
-
-//EDITOR - SHOW REPORTED CARDS
-//show all reported cards
-router.get('/admin/listAllReports', isLoggedIn, isEditor, catchAsync(async(req, res) => {
-    const cards = await Card.find({ factualMistakeReports: { $exists: true, $ne: [] } });
-    res.status(200).render('admin/reports', {cards});
-}))
 
 
 
@@ -245,9 +241,16 @@ router.post('/admin/email', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
         })
     //send to Free users and those premiumGrantedByAdmin
     } else if (groupChoice === "radioFree"){
-        //send email to subscribed users
+        //send email to Free users
         allUsers.forEach(user => {
             if (user.hasUnsubscribed === false && (!user.isPremium || user.premiumGrantedByAdmin)){
+                mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
+            }
+        })
+    } else if (groupChoice === "radioPremium"){
+        //send email to Premium users
+        allUsers.forEach(user => {
+            if (user.hasUnsubscribed === false && (user.isPremium && !user.premiumGrantedByAdmin && user.plan !== "none")){
                 mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
             }
         })
@@ -395,5 +398,10 @@ router.post('/legal/feedback', catchAsync(async(req, res) => {
     req.flash('success','Feedback byl odeslán. Díky!')
     res.status(201).redirect(`/legal/feedback`);
 }))
+
+
+
+
+
 
 module.exports = router;

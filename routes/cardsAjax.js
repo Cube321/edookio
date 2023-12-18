@@ -146,6 +146,9 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
     }
     let categories = await Category.find({});
     let iconPath = selectIconForSection(category, categories);
+    //xmas on/off logic
+    let xmas = false;
+    if(process.env.XMAS === "on"){xmas = true};
     const sectionLength = foundSection.cards.length;
     if((cardNum === 1 && requestedPreviousCardOne === false) || req.query.continue === "continue"){
         res.status(200).render('cards/showAjax', {
@@ -158,7 +161,8 @@ router.get('/category/:category/section/:sectionId/cardAjax/:cardNum', catchAsyn
             user, 
             numOfCards: foundSection.cards.length, 
             demoCardsSeen: req.session.demoCardsSeen,
-            iconPath
+            iconPath,
+            xmas
         });
     } else {
         res.status(200).send({

@@ -133,7 +133,7 @@ mail.subscriptionCreated = function(email, callback){
                                                     <div style="box-sizing:border-box">
                                                         <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Předplatné Premium aktivováno</h2> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné InLege Premium bylo právě <strong>aktivováno</strong>! Nyní máš přístup k více než 1 100 prémiovým kartičkám a možnost kartičky si ukládat pomocí hvězdičky na později. Předplatné můžeš kdykoliv zrušit.</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné InLege Premium bylo právě <strong>aktivováno</strong>! Nyní máš přístup k více než 1 000 prémiovým kartičkám a možnost kartičky si ukládat pomocí hvězdičky na později. Předplatné můžeš kdykoliv zrušit.</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Snažíme se o to, aby InLege nebyla jen vzdělávací platforma, ale také komunita mladých právníků. Přidej se k nám na <a style="color:#E80F88;text-decoration:none" href="https://www.instagram.com/inlege">Instagramu</a>, ať ti nic neuteče.</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
                                                         <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
@@ -544,7 +544,7 @@ mail.sendPremiumEnded = function(email, callback){
                                                     <div style="box-sizing:border-box">
                                                         <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Předplatné Premium právě skončilo</h2> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné Premium na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> právě skončilo. I tak můžeš nadále zdarma využívat více než 1 800 opakovacích kartiček. Předplatné můžeš kdykoliv <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz/premium">obnovit</a>.</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné Premium na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> právě skončilo. I tak můžeš nadále zdarma využívat více než 2 000 opakovacích kartiček. Předplatné můžeš kdykoliv <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz/premium">obnovit</a>.</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
                                                         <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
@@ -673,6 +673,57 @@ mail.forgottenPassword = function(data, callback){
       if(err){
         console.log(err);}      
     });
+};
+
+//welcome e-mail
+mail.sendThankYou = function(email, card, callback){
+    const msg = {
+        from: {email:"jakub@inlege.cz", name: "Jakub z InLege"}, 
+        to: email,
+        subject: "Oprava chyby na kartičce",
+        html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+                <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
+                    <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
+                        <tbody>
+                            <tr> 
+                                <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;padding:30px" valign="top"> 
+                                    <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
+                                        <tbody>
+                                            <tr> 
+                                                <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top"> 
+                                                    <div style="box-sizing:border-box">
+                                                        <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Chybu jsme opravili</h2> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">díky za nahlášení chyby na kartičce "${card}". Chybu jsme opravili.</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">S přátelským pozdravem</p> 
+                                                        <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub Spáčil</p> 
+                                                        <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Team InLege</p> 
+                                                    </div> 
+                                                </td> 
+                                            </tr> 
+                                        </tbody>
+                                    </table> 
+                                </td> 
+                            </tr> 
+                        </tbody>
+                    </table> 
+                </div>
+                <div style="box-sizing:border-box;clear:both;width:100%"> 
+                    <table style="box-sizing:border-box;width:100%;border-spacing:0;font-size:12px;border-collapse:separate!important" width="100%"> 
+                        <tbody>
+                            <tr style="font-size:12px"> 
+                                <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;vertical-align:top;font-size:12px;text-align:center;padding:20px 0" valign="top" align="center"><a href="https://www.inlege.cz" style="box-sizing:border-box;" target="_blank"></a> <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">Provozovatel InLege: Chilero s.r.o., IČ: 089 00 230 se sídlem Ztracená 335/19, 779 00 Olomouc, zapsaná v obchodním rejstříku vedeném Krajským soudem v Ostravě, sp. zn. C 81220</p> <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px"><a href="https://www.instagram.com/inlege" style="box-sizing:border-box;color:#E80F88;font-weight:400;text-decoration:none;font-size:12px;padding:0 5px" target="_blank">Instagram</a></p> </td> 
+                            </tr> 
+                        </tbody>
+                    </table> 
+                </div>  
+            </div>`
+      };
+    //send the mail
+    sgMail.send(msg, function(err) {
+        if(err){
+          console.log(err);}      
+      });
 };
 
 //email for all users

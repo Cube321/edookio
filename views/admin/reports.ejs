@@ -11,6 +11,7 @@
             <div class="col-sm-4">
                 <%- card.pageB %> 
                 <a href="/cards/edit/<%= card._id %>" target="_blank" class="btn btn-sm btn-outline-danger">Upravit kartičku</a>
+                <a href="/cards/report/delete/<%= card._id %>" class="btn btn-sm btn-outline-danger">Smazat report</a>
             </div>
             <div class="col-sm-5">
                 <% for(let report of card.factualMistakeReports){ %>
@@ -20,7 +21,7 @@
                             <div>
                                 <p class="mb-0 text-small"><%= report.date %></p>
                                 <p class="mb-0 text-small"><%= report.user %></p>
-                                <a href="/cards/report/solved/<%= card._id %>/<%= report.user %>" class="btn btn-sm btn-outline-danger">Označit jako vyřešené</a>
+                                <a href="/cards/report/solved/<%= card._id %>/<%= report.user %>" class="btn btn-sm btn-outline-danger">Poděkovat a smazat</a>
                             </div>
                         </div>
                     <% } %>  

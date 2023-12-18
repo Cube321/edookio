@@ -22,6 +22,14 @@
             </div>
             <div class="row">
                 <div class="col-md-10">
+                    <p>Počet neukončených platících Premium uživatelů</p>
+                </div>
+                <div class="col-md-2">
+                    <%= activePremiumSubscriptions %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
                     <p>Uživatelé aktivní v posledním týdnu</p>
                 </div>
                 <div class="col-md-2">
@@ -255,7 +263,7 @@
                     <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
                 </div>
                 <div class="col-sm-2 text-center">
-                    <p class="text-muted">- placené Premium -</p>
+                    <p class="text-muted">- aktivní placené Premium -</p>
                 </div>
             <% } else { %>
                 <div class="col-sm-1 d-flex justify-content-center align-items-center">
