@@ -81,7 +81,7 @@ router.get('/auth/admin/new', (req, res) => {
 
 //register request (POST)
 router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) => {
-    const {email, password, password_confirmation, key, firstname, lastname, faculty} = req.body;
+    let {email, password, password_confirmation, key, firstname, lastname, faculty} = req.body;
     //check password 
     if(password !== password_confirmation){
         req.flash('error','Obě zadaná hesla se musí shodovat.');
@@ -133,6 +133,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         if (err.message === 'A user with the given username is already registered'){
             req.flash('error', 'Uživatel již existuje.');
         } else {
+            console.log(err);
             req.flash('error', 'Jejda, něco se nepovedlo.');
         }
         res.status(400).redirect('back');

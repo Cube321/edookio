@@ -6,7 +6,7 @@ module.exports.landingPage = {
     visionStatementStart: "Mladí právníci se neustále potýkají se zkouškami, ať už na právnické fakultě nebo v průběhu dalšího profesního vzdělávání po jejím absolvování. Jsme si vědomi této náročné cesty, proto jsme vytvořili nástroj, který bychom sami v době našich studií ocenili. S radostí vám představujeme",
     visionStatementEnd: ", inovativní webovou aplikaci nejen pro studenty práv.",
     reasonOneHeader: "Unikátní přístup",
-    reasonOneContent: "Zkušenosti absolventů práv přetavené do více než 2 500 interaktivních otázek a odpovědí.",
+    reasonOneContent: "Zkušenosti absolventů práv přetavené do více než 3 000 interaktivních otázek a odpovědí.",
     reasonOneIcon: "icon-reason-1.png",
     reasonTwoHeader: "Připraví tě na vše",
     reasonTwoContent: "Efektivní příprava na zkoušky, nezávisle na fázi tvého studia či profesního růstu.",

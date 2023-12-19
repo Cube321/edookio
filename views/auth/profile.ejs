@@ -64,7 +64,7 @@
                                         Správa předplatného
                                     </button>
                                 <% } else if (!user.premiumGrantedByAdmin === true){ %>
-                                    <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+                                    <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
                                         Správa předplatného
                                     </button>
                                 <% } %>
@@ -141,7 +141,7 @@
     </div>
 </div>
 
-<% if (currentUser && !currentUser.xmasDiscount) { %>
+
     <!-- Modal Warning YEAR to SHORTER PERIOD -->
     <div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -160,16 +160,16 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+            <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
                 Pokračovat
             </button>
             </div>
         </div>
         </div>
     </div>
-<% } %>
 
-<% if (currentUser && currentUser.xmasDiscount) { %>
+
+
     <!-- Modal Warning XMAS DISCOUNT -->
     <div class="modal fade" id="modal-xmas" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -185,14 +185,14 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+            <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
                 Pokračovat
             </button>
             </div>
         </div>
         </div>
     </div>
-<% } %>
+
 
   <!-- MODAL - Delete user confirmation -->
   <div class="modal fade" id="deleteUserModal" tabindex="-1">
@@ -232,7 +232,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-            <button id="manage-billing-button" class="btn btn-sm btn-danger" type="submit">
+            <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
                 Uložit
             </button>
             </div>
