@@ -14,8 +14,6 @@ let productToPriceMap = {
   DAILY: process.env.PRODUCT_DAILY
 }
 
-let xmasDiscount = false;
-
 if(process.env.XMAS === "on"){
   productToPriceMap = {
     YEARLY: process.env.PRODUCT_YEARLY_XMAS,
@@ -64,7 +62,7 @@ router.post('/webhook', async (req, res) => {
     }
     
     const data = event.data.object
-
+    let xmasDiscount = false; 
     if(data.plan.id == process.env.PRODUCT_YEARLY_XMAS ||
        data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS ||
        data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
