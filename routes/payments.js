@@ -23,7 +23,6 @@ if(process.env.XMAS === "on"){
     MONTHLY: process.env.PRODUCT_MONTHLY_XMAS,
     DAILY: process.env.PRODUCT_DAILY_XMAS
   }
-  xmasDiscount = true;
 }
 
 
