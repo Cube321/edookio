@@ -151,12 +151,13 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            <p>
-                Chcete-li předplatné změnit na jiné platební obdobní, bude Vám při změně na kratší období nevyčerpaná hodnota předplatného přímo úměrná zůstatku období převedena na kredit, který bude poté možné použít k nákupu dalšího předplatného.
-            </p>
-            <p>
-                Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.
-            </p>
+            <p>Chcete-li předplatné změnit na jiné platební obdobní, bude Vám při změně na kratší období nevyčerpaná hodnota předplatného přímo úměrná zůstatku období převedena na kredit, který bude poté možné použít k nákupu dalšího předplatného.</p>
+            <p>Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.</p>
+            <% if (currentUser && currentUser.xmasDiscount) { %>
+                <p><b>Na vašem účtu je aktivní předplatné s vánoční slevou 50 %.</b></p>
+                <p>Účtujeme vám proto pravidelně <b>poloviční ceny</b> než ostatním uživatelům. Zrušením předplatného nebo přechodem na jiné období tuto slevu ztratíte.</p>    
+            <% } %>
+            <p>Chcete opravdu pokračovat?</p>
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>

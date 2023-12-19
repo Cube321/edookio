@@ -39,7 +39,7 @@ router.get('/premium', (req, res) => {
 
 router.get('/vanoce', (req, res) => {
   let stripeEnv = process.env.STRIPE_ENV;
-  if(process.env.XMAS === "on" || req.user.admin){
+  if(process.env.XMAS === "on" || (req.user && req.user.admin)){
     //render Xmas Premium if Xmas = on or user is admin
     res.status(200).render('premiumXmas', {stripeEnv});
   } else {

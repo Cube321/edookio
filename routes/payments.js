@@ -77,7 +77,8 @@ router.post('/webhook', async (req, res) => {
       //manage subscription (new/update/cancel)
       case "customer.subscription.updated":{
         //changed payment period
-        console.log('UPDATED RUNNING');
+        console.log('UPDATED RUNNING: webhook customer.subscription.updated');
+        console.log(`data.plan.id: ${data.plan.id}`);
         const user = await User.findOne({billingId: data.customer});
         if(!user){
           console.log('Uživatel s tímto platebním ID nebyl nalezen');

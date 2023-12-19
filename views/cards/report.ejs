@@ -21,8 +21,8 @@
                     </div>
                     <form class="row g-3 mt-1" action="/cards/report/<%= card._id %>" method="POST">
                         <div class="mt-3">
-                            <label for="reportMsg" class="form-label" required>Popis chyby</label>
-                            <textarea class="form-control" style="border:1px solid #DFDFDF;border-radius: 5px" name="reportMsg" id="reportMsg" rows="8"></textarea>
+                            <label for="reportMsg" class="form-label">Popis chyby</label>
+                            <textarea class="form-control" style="border:1px solid #DFDFDF;border-radius: 5px" name="reportMsg" id="reportMsg" rows="8" required></textarea>
                         </div>
                         <div class="">
                             <button class="btn btn-danger w-100 mt-3" type="submit">Odeslat</button>
