@@ -52,7 +52,7 @@
             </p></small>
           </li>
         </ul>
-        <% if (xmas) { %>
+        <% if (xmas && currentUser && !currentUser.isPremium) { %>
           <a href="/vanoce" target="_blank"><img src="/img/xmas_gift.png" alt="" style="max-width: 40px;margin-right: 10px;"></a>
         <% } %>
       </div>
