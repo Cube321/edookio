@@ -90,7 +90,8 @@ const scriptSrcUrls = [
     "https://cdn.jsdelivr.net",
     "https://www.googletagmanager.com/",
     "https://region1.google-analytics.com/",
-    "https://js.stripe.com/"
+    "https://js.stripe.com/",
+    "https://googleads.g.doubleclick.net"
 
 ];
 const styleSrcUrls = [
@@ -111,7 +112,7 @@ const fontSrcUrls = [];
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
-            defaultSrc: ["https://js.stripe.com/"],
+            defaultSrc: ["https://js.stripe.com/", "https://td.doubleclick.net/"],
             connectSrc: ["'self'", ...connectSrcUrls],
             scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
             styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
