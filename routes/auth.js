@@ -81,7 +81,7 @@ router.get('/auth/admin/new', (req, res) => {
 
 //register request (POST)
 router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) => {
-    let {email, password, password_confirmation, key, firstname, lastname, faculty} = req.body;
+    let {email, password, password_confirmation, key, firstname, lastname, faculty, source} = req.body;
     //check password 
     if(password !== password_confirmation){
         req.flash('error','Obě zadaná hesla se musí shodovat.');
@@ -110,7 +110,8 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             plan: "none",
             endDate: null,
             isGdprApproved: true,
-            faculty
+            faculty,
+            source
         });
         const newUser = await User.register(user, password);
         await req.login(newUser, err => {

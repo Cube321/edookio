@@ -38,6 +38,7 @@ module.exports.userSchema = Joi.object({
     key: Joi.string().escapeHTML(),
     billingId: Joi.string(),
     faculty: Joi.string().escapeHTML(),
+    source: Joi.string().escapeHTML(),
 })
 
 module.exports.sectionSchema = Joi.object({

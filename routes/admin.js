@@ -52,6 +52,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let unsubscribedUsersCount = 0;
     let totalCardsSeen = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
+    let sources = {pratele: 0, ucitele: 0, instagram: 0, facebook: 0, google: 0, odjinud: 0, neuvedeno: 0};
     users.forEach(user => {
         let newUser = user;
         //mark user as active in the last 48 hours
@@ -83,6 +84,15 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         if(user.faculty === "Uchazeč"){faculties.prfUchazec++};
         if(user.faculty === "Nestuduji"){faculties.prfNestuduji++};
         if(user.faculty === "Neuvedeno"){faculties.prfNeuvedeno++};
+        //count sources
+        if(user.source === "pratele"){sources.pratele++};
+        if(user.source === "ucitele"){sources.ucitele++};
+        if(user.source === "instagram"){sources.instagram++};
+        if(user.source === "facebook"){sources.facebook++};
+        if(user.source === "google"){sources.google++};
+        if(user.source === "odjinud"){sources.odjinud++};
+        if(user.source === "neuvedeno"){sources.neuvedeno++};
+        //totalCardsCount
         totalCardsSeen = totalCardsSeen + user.cardsSeen;
     })
     updatedUsers.reverse();
@@ -106,7 +116,8 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         demoLimitRegistrationRatio,
         unsubscribedUsersCount,
         totalCardsSeen,
-        activePremiumSubscriptions
+        activePremiumSubscriptions,
+        sources
     });
 }))
 

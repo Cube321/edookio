@@ -56,13 +56,6 @@ mail.welcome = function(email, callback){
                                                     </table> 
                                                 </td> 
                                             </tr>
-                                            <tr> 
-                                                <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top"> 
-                                                    <div style="box-sizing:border-box">
-                                                        <p style="margin:0;margin-bottom:30px;padding-top:20px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">PS: InLege jsme spustili teprve v prosinci 2023 a určitě je ještě co vylepšovat. Pokud bys měl/a jakékoliv nápady a připomínky, neváhej prosím využít tlačítko "Zaslat feedback" v patičce webu. Díky!</p> 
-                                                    </div> 
-                                                </td> 
-                                            </tr> 
                                         </tbody>
                                     </table> 
                                 </td> 
@@ -276,13 +269,6 @@ mail.subscriptionUpdated = function(email, endDate, callback){
                                                   </table> 
                                               </td> 
                                           </tr>
-                                          <tr> 
-                                              <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top"> 
-                                                  <div style="box-sizing:border-box">
-                                                      <p style="margin:0;margin-bottom:30px;padding-top:20px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">PS: Pokud jsi předplatné prodloužil/a omylem, napiš nám e-mail na <a style="color:#E80F88;text-decoration:none" href = "mailto: jakub@inlege.cz">jakub@inlege.cz</a> a peníze ti vrátíme.</p> 
-                                                  </div> 
-                                              </td> 
-                                          </tr> 
                                       </tbody>
                                   </table> 
                               </td> 

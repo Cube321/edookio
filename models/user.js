@@ -14,6 +14,10 @@ const UserSchema = new Schema ({
         type: String,
         default: "Neuvedeno"
     },
+    source: {
+        type: String,
+        default: "neuvedeno"
+    },
     admin: {
         type: Boolean,
         default: false
