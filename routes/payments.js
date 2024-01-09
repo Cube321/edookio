@@ -90,7 +90,6 @@ router.post('/webhook', async (req, res) => {
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           if(user.isPremium){
-              mail.subscriptionUpdated(user.email, endDate);
               mail.adminInfoSubscriptionUpdated(user, endDate);
               //update date on user
               user.premiumDateOfUpdate = moment();
@@ -110,7 +109,6 @@ router.post('/webhook', async (req, res) => {
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           if(user.isPremium){
-            mail.subscriptionUpdated(user.email, endDate);
             mail.adminInfoSubscriptionUpdated(user, endDate);
             //update date on user
             user.premiumDateOfUpdate = moment();
@@ -131,7 +129,6 @@ router.post('/webhook', async (req, res) => {
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           if(user.isPremium){
-            mail.subscriptionUpdated(user.email, endDate);
             mail.adminInfoSubscriptionUpdated(user, endDate);
             //update date on user
             user.premiumDateOfUpdate = moment();
@@ -152,7 +149,6 @@ router.post('/webhook', async (req, res) => {
           const endDate = moment(user.endDate).locale('cs').format('LL');
           //info emails
           if(user.isPremium){
-            mail.subscriptionUpdated(user.email, endDate);
             mail.adminInfoSubscriptionUpdated(user, endDate);
             //update date on user
             user.premiumDateOfUpdate = moment();
