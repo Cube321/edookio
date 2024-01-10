@@ -256,6 +256,71 @@
     </div>
 </div>
 
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card profile-card">
+                <div class="row p-3 pb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                            <img src="/img/icon_invoice.png" class="img-fit" alt="">
+                        </div>
+                        <div>
+                            <h3 class="px-3">Platby</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <% if(user.invoices.length === 0){ %>
+                        <p class="text-center text-muted">Uživatel nemá vystaveny žádné faktury.</p>
+                        <p class="px-3 text-center text-small text-muted">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách byly zasílány e-mailem.</p>
+
+                    <% } else { %>
+                    <table class="mx-3">
+                        <tr>
+                          <th>Číslo dokladu</th>
+                          <th>Částka</th>
+                          <th class="text-center">Datum vystavení</th>
+                        </tr>
+                            <% user.invoices.forEach(invoice => { %>
+                                <tr>
+                                    <td><%= invoice.invoiceNum %></td>
+                                    <td><%= invoice.invoiceAmount %> Kč</td>
+                                    <td class="text-center"><%= invoice.invoiceDate %></td>
+                                    <td><a href="/invoice/remove/<%= user._id %>/<%= invoice.invoiceNum %>" class="btn btn-sm btn-danger">X</a></td>
+                                </tr>
+                            <% }) %>
+                    </table>
+                    <p class="px-3 text-center text-small text-muted mt-3">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách najdeš ve svém e-mailu.</p>
+
+                    <% } %>
+                </div>
+                <div class="row p-3">
+                    <form action="/invoice/new/<%= user._id %>" method="POST">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-3">
+                                <input type="text" id="invoiceNum" name="invoiceNum" placeholder="Číslo FA" class="form-control" required>
+                            </div>
+                            <div class="col-3">
+                                <input type="number" id="invoiceAmount" name="invoiceAmount" placeholder="Částka" class="form-control" required>
+                            </div>
+                            <div class="col-3">
+                                <input type="date" id="invoiceDate" name="invoiceDate" class="form-control" required>
+                            </div>
+                            <div class="col-1">
+
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-sm btn-danger w-100">Vložit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Warning YEAR to SHORTER PERIOD -->
 <div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

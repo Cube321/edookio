@@ -141,6 +141,52 @@
     </div>
 </div>
 
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card profile-card">
+                <div class="row p-3 pb-3">
+                    <div class="col-12 d-flex align-items-center">
+                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
+                            <img src="/img/icon_invoice.png" class="img-fit" alt="">
+                        </div>
+                        <div>
+                            <h3 class="px-3">Platby</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-3">
+                    <% if(user.invoices.length === 0){ %>
+                        <p class="text-center text-muted">Zatím nemáš žádné faktury.</p>
+                        <p class="px-3 text-center text-small text-muted mt-3">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách najdeš ve svém e-mailu. Vystavení faktury může trvat až tři pracovní dny.</p>
+
+                    <% } else { %>
+                        <table class="mx-3">
+                            <tr>
+                            <th>Číslo dokladu</th>
+                            <th class="text-center">Částka</th>
+                            <th class="text-center">Vystavena</th>
+                            </tr>
+                                <% user.invoices.forEach((invoice, index) => { %>
+                                    <tr>
+                                        <% if(!invoice.isRequested){ %>
+                                            <td><a href="#" data-bs-toggle="modal" data-bs-target="#requestInvoiceModal<%= index %>"><%= invoice.invoiceNum %></a></td>
+                                        <% } else { %>
+                                            <td title="Vyžádána"><%= invoice.invoiceNum %></td>
+                                        <% } %>
+                                        <td class="text-center"><%= invoice.invoiceAmount %> Kč</td>
+                                        <td class="text-center"><%= invoice.invoiceDate %></td>
+                                    </tr>
+                                <% }) %>
+                        </table>
+                        <p class="px-3 text-center text-small text-muted mt-3">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách najdeš ve svém e-mailu. Vystavení faktury může trvat až tři pracovní dny.</p>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <!-- Modal Warning YEAR to SHORTER PERIOD -->
     <div class="modal fade" id="modal-warning" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
@@ -209,6 +255,23 @@
     </div>
     </div>
 </div>
+
+<!-- MODAL - Delete user confirmation -->
+<% user.invoices.forEach((invoice, index) => { %>
+    <div class="modal fade" id="requestInvoiceModal<%= index %>" tabindex="-1">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Chcete zaslat fakturu na e-mail?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-center align-items-center">
+                <a href="/invoice/request/<%= invoice.invoiceNum %>" class="btn btn-danger">Ano, vyžádat fakturu</a>
+            </div>
+        </div>
+        </div>
+    </div>
+<% }) %>
 
 <!-- Change faculty modal -->
 <div class="modal fade" id="modal-faculty" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">

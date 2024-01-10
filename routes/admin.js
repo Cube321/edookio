@@ -413,6 +413,66 @@ router.post('/legal/feedback', catchAsync(async(req, res) => {
 
 
 
+//INVOICES
+//add new invoice
+router.post('/invoice/new/:userId', catchAsync(async(req, res) => {
+    let data = req.body;
+    let {userId} = req.params;
+    let foundUser = await User.findById(userId);
+    if(!foundUser){
+        req.flash('error','Uživatel neexistuje');
+        return res.redirect('/admin/listAllUsers');
+    }
+    let {invoiceNum, invoiceAmount, invoiceDate} = data;
+    let newInvoice = {
+        invoiceNum,
+        invoiceDate,
+        invoiceAmount
+    }
+    foundUser.invoices.unshift(newInvoice);
+    await foundUser.save();
+    req.flash('success','Faktura byla vložena');
+    res.status(201).redirect(`/admin/${userId}/showDetail`);
+}))
+
+router.get('/invoice/remove/:userId/:invoiceNum', catchAsync(async(req, res) => {
+    let {userId, invoiceNum} = req.params;
+    let foundUser = await User.findById(userId);
+    if(!foundUser){
+        req.flash('error','Uživatel neexistuje');
+        return res.redirect('/admin/listAllUsers');
+    }
+    // Function to filter out an object based on invoiceNum
+    function filterArrayOfInvoices(arr, invoiceNumber) {
+        return arr.filter(invoice => invoice.invoiceNum !== invoiceNumber);
+    }
+    let filteredInvoices = filterArrayOfInvoices(foundUser.invoices, invoiceNum);
+    foundUser.invoices = filteredInvoices;
+    foundUser.save();
+    req.flash('success','Faktura byla odstraněna')
+    res.status(201).redirect(`/admin/${userId}/showDetail`);
+}))
+
+router.get('/invoice/request/:invoiceNum', catchAsync(async(req, res) => {
+    let {invoiceNum} = req.params;
+    let foundUser = await User.findById(req.user._id);
+    if(!foundUser){
+        req.flash('error','Uživatel neexistuje');
+        return res.redirect('/');
+    }
+    foundUser.invoices.forEach(invoice => {
+        if(invoice.invoiceNum === invoiceNum){
+            invoice.isRequested = true;
+        }
+    })
+    foundUser.markModified('invoices');
+    await foundUser.save();
+    mail.requestInvoice(req.user.email, invoiceNum);
+    req.flash('success',`Faktura ${invoiceNum} byla vyžádána a bude doručena do e-mailové schránky ${req.user.email} do tří pracovních dnů.`);
+    res.status(200).redirect(`/auth/user/profile`);
+}))
+
+
 
 
 module.exports = router;

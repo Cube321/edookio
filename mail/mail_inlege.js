@@ -25,7 +25,7 @@ mail.welcome = function(email, callback){
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvůj účet na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> byl vytvořen! Doufáme, že ti aplikace bude dobře sloužit a stane se tvým stálým parťákem při studiu práv.</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege není jen vzdělávací platforma, ale také komunita mladých právníků. Přidej se k nám na <a style="color:#E80F88;text-decoration:none" href="https://www.instagram.com/inlege">Instagramu</a>, ať ti nic neuteče.</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Přejeme Ti příjemné studium!</p> 
                                                         <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
                                                     </div> 
@@ -107,6 +107,23 @@ mail.adminInfoNewUser = function(newUser, callback){
     });
 };
 
+//user requested invoice
+mail.requestInvoice = function(email, invoiceNum){
+    const msg = {
+        from: "info@inlege.cz", 
+        to: process.env.ADMIN_MAIL,
+        subject: `Uživatel ${email} vyžádal ${invoiceNum}`,
+        html: `
+            Uživatel ${email} vyžádal zaslání faktury ${invoiceNum} na svůj e-mail.
+        `
+      };
+    //send the mail
+    sgMail.send(msg, function(err) {
+        if(err){
+          console.log(err);}      
+      });
+  };
+
 //subscription created e-mail
 mail.subscriptionCreated = function(email, callback){
   const msg = {
@@ -128,7 +145,7 @@ mail.subscriptionCreated = function(email, callback){
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné InLege Premium bylo právě <strong>aktivováno</strong>! Nyní máš přístup k více než 1 000 prémiovým kartičkám a možnost kartičky si ukládat pomocí hvězdičky na později. Předplatné můžeš kdykoliv zrušit.</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Snažíme se o to, aby InLege nebyla jen vzdělávací platforma, ale také komunita mladých právníků. Přidej se k nám na <a style="color:#E80F88;text-decoration:none" href="https://www.instagram.com/inlege">Instagramu</a>, ať ti nic neuteče.</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Přejeme Ti příjemné studium!</p> 
                                                         <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
                                                     </div> 
@@ -238,7 +255,7 @@ mail.subscriptionUpdated = function(email, endDate, callback){
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné InLege Premium bylo právě <strong>prodlouženo</strong>. Jsme rádi, že se ti s námi líbí!</p> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Snažíme se o to, aby InLege nebyla jen vzdělávací platforma, ale také komunita mladých právníků. Přidej se k nám na <a style="color:#E80F88;text-decoration:none" href="https://www.instagram.com/inlege">Instagramu</a>, ať ti nic neuteče.</p> 
-                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
+                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Přejeme Ti příjemné studium!</p> 
                                                       <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                       <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
                                                   </div> 
@@ -341,7 +358,7 @@ mail.sendAdminGrantedPremium = function(email, endDate, callback){
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> ti bylo právě administrátorem <strong>zdarma</strong> aktivováno předplatné Premium do ${endDate}! Užij si více než 3 000 opakovacích kartiček a další prémiové funkce.</p> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Snažíme se o to, aby InLege nebyla jen vzdělávací platforma, ale také komunita mladých právníků. S tím nám pomůžeš, když se k nám přidáš i na <a style="color:#E80F88;text-decoration:none" href="https://www.instagram.com/inlege">Instagramu</a>.</p> 
-                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
+                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Přejeme Ti příjemné studium!</p> 
                                                       <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                       <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
                                                   </div> 
@@ -423,7 +440,7 @@ mail.subscriptionCanceled = function(email, endDate, callback){
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné Premium bylo ukončeno. Další platby ti již nebudou účtovány. Premium můžeš využívat do konce zaplaceného období, tedy do ${endDate}. Většina obsahu InLege je pro tebe i nadále přístupná zdarma!</p> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Snažíme se o to, aby InLege nebyla jen vzdělávací platforma, ale také komunita mladých právníků. S tím nám pomůžeš, když se k nám přidáš i na <a style="color:#E80F88;text-decoration:none" href="https://www.instagram.com/inlege">Instagramu</a>.</p> 
-                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
+                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Přejeme Ti příjemné studium!</p> 
                                                       <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                       <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
                                                   </div> 
@@ -531,7 +548,7 @@ mail.sendPremiumEnded = function(email, callback){
                                                         <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Předplatné Premium právě skončilo</h2> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné Premium na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz">InLege</a> právě skončilo. I tak můžeš nadále zdarma využívat více než 2 000 opakovacích kartiček. Předplatné můžeš kdykoliv <a style="color:#E80F88;text-decoration:none" href="https://www.inlege.cz/premium">obnovit</a>.</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Studiu zdar!</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Přejeme Ti příjemné studium!</p> 
                                                         <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">InLege Team</p> 
                                                     </div> 

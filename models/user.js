@@ -54,6 +54,7 @@ const UserSchema = new Schema ({
         default: false
     },
     billingId: String,
+    invoices: Array,
     plan: { type: String, enum: ['none', 'yearly', 'monthly', 'halfyear', 'daily'], default: 'none' },
     endDate: {type: Date, default: null},
     isGdprApproved: {
