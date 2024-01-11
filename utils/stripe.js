@@ -19,6 +19,7 @@ const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
       mode: 'subscription',
       payment_method_types: ['card'],
       customer,
+      allow_promotion_codes: true,
       line_items: [
         {
           price,
@@ -30,7 +31,7 @@ const Stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
       cancel_url: `https://www.inlege.cz/payment/failed`
     })
   
-    return session
+    return session 
   }
 
   const createWebhook = (rawBody, sig) => {
