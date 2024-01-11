@@ -135,7 +135,7 @@ const msg = {
 
         Payment status: ${paymentStatus}
 
-        Data Object: ${data}
+        Data object: ${JSON.stringify(data)}
     `
     };
 //send the mail
