@@ -83,6 +83,20 @@ router.post('/webhook', async (req, res) => {
           return res.sendStatus(404);
         }
         let today = Date.now();
+
+        //handle failed payment of recurring subscription
+        if(data.status === "past_due"){
+          // code here
+          console.log('PAST_DUE is running');
+          user.premiumDateOfCancelation = moment();
+          user.plan = "none";
+          user.xmasDiscount = false;
+          mail.adminInfoSubscriptionPaymentFailed(user, data.status, data);
+          await user.save();
+          //break so the rest of the switch code below will not run
+          break;
+        }
+
         if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_YEARLY || data.plan.id == process.env.PRODUCT_YEARLY_XMAS)) {
           user.plan = "yearly";
           user.endDate = moment(today).add('1','year').format();

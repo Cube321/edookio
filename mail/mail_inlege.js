@@ -124,6 +124,27 @@ mail.requestInvoice = function(email, invoiceNum){
       });
   };
 
+//payment failed
+mail.adminInfoSubscriptionPaymentFailed = function(user, paymentStatus, data){
+const msg = {
+    from: "info@inlege.cz", 
+    to: process.env.ADMIN_MAIL,
+    subject: `Platba uživatele ${user.email} selhala`,
+    html: `
+        Platba uživatele ${user.email} selhala. Předplatné bylo ukončeno.
+
+        Payment status: ${paymentStatus}
+
+        Data Object: ${data}
+    `
+    };
+//send the mail
+sgMail.send(msg, function(err) {
+    if(err){
+        console.log(err);}      
+    });
+};
+
 //subscription created e-mail
 mail.subscriptionCreated = function(email, callback){
   const msg = {
