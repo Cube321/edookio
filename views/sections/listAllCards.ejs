@@ -1,16 +1,22 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-12 d-flex justify-content-between mb-4">
-            <a href="/category/<%= section.category %>" class="btn btn-sm btn-danger">Zpět na kategorii</a>
-            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartu</a>
+        <div class="col-12 mb-3">
+            <h5>Kartičky v balíčku <%= section.name %> <span class="text-muted">(Předmět: <%= section.category %>)</span></h5>
         </div>
     </div>
     <div class="row">
-        <div class="col-11 offset-1 mb-3">
-            <h5>Sekce: <%= section.name %> </h5>
+        <div class="col-12 d-flex justify-content-between mb-4">
+            <a href="/category/<%= section.category %>" class="btn btn-sm btn-outline-danger">Zpět na kategorii</a>
+            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartu</a>
         </div>
     </div>
+        <div class="row">
+            <div class="col-sm-1 text-center">Číslo</div>
+            <div class="col-sm-3">Přední strana</div>
+            <div class="col-sm-5">Zadní strana</div>
+            <hr>
+        </div>
     <% section.cards.forEach((card, i) => { %> 
         <div class="row">
             <div class="col-sm-1 text-small text-center"><%= i + 1%></div>
@@ -18,14 +24,7 @@
             <div class="col-sm-5 text-small"><%- card.pageB %> </div>
             <div class="col-sm-1"><a href="/cards/edit/<%= card._id%>">Upravit</a></div>
             <div class="col-sm-1"><a href="/cards/remove/<%= card._id%>">Odstranit</a></div>
-            <div class="col-sm-1"><a href="/cards/show/<%= card._id%>">Zobrazit</a></div>
             <hr>
         </div>
     <% }) %> 
-    <div class="row">
-        <div class="col-12 d-flex justify-content-between mt-4">
-            <a href="/category/<%= section.category %>" class="btn btn-sm btn-danger">Zpět na kategorii</a>
-            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartu</a>
-        </div>
-    </div>
 </div>

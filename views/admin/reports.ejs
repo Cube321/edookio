@@ -1,7 +1,7 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-11 offset-1 mb-3">
+        <div class="col-12 mb-3">
             <h5>Nahlášené chyby</h5>
         </div>
     </div>
@@ -19,15 +19,13 @@
                         <div class="card my-2 p-2 d-flex flex-row justify-content-between align-items-center">
                             <p class="mb-0"><%= report.reportMsg %></p>
                             <div>
-                                <p class="mb-0 text-small"><%= report.date %></p>
-                                <p class="mb-0 text-small"><%= report.user %></p>
+                                <p class="mb-2 text-small"><%= report.user %></p>
                                 <a href="/cards/report/solved/<%= card._id %>/<%= report.user %>" class="btn btn-sm btn-outline-danger">Poděkovat a smazat</a>
                             </div>
                         </div>
                     <% } %>  
                 <% } %> 
             </div>
-            <hr>
         </div>
     <% } %> 
 </div>

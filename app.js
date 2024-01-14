@@ -37,8 +37,9 @@ const authRoutes = require('./routes/auth');
 const sectionRoutes = require('./routes/sections');
 const paymentRoutes = require('./routes/payments');
 const legalRoutes = require('./routes/legal');
-const CardAjaxRoutes = require('./routes/cardsAjax');
 const blogRoutes = require('./routes/blog');
+const apiRoutes = require('./routes/api');
+const card20Routes = require('./routes/card20');
 
 const dbUrl = process.env.DB_URL;
 
@@ -122,7 +123,9 @@ app.use(
                 "'self'",
                 "blob:",
                 "data:",
-                "https://images.unsplash.com/"
+                "https://images.unsplash.com/",
+                "https://www.google.cz",
+                "https://www.google.com"
             ],
             fontSrc: ["'self' https: data:", ...fontSrcUrls],
         },
@@ -185,8 +188,9 @@ app.use('/', authRoutes);
 app.use('/', sectionRoutes);
 app.use('/', paymentRoutes);
 app.use('/', legalRoutes);
-app.use('/', CardAjaxRoutes);
 app.use('/', blogRoutes);
+app.use('/', apiRoutes);
+app.use('/', card20Routes);
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here

@@ -8,13 +8,16 @@
         <ul class="navbar-nav">
           <% if (currentUser && currentUser.admin) { %>
             <li class="nav-item">
-              <a class="nav-link" href="/admin/listAllUsers">Uživatelé</a>
+              <a class="nav-link" href="/admin/admin">Admin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/users">Uživatelé</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/admin/email">Email</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/admin/categories">Kategorie</a>
+              <a class="nav-link" href="/admin/categories">Předměty</a>
             </li>
           <% } %>
           <% if (currentUser && currentUser.isEditor) { %>

@@ -135,21 +135,21 @@
                         <p>Datum aktivace předplatného</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">
-                        <%= user.premiumDateOfActivation %> 
+                        <%= premiumDateOfActivation %> 
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Datum prodloužení předplatného</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">
-                        <%= user.premiumDateOfUpdate %> 
+                        <%= premiumDateOfUpdate %> 
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Datum ukončení předplatného</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">
-                        <%= user.premiumDateOfCancelation %> 
+                        <%= premiumDateOfCancelation %> 
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
@@ -238,6 +238,17 @@
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Cookies povoleny</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <ul>
+                            <li>Technické: <%= user.cookies.technical %></li>
+                            <li>Analytické: <%= user.cookies.analytical %></li>
+                            <li>Marketingové: <%= user.cookies.marketing %></li>
+                        </ul>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Odstranit účet</p>
                     </div>
                     <% if(user.isPremium && user.plan !== "none"){ %> 
@@ -270,7 +281,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row p-3">
+                <div class="row px-3 pb-3">
                     <% if(user.invoices.length === 0){ %>
                         <p class="text-center text-muted">Uživatel nemá vystaveny žádné faktury.</p>
                         <p class="px-3 text-center text-small text-muted">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách byly zasílány e-mailem.</p>

@@ -58,6 +58,11 @@
     background-color: #E80F88!important;
 }
 
+.btn-success {
+    background-color: #7ac705;
+    border-color: #7ac705;
+}
+
 .form-control:focus,
 .btn-danger:focus,
 .btn-danger:active,

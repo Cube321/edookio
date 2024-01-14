@@ -45,11 +45,11 @@
     <nav class="navbar bg-white" style="border-bottom: 1px solid #EEEEEE;" id="card-nav">
       <div class="container">
         <ul class="navbar-nav">
-          <li><a href="/category/<%= card.category %>" class="back-link"><i
+          <li><a href="/category/<%= section.category %>" class="back-link"><i
                 class="fas fa-chevron-left me-2 mb-2"></i>Zpět na kategorii</a></li>
           <li>
-            <p class="m-0"><small>
-                <%= sectionName %>
+            <p class="m-0"><small id="sectionId" name="<%= section._id %>">
+                <%= section.name %>
             </p></small>
           </li>
         </ul>
@@ -67,16 +67,12 @@
         <div class="col-lg-2 mb-3 zobrazovat-jen-na-mobilu">
           <div class="card d-flex flex-row justify-content-center align-items-center">
             <div class="card-body text-center">
-              <p class="text-muted text-smaller mb-1">Kartička <span id="progressCardNumMobile"><%= nextNum - 1 %></span> z <%= sectionLength %>
+              <p class="text-muted text-smaller mb-1">Kartička <span id="progressCardNumMobile"><span id="progressNumMobile">0</span> z <%= section.cards.length %>
               </p>
               <div class="progress">
-                <% if(progressStatus && progressStatus===0){ %>
-                  <div class="progress-bar bg-danger" role="progressbar"></div>
-                  <% } else { %>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%" id="progressBarMobile">
-                      <span id="progressBarStatusMobile"><%= progressStatus %>%</span>
-                    </div>
-                    <% } %>
+                  <div class="progress-bar bg-danger" role="progressbar" style="width:0%" id="progressBarMobile">
+                    <span id="progressBarStatusMobile"><span id="progressBarStatusMobileNum">0</span>%</span>
+                  </div>
               </div>
             </div>
           </div>
@@ -86,35 +82,17 @@
         <!--FLIPCARD-->
         <div class="col-lg-6 offset-lg-2 mb-3">
           <div class="flip-card" id="flip-card">
-            <% if(nextNum === 2){ %>
-              <div class="border-grey flip-card-inner" id="flip-card-inner" currentCardUrl="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= 0 %>">
-            <% } else { %>  
-              <div class="border-grey flip-card-inner" id="flip-card-inner" currentCardUrl="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum - 1 %>">
-            <% } %>
-            <% if (!currentUser && demoCardsSeen > 5) { %>
-              <div class="card-body flip-card-front pb-0 px-0">
-                <div class="row height-100 demo-finished-card">
-                  <div class="col-12 d-flex flex-column justify-content-center align-items-center ">
-                      <p class="demo-finished-main text-center mb-4">Již si vyčerpal/a svých 5 ukázkových kartiček.</p>
-                      <p class="demo-finished-text text-center text-smaller text-muted mt-3 mb-4">Teď už víš, jak InLege funguje. Vytvoř si účet a získej přístup k dalším <b>více než 2 000 kartičkám</b>. Je to zdarma!</p>
-                      <a href="/auth/user/new" class="btn btn-lg btn-danger my-3">Vytvořit účet zdarma</a>
-                  </div>
-                </div>
-              </div>
-            <% } else { %>
+            <div class="border-grey flip-card-inner" id="flip-card-inner">
               <div class="card-body flip-card-front p-sm-3 pt-sm-4 px-0 pt-3">
                 <div class="front-main-content d-flex justify-content-center align-items-center">
-                  <div id="loaderA"></div>
-                  <div class="card-text m-4 text-center" id="pageA"><%- card.pageA %></div>
+                  <div class="card-text m-4 text-center" id="pageA"><div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div></div>
                 </div>
               </div>
               <div class="card-body flip-card-back p-sm-3 pt-sm-4 px-0 pt-3">
                 <div class="back-main-content d-flex justify-content-center align-items-center text-gradient">
-                  <div id="loaderB"></div>
-                  <div class="card-text m-4" id="pageB"><%- card.pageB %></div>
+                  <div class="card-text m-4" id="pageB">Strana B</div>
                 </div>
               </div>
-              <% } %>
             </div>
           </div>
         </div>
@@ -125,19 +103,15 @@
             <div class="card-body text-center">
               <div class="card-body category-box d-flex flex-column align-items-center justify-content-center pt-1">
                 <div class="rounded-circle icon-background-medium d-flex justify-content-center align-items-center">
-                  <img src="<%= iconPath %>" class="img-fit" alt="" />
+                  <img src="/img/<%= categoryIcon %>" class="img-fit" alt="" />
                 </div>
               </div>
-              <p class="text-muted text-smaller">Kartička <span id="progressCardNumMac"><%= nextNum - 1 %></span> z <%= sectionLength %>
+              <p class="text-muted text-smaller">Kartička <span id="progressCardNumMac"><span id="progressNumMac">0</span> z <%= section.cards.length %>
               </p>
               <div class="progress mb-2">
-                <% if(progressStatus && progressStatus===0){ %>
-                  <div class="progress-bar bg-danger" role="progressbar"></div>
-                  <% } else { %>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width:<%= progressStatus %>%" id="progressBarMac">
-                      <span id="progressBarStatusMac"><%= progressStatus %>%</span>
-                    </div>
-                    <% } %>
+                  <div class="progress-bar bg-danger" role="progressbar" style="width:0%" id="progressBarMac">
+                    <span id="progressBarStatusMac"><span id="progressBarStatusMacNum">0</span>%</span>
+                  </div>
               </div>
             </div>
           </div>
@@ -146,16 +120,14 @@
         
       </div>
       
-      <% if (!currentUser && demoCardsSeen > 5) { %>
-        <!-- empty space -->
-      <% } else { %>
       <!--FRONT CARD MENU-->
       <div class="row" id="front-menu-row">
         <div class="col-lg-6 offset-lg-2">
           <div class="front-menu d-flex justify-content-between align-items-center border-grey">
             <a href=""></a>
             <div class="">
-              <a href="#" class="btn btn-lg btn-outline-danger" id='btn-otocit-rendered'>Otočit</a>
+              <a href="#" class="btn btn-lg btn-outline-danger disabled" id='btn-predchozi-front'><i class="fas fa-chevron-left"></i></a>
+              <a href="#" class="btn btn-lg btn-outline-danger disabled" id='btn-otocit'>Otočit</a>
             </div>
             <a href=""></a>
           </div>
@@ -166,63 +138,31 @@
       <div class="row hide" id="back-menu-row">
         <div class="col-lg-6 offset-lg-2">
           <div class="back-menu d-flex justify-content-between align-items-center border-grey">
-            <div class="">
-              <% if(currentUser && currentUser.isPremium){%>
-                <% if(isCardSaved){%>
-                  <div id="save-star-div-rendered-bottom" name="<%= currentUser.email %>/<%=card._id%>" class="save-star clicked" style="cursor:pointer"><i class="fas fa-star fa-lg"></i></div>
-                <% } else { %>
-                  <div id="save-star-div-rendered-bottom" name="<%= currentUser.email %>/<%=card._id%>" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
-                <% } %>
-              <% } else if(!currentUser || !currentUser.isPremium) { %>
-              <div id="" class="save-star" style="cursor:pointer"><a href="#" data-bs-toggle="modal" data-bs-target="#savePremium"><i class="far fa-star fa-lg menu-icon"></i></a></div>
-              <% } %>
+            <div id="star-div">
+              <div id="save-star" name="#" class="save-star" style="cursor:pointer"><i class="far fa-star fa-lg"></i></div>
             </div>
             <div>
-              <% if(sectionLength + 1 !== nextNum){ %>
-                <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-rendered">Další</a>
-              <% } else { %>
-                <a href="/category/<%=card.category%>/section/<%=card.section%>/cardAjax/<%= nextNum %>" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi-last-card">Další</a>
-              <% } %>
+              <a href="#" class="btn btn-lg btn-danger easy-btn" id="btn-predchozi-back"><i class="fas fa-chevron-left"></i></a>
+              <a href="#" class="btn btn-lg btn-danger easy-btn" id="btn-dalsi">Další</a>
             </div>
             <div>
-              <a href="#" id="rotate-back-rendered" class="nezobrazovat-na-mobilu rotate-icon"><i class="fas fa-sync-alt fa-lg"></i></a>
-              <a href="#" id="rotate-back-mobile-rendered" class="zobrazovat-jen-na-mobilu rotate-icon"><i class="fas fa-sync-alt fa-lg"></i></a>
+              <a href="#" id="rotate-back" class="rotate-icon"><i class="fas fa-sync-alt fa-lg"></i></a>
             </div>
           </div>
         </div>
       </div>
-      <% } %>
 
       <div class="row">
-        <% if (!currentUser && demoCardsSeen > 5) { %>
-         <!-- empty space -->
-        <% } else { %>
         <div class="col-lg-6 offset-lg-2" id="mini-menu">
-          <div class="text-center mt-4 servis-btns d-flex justify-content-around align-items-center">
-            <% if (currentUser && currentUser.isEditor) { %>
-              <div id="upravit-kartu-div">
-                <a href="/cards/edit/<%= card._id%>" class="text-muted" >Upravit kartu</a>
-              </div>
-              <div id="odstranit-kartu-div">
-                <a href="/cards/remove/<%= card._id%>" class="text-muted mx-3" id="odstranit-kartu">Odstranit kartu</a>
-              </div>
-              <% } %>
-                <div>
-                  <% if(nextNum === 2){ %>
-                      <p id="predchozi-karticka-filler" class="text-muted px-3 mb-0">Předchozí kartička</p>
-                      <p id="predchozi-karticka-link" name="/category/<%= card.category %>/section/<%= card.section %>/cardAjax/<%= nextNum - 2 %>" class="text-muted px-3 mb-0 hide">Předchozí kartička</p>
-                  <% } else { %>  
-                      <p id="predchozi-karticka-filler" class="text-muted px-3 mb-0 hide">Předchozí kartička</p>
-                      <p id="predchozi-karticka-link" name="/category/<%= card.category %>/section/<%= card.section %>/cardAjax/<%= nextNum - 2 %>" class="text-muted px-3 mb-0">Předchozí kartička</p>
-                  <% } %>
-                </div>
-                <div id="nahlasit-kartu-div">
-                  <a href="/cards/report/<%= card._id%>" target="_blank" class="text-muted px-3" id="nahlasit-chybu">Nahlásit chybu</a>
-                </div>
-                <p class="text-muted mb-0 px-3 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</p>
+          <div class="text-muted text-center text-small d-flex justify-content-center align-items-center mt-4">
+            <% if(currentUser && currentUser.isEditor){ %>
+              <a href="#" target="_blank" class="text-muted mx-2" id="btn-upravit">Upravit kartu</a>
+              <a href="#" class="text-muted mx-2" id="btn-odstranit">Odstranit kartu</a>
+            <% } %>
+            <a href="#" target="_blank" class="text-muted mx-2" id="btn-nahlasit">Nahlásit chybu</a>
+            <a class="text-muted mx-2 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</a>
           </div>
         </div>
-        <% } %>
       </div>
     </main>
 
@@ -253,7 +193,7 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
-      <script src="/js/card.js?ddfkhkl"></script>
+      <script src="/js/card20.js"></script>
       <!--element for JS properly working while loading data-->
       <div id="data-loaded-wrapper">
         <div id="data-loaded"></div>

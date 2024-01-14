@@ -44,43 +44,48 @@
                                     <p class="text-muted text-small mb-0">Spuštěna: <%= section.countStarted %></p>
                                     <p class="text-muted text-small mb-0">Dokončena: <%= section.countFinished %></p>
                                     <p class="text-muted text-small mb-0">Opakována: <%= section.countRepeated %></p>
+                                    <p class="text-muted text-small mb-0">ID balíčku: <%= section._id %></p>
+                                    <p class="text-muted text-small mb-0">Předchozí balíček (ID): <%= section.previousSection %></p>
+                                    <p class="text-muted text-small mb-0">Následující balíček (ID): <%= section.nextSection %></p>
                                    <% } %>
                             </div>
                         </div>
-                        <div class="col-3 d-flex justify-content-center align-items-center">
+                        <div class="col-3 d-flex flex-column justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
                                 <% if(!section.isPremium){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>    
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>    
                                 <% } else { %>
                                     <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
                                 <% } %>  
                             <% } else if(!currentUser.isPremium && section.isPremium){ %> 
                                 <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
                             <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
                             <% } else if (section.isUnfinished) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right">Pokračovat</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right">Pokračovat</a>
                             <% } else { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
                             <% } %>
+                            <div class="mt-2">
+                                <% if (currentUser && currentUser.isEditor) { %>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square" title="Přidat kartičku"></i></a>
+                                    <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up" title="Posunout balíček nahoru"></i></a>
+                                    <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down" title="Posunout balíček dolů"></i></a>
+                                    <a href="/category/<%= category.name %>/editSection/<%= section._id %>"><i class="far fa-edit" title="Upravit balíček"></i></a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul" title="Zobrazit všechny kartičky v balíčku"></i></a>
+                                    <% if (!section.isPremium) { %>
+                                        <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toPremium" style="border:1px solid;border-radius:5px"><i class="fas fa-arrow-right" title="Změnit na placený"></i>P</a>
+                                    <% } %>
+                                    <% if (section.isPremium) { %>
+                                        <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toZdarma" style="border:1px solid;border-radius:5px"><i class="fas fa-arrow-right" title="Změnit na zdarma"></i>Z</a>
+                                    <% } %>
+                                    <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1" title="Odstranit balíček"></i></a>
+                                <% } %>
+                            </div>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2 d-flex justify-content-evenly align-items-center cards-amount-div">
                             <p class="m-0"><%= section.cards.length %> </p>
                             <p class="text-muted text-small mb-0">kartiček</p>
-                            <% if (currentUser && currentUser.isEditor) { %>
-                                <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up"></i></a>
-                                <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down"></i></a>
-                                <a href="/category/<%= category.name %>/editSection/<%= section._id %>"><i class="far fa-edit"></i></a>
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
-                                <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1"></i></a>
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
-                                <% if (!section.isPremium) { %>
-                                    <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toPremium" style="border:1px solid;border-radius:5px"><i class="fas fa-arrow-right"></i>P</a>
-                                <% } %>
-                                <% if (section.isPremium) { %>
-                                    <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toZdarma" style="border:1px solid;border-radius:5px"><i class="fas fa-arrow-right"></i>Z</a>
-                                <% } %>
-                            <% } %>
                         </div>
                     </div>
                     <hr class="">
@@ -109,38 +114,48 @@
                         <div class="row py-2">
                             <div class="col-5 d-flex align-items-center">                    
                                 <div>
-                                    <p class="m-0"><%= section.name %></p>
+                                    <p class="m-0"><%= section.name %> <span class="text-muted text-smaller">[čeká na zveřejnění]</span></p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
                                     <% if (currentUser && currentUser.isEditor) { %>
-                                        <p class="text-muted text-small mb-0">ID sekce: <%= section._id %></p>
+                                        <p class="text-muted text-small mb-0">ID balíčku: <%= section._id %></p>
+                                        <p class="text-muted text-small mb-0">Předchozí balíček (ID): <%= section.previousSection %></p>
+                                        <p class="text-muted text-small mb-0">Navazující balíček (ID): <%= section.nextSection %></p>
                                        <% } %>
                                 </div>
                         </div>
                             <div class="col-2">
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-info">Zveřejnit</a>
                             </div>
-                            <div class="col-3 d-flex justify-content-center align-items-center">
+                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-success mb-2">Zveřejnit</a>
                                 <% if (!currentUser){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
                                 <% } else if (section.isUnfinished) { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right">Pokračovat</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right">Pokračovat</a>
                                 <% } else { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/cardAjax/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
                                 <% } %>
+                                <div class="mt-2">
+                                    <% if (currentUser && currentUser.isEditor) { %>
+                                        <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square" title="Přidat kartičku"></i></a>
+                                        <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up" title="Posunout balíček nahoru"></i></a>
+                                        <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down" title="Posunout balíček dolů"></i></a>
+                                        <a href="/category/<%= category.name %>/editSection/<%= section._id %>"><i class="far fa-edit" title="Upravit balíček"></i></a>
+                                        <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul" title="Zobrazit všechny kartičky v balíčku"></i></a>
+                                    <% } %>
+                                    <% if (!section.isPremium) { %>
+                                        <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toPremium" style="border:1px solid;border-radius:5px"><i class="fas fa-arrow-right" title="Změnit na placený"></i>P</a>
+                                    <% } %>
+                                    <% if (section.isPremium) { %>
+                                        <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toZdarma" style="border:1px solid;border-radius:5px"><i class="fas fa-arrow-right" title="Změnit na zdarma"></i>Z</a>
+                                    <% } %>
+                                    <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1" title="Odstranit balíček"></i></a>
+                                </div>
                             </div>
                             <div class="col-2 d-flex justify-content-evenly align-items-center">
                                 <p class="m-0"><%= section.cards.length %> </p>
                                 <p class="text-muted text-small mb-0">kartiček</p>
-                                <% if (currentUser && currentUser.isEditor) { %>
-                                    <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>"><i class="fas fa-arrow-up"></i></a>
-                                    <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>"><i class="fas fa-arrow-down"></i></a>
-                                    <a href="/category/<%= category.name %>/editSection/<%= section._id %>"><i class="far fa-edit"></i></a>
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="add-icon"><i class="fas fa-plus-square"></i></a>
-                                    <a href="#" class="remove-icon" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="fas fa-times px-1"></i></a>
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards"><i class="fas fa-list-ul"></i></a>
-                                <% } %>
                             </div>
                         </div>
                         <hr class="">
@@ -173,43 +188,43 @@
     <div class="col-md-7 offset-md-4 mb-3 mt-4">
         <div class="card add-section">
             <div class="card-body pb-0">
+                <h4>Přidat nový balíček</h4>
                 <form action="/category/<%= category.name  %>/newSection" method="POST">
                     <div class="form-group row">
-                        <label for="name" class="col-2 col-form-label">Přidat sekci</label>
-                        <div class="col-6">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Název sekce" required>
+                        <label for="name" class="col-md-2 col-form-label">Nadpis</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control form-borders" id="name" name="name" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="desc" class="col-2 col-form-label">Popis</label>
-                        <div class="col-6">
-                            <input type="text" class="form-control" id="desc" name="desc" placeholder="Krátký popis">
+                        <label for="desc" class="col-md-2 col-form-label">Podnadpis</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control form-borders" id="desc" name="desc" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="nextSection" class="col-2 col-form-label">ID NS</label>
-                        <div class="col-6">
-                            <input type="text" class="form-control" id="nextSection" name="nextSection" placeholder="ID navazující sekce">
+                        <label for="previousSection" class="col-md-2 col-form-label">Navazuje na</label>
+                        <div class="col-md-6">
+                            <select class="form-select form-borders" name="previousSection" id="previousSection">
+                                <option value="lastSection">nenavazuje na jiný balíček</option>
+                                <% category.sections.forEach(section => { %>
+                                    <option value="<%= section._id %>"><%= section.name %></option>
+                                <% }) %>
+                              </select>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="isPremium" class="col-2 col-form-label">Dostupnost</label>
-                        <div class="col-4">
-                            <select class="form-select" name="isPremium" id="isPremium">
+                        <label for="isPremium" class="col-md-2 col-form-label">Dostupnost</label>
+                        <div class="col-md-4">
+                            <select class="form-select form-borders" name="isPremium" id="isPremium">
                                 <option value="zdarma">Zdarma</option>
                                 <option value="premium">Premium</option>
                               </select>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <label for="category" class="col-2 col-form-label">Kategorie</label>
-                        <div class="col-6">
-                            <input type="text" class="form-control-plaintext" id="category" name="category" value="<%= category.name %>" readonly>
-                        </div>
-                    </div>
                     <div class="row">
-                        <div class="col-12 my-2">
-                            <button class="btn btn-danger">Přidat</button>
+                        <div class="col-12 my-3">
+                            <button class="btn btn-danger">Přidat balíček</button>
                         </div>
                     </div>
                 </form>

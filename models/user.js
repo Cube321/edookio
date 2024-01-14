@@ -70,7 +70,15 @@ const UserSchema = new Schema ({
         default: false
     },
     xmasDiscount: {type: Boolean, default: false},
-    savedCards: [{ type : Schema.Types.ObjectId, ref: 'Card'}]
+    savedCards: [{ type : Schema.Types.ObjectId, ref: 'Card'}],
+    cookies: {
+        type: Object,
+        default: {
+            technical: true,
+            analytical: true,
+            marketing: true
+        }
+    }
 })
 
 UserSchema.plugin(passportLocalMongoose);

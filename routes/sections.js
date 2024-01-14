@@ -46,24 +46,14 @@ router.post('/category/new', isLoggedIn, isAdmin, catchAsync(async (req, res, ne
     let {text, value, icon, orderNum} = req.body;
     const foundCategory = await Category.find({name: value});
     if(foundCategory.length > 0){
-        req.flash('error','Kategorie již existuje.')
+        req.flash('error','Předmět již existuje.')
         return res.redirect('/admin/categories');
     }
     const newCategory = new Category({name: value, sections: [], text, icon, orderNum});
     let savedCategory = await newCategory.save();
     console.log(savedCategory);
+    req.flash('success','Předmět byl vytvořen.');
     res.status(201).redirect(`/admin/categories`);
-}))
-
-//edit Category - render form
-router.get('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
-    let {categoryId} = req.params;
-    const foundCategory = await Category.findById(categoryId);
-    if(!foundCategory){
-        req.flash('error','Kategorie nebyla nelezena.')
-        return res.redirect('/admin/categories');
-    }
-    res.status(200).render('admin/categoriesEdit', {category: foundCategory})
 }))
 
 //edit Category - update in the DB
@@ -76,6 +66,7 @@ router.put('/category/edit/:categoryId', isLoggedIn, isAdmin, catchAsync(async (
         return res.redirect('/admin/categories');
     }
     await Category.findByIdAndUpdate(categoryId, {text, icon, orderNum});
+    req.flash('success','Změny byly uloženy.');
     res.status(201).redirect(`/admin/categories`);
 }))
 
@@ -89,7 +80,7 @@ router.delete('/category/remove/:categoryId', isLoggedIn, isAdmin, catchAsync(as
     }
     if (foundCategory.sections.length === 0){
         await Category.findByIdAndDelete(categoryId);
-        req.flash('success','Kategorie byla odstraněna.');
+        req.flash('success','Předmět byl odstraněn.');
     } else {
         req.flash('error',"Kategorie obsahuje balíčky. Nejdříve odstraň balíčky, poté bude možné kategorii smazat.");
     }
@@ -112,7 +103,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isEdi
     }
     //create new Section and add it to Category
     const categoryName = foundCategory.name;
-    const {name, isPremium, desc, nextSection} = req.body;
+    let {name, isPremium, desc, previousSection} = req.body;
     //isPremium logic
     let isPremiumBoolean = false;
     if(isPremium === "premium"){isPremiumBoolean = true};
@@ -123,17 +114,23 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isEdi
         cards: [],
         isPremium: isPremiumBoolean,
         shortDescription: desc,
-        nextSection: nextSection
+        nextSection: "lastSection",
+        previousSection
     })
     const savedSection = await newSection.save();
+    if(previousSection !== "lastSection"){
+        const foundPreviousSection = await Section.findById(previousSection);
+        foundPreviousSection.nextSection = savedSection._id;
+        await foundPreviousSection.save();
+    }
     foundCategory.sections.push(savedSection._id);
     await foundCategory.save();
-    req.flash('success',`Sekce ${savedSection.name} byla vytvořena.`);
+    req.flash('success',`Balíček ${savedSection.name} byl vytvořen.`);
     res.status(200).redirect(`/category/${savedSection.category}`);
 }))
 
 //remove Section from Category and delete its Cards
-router.delete('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
+router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
@@ -167,6 +164,13 @@ router.delete('/category/:category/removeSection/:sectionId', isLoggedIn, isEdit
         user.sections = updatedSections;
         await user.save();
     } 
+
+    //remove connection with previous section
+    if(deletedSection.previousSection && deletedSection.previousSection !== "lastSection"){
+        let previousSection = await Section.findById(deletedSection.previousSection)
+        previousSection.nextSection = deletedSection.nextSection;
+        await previousSection.save()
+    }
     //flash a redirect
     req.flash('success','Sekce byla odstraněna.');
     res.status(200).redirect(`/category/${category}`);
@@ -175,10 +179,21 @@ router.delete('/category/:category/removeSection/:sectionId', isLoggedIn, isEdit
 //edit section RENDER
 router.get('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
+    const foundCategory = await Category.findOne({name: req.params.category}).populate('sections');
     if(!foundSection){
-        throw Error("Sekce s tímto ID neexistuje");
+        throw Error("Balíček s tímto ID neexistuje");
     }
-    res.render('sections/edit', {section: foundSection});
+    if(!foundCategory){
+        throw Error("Kategorie s tímto označením neexistuje");
+    }
+    let previousSection = "";
+    if(foundSection.previousSection && foundSection.previousSection !== "lastSection"){
+        previousSection = await Section.findById(foundSection.previousSection);
+        if(!previousSection){
+            throw Error("Předchozí balíček s uvedeným ID neexistuje");
+        }
+    }
+    res.render('sections/edit', {section: foundSection, category: foundCategory, previousSection});
 }))
 
 //edit section UPDATE
@@ -187,13 +202,26 @@ router.put('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, c
     if(!foundSection){
         throw Error("Sekce s tímto ID neexistuje");
     }
-    let nextSection = req.body.next;
+    let previousSection = "";
+    if(req.body.previousSection !== "lastSection"){
+        previousSection = await Section.findById(req.body.previousSection);
+        if(!previousSection){
+            throw Error("Předchozí balíček s uvedeným ID neexistuje");
+        }
+    }
     let {name, desc} = req.body;
     foundSection.name = name;
     foundSection.shortDescription = desc;
-    foundSection.nextSection = nextSection;
+    if(previousSection !== ""){
+        foundSection.previousSection = previousSection._id;
+        previousSection.nextSection = foundSection._id;
+        await previousSection.save();
+    } else {
+        foundSection.previousSection = "lastSection";
+    }
     await foundSection.save();
-    res.status(201).redirect(`/category/${req.params.category}`);
+    req.flash('success','Informace byly aktualizovány.')
+    res.status(201).redirect(`/category/${req.params.category}/editSection/${req.params.sectionId}`);
 }))
 
 //changing order of the sections

@@ -25,8 +25,7 @@ const Joi = BaseJoi.extend(extension);
 
 module.exports.cardSchema = Joi.object({
     pageA: Joi.string().required(),
-    pageB: Joi.string().required(),
-    author: Joi.string().required().escapeHTML()
+    pageB: Joi.string().required()
 })
 
 module.exports.userSchema = Joi.object({
@@ -38,13 +37,12 @@ module.exports.userSchema = Joi.object({
     key: Joi.string().escapeHTML(),
     billingId: Joi.string(),
     faculty: Joi.string().escapeHTML(),
-    source: Joi.string().escapeHTML(),
+    source: Joi.string().escapeHTML()
 })
 
 module.exports.sectionSchema = Joi.object({
     name: Joi.string().required().escapeHTML(),
-    category: Joi.string().required().escapeHTML(),
     isPremium: Joi.string().required().escapeHTML(),
     desc: Joi.string().escapeHTML(),
-    nextSection: Joi.string().escapeHTML()
+    previousSection: Joi.string().escapeHTML()
 })

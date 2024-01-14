@@ -2,12 +2,16 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h5>Správa kategorií</h5>
-            <p class="text-muted text-smaller">Na hlavní stránce se zobrazují jen kategorie s pořadím 1 a výše, nižší čísla lze užít pro přípravu kategorií před zveřejněním.</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <h5>Správa předmětů</h5>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-category" style="margin-bottom: 5px">Přidat předmět</button>
+            </div>
+            
+            <p class="text-muted text-smaller">Na hlavní stránce se zobrazují jen předměty s pořadím 1 a výše, nižší čísla lze užít pro přípravu předmětů před zveřejněním. Odstranit lze pouze předměty, které neobsahují žádné balíčky.</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-12">
             <table class="w-100">
                 <tr>
                     <th><p>Poř.</p></th>
@@ -16,8 +20,10 @@
                     <th><p>Ikona</p></th>
                     <th><p>Počet balíčků</p></th>
                     <th><p>Počet karet</p></th>
+                    <th><p title="Součet spuštění všech balíčků v předmětu">Abs. Sp.</p></th>
+                    <th><p title="Průměrný počet spuštění balíčku v předmětu">Prům. Sp.</p></th>
                 </tr>
-                <% categories.forEach(cat => { %>
+                <% categories.forEach((cat, i) => { %>
                     <tr class="admin-category-row">
                         <th><%= cat.orderNum %></th>
                         <th><a href="/category/<%= cat.name %>"><%= cat.text %></a></th>
@@ -25,8 +31,10 @@
                         <th><%= cat.icon %></th>
                         <th><%= cat.sections.length %></th>
                         <th><%= cat.numOfCards %></th>
+                        <th><%= cat.countStartedAll %></th>
+                        <th><%= cat.countAverage %></th>
                         <th class="d-flex">
-                            <a href="/category/edit/<%= cat._id %>"><i class="far fa-edit"></i></a>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-category-edit<%= i %>"><i class="far fa-edit"></i></a>
                             <% if (cat.sections.length === 0) { %>
                                 <form action="/category/remove/<%= cat._id %>?_method=DELETE" method="POST">
                                     <button class="delete-btn"><strong>X</strong></button>
@@ -37,31 +45,9 @@
                 <% }) %>
             </table>
         </div>
-        <div class="col-md-3 border p-3">
-            <h5 class="mb-3">Vytvořit novou kategorii</h5>
-            <form action="/category/new" method="POST">
-                <div class="form-group mb-4">
-                    <label for="text">Název kategorie</label>
-                    <input class="form-control" id="text" name="text" rows="1" placeholder="Mezinárodní právo" required></input>
-                </div>
-                <div class="form-group mb-4">
-                    <label for="value">Označení kagegorie</label>
-                    <input class="form-control" id="value" name="value" rows="1" placeholder="mezinarodnipravo" required></input>
-                </div>
-                <div class="form-group">
-                    <label for="icon">Ikona</label>
-                    <input class="form-control" id="icon" name="icon" rows="1" placeholder="icon_mezinarodko.png" required></input>
-                </div>
-                <div class="form-group">
-                    <label for="orderNum">Pořadí</label>
-                    <input class="form-control" id="orderNum" name="orderNum" rows="1" placeholder="0" required></input>
-                </div>
-                <button class="btn btn-danger mt-5">Vytvořit kategorii</button>
-            </form>
-        </div>
     </div>
     <div class="row">
-        <div class="col-12 mb-3">
+        <div class="col-12 mt-4">
             <h5>Balíčky dle počtu spuštění</h5>
         </div>
     </div>
@@ -102,3 +88,67 @@
         </div>
     </div>
 </div>
+
+<!-- Add category modal -->
+<div class="modal fade" id="modal-category" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title mx-3">Vytvořit nový předmět</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body mx-3">
+            <form action="/category/new" method="POST">
+                <div class="form-group mb-4">
+                    <label for="text">Název předmětu</label>
+                    <input class="form-control form-borders" id="text" name="text" rows="1" placeholder="Mezinárodní právo" required></input>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="value">Zkratka předmětu</label>
+                    <input class="form-control form-borders" id="value" name="value" rows="1" placeholder="mezinarodnipravo" required></input>
+                </div>
+                <div class="form-group mb-4">
+                    <label for="icon">Ikona předmětu</label>
+                    <input class="form-control form-borders" id="icon" name="icon" rows="1" placeholder="icon_mezinarodko.png" required></input>
+                </div>
+                <div class="form-group">
+                    <label for="orderNum">Pořadí</label>
+                    <input class="form-control form-borders" id="orderNum" name="orderNum" rows="1" placeholder="0" required></input>
+                </div>
+                <button class="btn btn-danger mt-4">Vytvořit předmět</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</div>
+
+<% categories.forEach((category, i) => { %>
+    <!-- Edit category modal -->
+    <div class="modal fade" id="modal-category-edit<%= i %>" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-3">Upravit předmět</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-3">
+                <form action="/category/edit/<%= category._id %>?_method=PUT" method="POST">
+                    <div class="form-group mb-4">
+                        <label for="text">Název kategorie</label>
+                        <input class="form-control form-borders" id="text" name="text" rows="1" value="<%= category.text %>" required></input>
+                    </div>
+                    <div class="form-group mb-4">
+                        <label for="icon">Ikona</label>
+                        <input class="form-control form-borders" id="icon" name="icon" rows="1" value="<%= category.icon %>" required></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="orderNum">Pořadí</label>
+                        <input class="form-control form-borders" id="orderNum" name="orderNum" rows="1" value="<%= category.orderNum %>" required></input>
+                    </div>
+                    <button class="btn btn-danger mt-4">Uložit změny</button>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+<% }) %>

@@ -10,9 +10,9 @@ const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 const moment = require('moment');
 const mail = require('../mail/mail_inlege');
 
-//ADMIN - SHOW ALL USERS
+//ADMIN - SHOW ADMIN
 //show all registered users
-router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
+router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
     const demoLimitReachedStats = await Stats.findOne({eventName: 'demoLimitReached'});
     registeredAfterDemoLimitStats = await Stats.findOne({eventName: 'registeredAfterDemoLimit'});
@@ -41,6 +41,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         let demoLimitRegistrationRatio = Math.round(100 / demoLimitReachedStats.eventCount * registeredAfterDemoLimitStats.eventCount);
 
     let updatedUsers = [];
+    
     //count all users and premium users and count faculties
     let premiumUsersCount = 0;
     let activePremiumSubscriptions = 0;
@@ -53,12 +54,21 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     let totalCardsSeen = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     let sources = {pratele: 0, ucitele: 0, instagram: 0, facebook: 0, google: 0, odjinud: 0, neuvedeno: 0};
+
+
     users.forEach(user => {
         let newUser = user;
         //mark user as active in the last 48 hours
-        if(newUser.lastActive && moment(newUser.lastActive).isAfter(moment().subtract(48, 'hour'))){newUser.activeInLast48Hours = true};
         newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
+        if(user.lastActive){
+            newUser.updatedLastActive = moment(user.lastActive).locale('cs').format('LL');
+        } else {
+            newUser.updatedLastActive = "-"
+        }
+        
         updatedUsers.push(newUser);
+
+        //COUNTING
         //count Registered users
         registeredUsersCount = users.length;
         //count Premium users
@@ -96,7 +106,7 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
         totalCardsSeen = totalCardsSeen + user.cardsSeen;
     })
     updatedUsers.reverse();
-    res.status(200).render('admin/users', {
+    res.status(200).render('admin/admin', {
         users: updatedUsers, 
         premiumUsersCount, 
         registeredUsersCount, 
@@ -121,6 +131,35 @@ router.get('/admin/listAllUsers', isLoggedIn, isAdmin, catchAsync(async (req, re
     });
 }))
 
+//ADMIN - SHOW ALL USERS
+//show all registered users
+router.get('/admin/users', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
+    const users = await User.find({});    
+
+    let updatedUsers = [];
+
+    users.forEach(user => {
+        let newUser = user;
+        //mark user as active in the last 48 hours
+        if(newUser.lastActive && moment(newUser.lastActive).isAfter(moment().subtract(48, 'hour'))){newUser.activeInLast48Hours = true};
+        newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
+        if(user.lastActive){
+            newUser.updatedLastActive = moment(user.lastActive).locale('cs').format('LL');
+        } else {
+            newUser.updatedLastActive = "-"
+        }
+        
+        updatedUsers.push(newUser);
+    })
+    //reverse array of users
+    updatedUsers.reverse();
+
+    //render page
+    res.status(200).render('admin/users', {
+        users: updatedUsers
+    });
+}))
+
 
 //DETAIL OF A USER (show)
 //show details of user to admin
@@ -128,19 +167,40 @@ router.get('/admin/:userId/showDetail', isLoggedIn, isAdmin, catchAsync(async(re
     let user = await User.findById(req.params.userId).populate('sections', 'name');
     if(!user){
         req.flash('error','Uživatel nebyl nalezen.');
-        return res.redirect('/admin/listAllUsers');
+        return res.redirect('/admin/users');
     }
     let endDate = "";
-    let dateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
-    let lastActive = moment(user.lastActive).locale('cs').format('LLLL');
-    if(user.isPremium){
-        endDate = moment(user.endDate).locale('cs').format('LL')
+    let dateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LLLL');
+    if(user.lastActive){
+        lastActive = moment(user.lastActive).locale('cs').format('LLLL');
+    } else {
+        lastActive = "-"
     }
+    if(user.isPremium){
+        endDate = moment(user.endDate).locale('cs').format('LLLL')
+    }
+    
+    //format dates
+    let premiumDateOfActivation = moment(user.premiumDateOfActivation).locale('cs').format('LLLL');
+    let premiumDateOfUpdate = moment(user.premiumDateOfUpdate).locale('cs').format('LLLL');
+    let premiumDateOfCancelation = moment(user.premiumDateOfCancelation).locale('cs').format('LLLL');
+    premiumDateOfActivation === "Invalid date" ? premiumDateOfActivation = "-" : premiumDateOfActivation;
+    premiumDateOfUpdate === "Invalid date" ? premiumDateOfUpdate = "-" : premiumDateOfUpdate;
+    premiumDateOfCancelation === "Invalid date" ? premiumDateOfCancelation = "-" : premiumDateOfCancelation;
+
     //remove duplicate finished sections from user.sections
     let uniqueFinishedSectionsSet = new Set(user.sections);
     user.sections = [...uniqueFinishedSectionsSet];
     //render view
-    res.status(200).render('admin/showUserDetail', {user, endDate, dateOfRegistration, lastActive});
+    res.status(200).render('admin/showUserDetail', {
+        user, 
+        endDate, 
+        dateOfRegistration, 
+        lastActive,
+        premiumDateOfActivation,
+        premiumDateOfUpdate,
+        premiumDateOfCancelation
+    });
 }))
 
 //set user.cardsSeen to 0
@@ -198,7 +258,7 @@ router.get('/admin/:userId/upgradeToPremium/:period', isLoggedIn, isAdmin, catch
     let endDate = moment(user.endDate).locale('cs').format('LL');
     mail.sendAdminGrantedPremium(user.email, endDate);
     req.flash('success','Uživatel je nyní Premium');
-    res.status(201).redirect('/admin/listAllUsers');
+    res.status(201).redirect('/admin/users');
 }))
 
 //downgrade to FREE - ADMIN ROUTE
@@ -299,7 +359,7 @@ router.get('/admin/email/unsubscribe', catchAsync(async(req, res) => {
 //delete account - ADMIN ROUTE
 router.delete('/admin/:userId/deleteUser',isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     await User.findByIdAndDelete(req.params.userId);
-    res.status(201).redirect('/admin/listAllUsers');
+    res.status(201).redirect('/admin/users');
 }))
 
 
@@ -310,7 +370,7 @@ router.delete('/admin/:userId/deleteUser',isLoggedIn, isAdmin, catchAsync(async(
 //list all categorie ADMIN + helper
 router.get('/admin/categories', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     //get all categories
-    let categories = await Category.find({});
+    let categories = await Category.find({}).populate('sections');
     //get all sections
     let sections = await Section.find({});
     //sort all categories by OrderNum
@@ -319,6 +379,8 @@ router.get('/admin/categories', isLoggedIn, isAdmin, catchAsync(async(req, res) 
     countSDratio(sections);
     //sort all sections by countStarted
     sortByCountStarted(sections);
+    //count how many times where all sections in the category started
+    countStartedAbsoluteAndAverage(categories);
     //render view
     res.render('admin/categories', {categories, sections});
 }))
@@ -345,6 +407,20 @@ function sortByCountStarted(array) {
     return array;
   }
 
+  //count how many times were sections started in category and average for each section
+  function countStartedAbsoluteAndAverage(categories) {
+    let count = 0;
+    categories.forEach(cat => {
+        count = 0;
+        cat.sections.forEach(sec => {
+            count = count + sec.countStarted;
+        })
+        cat.countStartedAll = count;
+        cat.countAverage = Math.round(count / cat.sections.length);
+    })
+    return categories;
+  }
+
   //reset counters on section
   router.get('/admin/:sectionId/resetCounters', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     //reset counters on section
@@ -365,12 +441,12 @@ router.post("/admin/:userId/makeEditor", isLoggedIn, isAdmin, catchAsync(async(r
     let user = await User.findById(userId);
     if(!user){
         req.flash('error','Uživatel neexistuje');
-        return res.redirect('/admin/listAllUsers');
+        return res.redirect('/admin/users');
     }
     user.isEditor = true;
     await user.save();
     req.flash('success','Editorská oprávnění byla udělena.')
-    res.redirect('/admin/listAllUsers');
+    res.redirect('/admin/users');
 }))
 
 //remove editor permisions from a user
@@ -379,12 +455,12 @@ router.post("/admin/:userId/removeEditor", isLoggedIn, isAdmin, catchAsync(async
     let user = await User.findById(userId);
     if(!user){
         req.flash('error','Uživatel neexistuje');
-        return res.redirect('/admin/listAllUsers');
+        return res.redirect('/admin/users');
     }
     user.isEditor = false;
     await user.save();
     req.flash('success','Editorská oprávnění byle odebrána.')
-    res.redirect('/admin/listAllUsers');
+    res.redirect('/admin/users');
 }))
 
 
@@ -421,7 +497,7 @@ router.post('/invoice/new/:userId', catchAsync(async(req, res) => {
     let foundUser = await User.findById(userId);
     if(!foundUser){
         req.flash('error','Uživatel neexistuje');
-        return res.redirect('/admin/listAllUsers');
+        return res.redirect('/admin/users');
     }
     let {invoiceNum, invoiceAmount, invoiceDate} = data;
     let newInvoice = {
@@ -440,7 +516,7 @@ router.get('/invoice/remove/:userId/:invoiceNum', catchAsync(async(req, res) => 
     let foundUser = await User.findById(userId);
     if(!foundUser){
         req.flash('error','Uživatel neexistuje');
-        return res.redirect('/admin/listAllUsers');
+        return res.redirect('/admin/users');
     }
     // Function to filter out an object based on invoiceNum
     function filterArrayOfInvoices(arr, invoiceNumber) {

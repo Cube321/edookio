@@ -53,6 +53,7 @@ router.get('/legal/cookies', catchAsync(async(req, res) => {
 //cookies consent form POST
 router.post('/legal/cookies', catchAsync(async(req, res) => {
     let {analyticke, marketingove} = req.body;
+    req.session.cookiesTechnicke = true;
     if(analyticke){req.session.cookiesAnalyticke = true} else {req.session.cookiesAnalyticke = false}
     if(marketingove){req.session.cookiesMarketingove = true} else {req.session.cookiesMarketingove = false}
     req.session.cookiesAgreed = true;
@@ -94,6 +95,19 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             admin = true;
             faculty = "neuvedeno";
         }
+        //create cookies object
+        let cookies = {
+            technical: true,
+            analytical: true,
+            marketing: true
+        }
+        if(req.session.cookiesTechnicke){
+            cookies = {
+                technical: req.session.cookiesTechnicke,
+                analytical: req.session.cookiesAnalyticke,
+                marketing: req.session.cookiesMarketingove
+            }
+        }
         //register user
         const passChangeId = uuid.v1();
         const dateOfRegistration = Date.now();
@@ -111,7 +125,8 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
             endDate: null,
             isGdprApproved: true,
             faculty,
-            source
+            source,
+            cookies
         });
         const newUser = await User.register(user, password);
         await req.login(newUser, err => {

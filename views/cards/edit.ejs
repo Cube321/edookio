@@ -1,31 +1,25 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
     <div class="col-lg-6 offset-lg-3">
-        <h1>Upravit kartu</h1> 
-
+        <h4 class="text-center">Upravit kartičku</h4> 
+        <p class="text-center">v balíčku <%= sectionName %> <span class="text-muted">(<%= card.category %>)</span></p>
         <form class="row g-3 needs-validation mt-3" novalidate action="/cards/edit/<%=card._id%>?_method=PUT" method="POST">
             <div class="mt-2">
-            <label for="pageA" class="form-label">Strana A</label>
-            <textarea name="pageA" id="pageA" class="form-control" cols="30" rows="4" required><%=card.pageA%></textarea>
+            <label for="pageA" class="form-label text-bold">Přední strana</label>
+            <textarea name="pageA" id="pageA" class="form-control form-borders" cols="30" rows="4" required><%=card.pageA%></textarea>
             <div class="valid-feedback">
                 V pořádku!
             </div>
             </div>
-            <div class="mt-2">
-                <label for="pageB" class="form-label">Strana B</label>
-                <textarea name="pageB" id="pageB" class="form-control" cols="30" rows="8" required><%=card.pageB%></textarea>
+            <div class="mt-4">
+                <label for="pageB" class="form-label text-bold">Zadní strana</label>
+                <textarea name="pageB" id="pageB" class="form-control form-borders" cols="30" rows="8" required><%=card.pageB%></textarea>
                 <div class="valid-feedback">
                 V pořádku!
                 </div>
             </div>
-            <div class="mt-2">
-                <label for="author" class="form-label">Autor</label>
-                <input type="text" class="form-control" id="author" name="author" value="<%=card.author%>" required>
-                <div class="valid-feedback">
-                V pořádku!
-                </div>
-            </div>
-            <div class="col-12">
-            <button class="btn btn-danger btn-sm" type="submit">Vložit</button>
+            <div class="col-12 mb-4">
+                <button class="btn btn-danger btn-sm" type="submit">Uložit změny</button>
+                <a href="/category/<%= card.category %>/section/<%= card.section %>/listAllCards" class="btn btn-sm btn-outline-danger">Zrušit</a>
             </div>
         </form>
     </div>

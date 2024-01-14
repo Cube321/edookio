@@ -94,6 +94,7 @@ mail.adminInfoNewUser = function(newUser, callback){
           <p>Příjmení: ${newUser.lastname}</p>
           <p>Email: ${newUser.email}</p>
           <p>Fakulta: ${newUser.faculty}</p>
+          <p>Zdroj: ${newUser.source}</p>
           <p>Datum registrace: ${newUser.dateOfRegistration}</p>
           <p>Premium: ${newUser.isPremium}</p>
           <p>Stripe ID: ${newUser.billingId}</p>

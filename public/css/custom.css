@@ -35,7 +35,7 @@ body {
 /*CATEGORY*/
 
 .section-list .add-icon {
-    color: green;
+    color: #7ac705;
 }
 
 .section-list .remove-icon {
@@ -160,6 +160,11 @@ form .form-control, .form-select {
     border: none;
     border-bottom: 1px solid #EEEEEE;
     border-radius: 0px;
+}
+
+form .form-borders {
+    border: 1px solid #EEEEEE;
+    border-radius: 5px;
 }
 
 /* PROFILE - PREMIUM OFFERS*/
@@ -394,6 +399,13 @@ form .form-control, .form-select {
     color: white;
     padding: 5px 0;
     box-sizing: border-box;
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .cards-amount-div {
+        flex-direction: column;
+        justify-content: center!important;
+    }
   }
 
 @media only screen and (max-width: 992px) {

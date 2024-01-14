@@ -25,7 +25,8 @@ router.get('/category/:category/section/:sectionId/newCard', isLoggedIn, isEdito
 
 //add new card - save (POST)
 router.post('/category/:category/section/:sectionId/newCard', validateCard, isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
-    const {pageA, pageB, author} = req.body;
+    const {pageA, pageB} = req.body;
+    const author = req.user.email;
     const {category, sectionId } = req.params;
     const newCard = new Card({
         category,
@@ -59,13 +60,18 @@ router.get('/cards/edit/:id', isLoggedIn, isEditor, catchAsync(async (req, res, 
         req.flash('error','Kartička nebyla nalezena.');
         return res.redirect('/');
     }
-    res.status(200).render('cards/edit', {card});
+    const foundSection = await Section.findById(card.section);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    res.status(200).render('cards/edit', {card, sectionName: foundSection.name});
 }))
 
 //edit card - save (PUT)
 router.put('/cards/edit/:id', validateCard, isLoggedIn, isEditor, catchAsync(async (req, res, next) => {
     const {id} = req.params;
-    const {pageA, pageB, author} = req.body;
+    const {pageA, pageB} = req.body;
+    let author = req.user.email;
     const foundCard = await Card.findByIdAndUpdate(id, {pageA, pageB, author});
     if(!foundCard){
         throw Error("Kartička s tímto ID neexistuje");
@@ -169,17 +175,12 @@ router.post('/cards/save/:userEmail/:cardId', isLoggedIn, catchAsync(async(req, 
     if(!foundUser){
         return res.sendStatus(404);
     }
-    let isFirstSave = false;
     let isCardAlreadySaved = isCardInArray(foundUser.savedCards, req.params.cardId);
     if(!isCardAlreadySaved){
-        if(foundUser.isFirstSave === true){
-            isFirstSave = true;
-            foundUser.isFirstSave = false;
-        }
         foundUser.savedCards.push(req.params.cardId);
         await foundUser.save();
     }
-    res.status(200).send({isFirstSave});
+    res.sendStatus(200);
 }))
 
 //remove card from favourites
@@ -194,7 +195,7 @@ router.post('/cards/unsave/:userEmail/:cardId', isLoggedIn, catchAsync(async(req
     }
     let updatedSavedCards = foundUser.savedCards.filter((item) => item.toString() !== req.params.cardId);
     foundUser.savedCards = updatedSavedCards;
-    await foundUser.save();
+    await foundUser.save(); 
     res.sendStatus(200);
 }))
 

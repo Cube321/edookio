@@ -1,0 +1,311 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-1">
+            <h5>Statistiky</h5>
+        </div>
+    </div>
+    <div class="row text-smaller">
+        <div class="col-md-6 mb-3 pt-2">
+            <div class="card stats p-3">
+            <h6 class="mb-3">Základní přehled</h6>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Počet registrovaných uživatelů</p>
+                </div>
+                <div class="col-md-2">
+                    <%= registeredUsersCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Počet Premium uživatelů</p>
+                </div>
+                <div class="col-md-2">
+                    <%= premiumUsersCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Počet neukončených platících Premium uživatelů</p>
+                </div>
+                <div class="col-md-2">
+                    <%= activePremiumSubscriptions %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Uživatelé aktivní v posledním týdnu</p>
+                </div>
+                <div class="col-md-2">
+                    <%= usersActiveInLastWeek %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Aktivováno Premium v posledním týdnu</p>
+                </div>
+                <div class="col-md-2">
+                    <%= premiumActivationsInLastWeek %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Prodlouženo Premium v posledním týdnu</p>
+                </div>
+                <div class="col-md-2">
+                    <%= premiumUpdatesInLastWeek %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Deaktivováno Premium v posledním týdnu</p>
+                </div>
+                <div class="col-md-2">
+                    <%= premiumDeactivationsInLastWeek %>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Počet nastudovaných kartiček</p>
+                </div>
+                <div class="col-md-2">
+                    <%= totalCardsSeen %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Počet uživatelů neodebírajících e-maily</p>
+                </div>
+                <div class="col-md-2">
+                    <%= unsubscribedUsersCount %>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Demo limit zobrazen</p>
+                </div>
+                <div class="col-md-2">
+                    <%= demoLimitReachedStats.eventCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Zaregistrovaných po demo</p>
+                </div>
+                <div class="col-md-2">
+                    <%= registeredAfterDemoLimitStats.eventCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p>Poměr dokončené demo/registrace</p>
+                </div>
+                <div class="col-md-2">
+                    <%= demoLimitRegistrationRatio %> %
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3 pt-2">
+            <div class="card stats p-3">
+                <h6 class="mb-3">Fakulty</h6>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF UP</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfUp %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF UK</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfUk %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF MUNI</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfMuni %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>PrF ZČU</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfZcu %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Jiná</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfJina %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Nestuduje</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfNestuduji %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Hlásím se ke studiu</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfUchazec %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Neuvedeno</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= faculties.prfNeuvedeno %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3 pt-3">
+            <div class="card stats p-3">
+                <h6 class="mb-3">Kartičky a balíčky</h6>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Kartiček zdarma</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= cardsFreeCount %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Kartiček v předplatném</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= cardsPremiumCount %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Kartiček zdarma</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= freeCardRatio %> %
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Balíčky zdarma</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sectionsFreeCount %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Balíčky v předplatném</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sectionsPremiumCount %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Balíčků zdarma</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= freeSectionRatio %> %
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3 pt-3">
+            <div class="card stats p-3 mt-3">
+                <h6 class="mb-3">Zdroje registrací</h6>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Přátelé</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.pratele %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Učitelé</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.ucitele %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Instagram</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.instagram %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Facebook</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.facebook %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Google</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.google %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Odjinud</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.odjinud %>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <p>Neuvedeno</p>
+                    </div>
+                    <div class="col-md-2">
+                        <%= sources.neuvedeno %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-12 mb-1 mt-4">
+            <h5>Nastavení webu</h5>
+        </div>
+    </div>
+    <div class="row text-smaller">
+        <div class="col-md-6 mb-3 pt-2">
+            <div class="card stats p-3">
+                <h6>Základní nastavení</h6>
+                <p class="text-center text-muted">Zatím neobsahuje žádné položky (vytvořen model Settings v DB)</p>
+            </div>
+        </div>
+    </div>
+</div>
