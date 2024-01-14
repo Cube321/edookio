@@ -200,6 +200,13 @@ body {
   align-items: center;
 }
 
+#rotate-div {
+  min-width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .spinner-border-small {
     height: 20px;
     width: 20px;

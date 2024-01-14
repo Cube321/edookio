@@ -2,7 +2,7 @@ module.exports.general = {projectName: "InLege"}
 
 module.exports.landingPage = {
     mainTitleStart: "Studuj práva efektivně s",
-    headerStatement: "Pusť se do studia práv s více než třemi tisíci kartiček s otázkami a odpověďmi, nabízejících skvělou interaktivní přípravu na zkoušky.",
+    headerStatement: "Pusť se do studia práv s více než třemi tisíci kartiček s otázkami a odpověďmi. Skvělá interaktivní příprava na zkoušky.",
     visionStatementStart: "Mladí právníci se neustále potýkají se zkouškami, ať už na právnické fakultě nebo v průběhu dalšího profesního vzdělávání po jejím absolvování. Jsme si vědomi této náročné cesty, proto jsme vytvořili nástroj, který bychom sami v době našich studií ocenili. S radostí vám představujeme",
     visionStatementEnd: ", inovativní webovou aplikaci nejen pro studenty práv.",
     reasonOneHeader: "Unikátní přístup",

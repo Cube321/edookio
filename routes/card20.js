@@ -10,6 +10,24 @@ const Stats = require('../models/stats');
 const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 
 //CARD 2.0 RENDER ROUTES
+//repeat section (incl. filter section out of the array of finished sections)
+//IMPORTANT: This route has be in the code before "render empty show card page"
+router.get('/category/:category/section/:sectionId/card20/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
+    console.log("running");
+    const {user} = req;
+    const foundSection = await Section.findById(req.params.sectionId);
+    if(!foundSection){
+        throw Error("Sekce s tímto ID neexistuje");
+    }
+    const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
+    user.sections = filteredSections;
+    console.log(user.sections);
+    foundSection.countRepeated++;
+    await foundSection.save();
+    await user.save();
+    res.status(200).redirect(`/category/${foundSection.category}/section/${foundSection._id}/card20/1`);
+}))
+
 //render empty show card page
 router.get('/category/:category/section/:sectionId/card20/:cardNum', catchAsync(async(req, res) => {
     let {sectionId, cardNum} = req.params;
@@ -108,22 +126,6 @@ router.get('/category/section/:sectionId/finished', catchAsync(async(req, res) =
             });
         }
     
-}))
-
-
-//repeat section (incl. filter section out of the array of finished sections)
-router.get('/category/:category/section/:sectionId/card20/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
-    const {user} = req;
-    const foundSection = await Section.findById(req.params.sectionId);
-    if(!foundSection){
-        throw Error("Sekce s tímto ID neexistuje");
-    }
-    const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
-    user.sections = filteredSections;
-    foundSection.countRepeated++;
-    await foundSection.save();
-    await user.save();
-    res.status(200).redirect(`/category/${foundSection.category}/section/${foundSection._id}/card20/1`);
 }))
 
 module.exports = router;
