@@ -130,7 +130,7 @@ router.post('/category/:category/newSection', validateSection, isLoggedIn, isEdi
 }))
 
 //remove Section from Category and delete its Cards
-router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
+router.delete('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res, next) => {
     const { category, sectionId} = req.params;
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
@@ -168,11 +168,13 @@ router.get('/category/:category/removeSection/:sectionId', isLoggedIn, isEditor,
     //remove connection with previous section
     if(deletedSection.previousSection && deletedSection.previousSection !== "lastSection"){
         let previousSection = await Section.findById(deletedSection.previousSection)
-        previousSection.nextSection = deletedSection.nextSection;
-        await previousSection.save()
+        if(previousSection){
+            previousSection.nextSection = deletedSection.nextSection;
+            await previousSection.save()
+        }
     }
     //flash a redirect
-    req.flash('success','Sekce byla odstraněna.');
+    req.flash('success','Balíček byl odstraněn.');
     res.status(200).redirect(`/category/${category}`);
 }))
 
@@ -200,7 +202,7 @@ router.get('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, c
 router.put('/category/:category/editSection/:sectionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
-        throw Error("Sekce s tímto ID neexistuje");
+        throw Error("Balíček s tímto ID neexistuje");
     }
     let previousSection = "";
     if(req.body.previousSection !== "lastSection"){
@@ -283,11 +285,11 @@ router.get('/category/:category/sectionStatus/:sectionId/:changeDirection', isLo
 router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
-        throw Error("Sekce s tímto ID neexistuje");
+        throw Error("Balíček s tímto ID neexistuje");
     }
     foundSection.isPublic = true;
     await foundSection.save();
-    req.flash('success','Sekce byla zveřejněna');
+    req.flash('success','Balíček byl zveřejněn');
     res.status(200).redirect(`/category/${req.params.category}`);
 }))
 
@@ -295,7 +297,7 @@ router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isEdito
 router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const section = await Section.findById(req.params.sectionId).populate('cards');
     if(!section){
-        throw Error("Sekce s tímto ID neexistuje");
+        throw Error("Balíček s tímto ID neexistuje");
     }
     res.status(200).render('sections/listAllCards', {section});
 }))

@@ -13,7 +13,6 @@ const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
 //repeat section (incl. filter section out of the array of finished sections)
 //IMPORTANT: This route has be in the code before "render empty show card page"
 router.get('/category/:category/section/:sectionId/card20/repeatSection', isLoggedIn, catchAsync(async(req, res) => {
-    console.log("running");
     const {user} = req;
     const foundSection = await Section.findById(req.params.sectionId);
     if(!foundSection){
@@ -21,7 +20,6 @@ router.get('/category/:category/section/:sectionId/card20/repeatSection', isLogg
     }
     const filteredSections = user.sections.filter(section => section.toString() !== foundSection._id.toString());
     user.sections = filteredSections;
-    console.log(user.sections);
     foundSection.countRepeated++;
     await foundSection.save();
     await user.save();
@@ -83,7 +81,6 @@ router.get('/category/:category/section/:sectionId/card20/:cardNum', catchAsync(
 
 //render finished page
 router.get('/category/section/:sectionId/finished', catchAsync(async(req, res) => {
-    console.log('running render finished page')
     let foundSection = await Section.findById(req.params.sectionId);
     let nextSection = "notDefined";
         //check if string is valid ObjectID
