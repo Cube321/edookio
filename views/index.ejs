@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Studuj práva efektivně s InLege</title>
+    <title><%= texts.header.title %></title>
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
@@ -13,16 +13,16 @@
     <link rel="stylesheet" href="/css/custom.css">
     <link rel="stylesheet" href="/css/landing.css">
     <!-- META TAGS -->
-    <meta name="description"               content="Tisíce interaktivních právnických kartiček zdarma. Připrav se na zkoušky zábavnou formou!">
-    <meta name="author"                    content="Chilero s. r. o.">
-    <meta name="keywords"                  content="pravnicke, karticky, inlege, studium, prava, podklady, priprava">
-    <meta name="twitter:title"             content="Studuj práva efektivně s InLege">
-    <meta name="twitter:description"       content="Tisíce interaktivních právnických kartiček zdarma. Připrav se na zkoušky zábavnou formou!">
-    <meta name="twitter:image"             content="https://www.inlege.cz/img/fb_sharing.png">
-    <meta property="og:url"                content="https://www.inlege.cz/" />
-    <meta property="og:title"              content="Studuj práva efektivně s InLege" />
-    <meta property="og:description"        content="Tisíce interaktivních právnických kartiček zdarma. Připrav se na zkoušky zábavnou formou!" />
-    <meta property="og:image"              content="https://www.inlege.cz/img/fb_sharing.png" />
+    <meta name="description"               content="<%= texts.header.description %>">
+    <meta name="author"                    content="<%= texts.header.author %>">
+    <meta name="keywords"                  content="<%= texts.header.keywords %>">
+    <meta name="twitter:title"             content="<%= texts.header.title %>">
+    <meta name="twitter:description"       content="<%= texts.header.description %>">
+    <meta name="twitter:image"             content="<%= texts.header.sharingImgUrl %>">
+    <meta property="og:url"                content="<%= texts.header.homepageUrl %>" />
+    <meta property="og:title"              content="<%= texts.header.title %>" />
+    <meta property="og:description"        content="<%= texts.header.description %>>" />
+    <meta property="og:image"              content="<%= texts.header.sharingImgUrl %>" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Roboto&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
                     <p class="lead"><%= texts.landingPage.headerStatement %></p>        
                     <div class="mt-5 text-center-on-mobile">
                         <% if(!currentUser){ %> 
-                            <a href="/auth/user/new" class="btn btn-lg btn-danger call-to-action">Studuj zdarma</a>
+                            <a href="/auth/user/new" class="btn btn-lg btn-danger call-to-action"><%= texts.landingPage.studyFree %></a>
                         <% } %> 
                     </div>
                 </div>
@@ -67,8 +67,8 @@
                             <img src="/img/icon_cards.png" class="img-fit-100" alt="cards">
                         </div>
                         <div>
-                            <p class="info-main"><%= numOfCards %> interaktivních kartiček</p>
-                            <p class="info-secondary text-muted">a přibývají každý týden</p>
+                            <p class="info-main"><%= numOfCards %> <%= texts.landingPage.pointOneMain %></p>
+                            <p class="info-secondary text-muted"><%= texts.landingPage.pointOneSecondary %></p>
                         </div>
                     </div>
                     <div class="landing-info d-flex flex-row justify-content-evenly align-items-center">
@@ -76,8 +76,8 @@
                             <img src="/img/icon_mobileandpc.png" class="img-fit-100" alt="cards">
                         </div>
                         <div>
-                            <p class="info-main">Opakuj kdykoliv a kdekoliv</p>
-                            <p class="info-secondary text-muted">na mobilu i u počítače</p>
+                            <p class="info-main"><%= texts.landingPage.pointTwoMain %></p>
+                            <p class="info-secondary text-muted"><%= texts.landingPage.pointTwoSecondary %></p>
                         </div>
                     </div>
                     <div class="landing-info d-flex flex-row justify-content-evenly align-items-center">
@@ -85,8 +85,8 @@
                             <img src="/img/icon_knowledge.png" class="img-fit-100" alt="cards">
                         </div>
                         <div>
-                            <p class="info-main"><%= numOfCategories %> oblastí, <%= numOfSections  %> balíčků</p>
-                            <p class="info-secondary text-muted">komplexní pokrytí studijního materiálu</p>
+                            <p class="info-main"><%= numOfCategories %> <%= texts.landingPage.pointThreeMain1 %> <%= numOfSections  %> <%= texts.landingPage.pointThreeMain2 %></p>
+                            <p class="info-secondary text-muted"><%= texts.landingPage.pointThreeSecondary %></p>
                         </div>
                     </div>
             </div>
@@ -101,8 +101,8 @@
                                         <img src="/img/icon_cards.png" class="img-fit-small" alt="cards">
                                     </div>
                                     <div class="col-9">
-                                        <p class="info-main"><%= numOfCards %> interaktivních kartiček</p>
-                                        <p class="info-secondary text-muted">a přibývají každý týden</p>
+                                        <p class="info-main"><%= numOfCards %> <%= texts.landingPage.pointOneMain %></p>
+                                        <p class="info-secondary text-muted"><%= texts.landingPage.pointOneSecondary %></p>
                                     </div>
                                 </div>
                             </div>
@@ -114,8 +114,8 @@
                                         <img src="/img/icon_mobileandpc.png" class="img-fit-small" alt="cards">
                                     </div>
                                     <div class="col-9">
-                                        <p class="info-main">Opakuj kdykoliv a kdekoliv</p>
-                                        <p class="info-secondary text-muted">na mobilu i u počítače</p>
+                                        <p class="info-main"><%= texts.landingPage.pointTwoMain %></p>
+                                        <p class="info-secondary text-muted"><%= texts.landingPage.pointTwoSecondary %></p>
                                     </div>
                                 </div>
                             </div>
@@ -127,8 +127,8 @@
                                         <img src="/img/icon_knowledge.png" class="img-fit-small" alt="cards">
                                     </div>
                                     <div class="col-9">
-                                        <p class="info-main"><%= numOfCategories %> oblastí, <%= numOfSections  %> balíčků</p>
-                                        <p class="info-secondary text-muted">komplexní pokrytí studijního materiálu</p>
+                                        <p class="info-main"><%= numOfCategories %> <%= texts.landingPage.pointThreeMain1 %> <%= numOfSections  %> <%= texts.landingPage.pointThreeMain2 %></p>
+                                        <p class="info-secondary text-muted"><%= texts.landingPage.pointThreeSecondary %></p>
                                     </div>
                                 </div>
                             </div>
@@ -151,8 +151,8 @@
                                         <div class="card-body cat-text d-flex flex-column justify-content-between">
                                             <h5 class="card-title"><%= cat.text %></h5>
                                             <div>
-                                                <p class="text-muted"><%= cat.numOfCards %>  kartiček</p>
-                                                <a href="/category/<%= cat.name %>" class="btn btn-sm btn-danger">Studovat</a>
+                                                <p class="text-muted"><%= cat.numOfCards %>  <%= texts.landingPage.cards %></p>
+                                                <a href="/category/<%= cat.name %>" class="btn btn-sm btn-danger"><%= texts.landingPage.study %></a>
                                             </div>
                                         </div>
                                     </div>
@@ -170,7 +170,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 offset-md-2 text-center my-5">
-                    <h1 class="mb-4">Naše vize</h1>
+                    <h1 class="mb-4"><%= texts.landingPage.ourVision %></h1>
                     <p class="fs-5"><%= texts.landingPage.visionStatementStart %> <strong class="color-1"><%= texts.general.projectName %></strong><%= texts.landingPage.visionStatementEnd %></p>
                 </div>
             </div>
@@ -180,7 +180,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-10 offset-md-1 my-5">
-                    <h1 class="mb-5 text-center">Proč používat <%= texts.general.projectName %>?</h1>
+                    <h1 class="mb-5 text-center"><%= texts.landingPage.whyUse %> <%= texts.general.projectName %>?</h1>
                     <div class="row">
                         <div class="col-lg-6 mb-3">
                             <div class="reason">

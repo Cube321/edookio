@@ -10,7 +10,7 @@
                 </div>
                 <h4 class="mt-4 mb-2"><%= title %> </h4>
                 <div>
-                    <p class="mb-2 mt-3 px-3 py-2 category-info"><b><%= category.numOfCards  %></b> kartiček ke studiu</p>
+                    <p class="mb-2 mt-3 px-3 py-2 category-info"><b><%= category.numOfCards  %></b> <%= texts.categoryPage.cardsToStudy %></p>
                 </div>
             </div>
         </div>
@@ -24,12 +24,12 @@
             <div class="card-body">
                     <div class="row">
                         <div class="col-9">                    
-                            <h5 class="m-0 mb-3 mt-1">Balíčky</h5>
+                            <h5 class="m-0 mb-3 mt-1"><%= texts.categoryPage.packages %></h5>
                         </div>
                     </div>
                     <hr class="mt-0">
                 <% if (category.sections.length < 1) { %>
-                    <p>Kategorie neobsahuje žádné balíčky.</p>
+                    <p><%= texts.categoryPage.noPackages %></p>
                 <% } else { category.sections.forEach(section => { %>
 
                     <!-- ZVEREJNENE BALICKY -->
@@ -53,18 +53,18 @@
                         <div class="col-3 d-flex flex-column justify-content-center align-items-center">
                             <% if (!currentUser){ %> 
                                 <% if(!section.isPremium){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>    
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit"><%= texts.categoryPage.start %></a>    
                                 <% } else { %>
                                     <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
                                 <% } %>  
                             <% } else if(!currentUser.isPremium && section.isPremium){ %> 
                                 <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
                             <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right"><%= texts.categoryPage.repeat %></a>
                             <% } else if (section.isUnfinished) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right">Pokračovat</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right"><%= texts.categoryPage.continue %></a>
                             <% } else { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
+                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right"><%= texts.categoryPage.start %></a>
                             <% } %>
                             <div class="mt-2">
                                 <% if (currentUser && currentUser.isEditor) { %>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="col-2 d-flex justify-content-evenly align-items-center cards-amount-div">
                             <p class="m-0"><%= section.cards.length %> </p>
-                            <p class="text-muted text-small mb-0">kartiček</p>
+                            <p class="text-muted text-small mb-0"><%= texts.categoryPage.cards %></p>
                         </div>
                     </div>
                     <hr class="">
@@ -128,13 +128,13 @@
                             <div class="col-3 d-flex flex-column justify-content-center align-items-center">
                                 <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-success mb-2">Zveřejnit</a>
                                 <% if (!currentUser){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit">Spustit</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit"><%= texts.categoryPage.start %></a>
                                 <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right">Opakovat</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right"><%= texts.categoryPage.repeat %></a>
                                 <% } else if (section.isUnfinished) { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right">Pokračovat</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right"><%= texts.categoryPage.continue %></a>
                                 <% } else { %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right">Spustit</a>
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right"><%= texts.categoryPage.start %></a>
                                 <% } %>
                                 <div class="mt-2">
                                     <% if (currentUser && currentUser.isEditor) { %>
@@ -155,7 +155,7 @@
                             </div>
                             <div class="col-2 d-flex justify-content-evenly align-items-center">
                                 <p class="m-0"><%= section.cards.length %> </p>
-                                <p class="text-muted text-small mb-0">kartiček</p>
+                                <p class="text-muted text-small mb-0"><%= texts.categoryPage.cards %></p>
                             </div>
                         </div>
                         <hr class="">
