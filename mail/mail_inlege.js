@@ -639,7 +639,7 @@ mail.sendFeedback = function(email, name, text, callback){
       to: 'jakub@inlege.cz',
       subject: "Zpětná vazba (formulář)",
       html: `
-          <h3 style="font-family:Helvetica Neue">Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</h3>
+          <p style="font-family:Helvetica Neue">Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</p>
           <p style="font-family:Helvetica Neue">${text}</p>
       `
     };
@@ -649,6 +649,27 @@ mail.sendFeedback = function(email, name, text, callback){
         console.log(err);}      
     });
 };
+
+//send message from contact form
+mail.sendMessageFromContactForm = function(email, name, text, callback){
+    const msg = {
+        from: 'info@inlege.cz', 
+        to: 'jakub@inlege.cz',
+        subject: "Nová zpráva z kontaktního formuláře",
+        html: `
+            <h3 style="font-family:Helvetica Neue">Nová zpráva z kontaktního formuláře:</h3>
+            <p style="font-family:Helvetica Neue">E-mail: ${email}</p>
+            <p style="font-family:Helvetica Neue">Jméno: ${name}</p>
+            <p style="font-family:Helvetica Neue">Text: <br />${text}</p>
+        `
+      };
+    //send the mail
+    sgMail.send(msg, function(err) {
+        if(err){
+          console.log(err);
+        }      
+      });
+  };
 
 //forgotten password - change link
 mail.forgottenPassword = function(data, callback){
@@ -818,5 +839,20 @@ mail.adminInfoUserDeleted = function(userEmail, callback){
         console.log(err);}      
     });
 };
+
+//account deleted - admin info mail
+mail.sendCronReport = function(action, data){
+    const msg = {
+        from: "info@inlege.cz", 
+        to: process.env.ADMIN_MAIL,
+        subject: `Cron funkce právě proběhla: ${action}`,
+        html: `Dotčení uživatelé: ${data}`
+      };
+    //send the mail
+    sgMail.send(msg, function(err) {
+        if(err){
+          console.log(err);}      
+      });
+  };
 
 module.exports = mail;

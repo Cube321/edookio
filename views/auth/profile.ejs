@@ -83,22 +83,22 @@
                         </div>
                         <div class="col-8 d-flex align-items-center">
                             <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">Premium zrušeno (aktivní do konce období)</p>
+                                <p class="mb-0">zrušeno (aktivní do konce období)</p>
                             <% }%>  
                             <% if(user.plan === "monthly" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">Premium měsíční (další platba <%= endDate %>)</p>
+                                <p class="mb-0">měsíční (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.plan === "halfyear" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">Premium půlroční (další platba <%= endDate %>)</p>
+                                <p class="mb-0">půlroční (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">Premium roční (další platba <%= endDate %>)</p>
+                                <p class="mb-0">roční (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.plan === "daily" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">Premium denní (další platba <%= endDate %>)</p>
+                                <p class="mb-0">denní (další platba <%= endDate %>)</p>
                             <% }%> 
                             <% if(user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">Premium zdarma do konce období</p>
+                                <p class="mb-0">zdarma do konce období</p>
                             <% }%> 
                         </div> 
                         <hr />

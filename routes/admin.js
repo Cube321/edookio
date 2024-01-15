@@ -487,6 +487,16 @@ router.post('/legal/feedback', catchAsync(async(req, res) => {
 }))
 
 
+//CONTACT FORM
+//send message
+router.post('/legal/contactForm', catchAsync(async(req, res) => {
+    const {email, name, text} = req.body;
+    mail.sendMessageFromContactForm(email, name, text);
+    req.flash('success','Zpráva byla odeslána.')
+    res.status(201).redirect(`/legal/contact`);
+}))
+
+
 
 
 //INVOICES

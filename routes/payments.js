@@ -88,9 +88,6 @@ router.post('/webhook', async (req, res) => {
         if(data.status === "past_due"){
           // code here
           console.log('PAST_DUE is running');
-          user.premiumDateOfCancelation = moment();
-          user.plan = "none";
-          user.xmasDiscount = false;
           mail.adminInfoSubscriptionPaymentFailed(user, data.status, data);
           await user.save();
           //break so the rest of the switch code below will not run

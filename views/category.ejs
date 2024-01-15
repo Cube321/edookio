@@ -192,19 +192,19 @@
                 <h4>Přidat nový balíček</h4>
                 <form action="/category/<%= category.name  %>/newSection" method="POST">
                     <div class="form-group row">
-                        <label for="name" class="col-lg-2 col-form-label">Nadpis</label>
+                        <label for="name" class="col-lg-3 col-form-label">Nadpis</label>
                         <div class="col-lg-6">
                             <input type="text" class="form-control form-borders" id="name" name="name" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="desc" class="col-lg-2 col-form-label">Podnadpis</label>
+                        <label for="desc" class="col-lg-3 col-form-label">Podnadpis</label>
                         <div class="col-lg-6">
                             <input type="text" class="form-control form-borders" id="desc" name="desc" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="previousSection" class="col-lg-2 col-form-label">Navazuje na</label>
+                        <label for="previousSection" class="col-lg-3 col-form-label">Navazuje na</label>
                         <div class="col-lg-6">
                             <select class="form-select form-borders" name="previousSection" id="previousSection">
                                 <option value="lastSection">nenavazuje na jiný balíček</option>
@@ -215,7 +215,7 @@
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="isPremium" class="col-lg-2 col-form-label">Dostupnost</label>
+                        <label for="isPremium" class="col-lg-3 col-form-label">Dostupnost</label>
                         <div class="col-lg-4">
                             <select class="form-select form-borders" name="isPremium" id="isPremium">
                                 <option value="zdarma">Zdarma</option>

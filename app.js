@@ -22,12 +22,17 @@ const MongoStore = require('connect-mongo');
 const bodyParser = require('body-parser');
 const Category = require('./models/category');
 const texts = require(`./utils/texts.${process.env.PROJECT}`);
-
+const cron = require('node-cron');
+const cronHelpers = require(`./utils/cron`);
 
 app.use("/webhook", bodyParser.raw({ type: "application/json" }))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
+
+//CRON JOBS
+//check if premium ended for each user every day at 6AM
+cron.schedule(cronHelpers.cronExpressionDaily, cronHelpers.checkPremiumEnded);
 
 //routes
 const cardRoutes = require('./routes/cards');
