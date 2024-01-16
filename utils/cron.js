@@ -18,11 +18,11 @@ cronHelpers.checkPremiumEnded = catchAsync(async() => {
                 user.endDate = null;
                 user.plan = "none";
                 //user.save()
-                mail.sendPremiumEnded(user.email);
+                //mail.sendPremiumEnded(user.email);
                 endedUsers.push(user.email);
             }
     })
-    mail.sendCronReport('checkPremiumEnded', endedUsers);
+    mail.sendCronReport('checkPremiumEnded - not saving', endedUsers);
 })
 
 // Schedule the function to run at midnight on the first day of every month
