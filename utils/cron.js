@@ -17,8 +17,8 @@ cronHelpers.checkPremiumEnded = catchAsync(async() => {
                 user.premiumGrantedByAdmin = false;
                 user.endDate = null;
                 user.plan = "none";
-                //user.save()
-                //mail.sendPremiumEnded(user.email);
+                user.save()
+                mail.sendPremiumEnded(user.email);
                 endedUsers.push(user.email);
             }
     })
