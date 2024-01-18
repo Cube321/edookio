@@ -79,8 +79,8 @@ const sessionConfig = {
     cookie: {
         httpOnly: true,
         // secure: true,    //cookies available only on HTTPS protocol - apply in production
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, //one week
-        maxAge: 1000 * 60 * 60 * 24 * 7 // one week
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7 * 520, //ten years
+        maxAge: 1000 * 60 * 60 * 24 * 7 * 520 // ten years
     }
 }
 
