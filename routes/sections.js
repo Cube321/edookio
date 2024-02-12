@@ -5,6 +5,7 @@ const Section = require('../models/section');
 const Category = require('../models/category');
 const User = require('../models/user');
 const Card = require('../models/card');
+const Question = require('../models/question');
 const { isLoggedIn, isAdmin, validateSection, isPremiumUser, isEditor } = require('../utils/middleware');
 const mongoose = require('mongoose');
 
@@ -144,10 +145,13 @@ router.delete('/category/:category/removeSection/:sectionId', isLoggedIn, isEdit
     }
     //delete Cards in Section
     await Card.deleteMany({section: sectionId});
+    //delete Questions in Section 
+    await Question.deleteMany({section: sectionId});
     //delete Section
     const deletedSection = await Section.findByIdAndDelete(sectionId);
     const foundCategory = await Category.findOne({name: req.params.category});
     foundCategory.numOfCards = foundCategory.numOfCards - deletedSection.cards.length;
+    foundCategory.numOfQuestions = foundCategory.numOfQuestions - deletedSection.questions.length;
     await foundCategory.save();
     //remove section from list of unfinished sections of all users
     let searchQuery = mongoose.Types.ObjectId(sectionId);
@@ -288,6 +292,9 @@ router.get('/category/:category/section/:sectionId/publish', isLoggedIn, isEdito
         throw Error("Balíček s tímto ID neexistuje");
     }
     foundSection.isPublic = true;
+    if(foundSection.questions.length > 0){
+        foundSection.testIsPublic = true;
+    }
     await foundSection.save();
     req.flash('success','Balíček byl zveřejněn');
     res.status(200).redirect(`/category/${req.params.category}`);
@@ -300,6 +307,15 @@ router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, is
         throw Error("Balíček s tímto ID neexistuje");
     }
     res.status(200).render('sections/listAllCards', {section});
+}))
+
+//generate GPT prompt from Cards of Section
+router.get('/category/:category/section/:sectionId/generateGPTprompt', isLoggedIn, isEditor, catchAsync(async(req, res) => {
+    const section = await Section.findById(req.params.sectionId).populate('cards');
+    if(!section){
+        throw Error("Balíček s tímto ID neexistuje");
+    }
+    res.status(200).render('sections/gptPrompt', {section});
 }))
 
 

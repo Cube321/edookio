@@ -5,16 +5,15 @@ let userEmail = "";
 let previousCard = 0;
 let nextCard = 0;
 let currentCard = 0;
-let sectionId = "";
+let categoryId = "";
 let receivedData = {};
-let demoCardsSeen = 0;
 
 $(document).ready(function() {
     //get section ID from DOM element 
-    sectionId = $("#sectionId").attr("name");
+    categoryId = $("#categoryId").attr("name");
     
     //create getCardsUrl
-    let getCardsUrl = `/api/getCards/section/${sectionId}`
+    let getCardsUrl = `/api/getRandomCards/category/${categoryId}`
 
     //get cards
     $.ajax({
@@ -30,20 +29,18 @@ $(document).ready(function() {
         if(data.user){
             isPremium = data.user.isPremium;
             userEmail = data.user.email;
-            startAt = data.startAt;
-            demoCardsSeen = data.demoCardsSeen;
         }
+        if(cards.length < 1){
+            return handleError();
+        }
+        $(".cards-length-span").empty().append(cards.length);
         $("#btn-otocit").removeClass('disabled'); 
-        renderCard(startAt);
+        renderCard(0);
     })
     .catch(err => console.log(err));
 
 
     function renderCard(index){
-        console.log(demoCardsSeen);
-        if(demoCardsSeen >= 5){
-            return showDemoFinishedPage();
-        }
         currentCard = index;
         previousCard = currentCard - 1;
         if(previousCard < 0) {
@@ -116,6 +113,9 @@ $(document).ready(function() {
         $(".back-main-content").scroll(function(){
             $("#flip-card .back-main-content").removeClass('text-gradient');
         })
+
+        //update counters
+        updateUsersCardsCounters();
     }
 
     //handle moving between cards
@@ -124,7 +124,7 @@ $(document).ready(function() {
         //redirect if finished
         if(nextCard === cards.length){
             $("#pageB").empty().append(`<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>`);
-            return window.location.replace(`/category/section/${sectionId}/finished`);
+            return window.location.replace(`/category/${cards[0].category}/finishedRandomCards`);
         } else {
             //render next card
             $("#flip-card").toggleClass('flipped');
@@ -132,9 +132,6 @@ $(document).ready(function() {
             $("#front-menu-row").toggleClass('hide');
             //render next card
             renderCard(nextCard);
-
-            //update last seen card in DB
-            updateLastSeenCardInDB(nextCard);
 
             //set push to 0
             push = 0;
@@ -145,8 +142,6 @@ $(document).ready(function() {
         e.preventDefault();
         renderCard(previousCard);
         push = 0;
-        //update lastSeenCard in DB
-        updateLastSeenCardInDB(nextCard);
     })
 
     $("#btn-predchozi-back").click((e) => {
@@ -156,8 +151,6 @@ $(document).ready(function() {
         $("#front-menu-row").toggleClass('hide');
         renderCard(previousCard);
         push = 0;
-        //update lastSeenCard in DB
-        updateLastSeenCardInDB(nextCard);
     })
 
     //favorite cards logic
@@ -234,7 +227,7 @@ $(document).ready(function() {
                 //redirect if finished
                 if(nextCard === cards.length){
                     $("#pageB").empty().append(`<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>`);
-                    return window.location.replace(`/category/section/${sectionId}/finished`);
+                    return window.location.replace(`/category/${cards[0].category}/finishedRandomCards`);
                 } else {
                 //else render next card
                     $("#flip-card").toggleClass('flipped');
@@ -242,25 +235,29 @@ $(document).ready(function() {
                     $("#front-menu-row").toggleClass('hide');
                     renderCard(nextCard);
                     push = 0;
-                    //update lastSeenCard in DB
-                    updateLastSeenCardInDB(nextCard);
                 }
             }
         }
     }
-});
 
-function updateLastSeenCardInDB(card){
-    let updateLastCardUrl = `/api/updateLastSeenCard/section/${sectionId}/${card}`
-        $.ajax({
-            method: "POST",
-            url: `${updateLastCardUrl}`
-        })
-        .then(res => {
-            return demoCardsSeen = res.demoCardsSeen;
-        })
-        .catch(err => console.log(err)); 
-}
+    function handleError(){
+        $("#flip-card").empty();
+        $("#flip-card").append(`
+            <div class="border-grey flip-card-inner" id="flip-card-inner">
+                <div class="card-body flip-card-front p-sm-3 pt-sm-4 px-0 pt-3">
+                    <div class="front-main-content d-flex justify-content-center align-items-center text-center">
+                        <div>
+                            <h4 class="">Je nám líto, nenalezli jsme žádné kartičky.</h4>
+                            <p class="">Je možné, že kartičky zatím nebyly zveřejněny pro studenty nebo jsou dostupné pouze s předplatným Premium.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+
+        push = 3;
+    }
+});
 
 function showDemoFinishedPage(){
         $(".flip-card-inner").empty();
@@ -286,4 +283,11 @@ function showDemoFinishedPage(){
             console.log(res);
         })
         push = 3;
+}
+
+function updateUsersCardsCounters(){
+    $.ajax({
+        method: "POST",
+        url: '/api/updateUsersCardsCounters'
+    })
 }

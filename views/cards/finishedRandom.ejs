@@ -1,0 +1,37 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-12 offset-lg-3">
+            <div class="card text-center p-4">
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <i class="fas fa-check-circle green-check"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-4 mb-3">
+                        <h3>Hotovo </h3>
+                        <h5>Skvělá práce!</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <p class="grey-highlight px-3 py-2">Celkem máš nastudováno už <span class="color-1"><b><%= currentUser.cardsSeen %></b></span> kartiček.</p> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3 mt-3">
+                    <div class="col-12">
+                        <a href="/category/<%= category %>/randomCards" class="btn btn-danger">Generovat další náhodný balíček</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <a href="/category/<%= category %>" class="">zpět na předmět</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

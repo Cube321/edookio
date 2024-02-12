@@ -722,11 +722,15 @@ mail.forgottenPassword = function(data, callback){
 };
 
 //welcome e-mail
-mail.sendThankYou = function(email, card, callback){
+mail.sendThankYou = function(email, text, type, callback){
+    let content = 'na kartičce';
+    if(type === 'question'){
+        content = 'v otázce'
+    }
     const msg = {
         from: {email:"jakub@inlege.cz", name: "Jakub z InLege"}, 
         to: email,
-        subject: "Oprava chyby na kartičce",
+        subject: `Oprava chyby ${content}`,
         html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
                 <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                     <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
@@ -740,7 +744,7 @@ mail.sendThankYou = function(email, card, callback){
                                                     <div style="box-sizing:border-box">
                                                         <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Chybu jsme opravili</h2> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">díky za nahlášení chyby na kartičce "${card}". Chybu jsme opravili.</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">díky za nahlášení chyby ${content} "${text}". Chybu jsme opravili.</p> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">S přátelským pozdravem</p> 
                                                         <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Jakub Spáčil</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Team InLege</p> 

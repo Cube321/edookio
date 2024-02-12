@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-12 d-flex justify-content-between mb-4">
             <a href="/category/<%= section.category %>" class="btn btn-sm btn-outline-danger">Zpět na předmět</a>
-            <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartičku</a>
+            <div>
+                <a href="/category/<%= section.category %>/section/<%= section._id %>/generateGPTprompt" class="px-3 text-small">GPT</a>
+                <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartičku</a>
+            </div>
         </div>
     </div>
         <div class="row">

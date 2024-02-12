@@ -45,7 +45,7 @@ module.exports.categoryPage = {
     cardsToStudy: "kartiček ke studiu",
     packages: "Balíčky",
     noPackages: "Předmět neobsahuje žádné balíčky.",
-    start: "Spustit",
+    start: "Kartičky",
     repeat: "Opakovat",
     continue: "Pokračovat",
     cards: "kartiček"

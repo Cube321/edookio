@@ -22,13 +22,28 @@ cronHelpers.checkPremiumEnded = catchAsync(async() => {
                 endedUsers.push(user.email);
             }
     })
-    mail.sendCronReport('checkPremiumEnded - not saving', endedUsers);
+    mail.sendCronReport('checkPremiumEnded', endedUsers);
+})
+
+cronHelpers.resetMonthlyCounters = catchAsync(async() => {
+    console.log('RUNNING CRON: resetMonthlyCounters');
+    let users = await User.find({});
+    let counter = 0;
+    users.forEach(user => {
+        if(user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0){
+            user.questionsSeenThisMonth = 0;
+            user.cardsSeenThisMonth = 0;
+            user.save();
+            counter++;
+        }
+    })
+    mail.sendCronReport('resetMonthlyCounters', counter);
 })
 
 // Schedule the function to run at midnight on the first day of every month
 cronHelpers.cronExpressionMonthly = '0 0 1 * *';
 
-// Schedule the function to run at midnight on the first day of every month
+// Schedule the function to run at 7 am every day
 cronHelpers.cronExpressionDaily = '0 6 * * *';
 
 // Schedule the function to run every 1st second of every minute

@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const User = require('../models/user');
-const Card = require('../models/card');
 const Section = require('../models/section');
 const Category = require('../models/category');
-const Stats = require('../models/stats'); 
+const Question = require('../models/question');
 const moment = require('moment');
-const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
+const { isLoggedIn } = require('../utils/middleware');
+
 
 //API ROUTES FOR SHOW CARDS
 //get Cards of Section
@@ -42,6 +41,7 @@ router.get('/api/getCards/section/:sectionId', catchAsync(async(req, res) => {
         }
         //increase cardsSeen by 1
         user.cardsSeen++;
+        user.cardsSeenThisMonth++;
         await user.save();
     }
 
@@ -51,7 +51,7 @@ router.get('/api/getCards/section/:sectionId', catchAsync(async(req, res) => {
         cards.forEach(card => {
             newCard = {
                 _id: card._id,
-                cagegory: card.category,
+                category: card.category,
                 pageA: card.pageA,
                 pageB: card.pageB,
                 author: card.author,
@@ -64,14 +64,69 @@ router.get('/api/getCards/section/:sectionId', catchAsync(async(req, res) => {
         })
         cards = markedCards;
     }
-    
-    res.status(200).send({
+    const resData = JSON.stringify({
         cards,
         user,
         startAt,
         demoCardsSeen
-    });
+    })
+    res.status(200).send(resData);
 }))
+
+//get random Cards of Category
+router.get('/api/getRandomCards/category/:categoryId', isLoggedIn, catchAsync(async(req, res) => {
+    let { categoryId } = req.params;
+    let { user } = req;
+    let isPremiumUser = req.user.isPremium;
+    let cards = await getRandomCards(categoryId, isPremiumUser);
+
+    //mark saved cards
+    let markedCards = [];
+    cards.forEach(card => {
+        newCard = {
+            _id: card._id,
+            category: card.category,
+            pageA: card.pageA,
+            pageB: card.pageB,
+            author: card.author,
+            section: card.section
+        }
+        if(req.user.savedCards.indexOf(newCard._id) > -1){
+            newCard.isSaved = true;
+        }
+        markedCards.push(newCard);
+    })
+    cards = markedCards;
+    
+    const resData = JSON.stringify({
+        cards,
+        user
+    })
+    res.status(200).send(resData);
+}))
+
+async function getRandomCards(categoryId, isUserPremium){
+    let foundCategory = await Category.findById(categoryId);
+    let sections = await Section.find({category: foundCategory.name}).populate('cards');
+    let publishedCards = [];
+    sections.forEach(section => {
+        if(section.isPublic){
+            if(!section.isPremium || (section.isPremium && isUserPremium)){
+                publishedCards.push(...section.cards);
+            }
+        }
+    })
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          // Swap array[i] and array[j]
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      shuffleArray(publishedCards);
+      let final20cards = publishedCards.slice(0, 20);
+    return final20cards;
+}
 
 //update last seen Card of Section
 router.post('/api/updateLastSeenCard/section/:sectionId/:cardNum', catchAsync(async(req, res) => {
@@ -94,11 +149,85 @@ router.post('/api/updateLastSeenCard/section/:sectionId/:cardNum', catchAsync(as
         user.lastActive = moment();
         //increase cardSeen by 1
         user.cardsSeen++;
+        user.cardsSeenThisMonth++;
         await user.save();
     }
     res.status(201).send({demoCardsSeen});
 }))
 
+//update Card counter on User
+router.post('/api/updateUsersCardsCounters', catchAsync(async(req, res) => {
+    let user = req.user;
+    //update date of user's last activity
+    user.lastActive = moment();
+    //increase cardSeen by 1
+    user.cardsSeen++;
+    user.cardsSeenThisMonth++;
+    await user.save();
+    res.sendStatus(201);
+}))
+
+
+//API ROUTES FOR QUESTIONS
+//get Questions of Section
+router.get('/api/getQuestions/section/:sectionId', isLoggedIn, catchAsync(async(req, res) => {
+    let {sectionId} = req.params;
+    if(sectionId !== "random_test"){
+        let foundSection = await Section.findById(sectionId).populate('questions');
+        if(!foundSection){
+            return res.status(404).send({error: "Section not found"});
+        }
+        const resData = JSON.stringify({
+            questions: foundSection.questions
+        })
+        res.status(200).send(resData);
+    } else {
+        let {category} = req.query;
+        let isUserPremium = req.user.isPremium;
+        let randomQuestions = await getRandomQuestions(category, isUserPremium);
+        const resData = JSON.stringify({
+            questions: randomQuestions
+        })
+        res.status(200).send(resData);
+    }
+}))
+
+async function getRandomQuestions(cat, isUserPremium){
+    let foundCategory = await Category.findOne({name: cat});
+    let sections = await Section.find({category: foundCategory.name}).populate('questions');
+    let publishedQuestions = [];
+    sections.forEach(section => {
+        if(section.testIsPublic){
+            if(!section.isPremium || (section.isPremium && isUserPremium)){
+                publishedQuestions.push(...section.questions);
+            }
+        }
+    })
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          // Swap array[i] and array[j]
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+      shuffleArray(publishedQuestions);
+      let final20questions = publishedQuestions.slice(0, 20);
+    return final20questions;
+}
+
+//update counters for questions on User
+router.post('/api/updateUsersQuestionsCounters', isLoggedIn, catchAsync(async(req, res) => {
+    if(req.user){
+        let user = req.user;   
+        user.lastActive = moment();
+        user.questionsSeenThisMonth++;
+        user.questionsSeenTotal++;
+        await user.save();
+        res.sendStatus(201);
+    } else {
+        res.sendStatus(404);
+    }
+}))
 
 
 module.exports = router;

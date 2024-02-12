@@ -41,6 +41,18 @@ const UserSchema = new Schema ({
         type: Number,
         default: 0
     },
+    cardsSeenThisMonth: {
+        type: Number,
+        default: 0
+    },
+    questionsSeenThisMonth: {
+        type: Number,
+        default: 0
+    },
+    questionsSeenTotal: {
+        type: Number,
+        default: 0
+    },
     isPremium: {
         type: Boolean,
         default: false

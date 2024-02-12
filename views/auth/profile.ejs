@@ -38,7 +38,22 @@
                         <p>Počet nastudovaných kartiček</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">
-                        <%= user.cardsSeen %> 
+                        <span>celkem: <%= user.cardsSeen %></span>
+                        <span class="mx-2">|</span>
+                        <span>
+                            tento měsíc: <%= user.cardsSeenThisMonth %>
+                        </span>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Počet nastudovaných otázek</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <span>celkem: <%= user.questionsSeenTotal %></span>
+                        <span class="mx-2">|</span>
+                        <span>
+                            tento měsíc: <%= user.questionsSeenThisMonth %>
+                        </span>
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">

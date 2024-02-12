@@ -1,0 +1,25 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="offset-2 col-8 mb-3">
+            <h5>GPT Prompt</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-2 col-8 d-flex justify-content-between mb-4">
+            <a href="/category/<%= section.category %>/section/<%= section._id %>/listAllCards" class="btn btn-sm btn-outline-danger">Zpět na všechny kartičky</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-2 col-8">
+            <p>Vytvoř dvacet testových otázek se třemi odpověďmi z nichž pouze jedna je správná, a to na základě následujícího textu. Správnou odpověď označet tučným písmem.</p>
+        </div>
+        <div class="offset-2 col-8">
+            <p>
+                <% section.cards.forEach((card) => { %> 
+                    <%- card.pageB %>
+                <% }) %> 
+            </p>
+        </div>
+    </div>
+</div>

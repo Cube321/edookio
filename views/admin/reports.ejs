@@ -28,4 +28,25 @@
             </div>
         </div>
     <% } %> 
+    <% for(let mistake of mistakes){ %> 
+        <div class="row mt-3">
+            <div class="col-sm-2 offset-1"><%- mistake.question.question %> </div>
+            <div class="col-sm-4">
+                <p class="text-bold"><%- mistake.question.correctAnswers[0] %></p> 
+                <p><%- mistake.question.wrongAnswers[0] %></p> 
+                <p><%- mistake.question.wrongAnswers[1] %></p> 
+                <a href="/category/<%= mistake.question.category %>/section/<%= mistake.question.section %>/questions/<%= mistake.question._id %>/edit" target="_blank" class="btn btn-sm btn-outline-danger">Upravit otázku</a>
+                <a href="/category/<%= mistake.question.category %>/section/<%= mistake.question.section %>/questions/<%= mistake.question._id %>/deleteMistakeReport/<%= mistake._id %>" class="btn btn-sm btn-outline-danger">Smazat report</a>
+            </div>
+            <div class="col-sm-5">
+                <div class="card my-2 p-2 d-flex flex-row justify-content-between align-items-center">
+                    <p class="mb-0"><%= mistake.content %></p>
+                    <div>
+                        <p class="mb-2 text-small"><%= mistake.author %></p>
+                        <a href="/category/<%= mistake.question.category %>/section/<%= mistake.question.section %>/questions/<%= mistake.question._id %>/deleteMistakeReport/<%= mistake._id %>?thankUser=true" class="btn btn-sm btn-outline-danger">Poděkovat a smazat</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %> 
 </div>

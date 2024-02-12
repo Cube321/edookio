@@ -28,6 +28,17 @@ body {
     border-radius: 10px;
 }
 
+.link {
+    color: #E80F88;
+    border: none;
+    background-color: #FFFFFF;
+    padding: 0
+}
+
+.link:hover {
+    color: #AF0171;
+}
+
 *:focus {
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
 }
@@ -78,7 +89,7 @@ body {
 
 .category-info {
     background-color: #EEEEEE;
-    border-radius: 10px;
+    border-radius: 0.3rem;
     font-size: 1rem;
 }
 
@@ -100,6 +111,18 @@ body {
 .category-img {
     width: 8rem;
     height: 8rem;
+}
+
+.section-row .btn {
+    min-width: 5.75rem
+}
+
+.edit-modal p {
+    margin-bottom: 8px;
+}
+
+.edit-modal .btn-danger {
+    min-width: 9rem;
 }
 
 /* CATEGOGRIES - PREMIUM SECTIONS*/
@@ -288,6 +311,20 @@ form .form-borders {
     font-size: 6rem;
 }
 
+.finished-test .finished-item {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    border: 3px solid #EEEEEE;
+    border-radius: 24px;
+    padding: 8px;
+    margin-top: 1.5rem;
+}
+
+.finished-test .finished-item p {
+    margin: 0;
+}
+
 /* REGISTRATION */
 .registration-gdpr {
     margin-top: 2px;
@@ -427,6 +464,10 @@ form .form-borders {
 
     .vybrat-predmet {
         border: none;
+    }
+
+    .edit-modal .btn-outline-danger {
+        margin-top: 8px;
     }
   }
 

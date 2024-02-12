@@ -8,9 +8,11 @@ const Section = require('../models/section');
 const Stats = require('../models/stats');
 const User = require('../models/user');
 const Category = require('../models/category');
+const Mistake = require('../models/mistake');
 const moment = require('moment');
 const mail = require('../mail/mail_inlege');
 const { validateCard, isLoggedIn, isEditor } = require('../utils/middleware');
+const { incrementEventCount } = require('../utils/helpers');
 
 //CARDS (add, edit, remove)
 //render new card page (GET)
@@ -136,7 +138,8 @@ router.post('/cards/report/:cardId', isLoggedIn, catchAsync(async(req, res) => {
 //show all reported cards
 router.get('/admin/listAllReports', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const cards = await Card.find({ factualMistakeReports: { $exists: true, $ne: [] } });
-    res.status(200).render('admin/reports', {cards});
+    const mistakes = await Mistake.find().populate('question');
+    res.status(200).render('admin/reports', {cards, mistakes});
 }))
 
 //mark as solved
@@ -147,7 +150,7 @@ router.get('/cards/report/solved/:cardId/:userEmail', isLoggedIn, isEditor, catc
     }
     foundCard.factualMistakeReports = [];
     await Card.findByIdAndUpdate(req.params.cardId, foundCard);
-    mail.sendThankYou(req.params.userEmail, foundCard.pageA);
+    mail.sendThankYou(req.params.userEmail, foundCard.pageA, 'card');
     req.flash('success','Označeno jako vyřešené a e-mail s poděkováním byl odeslán uživateli.');
     res.status(200).redirect('/admin/listAllReports');
 }))
@@ -237,19 +240,5 @@ function sortByOrderNum(array) {
     // Return the sorted array
     return array;
   }
-
-async function incrementEventCount(eventName) {
-    try {
-      await Stats.findOneAndUpdate(
-        { eventName },
-        { $inc: { eventCount: 1 } },
-        { upsert: true, new: true }
-      );
-    } catch (err) {
-      console.error('Error updating event count:', err);
-    }
-  }
-
-
 
 module.exports = router;

@@ -18,7 +18,12 @@ const SectionSchema = new Schema({
         type: Boolean,
         default: false
     },
+    testIsPublic: {
+        type: Boolean,
+        default: false
+    },
     cards: [{ type : Schema.Types.ObjectId, ref: 'Card'}],
+    questions: [{ type : Schema.Types.ObjectId, ref: 'Question'}],
     isPremium: {
         type: Boolean,
         default: false
@@ -50,7 +55,15 @@ const SectionSchema = new Schema({
     countRepeated: {
         type: Number,
         default: 0
-    }
+    },
+    countStartedTest: {
+        type: Number,
+        default: 0
+    },
+    countFinishedTest: {
+        type: Number,
+        default: 0
+    },
 })
 
 //write .post delete middleware (course, video 466) 14. 11. 2022

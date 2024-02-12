@@ -21,6 +21,16 @@
                         </div>
                     </div>
                 </div>
+                <% if (section.questions.length > 0 && section.testIsPublic) { %>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <a href="/category/<%= categoryId%>/section/<%= section._id%>/test" class="btn btn-danger my-3">Spustit test</a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                <% } %>
                 <!--pokud se jedna o posledni sekci zobrazi se tento kod (odkaz zpet na kategorii)-->
                 <% if (nextSection.name === "lastSection") { %>
                     <div class="row">
@@ -57,7 +67,7 @@
                             <% } %>
                         </div>
                         <div class="col-12">
-                            <a href="/category/<%= category%>" class="">zpět na kategorii</a>
+                            <a href="/category/<%= category%>" class="">zpět na předmět</a>
                         </div>
                     </div>
                 <% } %>

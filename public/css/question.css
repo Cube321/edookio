@@ -1,0 +1,132 @@
+.question-card-wrapper {
+    border: 1px solid #DFDFDF;
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+.question-card {
+    width: 100%;
+    height: 350px;
+    font-size: 1rem;
+    
+    overflow: auto;
+  }
+
+  #question-content {
+    padding: 0.25rem 1rem 1rem 1rem;
+}
+
+.border-grey {
+    border: 1px solid #DFDFDF;
+    border-radius: 0.25rem;
+    }
+
+.back-menu {
+    padding: 10px;
+  }
+
+/* QUESTION CONTENT */
+.question {
+    text-align: center;
+    margin: 0 0 1.5rem 0;
+    font-weight: bold;
+}
+
+.answers-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.answer-item {
+    margin-bottom: 16px;
+    padding: 8px 16px;
+    border: 3px solid #EEEEEE;
+    border-radius: 24px;
+    cursor: pointer;
+}
+
+.answers-list .correct {
+    border: 3px solid;
+    border-color: #3ae80f;
+}
+
+.answers-list .wrong {
+    border: 3px solid;
+    border-color: #ed0b43;
+}
+
+/* QUESTIONS LIST */
+#questions-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+#questions-list-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+}
+
+.questions-list-item {
+    border: 1px solid #eeeeee;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 50%;
+    margin: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.questions-list-item.correct {
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.questions-list-item.wrong {
+    border: 1px solid #ed0b43;
+    color: #ed0b43;
+}
+
+.questions-list-item.active {
+    background-color: #EEEEEE;
+}
+
+/* Text gradient fade */
+.text-gradient {
+    position: relative;
+  }
+  
+  .text-gradient:after {
+    position: absolute;
+    bottom: 0;  
+    height: 18%;
+    width: 100%;
+    content: "";
+    background: linear-gradient(to top,
+       rgba(255,255,255, 1) 20%, 
+       rgba(255,255,255, 0) 80%
+    );
+    pointer-events: none; /* so the text is still selectable */
+  }
+
+  .white-space {
+    white-space: pre-wrap;
+    line-height: 1;
+  }
+
+@media only screen and (max-width: 992px) {
+    .nezobrazovat-na-mobilu {
+      display: none;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .zobrazovat-jen-na-mobilu {
+      display: none;
+    }
+}

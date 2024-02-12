@@ -46,3 +46,11 @@ module.exports.sectionSchema = Joi.object({
     desc: Joi.string().escapeHTML(),
     previousSection: Joi.string().escapeHTML()
 })
+
+module.exports.questionSchema = Joi.object({
+    question: Joi.string().required().escapeHTML(),
+    correctAnswer: Joi.string().required().escapeHTML(),
+    wrongAnswer1: Joi.string().required().escapeHTML(),
+    wrongAnswer2: Joi.string().required().escapeHTML(),
+    wrongAnswer3: Joi.string().allow('').escapeHTML()
+})

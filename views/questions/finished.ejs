@@ -1,0 +1,112 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-12 offset-lg-3">
+            <div class="card text-center p-4">
+                <div class="row">
+                    <div class="col-12 mt-4">
+                        <i class="fas fa-check-circle green-check"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mt-4 mb-2">
+                        <h3>Hotovo! </h3>
+                        <hr />
+                    </div>
+                </div>
+                <div class="row finished-test mb-2">
+                    <div class="col-12">
+                        <h5 class="mb-0">Vyhodnocení testu</h5>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="finished-item">
+                            <i class="far fa-check-circle fa-2x mx-2"></i>
+                            <div>
+                                <p><%= counters.correct %> správně</p>
+                                <p class="text-small text-muted">(<%= counters.correct * step %> %)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="finished-item">
+                            <i class="far fa-times-circle fa-2x mx-2"></i>
+                            <div>
+                                <p><%= counters.wrong %> špatně</p>
+                                <p class="text-small text-muted">(<%= counters.wrong * step %> %)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12">
+                        <div class="finished-item">
+                            <i class="fas fa-circle-notch fa-2x mx-2"></i>
+                            <div>
+                                <p><%= counters.skipped %> vynecháno</p>
+                                <p class="text-small text-muted">(<%= counters.skipped * step %> %)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <% if (!currentUser.isPremium && currentUser.questionsSeenThisMonth > 50) { %>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h5 class="mb-3">Otázky zdarma byly vyčerpány</h5>
+                            <p>Pro tento měsíc jsi vyčerpal/a svých 50 testových otázek dostupných zdarma.</p>
+                            <p>Aktivuj si předplatné Premium <b>s neomezeným počtem otázek</b> nebo počkej do prvního dne následujícího měsíce na dalších 50 otázek zdarma.</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mt-3">
+                        <div class="col-12">
+                            <a href="/premium" class="btn btn-danger">Zjistit více</a>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <div class="row mb-3 mt-2">
+                        <div class="col-12">
+                            <h5 class="mb-0">Aktuální balíček</h5>
+                            <p class="mb-3"><%= section.name %></p>
+                        </div>
+                        <div class="col-12">
+                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-danger">Zobrazit kartičky</a>
+                            <a href="/category/<%= category._id%>/section/<%= section._id%>/test" class="btn btn-danger">Opakovat test</a>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mb-3 mt-2">
+                        <% if (nextSection === "lastSection" || !nextSection.isPublic) { %>
+                            <div class="d-flex flex-column justify-content-center align-items-center mt-3">
+                                <h5 class="mb-3">Navazující balíček</h5>
+                                <p class="mb-0 grey-highlight px-3 py-2">Na tento balíček nenavazuje žádný balíček nenavazuje.</p>
+                            </div>
+                        <% } %>
+                        <% if (!currentUser.isPremium && nextSection.isPremium) { %>
+                            <div class="d-flex flex-column justify-content-center align-items-center mt-3">
+                                <h5 class="mb-0">Navazující balíček</h5>
+                                <p class="mb-3"><%= nextSection.name %></p>
+                                <p class="mb-0 grey-highlight px-3 py-2">Navazující balíček je přístupný jen <br>s <a href="/premium" target="_blank"><b>předplatným Premium</b></a>.</p>
+                            </div>
+                        <% } else if(nextSection && nextSection.isPublic) { %>
+                            <div class="col-12">
+                                <h5 class="mb-0">Navazující balíček</h5>
+                                <p class="mb-3"><%= nextSection.name %></p>
+                            </div>
+                            <div class="col-12">
+                                <a href="/category/<%= category.name %>/section/<%= nextSection._id %>/card20/1" class="btn btn-danger">Zobrazit kartičky</a>
+                                <% if (nextSection.questions.length > 0 && nextSection.testIsPublic) { %>
+                                    <a href="/category/<%= category._id %>/section/<%= nextSection._id%>/test" class="btn btn-danger">Spustit test</a>
+                                <% } else { %>
+                                    <button class="btn btn-danger disabled">Neobsahuje test</button>
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <a href="/category/<%= section.category %>">zpět na předmět</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

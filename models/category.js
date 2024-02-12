@@ -13,6 +13,10 @@ const CategorySchema = new Schema({
         type: Number,
         default: 0
     },
+    numOfQuestions:{
+        type: Number,
+        default: 0
+    },
     text: {
         type: String,
         default: ""

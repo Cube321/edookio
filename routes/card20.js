@@ -2,12 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
-const User = require('../models/user');
-const Card = require('../models/card');
 const Section = require('../models/section');
 const Category = require('../models/category');
-const Stats = require('../models/stats'); 
-const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
+const { isLoggedIn } = require('../utils/middleware');
+const { incrementEventCount } = require ('../utils/helpers');
 
 //CARD 2.0 RENDER ROUTES
 //repeat section (incl. filter section out of the array of finished sections)
@@ -79,9 +77,31 @@ router.get('/category/:category/section/:sectionId/card20/:cardNum', catchAsync(
     });
 }))
 
+//render empty show card page for SHUFFLE
+router.get('/category/:category/randomCards', isLoggedIn, catchAsync(async(req, res) => {
+    const {category} = req.params;
+    //icon for category
+    let foundCategory = await Category.findOne({name: category});
+    if(!foundCategory){
+        req.flash('error','Předmět se zadaným názvem neexistuje.');
+        return res.status(404).redirect('back');
+    }
+    incrementEventCount('startRandomCards');
+    res.render('cards/show20shuffle', {
+        category: foundCategory
+    });
+}))
+
 //render finished page
 router.get('/category/section/:sectionId/finished', catchAsync(async(req, res) => {
     let foundSection = await Section.findById(req.params.sectionId);
+    if(!foundSection){
+        throw Error('Balíček s tímto ID neexistuje.');
+    }
+    let foundCategory = await Category.findOne({name: foundSection.category});
+    if(!foundCategory){
+        throw Error('Předmět s tímto ID neexistuje.');
+    }
     let nextSection = "notDefined";
         //check if string is valid ObjectID
         let isValidId = mongoose.isValidObjectId(foundSection.nextSection);
@@ -94,7 +114,7 @@ router.get('/category/section/:sectionId/finished', catchAsync(async(req, res) =
             if(foundSection.nextSection === "lastSection"){
                 nextSection = {name: "lastSection"};
             } else {
-                nextSection = {name: "notValidId - udelejte prosim screen teto obrazovky a zaslete jej na mail jakub@inlege.cz"};
+                nextSection = {name: "notValidId - udelejte prosim screen teto obrazovky a zaslete jej na e-mail jakub@inlege.cz"};
             }
         }
         if(req.user){
@@ -113,6 +133,7 @@ router.get('/category/section/:sectionId/finished', catchAsync(async(req, res) =
 
             res.render('sections/finishedLive', {
                 category: foundSection.category,
+                categoryId: foundCategory._id,
                 section: foundSection,
                 nextSection
             });
@@ -123,6 +144,11 @@ router.get('/category/section/:sectionId/finished', catchAsync(async(req, res) =
             });
         }
     
+}))
+
+//render finished page for SHUFFLE
+router.get('/category/:category/finishedRandomCards', isLoggedIn, catchAsync(async(req, res) => {
+    res.render('cards/finishedRandom', {category: req.params.category});
 }))
 
 module.exports = router;

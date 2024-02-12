@@ -6,7 +6,7 @@ const Card = require('../models/card');
 const Category = require('../models/category');
 const Section = require('../models/section'); 
 const Stats = require('../models/stats'); 
-const { isLoggedIn, isAdmin, isEditor } = require('../utils/middleware');
+const { isLoggedIn, isAdmin } = require('../utils/middleware');
 const moment = require('moment');
 const mail = require('../mail/mail_inlege');
 
@@ -15,9 +15,12 @@ const mail = require('../mail/mail_inlege');
 router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});
     const demoLimitReachedStats = await Stats.findOne({eventName: 'demoLimitReached'});
-    registeredAfterDemoLimitStats = await Stats.findOne({eventName: 'registeredAfterDemoLimit'});
-    if(!registeredAfterDemoLimitStats){registeredAfterDemoLimitStats = {eventCount: 0}}
-    
+    let registeredAfterDemoLimitStats = await Stats.findOne({eventName: 'registeredAfterDemoLimit'});
+    let startRandomTestStats = await Stats.findOne({eventName: 'startRandomTest'});
+    let startRandomCardsStats = await Stats.findOne({eventName: 'startRandomCards'});
+    if(!registeredAfterDemoLimitStats){registeredAfterDemoLimitStats = {eventCount: 0}};
+    if(!startRandomTestStats){startRandomTestStats = {eventCount: 0}};
+    if(!startRandomCardsStats){startRandomCardsStats = {eventCount: 0}};
     //count free and premium sections and cards separately
     const sectionsPremium = await Section.find({isPremium: true}).select('cards');
     const sectionsFree = await Section.find({isPremium: false}).select('cards');
@@ -122,6 +125,8 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         freeCardRatio,
         freeSectionRatio,
         demoLimitReachedStats,
+        startRandomTestStats,
+        startRandomCardsStats,
         registeredAfterDemoLimitStats,
         demoLimitRegistrationRatio,
         unsubscribedUsersCount,
@@ -267,18 +272,15 @@ router.put('/admin/:userId/downgradeToFree/', isLoggedIn, isAdmin, catchAsync(as
     if(!user){
         throw Error("Uživatel s tímto ID neexistuje");
     }
-    if(user.plan === "none" || user.premiumGrantedByAdmin){
-        user.isPremium = false;
-        user.premiumGrantedByAdmin = false;
-        user.endDate = null;
-        user.premiumDateOfActivation = null;
-        user.premiumDateOfUpdate = null;
-        user.premiumDateOfCancelation = null;
-        user.plan = "none";
-    } else {
-        req.flash('error','Uživatel má stále aktivní předplatné na Stripe. Před odebráním Premium je třeba, aby jej uživatel zrušil (Můj účet -> Správa předplatného).');
-        return res.status(200).redirect(`/admin/${user._id}/showDetail`);
-    }
+
+    user.isPremium = false;
+    user.premiumGrantedByAdmin = false;
+    user.endDate = null;
+    user.premiumDateOfActivation = null;
+    user.premiumDateOfUpdate = null;
+    user.premiumDateOfCancelation = null;
+    user.plan = "none";
+
     await user.save();    
     req.flash('success','Premium ukončeno. Uživateli byl nastaven balíček Free.');
     res.status(201).redirect(`/admin/${user._id}/showDetail`);
