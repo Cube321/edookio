@@ -29,11 +29,13 @@
                 </div>
             </div>
             <div class="col-sm-1"><a href="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit">Upravit</a></div>
-            <div class="col-sm-1">
-                <form action="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>?_method=DELETE" method="POST">
-                    <button class="link">Odstranit</button>
-                </form>
-            </div>
+            <% if (currentUser.admin) { %>
+                <div class="col-sm-1">
+                    <form action="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>?_method=DELETE" method="POST">
+                        <button class="link">Odstranit</button>
+                    </form>
+                </div>
+            <% } %>
             <hr>
         </div>
     <% }) %> 

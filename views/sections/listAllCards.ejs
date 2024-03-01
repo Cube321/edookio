@@ -26,7 +26,9 @@
             <div class="col-sm-3 text-small"><%- card.pageA %> </div>
             <div class="col-sm-6 text-small"><%- card.pageB %> </div>
             <div class="col-sm-1"><a href="/cards/edit/<%= card._id%>">Upravit</a></div>
-            <div class="col-sm-1"><a href="/cards/remove/<%= card._id%>">Odstranit</a></div>
+            <% if (currentUser.admin) { %>
+                <div class="col-sm-1"><a href="/cards/remove/<%= card._id%>">Odstranit</a></div>
+            <% } %>
             <hr>
         </div>
     <% }) %> 

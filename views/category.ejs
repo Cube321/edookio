@@ -284,14 +284,16 @@
                             <% } %>
                         </div>
                     </div>
-                    <div class="row mb-2 mt-4">
-                        <div class="col-3">
-                            <p>Odstranit balíček</p>
+                    <% if (currentUser.admin) { %>
+                        <div class="row mb-2 mt-4">
+                            <div class="col-3">
+                                <p>Odstranit balíček</p>
+                            </div>
+                            <div class="col-9">
+                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>">Odstranit</a>
+                            </div>
                         </div>
-                        <div class="col-9">
-                            <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>">Odstranit</a>
-                        </div>
-                    </div>
+                    <% } %>
                 </div>
             </div>
             </div>
