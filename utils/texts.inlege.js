@@ -34,7 +34,7 @@ module.exports.landingPage = {
     reasonThreeContent: "InLege není jen o kartičkách. Chceme budovat komunitu mladých právníků, kteří se podporují na cestě k úspěchu.",
     reasonThreeIcon: "icon-reason-3.png",
     reasonFourHeader: "Dostupné pro všechny",
-    reasonFourContent: "Věříme, že kvalitní studijní materiály by měly být dostupné pro každého. Alespoň 50 % obsahu InLege je vždy zdarma!",
+    reasonFourContent: "Věříme, že kvalitní studijní materiály by měly být dostupné pro každého. Alespoň polovina kartiček je vždy zdarma!",
     reasonFourIcon: "icon-reason-4.png",
     cards: "kartiček",
     study: "Studovat",
