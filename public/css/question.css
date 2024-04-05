@@ -1,3 +1,7 @@
+#questions-list {
+    max-height: 185px;
+}
+
 .question-card-wrapper {
     border: 1px solid #DFDFDF;
     border-radius: 0.25rem;
