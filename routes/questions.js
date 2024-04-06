@@ -59,6 +59,7 @@ router.get('/category/:categoryId/testRandom', isLoggedIn, catchAsync(async(req,
 router.get('/category/:categoryId/section/:sectionId/testFinished', isLoggedIn, catchAsync(async(req, res) => {
     const {categoryId, sectionId} = req.params;
     const {correct, wrong, skipped} = req.query;
+    let {user} = req;
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findById(categoryId);
     if(!foundSection){
@@ -91,6 +92,7 @@ router.get('/category/:categoryId/section/:sectionId/testFinished', isLoggedIn, 
 router.get('/category/:categoryId/testRandomFinished', isLoggedIn, catchAsync(async(req, res) => {
     const {categoryId} = req.params;
     const {correct, wrong, skipped} = req.query;
+    let {user} = req;
     const foundCategory = await Category.findById(categoryId);
     if(!foundCategory){
         throw Error("Předmět s tímto ID neexistuje");
