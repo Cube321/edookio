@@ -23,7 +23,7 @@
                             <i class="far fa-check-circle fa-2x mx-2"></i>
                             <div>
                                 <p><%= counters.correct %> správně</p>
-                                <p class="text-small text-muted">(<%= counters.correct * step %> %)</p>
+                                <p class="text-small text-muted">(<%= Math.round(counters.correct * step) %> %)</p>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                             <i class="far fa-times-circle fa-2x mx-2"></i>
                             <div>
                                 <p><%= counters.wrong %> špatně</p>
-                                <p class="text-small text-muted">(<%= counters.wrong * step %> %)</p>
+                                <p class="text-small text-muted">(<%= Math.round(counters.wrong * step) %> %)</p>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                             <i class="fas fa-circle-notch fa-2x mx-2"></i>
                             <div>
                                 <p><%= counters.skipped %> vynecháno</p>
-                                <p class="text-small text-muted">(<%= counters.skipped * step %> %)</p>
+                                <p class="text-small text-muted">(<%= Math.round(counters.skipped * step) %> %)</p>
                             </div>
                         </div>
                     </div>

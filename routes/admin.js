@@ -55,6 +55,9 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     let premiumDeactivationsInLastWeek = 0;
     let unsubscribedUsersCount = 0;
     let totalCardsSeen = 0;
+    let totalQuestionsSeen = 0;
+    let monthCardsSeen = 0;
+    let monthQuestionsSeen = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     let sources = {pratele: 0, ucitele: 0, instagram: 0, facebook: 0, google: 0, odjinud: 0, neuvedeno: 0};
 
@@ -107,6 +110,9 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         if(user.source === "neuvedeno"){sources.neuvedeno++};
         //totalCardsCount
         totalCardsSeen = totalCardsSeen + user.cardsSeen;
+        totalQuestionsSeen = totalQuestionsSeen + user.questionsSeenTotal;
+        monthCardsSeen = monthCardsSeen + user.cardsSeenThisMonth;
+        monthQuestionsSeen = monthQuestionsSeen + user.questionsSeenThisMonth;
     })
     updatedUsers.reverse();
     res.status(200).render('admin/admin', {
@@ -131,6 +137,9 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         demoLimitRegistrationRatio,
         unsubscribedUsersCount,
         totalCardsSeen,
+        totalQuestionsSeen,
+        monthCardsSeen,
+        monthQuestionsSeen,
         activePremiumSubscriptions,
         sources
     });

@@ -1,4 +1,5 @@
 const  sgMail = require('@sendgrid/mail');
+const moment = require('moment');
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
@@ -236,6 +237,7 @@ mail.adminInfoNewSubscription = function(user, callback){
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
           <p>Datum registrace: ${user.dateOfRegistration}</p>
+          <p>Datum vyčerpání free otázek: ${moment(user.reachedQuestionsLimitDate).locale('cs').format('LLLL')} </p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>

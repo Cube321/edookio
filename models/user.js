@@ -53,6 +53,10 @@ const UserSchema = new Schema ({
         type: Number,
         default: 0
     },
+    reachedQuestionsLimitDate: {
+        type: Date,
+        default: null
+    },
     isPremium: {
         type: Boolean,
         default: false

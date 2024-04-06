@@ -76,7 +76,12 @@ router.get('/category/:categoryId/section/:sectionId/testFinished', isLoggedIn, 
         wrong: parseInt(wrong),
         skipped: parseInt(skipped),
     }
-    let step = Math.round(100 / (counters.correct + counters.wrong + counters.skipped));
+    if(!user.isPremium && user.questionsSeenThisMonth > 50){
+        user.reachedQuestionsLimitDate = Date.now();
+        await user.save();
+    }
+    let step = 100 / (counters.correct + counters.wrong + counters.skipped);
+    step = step.toFixed(2);
     foundSection.countFinishedTest++;
     await foundSection.save();
     res.status(200).render('questions/finished', {counters, step, section: foundSection, category: foundCategory, nextSection: foundNextSection});
@@ -95,7 +100,12 @@ router.get('/category/:categoryId/testRandomFinished', isLoggedIn, catchAsync(as
         wrong: parseInt(wrong),
         skipped: parseInt(skipped),
     }
-    let step = Math.round(100 / (counters.correct + counters.wrong + counters.skipped));
+    if(!user.isPremium && user.questionsSeenThisMonth > 50){
+        user.reachedQuestionsLimitDate = Date.now();
+        await user.save();
+    }
+    let step = 100 / (counters.correct + counters.wrong + counters.skipped);
+    step = step.toFixed(2);
     res.status(200).render('questions/finishedRandom', {counters, step, category: foundCategory});
 }))
 
@@ -261,6 +271,9 @@ router.get('/category/:categoryId/section/:sectionId/questions/:questionId/delet
 
 //show reached monthly limit page
 router.get('/questions/reachedMonthlyLimit', isLoggedIn, catchAsync(async(req, res) => {
+    let {user} = req;
+    user.reachedQuestionsLimitDate = Date.now();
+    await user.save();
     res.status(200).render(`questions/reachedLimit`);
 }))
 

@@ -46,7 +46,7 @@
                         <div class="col-7 d-flex align-items-center">                    
                             <div>
                                 <p class="m-0 section-name">
-                                    <%= section.name %>
+                                    <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %>☆<% } %>
                                     <% if (!section.isPublic) { %>
                                         <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span>
                                         <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="text-small">Zveřejnit</a>
