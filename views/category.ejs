@@ -42,64 +42,67 @@
                 <% if (category.sections.length < 1) { %>
                     <p><%= texts.categoryPage.noPackages %></p>
                 <% } else { category.sections.forEach(section => { %>
-                    <div class="row py-2 section-row">
-                        <div class="col-7 d-flex align-items-center">                    
-                            <div>
-                                <p class="m-0 section-name">
-                                    <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %>☆<% } %>
-                                    <% if (!section.isPublic) { %>
-                                        <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span>
-                                        <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="text-small">Zveřejnit</a>
+                    <% if (section.isPublic || (currentUser && (currentUser.admin || currentUser.isEditor))) { %>
+                        <div class="row py-2 section-row">
+                            <div class="col-7 d-flex align-items-center">                    
+                                <div>
+                                    <p class="m-0 section-name">
+                                        <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %>☆<% } %>
+                                        <% if (!section.isPublic) { %>
+                                            <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span>
+                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="text-small">Zveřejnit</a>
+                                        <% } %>
+                                        <% if (section.isPublic && !section.testIsPublic && section.questions.length > 0 && (currentUser && (currentUser.admin || currentUser.isEditor))) { %>
+                                            <span class="text-muted text-smaller">[testové otázky čekají na zveřejnění]</span>
+                                            <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest" class="text-small">Zveřejnit</a>
+                                        <% } %>
+                                    </p>
+                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    <% if (currentUser && currentUser.isEditor) { %>
+                                        <a href="#" class="text-small" data-bs-toggle="modal" data-bs-target="#editSectionModal<%=section._id%>">Editovat</a>
                                     <% } %>
-                                    <% if (section.isPublic && !section.testIsPublic && section.questions.length > 0) { %>
-                                        <span class="text-muted text-smaller">[testové otázky čekají na zveřejnění]</span>
-                                        <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest" class="text-small">Zveřejnit</a>
-                                    <% } %>
-                                </p>
-                                <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                                <% if (currentUser && currentUser.isEditor) { %>
-                                    <a href="#" class="text-small" data-bs-toggle="modal" data-bs-target="#editSectionModal<%=section._id%>">Editovat</a>
-                                <% } %>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-3 d-flex flex-column justify-content-center align-items-center">
-                            <% if (!currentUser){ %> 
-                                <% if(!section.isPremium){ %> 
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit"><%= texts.categoryPage.start %></a>    
-                                <% } else { %>
+                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
+                                <% if (!currentUser){ %> 
+                                    <% if(!section.isPremium){ %> 
+                                        <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit"><%= texts.categoryPage.start %></a>    
+                                    <% } else { %>
+                                        <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
+                                    <% } %>  
+                                <% } else if(!currentUser.isPremium && section.isPremium){ %> 
                                     <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
-                                <% } %>  
-                            <% } else if(!currentUser.isPremium && section.isPremium){ %> 
-                                <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
-                            <% } else if(currentUser.sections.includes(section._id)) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right"><%= texts.categoryPage.repeat %></a>
-                            <% } else if (section.isUnfinished) { %> 
-                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right"><%= texts.categoryPage.continue %></a>
-                            <% } else { %> 
-                                <% if (section.cards.length > 0) { %>
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right"><%= texts.categoryPage.start %></a>
+                                <% } else if(currentUser.sections.includes(section._id)) { %> 
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/repeatSection" class="btn btn-sm btn-outline-danger btn-opakovat" style="float:right"><%= texts.categoryPage.repeat %></a>
+                                <% } else if (section.isUnfinished) { %> 
+                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/<%= section.lastSeenCard %>?continue=continue" class="btn btn-sm btn-outline-danger btn-pokracovat" style="float:right"><%= texts.categoryPage.continue %></a>
+                                <% } else { %> 
+                                    <% if (section.cards.length > 0) { %>
+                                        <a href="/category/<%= category.name %>/section/<%= section._id %>/card20/1" class="btn btn-sm btn-danger btn-spustit" style="float:right"><%= texts.categoryPage.start %></a>
+                                    <% } %>
                                 <% } %>
-                            <% } %>
-                            <% if (currentUser && section.questions.length > 0 && (!section.isPremium || (section.isPremium && currentUser.isPremium))) { %>
-                                <a href="/category/<%= category._id %>/section/<%= section._id %>/test" class="btn btn-sm btn-outline-danger m-1">Test</a>
-                            <% } %>
-                        </div>
-                        <div class="col-2 d-flex flex-column justify-content-center align-items-center cards-amount-div">
-                            <div class="d-flex justify-content-evenly align-items-center cards-amount-div">
-                                <p class="my-0 mx-1"><%= section.cards.length %> </p>
-                                <p class="text-muted text-small mb-0"><%= texts.categoryPage.cards %></p>
-                            </div>
-                            <div class="d-flex justify-content-evenly align-items-center cards-amount-div">
-                                <% if (section.testIsPublic && section.questions.length > 0) { %>
-                                    <p class="my-0 mx-1"><%= section.questions.length %> </p>
-                                    <p class="text-muted text-small mb-0">otázek</p>
+                                <% if (currentUser && section.questions.length > 0 && (section.testIsPublic || (currentUser.admin || currentUser.isEditor)) && (!section.isPremium || (section.isPremium && currentUser.isPremium))) { %>
+                                    <a href="/category/<%= category._id %>/section/<%= section._id %>/test" class="btn btn-sm btn-outline-danger m-1">Test</a>
                                 <% } %>
                             </div>
+                            <div class="col-2 d-flex flex-column justify-content-center align-items-center cards-amount-div">
+                                <div class="d-flex justify-content-evenly align-items-center cards-amount-div">
+                                    <p class="my-0 mx-1"><%= section.cards.length %> </p>
+                                    <p class="text-muted text-small mb-0"><%= texts.categoryPage.cards %></p>
+                                </div>
+                                <div class="d-flex justify-content-evenly align-items-center cards-amount-div">
+                                    <% if (section.testIsPublic && section.questions.length > 0) { %>
+                                        <p class="my-0 mx-1"><%= section.questions.length %> </p>
+                                        <p class="text-muted text-small mb-0">otázek</p>
+                                    <% } %>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <hr class="">
-                <% }) }%>
-            </div>
+                        <hr class="">
+                        <% } %>
+                    <% }) }%>
+                </div>
+            
         </div>
     </div>
 </div>
