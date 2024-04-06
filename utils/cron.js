@@ -43,8 +43,8 @@ cronHelpers.resetMonthlyCounters = catchAsync(async() => {
 // Schedule the function to run at midnight on the first day of every month
 cronHelpers.cronExpressionMonthly = '0 0 1 * *';
 
-// Schedule the function to run at 7 am every day
-cronHelpers.cronExpressionDaily = '0 6 * * *';
+// Schedule the function to run at 4 am every day (5 am on summer time)
+cronHelpers.cronExpressionDaily = '0 3 * * *';
 
 // Schedule the function to run every 1st second of every minute
 cronHelpers.cronExpressionMinutes = '1 * * * * *';
