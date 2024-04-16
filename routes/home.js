@@ -1,6 +1,7 @@
 const express = require('express');
 const Category = require('../models/category');
 const Card = require('../models/card');
+const Question = require('../models/question');
 const User = require('../models/user');
 const Section = require('../models/section');
 const router = express.Router();
@@ -13,9 +14,10 @@ router.get('/', isPremiumUser, catchAsync(async(req, res) => {
     const categories = await Category.find({});
     let numOfCategories = categories.length;
     const numOfCards = await Card.count();
+    const numOfQuestions = await Question.count();
     const numOfSections = await Section.count();
     sortByOrderNum(categories);
-    res.status(200).render('index', {categories, numOfCards, numOfSections, numOfCategories});
+    res.status(200).render('index', {categories, numOfCards, numOfQuestions, numOfSections, numOfCategories});
 }))
 
 function sortByOrderNum(array) {

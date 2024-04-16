@@ -58,6 +58,7 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     let totalQuestionsSeen = 0;
     let monthCardsSeen = 0;
     let monthQuestionsSeen = 0;
+    let reachedQuestionsLimit = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     let sources = {pratele: 0, ucitele: 0, instagram: 0, facebook: 0, google: 0, odjinud: 0, neuvedeno: 0};
 
@@ -83,6 +84,8 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activePremiumSubscriptions++}
         //count unsubscribed users
         if(user.hasUnsubscribed === true){unsubscribedUsersCount++};
+        //count free users who reached questions limit
+        if(!user.isPremium && user.questionsSeenThisMonth > 50){reachedQuestionsLimit++};
         //count users active in the last week
         if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){usersActiveInLastWeek++};
         //count premium activations in the last week
@@ -141,7 +144,8 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         monthCardsSeen,
         monthQuestionsSeen,
         activePremiumSubscriptions,
-        sources
+        sources,
+        reachedQuestionsLimit
     });
 }))
 

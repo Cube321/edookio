@@ -68,7 +68,7 @@
                         </div>
                         <div>
                             <p class="info-main"><%= numOfCards %> <%= texts.landingPage.pointOneMain %></p>
-                            <p class="info-secondary text-muted"><%= texts.landingPage.pointOneSecondary %></p>
+                            <p class="info-secondary text-muted">a <%= numOfQuestions %> testových otázek</p>
                         </div>
                     </div>
                     <div class="landing-info d-flex flex-row justify-content-evenly align-items-center">
@@ -102,7 +102,7 @@
                                     </div>
                                     <div class="col-9">
                                         <p class="info-main"><%= numOfCards %> <%= texts.landingPage.pointOneMain %></p>
-                                        <p class="info-secondary text-muted"><%= texts.landingPage.pointOneSecondary %></p>
+                                        <p class="info-secondary text-muted">a <%= numOfQuestions %> testových otázek</p>
                                     </div>
                                 </div>
                             </div>
@@ -151,7 +151,10 @@
                                         <div class="card-body cat-text d-flex flex-column justify-content-between">
                                             <h5 class="card-title"><%= cat.text %></h5>
                                             <div>
-                                                <p class="text-muted"><%= cat.numOfCards %>  <%= texts.landingPage.cards %></p>
+                                                <p class="text-muted">
+                                                    <%= cat.numOfCards %>  <%= texts.landingPage.cards %> <br>
+                                                    <span class="text-small"><%= cat.numOfQuestions %> otázek</span>
+                                                </p>
                                                 <a href="/category/<%= cat.name %>" class="btn btn-sm btn-danger"><%= texts.landingPage.study %></a>
                                             </div>
                                         </div>

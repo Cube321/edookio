@@ -12,7 +12,7 @@ module.exports.header = {
 
 module.exports.landingPage = {
     mainTitleStart: "Studuj práva efektivně s",
-    headerStatement: "Pusť se do studia práv s více než pěti tisíci kartiček s otázkami a odpověďmi. Skvělá interaktivní příprava na zkoušky.",
+    headerStatement: "Pusť se do studia práv s tisíci opakovacích kartiček a testových otázek. Skvělá interaktivní příprava na zkoušky.",
     studyFree: "Studuj zdarma",
     pointOneMain: "interaktivních kartiček",
     pointOneSecondary: "a přibývají každý týden",

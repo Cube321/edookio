@@ -47,7 +47,7 @@
                             <div class="col-7 d-flex align-items-center">                    
                                 <div>
                                     <p class="m-0 section-name">
-                                        <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %>☆<% } %>
+                                        <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %> <span style="color:gold;font:bold"> ☆</span><% } %>
                                         <% if (!section.isPublic) { %>
                                             <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span>
                                             <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="text-small">Zveřejnit</a>
@@ -59,6 +59,7 @@
                                     </p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
                                     <% if (currentUser && currentUser.isEditor) { %>
+                                        <p class="mb-0 text-small text-muted">Spuštění: <%= section.countStarted %> | <%= section.countStartedTest %></p>
                                         <a href="#" class="text-small" data-bs-toggle="modal" data-bs-target="#editSectionModal<%=section._id%>">Editovat</a>
                                     <% } %>
                                 </div>
