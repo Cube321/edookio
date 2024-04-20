@@ -416,29 +416,54 @@ form .form-borders {
 }
 
 /*CLASH CHART*/
-#chart {
+.clash-item .number-wrapper {
     display: flex;
-  }
+    justify-content: center;
+    align-items: end;
+    min-height: 7rem;
+}   
 
-#chart .bar {
-    width: 50px;
-    height: 200px;
-    background-color: #3498db;
-    margin: 0 10px;
-    display: flex;
-    align-items: flex-end;
-  }
+.clash-item .number {
+    border: 5px solid #E80F88;
+    border-radius: 100%;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+}
 
-#chart .bar span {
-    width: 100%;
-    background-color: #2c3e50;
+.clash-item .number.last-month {
+    border-color: #AF0171;
+}
+
+.clash-item .points {
     text-align: center;
-    color: white;
-    padding: 5px 0;
-    box-sizing: border-box;
-  }
+    font-size: medium;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 0px;
+}
 
-  @media only screen and (max-width: 1200px) {
+.clash-item .name {
+
+}
+
+.clash-icon {
+    background-color: #EEEEEE;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 100%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.clash-icon img {
+    width: 60%;
+    height: 60%;
+}
+
+@media only screen and (max-width: 1200px) {
     .cards-amount-div {
         flex-direction: column;
         justify-content: center!important;

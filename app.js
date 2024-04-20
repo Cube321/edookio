@@ -31,10 +31,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 //CRON JOBS
-//check if premium ended for each user every day at 7AM
-cron.schedule(cronHelpers.cronExpressionDaily, cronHelpers.checkPremiumEnded);
+//check if premium ended for each user every day at 5AM
+cron.schedule(cronHelpers.cronExpressionDaily5AM, cronHelpers.checkPremiumEnded);
 //resets monthly counters every first day of a month
 cron.schedule(cronHelpers.cronExpressionMonthly, cronHelpers.resetMonthlyCounters);
+//handle streaks logic daily at 1AM
+cron.schedule(cronHelpers.cronExpressionDaily3AM, cronHelpers.resetStreaks);
+//send streak reminder daily at 9PM
+cron.schedule(cronHelpers.cronExpressionDaily9PM, cronHelpers.streakReminderEmail);
 
 //routes
 const cardRoutes = require('./routes/cards');
@@ -48,6 +52,7 @@ const blogRoutes = require('./routes/blog');
 const apiRoutes = require('./routes/api');
 const card20Routes = require('./routes/card20');
 const questionsRoutes = require('./routes/questions');
+const invoicesRoutes = require('./routes/invoices');
 
 const dbUrl = process.env.DB_URL;
 
@@ -200,6 +205,7 @@ app.use('/', blogRoutes);
 app.use('/', apiRoutes);
 app.use('/', card20Routes);
 app.use('/', questionsRoutes);
+app.use('/', invoicesRoutes);
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here

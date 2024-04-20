@@ -87,3 +87,9 @@ a:hover {
 .btn-check:checked+.btn-outline-danger {
     background-color: #E80F88!important;
 }
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #AF0171;
+}

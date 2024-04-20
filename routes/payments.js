@@ -63,13 +63,16 @@ router.post('/webhook', async (req, res) => {
     
     const data = event.data.object
     let xmasDiscount = false; 
-    if(data.plan.id == process.env.PRODUCT_YEARLY_XMAS ||
-       data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS ||
-       data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
-       data.plan.id == process.env.PRODUCT_DAILY_XMAS
-      ) {
-        xmasDiscount = true;
-      }
+    if(data && data.plan){
+      if(data.plan.id == process.env.PRODUCT_YEARLY_XMAS ||
+        data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS ||
+        data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
+        data.plan.id == process.env.PRODUCT_DAILY_XMAS
+       ) {
+         xmasDiscount = true;
+       }
+    }
+    
 
   switch (event.type) {
       //manage subscription (new/update/cancel)
@@ -77,7 +80,7 @@ router.post('/webhook', async (req, res) => {
         //changed payment period
         console.log('UPDATED RUNNING: webhook customer.subscription.updated');
         console.log(`data.plan.id: ${data.plan.id}`);
-        const user = await User.findOne({billingId: data.customer});
+        let user = await User.findOne({billingId: data.customer});
         if(!user){
           console.log('Uživatel s tímto platebním ID nebyl nalezen');
           return res.sendStatus(404);
@@ -93,9 +96,11 @@ router.post('/webhook', async (req, res) => {
           //break so the rest of the switch code below will not run
           break;
         }
-
+        
+        //handle subscription
         if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_YEARLY || data.plan.id == process.env.PRODUCT_YEARLY_XMAS)) {
           user.plan = "yearly";
+          user = createOpenInvoice(user, data, "yearly");
           user.endDate = moment(today).add('1','year').format();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
@@ -115,6 +120,7 @@ router.post('/webhook', async (req, res) => {
   
         if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_MONTHLY || data.plan.id == process.env.PRODUCT_MONTHLY_XMAS)) {
           user.plan = "monthly";
+          user = createOpenInvoice(user, data, "monthly");
           user.endDate = moment(today).add('1','month').format();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
@@ -135,6 +141,7 @@ router.post('/webhook', async (req, res) => {
 
         if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_HALFYEAR || data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS)) {
           user.plan = "halfyear";
+          user = createOpenInvoice(user,data, "halfyear");
           user.endDate = moment(today).add('6','month').format();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
@@ -155,6 +162,7 @@ router.post('/webhook', async (req, res) => {
 
         if (!data.canceled_at && (data.plan.id == process.env.PRODUCT_DAILY || data.plan.id == process.env.PRODUCT_DAILY_XMAS)) {
           user.plan = "daily";
+          user = createOpenInvoice(user, data, "daily");
           user.endDate = moment(today).add('1','day').format();
           //format endDate
           const endDate = moment(user.endDate).locale('cs').format('LL');
@@ -187,7 +195,6 @@ router.post('/webhook', async (req, res) => {
         break
     }
   }
-  
     res.sendStatus(200)
 })
 
@@ -197,5 +204,17 @@ router.post('/billing', async (req, res) => {
   const session = await Stripe.createBillingSession(customer)
   res.status(200).json({ url: session.url })
 })
+
+//HELPERS
+const createOpenInvoice = (user, data, plan) => {
+  //create open invoice
+  user.hasOpenInvoice = true;
+  user.openInvoiceData = {
+      amount: data.items.data[0].plan.amount / 100,
+      date: Date.now(),
+      plan: plan
+  }
+  return user;
+}
 
   module.exports = router;

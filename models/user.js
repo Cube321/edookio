@@ -53,6 +53,18 @@ const UserSchema = new Schema ({
         type: Number,
         default: 0
     },
+    actionsToday: {
+        type: Number,
+        default: 0
+    },
+    streakLength: {
+        type: Number,
+        default: 0
+    },
+    hasUnsubscribedFromStreak: {
+        type: Boolean,
+        default: false
+    },
     reachedQuestionsLimitDate: {
         type: Date,
         default: null
@@ -71,6 +83,11 @@ const UserSchema = new Schema ({
     },
     billingId: String,
     invoices: Array,
+    hasOpenInvoice: {
+        type: Boolean,
+        default: false
+    },
+    openInvoiceData: {},
     plan: { type: String, enum: ['none', 'yearly', 'monthly', 'halfyear', 'daily'], default: 'none' },
     endDate: {type: Date, default: null},
     isGdprApproved: {

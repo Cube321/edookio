@@ -60,6 +60,29 @@
                     </div>
                     <div class="col-8 d-flex align-items-center">
                         <%= user.questionsSeenTotal %> 
+                        <a href="/admin/<%= user._id %>/questionsSeenTotalToZero" class="btn btn-sm btn-outline-danger mx-3">Vynulovat</a>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Počet akcí (dnes)</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.actionsToday %> 
+                        <a href="/admin/<%= user._id %>/actionsTodayToZero" class="btn btn-sm btn-outline-danger mx-3">Vynulovat</a>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Streak</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.streakLength %> 
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Streak připomínky odmítnuty</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.hasUnsubscribedFromStreak %> 
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">

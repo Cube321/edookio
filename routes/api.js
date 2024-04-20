@@ -42,6 +42,10 @@ router.get('/api/getCards/section/:sectionId', catchAsync(async(req, res) => {
         //increase cardsSeen by 1
         user.cardsSeen++;
         user.cardsSeenThisMonth++;
+        user.actionsToday++;
+        if(user.actionsToday === 10){
+            user.streakLength++;
+        }
         await user.save();
     }
 
@@ -150,12 +154,16 @@ router.post('/api/updateLastSeenCard/section/:sectionId/:cardNum', catchAsync(as
         //increase cardSeen by 1
         user.cardsSeen++;
         user.cardsSeenThisMonth++;
+        user.actionsToday++;
+        if(user.actionsToday === 10){
+            user.streakLength++;
+        }
         await user.save();
     }
     res.status(201).send({demoCardsSeen});
 }))
 
-//update Card counter on User
+//update Card counter on User (only for shuffle - probably)
 router.post('/api/updateUsersCardsCounters', catchAsync(async(req, res) => {
     let user = req.user;
     //update date of user's last activity
@@ -163,6 +171,10 @@ router.post('/api/updateUsersCardsCounters', catchAsync(async(req, res) => {
     //increase cardSeen by 1
     user.cardsSeen++;
     user.cardsSeenThisMonth++;
+    user.actionsToday++;
+    if(user.actionsToday === 10){
+        user.streakLength++;
+    }
     await user.save();
     res.sendStatus(201);
 }))
@@ -222,6 +234,10 @@ router.post('/api/updateUsersQuestionsCounters', isLoggedIn, catchAsync(async(re
         user.lastActive = moment();
         user.questionsSeenThisMonth++;
         user.questionsSeenTotal++;
+        user.actionsToday++;
+        if(user.actionsToday === 10){
+            user.streakLength++;
+        }
         await user.save();
         res.sendStatus(201);
     } else {

@@ -6,6 +6,7 @@ const Card = require('../models/card');
 const Category = require('../models/category');
 const Section = require('../models/section'); 
 const Stats = require('../models/stats'); 
+const Settings = require('../models/settings'); 
 const { isLoggedIn, isAdmin } = require('../utils/middleware');
 const moment = require('moment');
 const mail = require('../mail/mail_inlege');
@@ -178,6 +179,35 @@ router.get('/admin/users', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     });
 }))
 
+//show all active subsriptions
+router.get('/admin/activeSubscriptions', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
+    const users = await User.find({isPremium: true});    
+
+    let updatedUsers = [];
+
+    users.forEach(user => {
+        if(user.plan !== "none" && !user.premiumGrantedByAdmin){
+            let newUser = user;
+            newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
+            newUser.updatedDateOfActivation = moment(user.premiumDateOfActivation).locale('cs').format('LL');
+            if(user.premiumDateOfUpdate){
+                newUser.updatedDateOfUpdate = moment().locale('cs').format('LL');
+            } else {
+                newUser.updatedDateOfUpdate = "-"
+            }
+            updatedUsers.push(newUser);
+        }
+    })
+    //sort users according to the date of activation
+    updatedUsers.sort((a, b) => moment(a.premiumDateOfActivation).valueOf() - moment(b.premiumDateOfActivation).valueOf());
+    updatedUsers.reverse();
+
+    //render page
+    res.status(200).render('admin/activeSubscriptions', {
+        users: updatedUsers
+    });
+}))
+
 
 //DETAIL OF A USER (show)
 //show details of user to admin
@@ -225,7 +255,23 @@ router.get('/admin/:userId/showDetail', isLoggedIn, isAdmin, catchAsync(async(re
 router.get('/admin/:userId/cardsSeenToZero', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     let {userId} = req.params;
     await User.findByIdAndUpdate(userId, {cardsSeen: 0});
-    req.flash('success','Vynulováno.');
+    req.flash('success','Vynulováno - cardsSeen.');
+    res.redirect(`/admin/${userId}/showDetail`);
+}))
+
+//set user.questionsSeenTotal to 0
+router.get('/admin/:userId/questionsSeenTotalToZero', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    await User.findByIdAndUpdate(userId, {questionsSeenTotal: 0});
+    req.flash('success','Vynulováno - questionsSeenTotal.');
+    res.redirect(`/admin/${userId}/showDetail`);
+}))
+
+//set user.actionsToday to 0
+router.get('/admin/:userId/actionsTodayToZero', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    await User.findByIdAndUpdate(userId, {actionsToday: 0});
+    req.flash('success','Vynulováno - actionsToday.');
     res.redirect(`/admin/${userId}/showDetail`);
 }))
 
@@ -340,6 +386,13 @@ router.post('/admin/email', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
                 mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
             }
         })
+    } else if (groupChoice === "radioUchazec"){
+        //send email to Uchazeči
+        allUsers.forEach(user => {
+            if (user.hasUnsubscribed === false && user.faculty === "Uchazeč"){
+                mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
+            }
+        })
     } else if (groupChoice === "radioTest"){
         mail.sendTestEmail('pravnicime@gmail.com', subjectAll, textAll);
     //should never run, implies some problem with radio buttons
@@ -360,6 +413,21 @@ router.get('/admin/email/unsubscribe', catchAsync(async(req, res) => {
         user.hasUnsubscribed = true;
         await user.save();
         req.flash('success','Zasílání informačních e-mailů na váš e-mail bylo zrušeno.');
+        return res.redirect('/');
+    } else {
+        req.flash('error','Omlouváme se, něco se nepovedlo. Zkuste to prosím později.');
+        return res.redirect('/');
+    }
+}))
+
+// email (unsubscribed streak)
+router.get('/admin/email/unsubscribeStreak', catchAsync(async(req, res) => {
+    let {email} = req.query;
+    let user = await User.findOne({email});
+    if(user){
+        user.hasUnsubscribedFromStreak = true;
+        await user.save();
+        req.flash('success','Zasílání připomínek na váš e-mail bylo zrušeno.');
         return res.redirect('/');
     } else {
         req.flash('error','Omlouváme se, něco se nepovedlo. Zkuste to prosím později.');
@@ -531,9 +599,17 @@ router.post('/invoice/new/:userId', catchAsync(async(req, res) => {
         invoiceAmount
     }
     foundUser.invoices.unshift(newInvoice);
+    foundUser.hasOpenInvoice = false;
+    foundUser.opanInvoiceData = {};
     await foundUser.save();
+    //save faculties to DB
+    await Settings.findOneAndUpdate(
+        { settingName: 'lastInvoiceNumber' },
+        { settingValue: invoiceNum },
+        { upsert: true, new: true }
+    );
     req.flash('success','Faktura byla vložena');
-    res.status(201).redirect(`/admin/${userId}/showDetail`);
+    res.status(201).redirect(`/invoices/open`);
 }))
 
 router.get('/invoice/remove/:userId/:invoiceNum', catchAsync(async(req, res) => {
@@ -573,6 +649,65 @@ router.get('/invoice/request/:invoiceNum', catchAsync(async(req, res) => {
     res.status(200).redirect(`/auth/user/profile`);
 }))
 
+
+//SOUBOJ FAKULT
+router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
+    let faculties = {
+        prfUp: 0,
+        prfUk: 0,
+        prfMuni: 0,
+        prfZcu: 0,
+        prfJina: 0,
+        prfNestuduji: 0
+    }
+    let total = {
+        prfUp: 0,
+        prfUk: 0,
+        prfMuni: 0,
+        prfZcu: 0,
+        prfJina: 0,
+        prfNestuduji: 0
+    }
+    
+    let users = await User.find();
+    users.forEach(user => {
+        //count points
+        if(user.faculty === "PrF UP"){
+            faculties.prfUp = faculties.prfUp + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfUp++;
+        };
+        if(user.faculty === "PrF UK"){
+            faculties.prfUk = faculties.prfUk + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfUk++;
+        };
+        if(user.faculty === "PrF MUNI"){
+            faculties.prfMuni = faculties.prfMuni + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfMuni++;
+        };
+        if(user.faculty === "PrF ZČU"){
+            faculties.prfZcu = faculties.prfZcu + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfZcu++;
+        };
+        if(user.faculty === "Jiná"){
+            faculties.prfJina = faculties.prfJina + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfJina++;
+        };
+        if(user.faculty === "Nestuduji"){
+            faculties.prfNestuduji = faculties.prfNestuduji + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfNestuduji++;
+        };
+    })
+    //order faculties according to the points - top to bottom
+    let facultiesOrdered = Object.entries(faculties);
+    facultiesOrdered.sort((a, b) => b[1] - a[1]);
+
+    //get data for last month
+    const clashSavedStats = await Stats.findOne({eventName: 'clashSavedStats'});
+    let facultiesLastMonth = clashSavedStats.payload.pop();
+
+    //render
+    res.render(`clash`, {facultiesOrdered, facultiesPrevious: facultiesLastMonth.data, total});
+}))
 
 
 

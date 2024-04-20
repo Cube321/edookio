@@ -7,17 +7,17 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <% if (currentUser && currentUser.admin) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/admin">Admin</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/users">Uživatelé</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/email">Email</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/categories">Předměty</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Administrace
+              </a>
+              <ul class="dropdown-menu vybrat-predmet">
+                <li><a class="dropdown-item" href="/admin/admin">Admin</a></li>
+                <li><a class="dropdown-item" href="/admin/users">Uživatelé</a></li>
+                <li><a class="dropdown-item" href="/invoices/open">Fakturace</a></li>
+                <li><a class="dropdown-item" href="/admin/email">Email</a></li>
+                <li><a class="dropdown-item" href="/admin/categories">Předměty</a></li>
+              </ul>
             </li>
           <% } %>
           <% if (currentUser && currentUser.isEditor) { %>
@@ -46,9 +46,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="/about">O projektu</a>
                 </li>
-                <% if (currentUser && currentUser.admin) { %>
+                <% if (currentUser && currentUser.admin) { %>
                   <li class="nav-item">
-                    <a class="nav-link" href="/blog">Blog</a>
+                    <a class="nav-link" href="/clash/soubojfakult">Souboj fakult <span class="badge rounded-pill bg-danger">New</span></a>
                   </li>
                 <% } %>
                 <% if (!currentUser) { %>
@@ -59,14 +59,15 @@
                   <a class="nav-link" href="/auth/user/new">Registrace</a>
                 </li>
               <% } else { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/cards/saved/">Uložené kartičky</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/auth/user/profile">Můj účet</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/auth/user/logout">Odhlásit se</a>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Můj účet
+                  </a>
+                  <ul class="dropdown-menu vybrat-predmet">
+                      <li><a class="dropdown-item" href="/auth/user/profile">Profil</a></li>
+                      <li><a class="dropdown-item" href="/cards/saved">Uložené kartičky</a></li>
+                      <li><a class="dropdown-item" href="/auth/user/logout">Odhlásit se</a></li>
+                  </ul>
                 </li>
               <% } %>
           </ul>

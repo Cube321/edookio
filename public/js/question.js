@@ -151,7 +151,6 @@ $(document).ready(function() {
             $(this).removeClass('text-gradient');
         })
 
-
     }
 
     function renderListOfQuestions(){
