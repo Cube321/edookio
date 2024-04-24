@@ -284,7 +284,8 @@
                     </div>
                     <% if(user.isPremium && user.plan !== "none"){ %> 
                         <div class="col-8 d-flex align-items-center">
-                            před odstraněním účtu je nutné zrušit předplatné
+                            před odstraněním účtu je vhodné zrušit předplatné
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal" class="btn btn-outline-danger btn-sm mx-2">Odstranit účet</a>
                         </div>
                     <% } else { %>
                         <div class="col-8 d-flex justify-content-end align-items-start">
@@ -322,12 +323,23 @@
                         <tr>
                           <th>Číslo dokladu</th>
                           <th>Částka</th>
+                          <th>Období</th>
                           <th class="text-center">Datum vystavení</th>
                         </tr>
+                            <% user.invoicesDbObjects.forEach(invoice => { %>
+                                <tr>
+                                    <td><a href="/invoice/show/<%= invoice._id %>" target="_blank""><%= invoice.identificationNumber %></a></td>
+                                    <td><%= invoice.amount %> Kč</td>
+                                    <td><%= invoice.subscriptionPeriod %></td>
+                                    <td class="text-center"><%= invoice.dateIssued %></td>
+                                    <td><a href="/invoice/removeInvoice/<%= user._id %>/<%= invoice._id %>" class="btn btn-sm btn-danger">X</a></td>
+                                </tr>
+                            <% }) %>
                             <% user.invoices.forEach(invoice => { %>
                                 <tr>
                                     <td><%= invoice.invoiceNum %></td>
                                     <td><%= invoice.invoiceAmount %> Kč</td>
+                                    <td></td>
                                     <td class="text-center"><%= invoice.invoiceDate %></td>
                                     <td><a href="/invoice/remove/<%= user._id %>/<%= invoice.invoiceNum %>" class="btn btn-sm btn-danger">X</a></td>
                                 </tr>
@@ -340,10 +352,13 @@
                 <div class="row p-3">
                     <form action="/invoice/new/<%= user._id %>" method="POST">
                         <div class="row g-3 align-items-center">
-                            <div class="col-3">
+                            <div class="col-2">
                                 <input type="text" id="invoiceNum" name="invoiceNum" placeholder="Číslo FA" class="form-control" required>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
+                                <input type="text" id="subscriptionPeriod" name="subscriptionPeriod" placeholder="Období" title="yearly, halfyear, monthly, daily" class="form-control" required>
+                            </div>
+                            <div class="col-2">
                                 <input type="number" id="invoiceAmount" name="invoiceAmount" placeholder="Částka" class="form-control" required>
                             </div>
                             <div class="col-3">

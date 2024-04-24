@@ -96,7 +96,7 @@ mail.adminInfoNewUser = function(newUser, callback){
           <p>Email: ${newUser.email}</p>
           <p>Fakulta: ${newUser.faculty}</p>
           <p>Zdroj: ${newUser.source}</p>
-          <p>Datum registrace: ${newUser.dateOfRegistration}</p>
+          <p>Datum registrace: ${moment(newUser.dateOfRegistration).locale('cs').format('LLLL')}</p>
           <p>Premium: ${newUser.isPremium}</p>
           <p>Stripe ID: ${newUser.billingId}</p>
           <p>Plán předplatného: ${newUser.plan}</p>
@@ -236,12 +236,12 @@ mail.adminInfoNewSubscription = function(user, callback){
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
-          <p>Datum registrace: ${user.dateOfRegistration}</p>
+          <p>Datum registrace: ${moment(user.dateOfRegistration).locale('cs').format('LLLL')}</p>
           <p>Datum vyčerpání free otázek: ${moment(user.reachedQuestionsLimitDate).locale('cs').format('LLLL')} </p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${user.endDate}</p>
+          <p>Konec předplatného: ${moment(user.endDate).locale('cs').format('LLLL')}</p>
       `
     };
   //send the mail
@@ -263,11 +263,11 @@ mail.adminInfoSubscriptionUpdated = function(user, endDate, callback){
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
-          <p>Datum registrace: ${user.dateOfRegistration}</p>
+          <p>Datum registrace: ${moment(user.dateOfRegistration).locale('cs').format('LLLL')}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${endDate}</p>
+          <p>Konec předplatného: ${moment(endDate).locale('cs').format('LLLL')}</p>
       `
     };
   //send the mail
@@ -454,11 +454,11 @@ mail.adminInfoSubscriptionCanceled = function(user, endDate, callback){
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
-          <p>Datum registrace: ${user.dateOfRegistration}</p>
+          <p>Datum registrace: ${moment(user.dateOfRegistration).locale('cs').format('LLLL')}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${endDate}</p>
+          <p>Konec předplatného: ${moment(endDate).locale('cs').format('LLLL')}</p>
       `
     };
   //send the mail
@@ -807,7 +807,7 @@ mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
       subject: subject,
       html: `${text}
               <br />
-              <p style="font-size:0.8rem;color=grey;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
+              <p style="font-size:0.6rem;color=grey;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
     };
   //send the mail
   sgMail.send(msg, function(err) {
@@ -826,7 +826,7 @@ mail.sendTestEmail = function(email, subject, text, callback){
       html: `${text}
               <br />
               
-              <p style="font-size:0.8rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
+              <p style="font-size:0.6rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
     };
   //send the mail
   sgMail.send(msg, function(err) {

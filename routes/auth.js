@@ -15,6 +15,7 @@ const moment = require('moment');
 //my profile view page
 router.get('/auth/user/profile', isLoggedIn, catchAsync(async(req, res) => {
     const {user} = req;
+    await user.populate('invoicesDbObjects');
     let endDate = "";
     let dateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
     if(user.isPremium){

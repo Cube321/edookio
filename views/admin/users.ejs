@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-12 mb-3">
             <h5>Registrovaní uživatelé <span class="text-muted">(<%= users.length %>)</span> | <a href="/admin/activeSubscriptions">Aktivní předplatitelé</a></h5>
+            <span class="text-smaller">Řazení: <a href="/admin/users?order=basic">Základní</a> | <a href="/admin/users?order=cards">Kartičky</a> | <a href="/admin/users?order=questions">Otázky</a> | <a href="/admin/users?order=streak">Streak</a></span>
         </div>
     </div>
     <% users.forEach((user, i) => { %> 
@@ -30,7 +31,7 @@
                 </div>
             </div>
             <div class="col-sm-1 col-1">
-                <%= user.cardsSeen %>
+                <%= user.cardsSeen %> | <%= user.questionsSeenTotal %> | <%= user.streakLength %>
             </div>
             <% if(user.isPremium){ %> 
                 <div class="col-sm-1 col-4">Premium <% if(user.premiumGrantedByAdmin){ %>(A) <% } %></div>

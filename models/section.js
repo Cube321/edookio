@@ -64,6 +64,32 @@ const SectionSchema = new Schema({
         type: Number,
         default: 0
     },
+    feedbackCards: [],
+    ratingCards: {
+        type: Number,
+        default: 0
+    },
+    votesAmountCards: {
+        type: Number,
+        default: 0
+    },
+    votesValueCards: {
+        type: Number,
+        default: 0
+    },
+    feedbackQuestions: [],
+    ratingQuestions: {
+        type: Number,
+        default: 0
+    },
+    votesAmountQuestions: {
+        type: Number,
+        default: 0
+    },
+    votesValueQuestions: {
+        type: Number,
+        default: 0
+    }
 })
 
 //write .post delete middleware (course, video 466) 14. 11. 2022

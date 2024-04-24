@@ -83,6 +83,7 @@ const UserSchema = new Schema ({
     },
     billingId: String,
     invoices: Array,
+    invoicesDbObjects: [{type : Schema.Types.ObjectId, ref: 'Invoice'}],
     hasOpenInvoice: {
         type: Boolean,
         default: false

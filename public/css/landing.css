@@ -291,16 +291,19 @@ body {
     }
   }
 
+  @media only screen and (max-width: 768px) {
+    .streak-box {
+        margin-bottom: 4rem;
+        margin-top: -4rem;
+    }
+  }
+
   @media only screen and (max-width: 576px) {
     .text-center-on-mobile {
         text-align: center;
     }
     .jumbotron-heading {
         font-size: 6vh;
-    }
-    .streak-box {
-        margin-bottom: 4rem;
-        margin-top: -4rem;
     }
     .streak-card {
         width: 200px;

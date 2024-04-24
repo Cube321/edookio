@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12 mb-3">
-            <h5>Faktury k vystavení <span class="text-muted">(<%= users.length %>)</span></h5>
+            <h5>Faktury k vystavení <span class="text-muted">(<%= users.length %>)</span> | <a href="/invoices/issued">Vystavené faktury</a></h5>
         </div>
     </div>
     <% users.forEach((user, i) => { %> 
@@ -14,14 +14,11 @@
                             <div class="col-12 col-lg-2">
                                 <p class="mt-1 mb-0 text-bold"><%= user.email %></p>
                             </div>
-                            <div class="col-12 col-lg-2">
-                                <p class="mt-1 mb-0">
-                                    <% if (user.plan === "yearly") { %>roční<% } %>
-                                    <% if (user.plan === "monthly") { %>měsíční<% } %>
-                                    <% if (user.plan === "halfyear") { %>půlroční<% } %>
-                                    <% if (user.plan === "daily") { %>denní<% } %>
-                                     do <%= user.endDate %>
-                                </p>
+                            <div class="col-12 col-lg-1">
+                                <input type="text" id="subscriptionPeriod" name="subscriptionPeriod" placeholder="Období" value="<%= user.plan %>" class="form-control" required>
+                            </div>
+                            <div class="col-12 col-lg-1">
+                                <%= user.endDate %>
                             </div>
                             <div class="col-12 col-lg-2">
                                 <input type="text" id="invoiceNum" name="invoiceNum" placeholder="Číslo FA" value="<%= lastInvoiceNumber + i + 1 %>" class="form-control" required>
@@ -35,8 +32,9 @@
                             <div class="col-12 col-lg-2">
                                 <input type="date" id="invoiceDate" name="invoiceDate" value="<%= user.date %>" class="form-control" required>
                             </div>
-                            <div class="col-12 col-lg-2">
-                                <button type="submit" class="btn btn-sm btn-danger w-100">Vložit</button>
+                            <div class="col-12 col-lg-2 d-flex justify-content-between">
+                                <button type="submit" class="btn btn-sm btn-danger w-100 mx-2">Vložit</button>
+                                <a class="btn btn-sm btn-danger" href="/invoice/closeInvoice/<%= user._id %>">X</a>
                             </div>
                         </div>
                     </form>

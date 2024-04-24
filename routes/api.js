@@ -149,15 +149,21 @@ router.post('/api/updateLastSeenCard/section/:sectionId/:cardNum', catchAsync(as
         if(unfinishedSectionIndex > -1){user.unfinishedSections[unfinishedSectionIndex].lastCard = parseInt(cardNum)};
         //mark modified nested objects - otherwise Mongoose does not see it and save it
         user.markModified('unfinishedSections');
-        //update date of user's last activity
-        user.lastActive = moment();
-        //increase cardSeen by 1
-        user.cardsSeen++;
-        user.cardsSeenThisMonth++;
-        user.actionsToday++;
-        if(user.actionsToday === 10){
-            user.streakLength++;
+        
+        //count new actions only every two seconds
+        let now = moment();
+        if(!user.lastActive || now.diff(user.lastActive, 'seconds') >= 2){
+            //update date of user's last activity
+            user.lastActive = moment();
+            //increase cardSeen by 1
+            user.cardsSeen++;
+            user.cardsSeenThisMonth++;
+            user.actionsToday++;
+            if(user.actionsToday === 10){
+                user.streakLength++;
+            }
         }
+        
         await user.save();
     }
     res.status(201).send({demoCardsSeen});
@@ -166,16 +172,20 @@ router.post('/api/updateLastSeenCard/section/:sectionId/:cardNum', catchAsync(as
 //update Card counter on User (only for shuffle - probably)
 router.post('/api/updateUsersCardsCounters', catchAsync(async(req, res) => {
     let user = req.user;
-    //update date of user's last activity
-    user.lastActive = moment();
-    //increase cardSeen by 1
-    user.cardsSeen++;
-    user.cardsSeenThisMonth++;
-    user.actionsToday++;
-    if(user.actionsToday === 10){
-        user.streakLength++;
-    }
-    await user.save();
+    let now = moment();
+        //count new actions only every two seconds
+        if(!user.lastActive || now.diff(user.lastActive, 'seconds') >= 2){
+            //update date of user's last activity
+            user.lastActive = moment();
+            //increase cardSeen by 1
+            user.cardsSeen++;
+            user.cardsSeenThisMonth++;
+            user.actionsToday++;
+            if(user.actionsToday === 10){
+                user.streakLength++;
+            }
+            await user.save();
+        }
     res.sendStatus(201);
 }))
 
@@ -231,18 +241,58 @@ async function getRandomQuestions(cat, isUserPremium){
 router.post('/api/updateUsersQuestionsCounters', isLoggedIn, catchAsync(async(req, res) => {
     if(req.user){
         let user = req.user;   
-        user.lastActive = moment();
-        user.questionsSeenThisMonth++;
-        user.questionsSeenTotal++;
-        user.actionsToday++;
-        if(user.actionsToday === 10){
-            user.streakLength++;
+        let now = moment();
+        //count new actions only every two seconds
+        if(!user.lastActive || now.diff(user.lastActive, 'seconds') >= 2){
+            user.lastActive = moment();
+            user.questionsSeenThisMonth++;
+            user.questionsSeenTotal++;
+            user.actionsToday++;
+            if(user.actionsToday === 10){
+                user.streakLength++;
+            }
+            await user.save();
         }
-        await user.save();
         res.sendStatus(201);
     } else {
         res.sendStatus(404);
     }
+}))
+
+
+
+//API ROUTES FOR RATING
+router.post('/api/updateRating/section/:sectionId/:ratingValue', catchAsync(async(req, res) => {
+    let {sectionId, ratingValue} = req.params;
+    let {type} = req.query;
+    let section = await Section.findById(sectionId);
+    if(type === "cards"){
+        section.votesAmountCards++;
+        section.votesValueCards = section.votesValueCards + Number(ratingValue);
+        section.ratingCards = (section.votesValueCards / section.votesAmountCards).toFixed(2);
+    }
+    if(type === "questions"){
+        section.votesAmountQuestions++;
+        section.votesValueQuestions = section.votesValueQuestions + Number(ratingValue);
+        section.ratingQuestions = (section.votesValueQuestions / section.votesAmountQuestions).toFixed(2);
+    }
+    await section.save();
+    res.sendStatus(201);
+}))
+
+router.post('/api/saveFeedback/section/:sectionId/', catchAsync(async(req, res) => {
+    let {sectionId} = req.params;
+    let {type} = req.query;
+    let {text} = req.body;
+    let section = await Section.findById(sectionId);
+    if(type === "cards"){
+        section.feedbackCards.unshift(text);
+    }
+    if(type === "questions"){
+        section.feedbackQuestions.unshift(text);
+    }
+    await section.save();
+    res.sendStatus(201);
 }))
 
 

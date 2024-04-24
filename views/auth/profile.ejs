@@ -182,6 +182,13 @@
                             <th class="text-center">Částka</th>
                             <th class="text-center">Vystavena</th>
                             </tr>
+                                <% user.invoicesDbObjects.forEach((invoice, index) => { %>
+                                    <tr>
+                                        <td><a href="/invoice/show/<%= invoice._id %>" target="_blank"><%= invoice.identificationNumber %></a></td>
+                                        <td class="text-center"><%= invoice.amount %> Kč</td>
+                                        <td class="text-center"><%= invoice.dateIssued %></td>
+                                    </tr>
+                                <% }) %>
                                 <% user.invoices.forEach((invoice, index) => { %>
                                     <tr>
                                         <% if(!invoice.isRequested){ %>

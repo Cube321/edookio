@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
+const Invoice = require('../models/invoice');
 const Card = require('../models/card');
 const Category = require('../models/category');
 const Section = require('../models/section'); 
@@ -60,6 +61,7 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     let monthCardsSeen = 0;
     let monthQuestionsSeen = 0;
     let reachedQuestionsLimit = 0;
+    let hasUnsubscribedFromStreak = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     let sources = {pratele: 0, ucitele: 0, instagram: 0, facebook: 0, google: 0, odjinud: 0, neuvedeno: 0};
 
@@ -95,6 +97,8 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         if(user.premiumDateOfUpdate && moment(user.premiumDateOfUpdate).isAfter(moment().subtract(1, 'week'))){premiumUpdatesInLastWeek++};
         //count premium deactivations in the last week
         if(user.premiumDateOfCancelation && moment(user.premiumDateOfCancelation).isAfter(moment().subtract(1, 'week'))){premiumDeactivationsInLastWeek++};
+        //count users unsubscribed form streak email reminder
+        if(user.hasUnsubscribedFromStreak){hasUnsubscribedFromStreak++};
         //count faculties
         if(user.faculty === "PrF UP"){faculties.prfUp++};
         if(user.faculty === "PrF UK"){faculties.prfUk++};
@@ -146,7 +150,8 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         monthQuestionsSeen,
         activePremiumSubscriptions,
         sources,
-        reachedQuestionsLimit
+        reachedQuestionsLimit,
+        hasUnsubscribedFromStreak
     });
 }))
 
@@ -154,7 +159,7 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
 //show all registered users
 router.get('/admin/users', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     const users = await User.find({});    
-
+    let {order} = req.query;
     let updatedUsers = [];
 
     users.forEach(user => {
@@ -172,6 +177,25 @@ router.get('/admin/users', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     })
     //reverse array of users
     updatedUsers.reverse();
+
+    //order users by
+    if(order === "cards"){
+        updatedUsers.sort(function(a, b) {
+            return b.cardsSeen - a.cardsSeen;
+        });
+    }
+
+    if(order === "questions"){
+        updatedUsers.sort(function(a, b) {
+            return b.questionsSeenTotal - a.questionsSeenTotal;
+        });
+    }
+
+    if(order === "streak"){
+        updatedUsers.sort(function(a, b) {
+            return b.streakLength - a.streakLength;
+        });
+    }
 
     //render page
     res.status(200).render('admin/users', {
@@ -212,7 +236,7 @@ router.get('/admin/activeSubscriptions', isLoggedIn, isAdmin, catchAsync(async (
 //DETAIL OF A USER (show)
 //show details of user to admin
 router.get('/admin/:userId/showDetail', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
-    let user = await User.findById(req.params.userId).populate('sections', 'name');
+    let user = await User.findById(req.params.userId).populate('sections', 'name').populate('invoicesDbObjects');
     if(!user){
         req.flash('error','Uživatel nebyl nalezen.');
         return res.redirect('/admin/users');
@@ -581,75 +605,6 @@ router.post('/legal/contactForm', catchAsync(async(req, res) => {
 
 
 
-
-//INVOICES
-//add new invoice
-router.post('/invoice/new/:userId', catchAsync(async(req, res) => {
-    let data = req.body;
-    let {userId} = req.params;
-    let foundUser = await User.findById(userId);
-    if(!foundUser){
-        req.flash('error','Uživatel neexistuje');
-        return res.redirect('/admin/users');
-    }
-    let {invoiceNum, invoiceAmount, invoiceDate} = data;
-    let newInvoice = {
-        invoiceNum,
-        invoiceDate,
-        invoiceAmount
-    }
-    foundUser.invoices.unshift(newInvoice);
-    foundUser.hasOpenInvoice = false;
-    foundUser.opanInvoiceData = {};
-    await foundUser.save();
-    //save faculties to DB
-    await Settings.findOneAndUpdate(
-        { settingName: 'lastInvoiceNumber' },
-        { settingValue: invoiceNum },
-        { upsert: true, new: true }
-    );
-    req.flash('success','Faktura byla vložena');
-    res.status(201).redirect(`/invoices/open`);
-}))
-
-router.get('/invoice/remove/:userId/:invoiceNum', catchAsync(async(req, res) => {
-    let {userId, invoiceNum} = req.params;
-    let foundUser = await User.findById(userId);
-    if(!foundUser){
-        req.flash('error','Uživatel neexistuje');
-        return res.redirect('/admin/users');
-    }
-    // Function to filter out an object based on invoiceNum
-    function filterArrayOfInvoices(arr, invoiceNumber) {
-        return arr.filter(invoice => invoice.invoiceNum !== invoiceNumber);
-    }
-    let filteredInvoices = filterArrayOfInvoices(foundUser.invoices, invoiceNum);
-    foundUser.invoices = filteredInvoices;
-    foundUser.save();
-    req.flash('success','Faktura byla odstraněna')
-    res.status(201).redirect(`/admin/${userId}/showDetail`);
-}))
-
-router.get('/invoice/request/:invoiceNum', catchAsync(async(req, res) => {
-    let {invoiceNum} = req.params;
-    let foundUser = await User.findById(req.user._id);
-    if(!foundUser){
-        req.flash('error','Uživatel neexistuje');
-        return res.redirect('/');
-    }
-    foundUser.invoices.forEach(invoice => {
-        if(invoice.invoiceNum === invoiceNum){
-            invoice.isRequested = true;
-        }
-    })
-    foundUser.markModified('invoices');
-    await foundUser.save();
-    mail.requestInvoice(req.user.email, invoiceNum);
-    req.flash('success',`Faktura ${invoiceNum} byla vyžádána a bude doručena do e-mailové schránky ${req.user.email} do tří pracovních dnů.`);
-    res.status(200).redirect(`/auth/user/profile`);
-}))
-
-
 //SOUBOJ FAKULT
 router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
     let faculties = {
@@ -710,5 +665,25 @@ router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
 }))
 
 
+//SHOW RATINGS
+router.get('/admin/ratings', catchAsync(async(req, res) => {
+    let {order} = req.query;
+    let packages = await Section.find({});
+
+    //order packages by
+    if(order === "cards"){
+        packages.sort(function(a, b) {
+            return b.ratingCards - a.ratingCards;
+        });
+    }
+
+    if(order === "questions"){
+        packages.sort(function(a, b) {
+            return b.ratingQuestions - a.ratingQuestions;
+        });
+    }
+
+    res.status(201).render(`admin/ratings`, {packages});
+}))
 
 module.exports = router;

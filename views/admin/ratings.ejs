@@ -1,0 +1,76 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Hodnocení balíčků</h5>
+            <span class="text-smaller">Řazení: <a href="/admin/ratings?order=cards">Kartičky</a> | <a href="/admin/ratings?order=questions">Otázky</a></span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="w-100">
+                <tr>
+                  <th>Předmět</th>
+                  <th>Balíček</th>
+                  <th>Kartičky</th>
+                  <th>Otázky</th>
+                  <th>Feedback <br>kartičky</th>
+                  <th>Feedback <br>otázky</th>
+                </tr>
+            <% packages.forEach((package, i) => { %> 
+                <div class="row text-smaller">
+                    <tr>
+                        <td><%= package.category %></td>
+                        <td><%= package.name %></td>
+                        <td><%= package.ratingCards %> <span class="text-muted text-smaller">(<%= package.votesAmountCards %>)</span></td>
+                        <td><%= package.ratingQuestions %> <span class="text-muted text-smaller">(<%= package.votesAmountQuestions %>)</span></td>
+                        <td>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#cards-feedback-modal<%= i %>"><%= package.feedbackCards.length %></a>
+                        </td>
+                        <td>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#questions-feedback-modal<%= i %>"><%= package.feedbackQuestions.length %></a>
+                        </td>
+                    </tr>
+                </div>
+            <% }) %> 
+            </table>
+        </div>
+    </div>
+</div>
+
+<% packages.forEach((pckg, i) => { %>
+    <!-- MODAL - Feedback cards -->
+    <div class="modal fade" id="cards-feedback-modal<%= i %>" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Zpětná vazba</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <% pckg.feedbackCards.forEach(fb => { %>
+                    <p><%= fb %></p>
+                <% }) %>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- MODAL - Feedback questions -->
+    <div class="modal fade" id="questions-feedback-modal<%= i %>" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Zpětná vazba</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <% pckg.feedbackQuestions.forEach(fb => { %>
+                    <p><%= fb %></p>
+                <% }) %>
+            </div>
+        </div>
+        </div>
+    </div>
+<% }) %>
+

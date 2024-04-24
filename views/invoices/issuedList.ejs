@@ -1,0 +1,38 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5><a href="/invoices/open">Faktury k vystavení</a> | Vystavené faktury </h5>
+            <span>(seznam | <a href="/invoices/issued?show=full">kompletní</a>)</span>
+        </div>
+    </div>
+        <div class="row">
+          <div class="col-12">
+            <table class="w-100">
+              <tr>
+                <th>Číslo dokladu</th>
+                <th>Uživatel</th>
+                <th>Položka</th>
+                <th>Datum</th>
+                <th>Částka</th>
+              </tr>
+              <% invoices.forEach(invoice => { %>
+                <tr>
+                  <td><a href="/invoice/show/<%= invoice._id %>" target="_blank"><%= invoice.identificationNumber %></a></td>
+                  <td><%= invoice.user.email %></td>
+                  <td>InLege Premium - 
+                    <% if (invoice.subscriptionPeriod === "yearly") { %>Roční<% } %>
+                    <% if (invoice.subscriptionPeriod === "monthly") { %>Měsíční<% } %>
+                    <% if (invoice.subscriptionPeriod === "halfyear") { %>Půlroční<% } %>
+                    <% if (invoice.subscriptionPeriod === "daily") { %>Denní<% } %>
+                  </td>
+                  <td>
+                    <%= invoice.dateIssued %>
+                  </td>
+                  <td><%= invoice.amount %> Kč</td>
+                </tr>
+              <% }) %>
+            </table>
+          </div>
+        </div>
+</div>
