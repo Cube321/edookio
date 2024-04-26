@@ -40,7 +40,7 @@
                         <h5 class="mb-0 mt-3">Vyhodnocení testu</h5>
                     </div>
                     <div class="col-lg-4 col-12">
-                        <div class="finished-item">
+                        <div class="finished-item correct">
                             <i class="far fa-check-circle fa-2x mx-2"></i>
                             <div>
                                 <p><%= counters.correct %> správně</p>
@@ -49,16 +49,16 @@
                         </div>
                     </div>
                     <div class="col-lg-4 col-12">
-                        <div class="finished-item">
+                        <div class="finished-item wrong">
                             <i class="far fa-times-circle fa-2x mx-2"></i>
                             <div>
-                                <p><%= counters.wrong %> špatně</p>
+                                <p><%= counters.wrong %> nesprávně</p>
                                 <p class="text-small text-muted">(<%= Math.round(counters.wrong * step) %> %)</p>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-12">
-                        <div class="finished-item">
+                        <div class="finished-item skipped">
                             <i class="fas fa-circle-notch fa-2x mx-2"></i>
                             <div>
                                 <p><%= counters.skipped %> vynecháno</p>

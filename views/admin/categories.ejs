@@ -18,10 +18,13 @@
                     <th><p>Název předmětu</p></th>
                     <th><p>Zkratka</p></th>
                     <th><p>Ikona</p></th>
-                    <th><p>Počet balíčků</p></th>
-                    <th><p>Počet karet</p></th>
-                    <th><p title="Součet spuštění všech balíčků v předmětu">Abs. Sp.</p></th>
-                    <th><p title="Průměrný počet spuštění balíčku v předmětu">Prům. Sp.</p></th>
+                    <th><p>Balíčky</p></th>
+                    <th><p>Kartičky</p></th>
+                    <th><p>Otázky</p></th>
+                    <th><p title="Součet spuštění kartiček všech balíčků v předmětu">Abs. Sp. <br> Kartičky</p></th>
+                    <th><p title="Součet spuštění otáezk všech balíčků v předmětu">Abs. Sp. <br> Otázky</p></th>
+                    <th><p title="Průměrný počet spuštění kartiček v předmětu">Prům. Sp. <br> Kartičky</p></th>
+                    <th><p title="Průměrný počet spuštění otázek v předmětu">Prům. Sp. <br> Otázky</p></th>
                 </tr>
                 <% categories.forEach((cat, i) => { %>
                     <tr class="admin-category-row">
@@ -31,8 +34,11 @@
                         <th><%= cat.icon %></th>
                         <th><%= cat.sections.length %></th>
                         <th><%= cat.numOfCards %></th>
+                        <th><%= cat.numOfQuestions %></th>
                         <th><%= cat.countStartedAll %></th>
+                        <th><%= cat.countStartedAllQuestions %></th>
                         <th><%= cat.countAverage %></th>
+                        <th><%= cat.countAverageQuestions %></th>
                         <th class="d-flex">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#modal-category-edit<%= i %>"><i class="far fa-edit"></i></a>
                             <% if (cat.sections.length === 0) { %>

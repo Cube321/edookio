@@ -49,12 +49,12 @@
                                     <p class="m-0 section-name">
                                         <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %> <span style="color:gold;font:bold"> ☆</span><% } %>
                                         <% if (!section.isPublic) { %>
-                                            <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="text-small">Zveřejnit</a>
+                                            <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span><br>
+                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="btn btn-success btn-sm">Zveřejnit</a>
                                         <% } %>
                                         <% if (section.isPublic && !section.testIsPublic && section.questions.length > 0 && (currentUser && (currentUser.admin || currentUser.isEditor))) { %>
-                                            <span class="text-muted text-smaller">[testové otázky čekají na zveřejnění]</span>
-                                            <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest" class="text-small">Zveřejnit</a>
+                                            <span class="text-muted text-smaller">[testové otázky čekají na zveřejnění]</span><br>
+                                            <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest" class="btn btn-success btn-sm">Zveřejnit</a>
                                         <% } %>
                                     </p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>

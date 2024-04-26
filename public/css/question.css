@@ -51,12 +51,14 @@
 
 .answers-list .correct {
     border: 3px solid;
-    border-color: #3ae80f;
+    border-color: rgba(58, 232, 15, 0.2);
+    background-color: rgba(58, 232, 15, 0.2);
 }
 
 .answers-list .wrong {
     border: 3px solid;
-    border-color: #ed0b43;
+    border-color: rgba(237, 11, 67, 0.1);
+    background-color: rgba(237, 11, 67, 0.1);
 }
 
 /* QUESTIONS LIST */
@@ -86,14 +88,14 @@
 }
 
 .questions-list-item.correct {
-    border: 1px solid #000000;
+    border: 1px solid rgba(49, 189, 14, 1);
     background-color: #ffffff;
-    color: #000000;
+    color: rgba(49, 189, 14, 1);
 }
 
 .questions-list-item.wrong {
-    border: 1px solid #ed0b43;
-    color: #ed0b43;
+    border: 1px solid rgba(237, 11, 67, 0.5);
+    color: rgba(237, 11, 67, 0.5);
 }
 
 .questions-list-item.active {

@@ -516,14 +516,19 @@ function sortByCountStarted(array) {
 
   //count how many times were sections started in category and average for each section
   function countStartedAbsoluteAndAverage(categories) {
-    let count = 0;
+    let countCards = 0;
+    let countQuestions = 0;
     categories.forEach(cat => {
-        count = 0;
+        countCards = 0;
+        countQuestions = 0;
         cat.sections.forEach(sec => {
-            count = count + sec.countStarted;
+            countCards = countCards + sec.countStarted;
+            countQuestions = countQuestions + sec.countStartedTest;
         })
-        cat.countStartedAll = count;
-        cat.countAverage = Math.round(count / cat.sections.length);
+        cat.countStartedAll = countCards;
+        cat.countStartedAllQuestions = countQuestions;
+        cat.countAverage = Math.round(countCards / cat.sections.length);
+        cat.countAverageQuestions = Math.round(countQuestions / cat.sections.length);
     })
     return categories;
   }

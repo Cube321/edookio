@@ -329,6 +329,24 @@ form .form-borders {
     margin: 0;
 }
 
+.finished-test .finished-item.correct {
+    border-color: rgba(58, 232, 15, 0.2);
+    background-color: rgba(58, 232, 15, 0.2);
+}
+
+.finished-test .finished-item.wrong {
+    border-color: rgba(237, 11, 67, 0.1);
+    background-color: rgba(237, 11, 67, 0.1);
+}
+
+.finished-test .finished-item.correct i {
+    color: rgb(54, 208, 16);
+}
+
+.finished-test .finished-item.wrong i {
+    color: rgba(237, 11, 67, 1);
+}
+
 /* REGISTRATION */
 .registration-gdpr {
     margin-top: 2px;
