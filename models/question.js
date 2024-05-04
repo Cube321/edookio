@@ -19,7 +19,11 @@ const QuestionSchema = new Schema({
         required: true
     },
     correctAnswers: [],
-    wrongAnswers: []
+    wrongAnswers: [],
+    sourceCard: {
+        type : Schema.Types.ObjectId, 
+        ref: 'Card'
+    }
 })
 
 module.exports = mongoose.model('Question', QuestionSchema);

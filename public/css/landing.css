@@ -22,6 +22,7 @@ body {
 
 .call-to-action {
     zoom: 130%;
+    opacity: 0;
 }
 
 .width-20 {
@@ -30,6 +31,11 @@ body {
 
 .jumbotron-heading {
     font-size: 8vh;
+    opacity: 0;
+}
+
+.lead {
+    opacity: 0;
 }
 
 .vision-statement {
@@ -309,3 +315,19 @@ body {
         width: 200px;
       }
   }
+
+/* ANIMATIONS */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate {
+    animation: slideIn 1s ease forwards;
+}

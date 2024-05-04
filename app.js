@@ -53,6 +53,7 @@ const apiRoutes = require('./routes/api');
 const card20Routes = require('./routes/card20');
 const questionsRoutes = require('./routes/questions');
 const invoicesRoutes = require('./routes/invoices');
+const chatGptRoutes = require('./routes/chatgpt');
 
 const dbUrl = process.env.DB_URL;
 
@@ -206,6 +207,8 @@ app.use('/', apiRoutes);
 app.use('/', card20Routes);
 app.use('/', questionsRoutes);
 app.use('/', invoicesRoutes);
+app.use('/', chatGptRoutes);
+
 
 //error handling - has to be at the end!
 //catch all for any error - all errors go here

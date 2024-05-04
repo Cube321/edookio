@@ -32,4 +32,31 @@ $(document).ready(function() {
         $(".modal-body").empty();
         $(".modal-body").append('<p>Odesláno, díky!</p>');
     });
+
+    $("#generate-ai").click(function(){
+        $(this).addClass("disabled");
+        $(this).empty();
+        $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>")
+    });
+
+    $(".delete-question-btn").click(function(e){
+        e.preventDefault();
+        let wrapperCard = $(this).closest('.card');
+        let url = $(this).closest(".delete-question-form").attr("action");
+        url = url + '&api=true'
+        wrapperCard.empty().append("<div class='col-12 d-flex justify-content-center align-items-center h-100'><div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div></div>");
+        //send data to db
+        $.ajax({
+            method: "POST",
+            url,
+        }).then(() => {
+            wrapperCard.empty();
+            wrapperCard.append("<div class='col-12 d-flex justify-content-center align-items-center h-100'><p class='text-bold'>Otázka byla odstraněna.</p></div>");
+        })
+        .catch(err => {
+            console.log(err);
+            wrapperCard.empty();
+            wrapperCard.append("<div class='col-12 d-flex justify-content-center align-items-center h-100'><p class='text-bold'>Něco se nepovedlo :/</p></div>");
+        }); 
+    });
 });

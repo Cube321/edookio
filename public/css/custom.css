@@ -551,6 +551,49 @@ form .form-borders {
     margin-top: 2rem;
 }
 
+/* LIST ALL QUESTIONS */
+.list-all-card {
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 15px;
+    height: 100%;
+}
+
+.list-all-card .question {
+    font-weight: 600;
+    font-size: large;
+    text-align: center;
+}
+
+.list-all-card .answer-item {
+    margin-bottom: 16px;
+    padding: 8px 16px;
+    border: 3px solid #EEEEEE;
+    border-radius: 24px;
+}
+
+.list-all-card .correct {
+    border: 3px solid;
+    border-color: rgba(58, 232, 15, 0.2);
+}
+
+.list-all-card .wrong {
+    border: 3px solid;
+    border-color: rgba(237, 11, 67, 0.1);
+}
+
+.list-all-card a, .list-all-card button {
+    color:#6C657D;
+    font-size: smaller;
+    margin: 0;
+    padding: 0;
+}
+
+.list-all-card a:hover {
+    color:#AF0171
+}
+
+
 @media only screen and (max-width: 1200px) {
     .cards-amount-div {
         flex-direction: column;

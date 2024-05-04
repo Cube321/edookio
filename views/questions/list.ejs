@@ -1,42 +1,83 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 <div class="container">
     <div class="row">
-        <div class="col-12 mb-3">
-            <h5>Kartičky v balíčku <%= section.name %> <span class="text-muted">(Předmět: <%= section.category %>)</span></h5>
+        <div class="offset-1 col-10 d-flex justify-content-between mb-4">
+            <a href="/category/<%= section.category %>" class="btn btn-sm btn-outline-danger">Zpět na předmět</a>
+            <div>
+                <a href="/category/<%= categoryId %>/section/<%= section._id %>/question/generate" class="btn btn-sm btn-outline-danger" style='min-width:124px' id="generate-ai">Vygenerovat (AI)</a>
+                <a href="/category/<%= categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-danger">Přidat otázku</a>
+            </div>
+            
         </div>
     </div>
     <div class="row">
-        <div class="col-12 d-flex justify-content-between mb-4">
-            <a href="/category/<%= section.category %>" class="btn btn-sm btn-outline-danger">Zpět na předmět</a>
-            <a href="/category/<%= categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-danger">Přidat otázku</a>
+        <div class="col-12 mb-3 text-center ">
+            <h4 class="text-bold"><%= section.name %></h4>
+            <h5 class="text-muted">Testové otázky (<%= section.questions.length %>) | Předmět: <%= section.category %></h5>
         </div>
     </div>
-        <div class="row">
-            <div class="col-sm-1 text-center">Číslo</div>
-            <div class="col-sm-3">Otázka</div>
-            <div class="col-sm-5">Odpovědi</div>
-            <hr>
+    <div class="row">
+        <div class="offset-1 col-10">
+            <div class="card p-3 text-smaller mb-4">
+                <h5>Pokyny ke kontrole testových otázek</h5>
+                <p class="mb-0">Všechny otázky je třeba přečíst a:</p>
+                <ul>
+                    <li>zkontrolovat jejich <b>obsahovou</b> i <b>formální</b> správnost,</li>
+                    <li>nepřirozené <b>formulace</b> upravit tak, aby byly srozumitelné,</li>
+                    <li>odstranit nebo opravit <b>nejednoznačné otázky</b>,</li>
+                    <li>zkontrolovat, že za <b>správné nelze</b> považovat <b>dvě nebo tři</b> odpovědi,</li>
+                    <li>z odpovědí typu "obě výše uvedené jsou správně" <b>odstranit slovo "výše"</b>, protože pořadí odpovědí je při spuštění testu vždy generováno náhodně.</li>
+                </ul>
+                <p><b>Až 20 % otázek je možné <span style="color:red">odstranit</span></b> (zejména pokud jsou opravdu nesmyslné nebo by jejich přepsání zabralo více času).</p>
+                <p>Držením klávesy Ctrl (Command) a současným kliknutím levým tlačítkem myši na tlačítko "Upravit" se formulář pro editaci kartičky otevře v novém okně. Takto si lze otevřít všechny otázky, které vyžadují editaci, a poté je postupně opravit.</p>
+            </div>
         </div>
+    </div>
+    <div class="row mb-1 text-center mt-4">
+        <h5 class="offset-sm-1 col-sm-5 text-bold">Zdrojová kartička</h5>
+        <h5 class="col-sm-5 text-bold">Testová otázka</h5>
+    </div>
+    <% if (!section.questions.length) { %>
+        <div class="row">
+            <div class="col-12">
+                <p class="text-center text-muted my-4">Žádné testové otázky nebyly nalezeny.</p>
+            </div>
+        </div>
+    <% } %>
     <% section.questions.forEach((question, i) => { %> 
         <div class="row">
-            <div class="col-sm-1 text-small text-center"><%= i + 1%></div>
-            <div class="col-sm-3 text-small"><%- question.question %> </div>
-            <div class="col-sm-6 text-small">
-                <div>
-                    <p><i>Správně:</i> <%- question.correctAnswers[0] %> </p>
-                    <p class="mb-0"><i>Špatně:</i> <%- question.wrongAnswers[0] %> </p>
-                    <p><i>Špatně:</i> <%- question.wrongAnswers[1] %> </p>
+            <div class="offset-sm-1 col-sm-5 mb-5">
+                <div class="card list-all-card">
+                    <% if (question.sourceCard) { %>
+                        <p class="question"><%- question.sourceCard.pageA %></p>
+                        <div><%- question.sourceCard.pageB %></div>
+                    <% } else { %>
+                        <p> - </p>
+                    <% } %>
                 </div>
             </div>
-            <div class="col-sm-1"><a href="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit">Upravit</a></div>
-            <% if (currentUser.admin) { %>
-                <div class="col-sm-1">
-                    <form action="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>?_method=DELETE" method="POST">
-                        <button class="link">Odstranit</button>
-                    </form>
+            <div class="col-sm-5 mb-5">
+                <div class="card list-all-card d-flex justify-content-between flex-column">
+                    <div>
+                        <p class="question"><%= question.question %></p>
+                        <p class="answer-item correct"><i></i> <%- question.correctAnswers[0] %> </p>
+                        <p class="answer-item wrong"><i></i> <%- question.wrongAnswers[0] %> </p>
+                        <p class="answer-item wrong"><i></i> <%- question.wrongAnswers[1] %> </p>
+                    </div>
+                    
+                    <div class="d-flex justify-content-end">
+                        <a href="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2" target="_blank">Upravit</a>
+                        <form action="/category/<%= categoryId %>/section/<%= section._id %>/questions/<%= question._id %>?_method=DELETE" method="POST" class="delete-question-form">
+                            <button class="link delete-question-btn">Odstranit</button>
+                        </form>
+                    </div>
                 </div>
-            <% } %>
-            <hr>
+            </div>
         </div>
     <% }) %> 
+    <div class="row">
+        <div class="offset-1 col-10 d-flex justify-content-end">
+            <a href="/category/<%= categoryId %>/section/<%= section._id %>/removeAll" class="btn btn-sm btn-danger">Odstranit všechny otázky</a>
+        </div>
+    </div>
 </div>

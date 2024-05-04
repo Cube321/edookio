@@ -114,7 +114,13 @@ router.get('/category/:categoryId/testRandomFinished', isLoggedIn, catchAsync(as
 //list all questions
 router.get('/category/:categoryId/section/:sectionId/list', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {categoryId, sectionId} = req.params;
-    const foundSection = await Section.findById(sectionId).populate('questions');
+    const foundSection = await Section.findById(sectionId).populate({
+        path: 'questions',
+        populate: {
+            path: 'sourceCard',
+            model: 'Card'
+        }
+    });
     if(!foundSection){
         req.flash('error', 'Balíček nebyl nalezen');
         return res.redirect('/');
@@ -124,7 +130,7 @@ router.get('/category/:categoryId/section/:sectionId/list', isLoggedIn, isEditor
 }))
 
 //new
-router.get('/category/:categoryId/section/:sectionId/question/new', catchAsync(async(req, res) => {
+router.get('/category/:categoryId/section/:sectionId/question/new',  isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {categoryId, sectionId} = req.params;
     const category = await Category.findById(categoryId);
     const section = await Section.findById(sectionId);
@@ -171,11 +177,11 @@ router.post('/category/:categoryId/section/:sectionId/question', isLoggedIn, isE
 }))
 
 //edit
-router.get('/category/:categoryId/section/:sectionId/questions/:questionId/edit', catchAsync(async(req, res) => {
+router.get('/category/:categoryId/section/:sectionId/questions/:questionId/edit',  isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {categoryId, sectionId, questionId} = req.params;
     const foundCategory = await Category.findById(categoryId);
     const foundSection = await Section.findById(sectionId);
-    const foundQuestion = await Question.findById(questionId);
+    const foundQuestion = await Question.findById(questionId).populate('sourceCard');
 
     if(!foundSection){
         throw Error("Balíček s tímto ID neexistuje");
@@ -191,7 +197,7 @@ router.get('/category/:categoryId/section/:sectionId/questions/:questionId/edit'
 }))
 
 //update
-router.patch('/category/:categoryId/section/:sectionId/questions/:questionId', catchAsync(async(req, res) => {
+router.patch('/category/:categoryId/section/:sectionId/questions/:questionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {categoryId, sectionId, questionId} = req.params;
     const {question, correctAnswer, wrongAnswer1, wrongAnswer2} = req.body;
     let updatedQuestion = {
@@ -205,8 +211,9 @@ router.patch('/category/:categoryId/section/:sectionId/questions/:questionId', c
 }))
 
 //destroy
-router.delete('/category/:categoryId/section/:sectionId/questions/:questionId', catchAsync(async(req, res) => {
+router.delete('/category/:categoryId/section/:sectionId/questions/:questionId', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {categoryId, sectionId, questionId} = req.params;
+    const {api} = req.query;
     const foundQuestion = await Question.findById(questionId);
     if(!foundQuestion){
         throw Error("Otázka s tímto ID neexistuje");
@@ -217,12 +224,41 @@ router.delete('/category/:categoryId/section/:sectionId/questions/:questionId', 
     foundCategory.numOfQuestions--;
     await foundCategory.save();
     
-    req.flash('success','Otázka byla odstraněna.');
-    res.status(202).redirect(`/category/${categoryId}/section/${sectionId}/list`);
+    if(api){
+        res.sendStatus(200);
+    } else {
+        res.status(201).redirect(`/category/${categoryId}/section/${sectionId}/list`);
+    }
+    
+}))
+
+//destroy all questions in section
+router.get('/category/:categoryId/section/:sectionId/removeAll', isLoggedIn, isEditor, catchAsync(async(req, res) => {
+    const {categoryId, sectionId} = req.params;
+    const foundSection = await Section.findById(sectionId);
+    const foundCategory = await Category.findById(categoryId);
+    if(!foundSection){
+        req.flash('error', 'Balíček nebyl nalezen');
+        return res.redirect('/');
+    }
+    if(!foundCategory){
+        req.flash('error', 'Předmět nebyl nalezen');
+        return res.redirect('/');
+    }
+
+    //delete Questions in Section from DB
+    await Question.deleteMany({section: sectionId});
+    foundCategory.numOfQuestions = foundCategory.numOfQuestions - foundSection.questions.length;
+    foundSection.questions = [];
+    await foundCategory.save();
+    await foundSection.save();
+
+    req.flash('success', 'Všechny otázky z balíčku byly odstraněny');
+    res.status(200).render('questions/list', {questions: foundSection.questions, section: foundSection, categoryId});
 }))
 
 //publish Questions of Section
-router.get('/category/:categoryId/section/:sectionId/publishTest', catchAsync(async(req, res) => {
+router.get('/category/:categoryId/section/:sectionId/publishTest', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {sectionId} = req.params;
     const foundSection = await Section.findById(sectionId);
     if(!foundSection){

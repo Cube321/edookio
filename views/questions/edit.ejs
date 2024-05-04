@@ -2,8 +2,16 @@
     <div class="col-lg-6 offset-lg-3">
         <h4 class="text-center">Upravit testovou otázku</h4>
         <p class="text-center">do balíčku <%= section.name %> <span class="text-muted">(<%= category.text %>)</span></p>
+        <% if (question.sourceCard) { %>
+            <div class="row">
+                <div class="card p-3">
+                    <p class="text-bold text-center"><%= question.sourceCard.pageA %></p>
+                    <p><%- question.sourceCard.pageB %></p>
+                </div>
+            </div>
+        <% } %>
         <form class="row g-3 mt-3 needs-validation" novalidate action="/category/<%= category._id %>/section/<%= section._id %>/questions/<%= question._id %>?_method=PATCH" method="POST">
-            <div class="mt-2">
+            <div class="card p-3 mt-2">
                 <div class="form-group row">
                     <label for="question" class="col-lg-3 col-form-label text-bold">Otázka</label>
                     <div class="col-lg-9">
