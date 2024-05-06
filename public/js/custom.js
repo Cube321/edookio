@@ -59,4 +59,14 @@ $(document).ready(function() {
             wrapperCard.append("<div class='col-12 d-flex justify-content-center align-items-center h-100'><p class='text-bold'>Něco se nepovedlo :/</p></div>");
         }); 
     });
+
+    // Get the elements to animate
+    const heading = document.querySelector(".jumbotron-heading");
+    const lead = document.querySelector(".lead");
+    const callBtn = document.querySelector(".call-to-action");
+
+    // Add CSS classes to trigger animations
+    heading.classList.add("animate");
+    lead.classList.add("animate");
+    callBtn.classList.add("animate");
 });

@@ -54,6 +54,7 @@ const card20Routes = require('./routes/card20');
 const questionsRoutes = require('./routes/questions');
 const invoicesRoutes = require('./routes/invoices');
 const chatGptRoutes = require('./routes/chatgpt');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 const dbUrl = process.env.DB_URL;
 
@@ -208,6 +209,7 @@ app.use('/', card20Routes);
 app.use('/', questionsRoutes);
 app.use('/', invoicesRoutes);
 app.use('/', chatGptRoutes);
+app.use('/', leaderboardRoutes);
 
 
 //error handling - has to be at the end!

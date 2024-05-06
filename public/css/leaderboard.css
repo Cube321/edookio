@@ -1,0 +1,111 @@
+/* PALETTE #E80F88 #AF0171 #790252 #4C0033 */
+main {
+    background: linear-gradient(to bottom, rgba(232, 15, 136, 1), rgba(175, 1, 113, 1));
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-bottom: 2rem;
+}
+
+.headline {
+    color: white;
+    font-weight: 800;
+}
+
+.lead {
+    color: white;
+}
+
+.period-links {
+    color: white;
+    margin: 2.5rem 0;
+}
+
+.period-links a {
+    color: white;
+    border: 1px solid white;
+    border-radius: 30px;
+    padding: 0 1rem;
+    margin: 0 0.5rem;
+    transition: 300ms;
+}
+
+.period-links a:hover {
+    background-color: white;
+    color:rgba(232, 15, 136, 1);
+}
+
+.period-links .active {
+    background-color: white;
+    color:rgba(232, 15, 136, 1);
+}
+
+.leaderboard-item {
+    background-color: #fff;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    max-width: 540px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.active-user {
+    background: yellow;
+}
+
+.leaderboard-item .icon {
+    max-height: 50px;
+    width:auto;
+    margin: 0.5rem;
+}
+
+.leaderboard-item .ranking {
+    font-size: 1.5rem;
+}
+
+.leaderboard-item .content {
+    width: 100%;
+    margin: 0 1rem;
+}
+
+.leaderboard-item p {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.leaderboard-item .nickname {
+    text-align: left;
+    font-weight: 600;
+    font-size: larger;
+    width: 50%;
+}
+
+.leaderboard-item .points {
+    width: 20%;
+}
+
+.leaderboard-item .faculty {
+    width: 30%;
+}
+
+@media only screen and (max-width: 992px) {
+    .period-links {
+        zoom: 90%
+    }
+
+    .leaderboard-item {
+        width: 90%;
+    }
+
+    .leaderboard-item .nickname {
+        width: 80%;
+        font-size: medium;
+    }
+    
+    .leaderboard-item .points {
+        width: 20%;
+    }
+    
+    .leaderboard-item .faculty {
+        display: none;
+    }
+  }

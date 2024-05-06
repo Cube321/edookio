@@ -9,7 +9,7 @@ const {OpenAI} = require('openai');
 
 const openai = new OpenAI({apiKey: process.env.CHATGPT_SECRET});
 
-//list all questions
+//generate test questions via OpenAI
 router.get('/category/:categoryId/section/:sectionId/question/generate', isLoggedIn, isEditor, catchAsync(async(req, res) => {
     const {categoryId, sectionId} = req.params;
     const {user} = req;
