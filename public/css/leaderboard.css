@@ -15,6 +15,11 @@ main {
     color: white;
 }
 
+.lead-clash {
+    color: white;
+    font-size: 1.5rem;
+}
+
 .period-links {
     color: white;
     margin: 2.5rem 0;
@@ -85,6 +90,41 @@ main {
 
 .leaderboard-item .faculty {
     width: 30%;
+}
+
+.set-nickname-cta a {
+    color: white;
+    border: 1px solid white;
+    border-radius: 30px;
+    padding: 0 1rem;
+    margin: 0 0.5rem;
+    transition: 300ms;
+    font-size: larger;
+    margin-top: 1rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+
+.bottom-info {
+    color: white;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.bottom-info .profile-link {
+    color: white;
+    border: 1px solid white;
+    border-radius: 30px;
+    padding: 0 0.5rem;
+    transition: 300ms;
+}
+.text-larger {
+    font-size: larger;
+}
+
+.table-headline {
+    color: white;
+    padding-left: 2rem;
 }
 
 @media only screen and (max-width: 992px) {

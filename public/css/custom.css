@@ -595,6 +595,11 @@ form .form-borders {
     color:#AF0171
 }
 
+form .form-control.bordered {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 
 @media only screen and (max-width: 1200px) {
     .cards-amount-div {

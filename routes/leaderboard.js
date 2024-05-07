@@ -12,6 +12,10 @@ router.get('/leaderboard', isLoggedIn, catchAsync(async(req, res) => {
     let {order} = req.query;
     let {user} = req;
 
+    if(!order){
+        order = "day";
+    }
+
     users.forEach(user => {
         user.pointsTotal = user.cardsSeen + user.questionsSeenTotal;
         user.pointsMonth = user.cardsSeenThisMonth + user.questionsSeenThisMonth;
@@ -75,8 +79,15 @@ router.get('/leaderboard', isLoggedIn, catchAsync(async(req, res) => {
             }
         }
     })
+    let hasSavedNickname = true;
+    if(!user.nickname){
+        let firstPart = user.firstname.substring(0, 3);
+        let lastPart = user.lastname.substring(0, 3);
+        user.nickname = `${firstPart}${lastPart}${Math.round(user.email.length/2)}`
+        hasSavedNickname = false;
+    }
 
-    res.status(200).render('leaderboard', {topUsers, positionInArray, isInTop, order});
+    res.status(200).render('leaderboard', {topUsers, positionInArray, isInTop, order, hasSavedNickname});
 }))
 
 //ADD or CHANGE NICKNAME

@@ -10,6 +10,10 @@ const UserSchema = new Schema ({
         required: true,
         unique: true
     },
+    nickname: {
+        type: String, 
+        default: undefined
+    },
     faculty: {
         type: String,
         default: "Neuvedeno"

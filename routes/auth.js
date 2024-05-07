@@ -318,4 +318,24 @@ router.post('/auth/user/changeFaculty', isLoggedIn, catchAsync(async(req, res) =
 }))
 
 
+
+//CHANGE NICKNAME (LEADERBOARD)
+//route to change faculty from profile page
+router.post('/auth/user/changeNickname', isLoggedIn, catchAsync(async(req, res) => {
+    let existingUser = await User.findOne({nickname: req.body.nickname});
+    if(existingUser){
+        req.flash('error','Tato přezdívka či jméno je již obsazena/o. Zvol si prosím jinou/é.');
+        return res.redirect('/leaderboard');
+    }
+    let foundUser = await User.findById(req.user._id);
+    if(!foundUser){
+        req.flash('error','Uživatel s tímto ID nebyl nenalezen.');
+        return res.redirect('/leaderboard');
+    }
+    foundUser.nickname = req.body.nickname;
+    await foundUser.save();
+    res.status(200).redirect('/leaderboard');
+}))
+
+
 module.exports = router;

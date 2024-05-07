@@ -612,13 +612,15 @@ router.post('/legal/contactForm', catchAsync(async(req, res) => {
 
 //SOUBOJ FAKULT
 router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
+    let {user} = req;
     let faculties = {
         prfUp: 0,
         prfUk: 0,
         prfMuni: 0,
         prfZcu: 0,
         prfJina: 0,
-        prfNestuduji: 0
+        prfNestuduji: 0,
+        prfUchazec: 0
     }
     let total = {
         prfUp: 0,
@@ -626,7 +628,34 @@ router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
         prfMuni: 0,
         prfZcu: 0,
         prfJina: 0,
-        prfNestuduji: 0
+        prfNestuduji: 0,
+        prfUchazec: 0
+    }
+
+    let usersFaculty = undefined;
+
+    if(user){
+        if(user.faculty === "PrF UP"){
+            usersFaculty = "prfUp";
+        };
+        if(user.faculty === "PrF UK"){
+            usersFaculty = "prfUk";
+        };
+        if(user.faculty === "PrF MUNI"){
+            usersFaculty = "prfMuni";
+        };
+        if(user.faculty === "PrF ZČU"){
+            usersFaculty = "prfZcu";
+        };
+        if(user.faculty === "Jiná"){
+            usersFaculty = "prfJina";
+        };
+        if(user.faculty === "Nestuduji"){
+            usersFaculty = "prfNestuduji";
+        };
+        if(user.faculty === "Uchazeč"){
+            usersFaculty = "prfUchazec";
+        };
     }
     
     let users = await User.find();
@@ -656,6 +685,10 @@ router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
             faculties.prfNestuduji = faculties.prfNestuduji + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
             total.prfNestuduji++;
         };
+        if(user.faculty === "Uchazeč"){
+            faculties.prfUchazec = faculties.prfUchazec + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+            total.prfUchazec++;
+        };
     })
     //order faculties according to the points - top to bottom
     let facultiesOrdered = Object.entries(faculties);
@@ -666,7 +699,7 @@ router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
     let facultiesLastMonth = clashSavedStats.payload.pop();
 
     //render
-    res.render(`clash`, {facultiesOrdered, facultiesPrevious: facultiesLastMonth.data, total});
+    res.render(`clash`, {facultiesOrdered, facultiesPrevious: facultiesLastMonth.data, total, usersFaculty});
 }))
 
 

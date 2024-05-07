@@ -84,7 +84,8 @@ let saveClash = catchAsync(async(users) => {
         prfMuni: 0,
         prfZcu: 0,
         prfJina: 0,
-        prfNestuduji: 0
+        prfNestuduji: 0,
+        prfUchazec: 0
     }
 
     users.forEach(user => {
@@ -106,6 +107,9 @@ let saveClash = catchAsync(async(users) => {
         };
         if(user.faculty === "Nestuduji"){
             faculties.prfNestuduji = faculties.prfNestuduji + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+        };
+        if(user.faculty === "Uchazeč"){
+            faculties.prfUchazec = faculties.prfUchazec + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
         };
     });
     //order faculties by points top to bottom
