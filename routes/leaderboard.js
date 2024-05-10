@@ -2,13 +2,36 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const User = require('../models/user');
+const Stats = require('../models/stats');
 const { isLoggedIn, isAdmin } = require('../utils/middleware');
 const moment = require('moment');
-const user = require('../models/user');
+
+const monthsInCzech = [
+    "Leden", // January
+    "Únor", // February
+    "Březen", // March
+    "Duben", // April
+    "Květen", // May
+    "Červen", // June
+    "Červenec", // July
+    "Srpen", // August
+    "Září", // September
+    "Říjen", // October
+    "Listopad", // November
+    "Prosinec" // December
+];
 
 //SHOW LEADERBOARD
 router.get('/leaderboard', isLoggedIn, catchAsync(async(req, res) => {
     let users = await User.find();
+    
+    //prepare save stats from last month
+    let statsFromDB = await Stats.findOne({eventName: "leaderboardSavedStats"});
+    let lastMonthLeaderboard = {key: undefined, data: []};
+    if(statsFromDB){
+        lastMonthLeaderboard = statsFromDB.payload.pop();
+    }
+    
     let {order} = req.query;
     let {user} = req;
 
@@ -86,8 +109,12 @@ router.get('/leaderboard', isLoggedIn, catchAsync(async(req, res) => {
         user.nickname = `${firstPart}${lastPart}${Math.round(user.email.length/2)}`
         hasSavedNickname = false;
     }
+    //name of the last month in Czech
+    moment.locale('cs');
+    const lastMonthNum = moment().subtract(1, 'month').month();
+    const lastMonthName = monthsInCzech[lastMonthNum];
 
-    res.status(200).render('leaderboard', {topUsers, positionInArray, isInTop, order, hasSavedNickname});
+    res.status(200).render('leaderboard', {topUsers, positionInArray, isInTop, order, hasSavedNickname, lastMonthLeaderboard, lastMonthName});
 }))
 
 //ADD or CHANGE NICKNAME

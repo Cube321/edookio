@@ -698,8 +698,13 @@ router.get('/clash/soubojfakult', catchAsync(async(req, res) => {
     const clashSavedStats = await Stats.findOne({eventName: 'clashSavedStats'});
     let facultiesLastMonth = clashSavedStats.payload.pop();
 
+    //name of the last month in Czech
+    moment.locale('cs');
+    const lastMonthNum = moment().subtract(1, 'month').month();
+    const lastMonthName = monthsInCzech[lastMonthNum];
+
     //render
-    res.render(`clash`, {facultiesOrdered, facultiesPrevious: facultiesLastMonth.data, total, usersFaculty});
+    res.render(`clash`, {facultiesOrdered, facultiesPrevious: facultiesLastMonth.data, total, usersFaculty, lastMonthName});
 }))
 
 
@@ -723,5 +728,22 @@ router.get('/admin/ratings', catchAsync(async(req, res) => {
 
     res.status(201).render(`admin/ratings`, {packages});
 }))
+
+
+//HELPERS
+const monthsInCzech = [
+    "Leden", // January
+    "Únor", // February
+    "Březen", // March
+    "Duben", // April
+    "Květen", // May
+    "Červen", // June
+    "Červenec", // July
+    "Srpen", // August
+    "Září", // September
+    "Říjen", // October
+    "Listopad", // November
+    "Prosinec" // December
+];
 
 module.exports = router;

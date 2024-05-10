@@ -62,6 +62,7 @@ cronHelpers.resetMonthlyCounters = catchAsync(async() => {
     let users = await User.find({});
     //save last month clast results
     saveClash(users);
+    saveLeaderboard(users);
     let counter = 0;
     users.forEach(user => {
         if(user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0){
@@ -128,6 +129,60 @@ let saveClash = catchAsync(async(users) => {
         );
     //send confirmation e-mail to admin
     mail.sendCronReport('saveClash', facultiesOrdered);
+})
+
+let saveLeaderboard = catchAsync(async(users) => {
+    users.forEach(user => {
+        user.pointsMonth = user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+    })
+    
+    let topUsers = [];
+
+    users.sort(function(a, b) {
+        return b.pointsMonth - a.pointsMonth;
+    });
+    topUsers = users.slice(0, 3);
+
+    simplifiedTopUsers = [];
+    
+    //give nickname to each user that does not have any yet
+    topUsers.forEach(user => {
+        if(!user.nickname){
+            if(user.lastname.charAt(user.lastname.length - 1) === "á"){
+                let firstPart = user.firstname.substring(0, 3);
+                let lastPart = user.lastname.substring(0, 3);
+                user.nickname = `${firstPart}${lastPart}${Math.round(user.email.length/2)}`
+            } else {
+                let firstPart = user.firstname.substring(0, 3);
+                let lastPart = user.lastname.substring(0, 3);
+                user.nickname = `${firstPart}${lastPart}${Math.round(user.email.length/2)}`
+            }
+        }
+        console.log("About to push to simplifiedTopUsers")
+        simplifiedTopUsers.push({
+            nickname: user.nickname,
+            email: user.email,
+            _id: user._id,
+            pointsMonth: user.pointsMonth,
+            faculty: user.faculty
+        })
+    })
+
+    //create object with date
+    console.log("Creating date")
+    let date = new Date();
+    let updatedDate = moment(date).subtract(1, 'days');
+    var key = moment(updatedDate).format('MM/YYYY');
+    let lastMonthData = {key: key, data: simplifiedTopUsers};
+    //save faculties to DB
+    console.log("About to save last month to DB")
+    await Stats.findOneAndUpdate(
+            { eventName: 'leaderboardSavedStats' },
+            { $push: { payload: lastMonthData } },
+            { upsert: true, new: true }
+        );
+    //send confirmation e-mail to admin
+    mail.sendCronReport('saveLeaderboard', simplifiedTopUsers);
 })
 
 // Schedule the function to run at midnight on the first day of every month

@@ -120,6 +120,7 @@
                                         <% if (faculty[0] === "prfZcu") { %>PrF ZČU<% } %>
                                         <% if (faculty[0] === "prfJina") { %>Ostatní fakulty<% } %>
                                         <% if (faculty[0] === "prfNestuduji") { %>Absolventi a ostatní nestudující<% } %>
+                                        <% if (faculty[0] === "prfUchazec") { %>Uchazeči o studium<% } %>
                                     </p>
                                     <p class="points"><%= faculty[1] %></p>
                                 </div>
@@ -133,8 +134,65 @@
                     <p>Každá nastudovaná kartička či zodpovězená otázka se počítá za <b>jeden bod</b>. Body všech studentů každé fakulty se sčítají. Kdo se stane šampionem tento měsíc?</p>
                 </div>
             </div>
+            <% if (currentUser && currentUser.admin) { %>
+                <div class="set-nickname-cta d-flex justify-content-center">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-share">Zobrazit data ke sdílení</a>
+                </div>
+            <% } %>
         </section>
     </main>
+
+        <!-- Share modal -->
+        
+        <div class="modal fade" id="modal-share" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 text-center mt-5">
+                        <h1 class="headline">Souboj fakult</h1>
+                        <h4 class="lead mb-3"><%= lastMonthName %> 2024</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2">
+                        <% facultiesPrevious.forEach((faculty, i) => { %>
+                            <% if (i < 3) { %>
+                                <div <% if(i === 0){ %> class="leaderboard-item active-user" <% } else { %> class="leaderboard-item" <% } %>> 
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div style="min-width:60px;height:60px;" class="d-flex justify-content-center align-items-center text-muted">
+                                            <% if (i === 0) { %>
+                                                <img src="/img/icon_first.png" alt="ikona_prvni" class="icon">
+                                            <% } %>
+                                            <% if (i === 1) { %>
+                                                <img src="/img/icon_second.png" alt="ikona_druhy" class="icon">
+                                            <% } %>
+                                            <% if (i === 2) { %>
+                                                <img src="/img/icon_third.png" alt="ikona_treti" class="icon">
+                                            <% } %>
+                                            <% if (i > 2) { %>
+                                                <span class="ranking"><%= i + 1 %></span>
+                                            <% } %>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between content" style="width:100%">
+                                            <p class="nickname">
+                                                <% if (faculty[0] === "prfUp") { %>Prf UP<% } %>
+                                                <% if (faculty[0] === "prfUk") { %>PrF UK<% } %>
+                                                <% if (faculty[0] === "prfMuni") { %>PrF MUNI<% } %>
+                                                <% if (faculty[0] === "prfZcu") { %>PrF ZČU<% } %>
+                                                <% if (faculty[0] === "prfJina") { %>Ostatní fakulty<% } %>
+                                                <% if (faculty[0] === "prfNestuduji") { %>Absolventi a ostatní nestudující<% } %>
+                                            </p>
+                                            <p class="points"><%= faculty[1] %></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
     
         <%- include('./partials/footer') %>
         <%- include('./partials/cookiesBar')%> 

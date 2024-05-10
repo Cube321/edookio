@@ -132,6 +132,11 @@
                             <a href="#" data-bs-toggle="modal" data-bs-target="#modal-nickname">Nastavit vlastní přezdívku</a>
                         </div>
                     <% } %>
+                    <% if (currentUser && currentUser.admin && order === "month") { %>
+                        <div class="set-nickname-cta d-flex justify-content-center">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-share">Zobrazit data ke sdílení</a>
+                        </div>
+                    <% } %>
             </div>
         </section>
     </main>
@@ -159,6 +164,60 @@
                     </div>
                     
                 </form>
+            </div>
+            </div>
+        </div>
+
+        <!-- Share modal -->
+        
+        <div class="modal fade" id="modal-share" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 text-center mt-5">
+                        <h1 class="headline">Nejaktivnější studenti</h1>
+                        <h4 class="lead mb-3"><%= lastMonthName %> 2024</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 offset-2">
+                        <% if (lastMonthLeaderboard && lastMonthLeaderboard.data) { %>
+                            <% lastMonthLeaderboard.data.forEach((user, i) => { %>
+                                <% if (i < 3) { %>
+                                <div <% if(i === 0){ %> class="leaderboard-item active-user" <% } else { %> class="leaderboard-item" <% } %> >
+                                    <div class="d-flex flex-row align-items-center">
+                                        <div style="min-width:60px;height:60px;" class="d-flex justify-content-center align-items-center text-muted">
+                                            <% if (i === 0) { %>
+                                                <img src="/img/icon_first.png" alt="ikona_prvni" class="icon">
+                                            <% } %>
+                                            <% if (i === 1) { %>
+                                                <img src="/img/icon_second.png" alt="ikona_druhy" class="icon">
+                                            <% } %>
+                                            <% if (i === 2) { %>
+                                                <img src="/img/icon_third.png" alt="ikona_treti" class="icon">
+                                            <% } %>
+                                            <% if (i > 2) { %>
+                                                <span class="ranking"><%= i + 1 %></span>
+                                            <% } %>
+                                        </div>
+                                        <div class="d-flex align-items-center content" style="width:100%">
+                                            <p class="nickname"><%= user.nickname %></p>
+                                            <p class="points"><%= user.pointsMonth %></p>
+                                            <% if (user.faculty === "Neuvedeno" || user.faculty === "neuvedeno") { %>
+                                                <p class="faculty text-muted">-</p>
+                                            <% } else if(user.faculty === "Nestuduji") { %>
+                                                <p class="faculty text-muted">Nestuduje</p>
+                                            <% } else { %>
+                                                <p class="faculty text-muted"><%= user.faculty %></p>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                            <% }) %>
+                        <% } %>
+                    </div>
+                </div>
             </div>
             </div>
         </div>
