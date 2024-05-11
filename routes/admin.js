@@ -63,6 +63,8 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
     let reachedQuestionsLimit = 0;
     let hasUnsubscribedFromStreak = 0;
     let faculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
+    let activeSubscriptionsByFaculties = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
+    let activeLastWeekByFaculty = {prfUp: 0, prfUk: 0, prfMuni: 0, prfZcu: 0, prfJina: 0, prfNestuduji: 0, prfUchazec: 0, prfNeuvedeno: 0};
     let sources = {pratele: 0, ucitele: 0, instagram: 0, facebook: 0, google: 0, odjinud: 0, neuvedeno: 0};
 
 
@@ -100,14 +102,46 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         //count users unsubscribed form streak email reminder
         if(user.hasUnsubscribedFromStreak){hasUnsubscribedFromStreak++};
         //count faculties
-        if(user.faculty === "PrF UP"){faculties.prfUp++};
-        if(user.faculty === "PrF UK"){faculties.prfUk++};
-        if(user.faculty === "PrF MUNI"){faculties.prfMuni++};
-        if(user.faculty === "PrF ZČU"){faculties.prfZcu++};
-        if(user.faculty === "Jiná"){faculties.prfJina++};
-        if(user.faculty === "Uchazeč"){faculties.prfUchazec++};
-        if(user.faculty === "Nestuduji"){faculties.prfNestuduji++};
-        if(user.faculty === "Neuvedeno"){faculties.prfNeuvedeno++};
+        if(user.faculty === "PrF UP"){
+            faculties.prfUp++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfUp++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfUp++};
+        };
+        if(user.faculty === "PrF UK"){
+            faculties.prfUk++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfUk++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfUk++};
+        };
+        if(user.faculty === "PrF MUNI"){
+            faculties.prfMuni++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfMuni++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfMuni++};
+        };
+        if(user.faculty === "PrF ZČU"){
+            faculties.prfZcu++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfZcu++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfZcu++};
+        };
+        if(user.faculty === "Jiná"){
+            faculties.prfJina++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfJina++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfJina++};
+        };
+        if(user.faculty === "Uchazeč"){
+            faculties.prfUchazec++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfUchazec++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfUchazec++};
+        };
+        if(user.faculty === "Nestuduji"){
+            faculties.prfNestuduji++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfNestuduji++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfNestuduji++};
+        };
+        if(user.faculty === "Neuvedeno"){
+            faculties.prfNeuvedeno++;
+            if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){activeSubscriptionsByFaculties.prfNeuvedeno++};
+            if(user.lastActive && moment(user.lastActive).isAfter(moment().subtract(1, 'week'))){activeLastWeekByFaculty.prfNeuvedeno++};
+        };
         //count sources
         if(user.source === "pratele"){sources.pratele++};
         if(user.source === "ucitele"){sources.ucitele++};
@@ -151,7 +185,9 @@ router.get('/admin/admin', isLoggedIn, isAdmin, catchAsync(async (req, res) => {
         activePremiumSubscriptions,
         sources,
         reachedQuestionsLimit,
-        hasUnsubscribedFromStreak
+        hasUnsubscribedFromStreak,
+        activeSubscriptionsByFaculties,
+        activeLastWeekByFaculty
     });
 }))
 
@@ -572,6 +608,48 @@ router.post("/admin/:userId/removeEditor", isLoggedIn, isAdmin, catchAsync(async
     user.isEditor = false;
     await user.save();
     req.flash('success','Editorská oprávnění byle odebrána.')
+    res.redirect('/admin/users');
+}))
+
+
+
+
+//ADMIN PERMISIONS LOGIC (grant and remove)
+//give admin permisions to a user
+router.post("/admin/:userId/makeAdmin", isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    let {adminpass} = req.body;
+    let user = await User.findById(userId);
+    if(!user){
+        req.flash('error','Uživatel neexistuje');
+        return res.redirect('/admin/users');
+    }
+    if(adminpass !== process.env.adminRegKey){
+        req.flash('error','Nesprávný administrátorský kód')
+        return res.redirect('/admin/users');
+    }
+    user.admin = true;
+    await user.save();
+    req.flash('success','Administrátorská oprávnění byla udělena.')
+    res.redirect('/admin/users');
+}))
+
+//remove admin permisions from a user
+router.post("/admin/:userId/removeAdmin", isLoggedIn, isAdmin, catchAsync(async(req, res) => {
+    let {userId} = req.params;
+    let {adminpass} = req.body;
+    let user = await User.findById(userId);
+    if(!user){
+        req.flash('error','Uživatel neexistuje');
+        return res.redirect('/admin/users');
+    }
+    if(adminpass !== process.env.adminRegKey){
+        req.flash('error','Nesprávný administrátorský kód')
+        return res.redirect('/admin/users');
+    }
+    user.admin = false;
+    await user.save();
+    req.flash('success','Administrátorská oprávnění byla odebrána.')
     res.redirect('/admin/users');
 }))
 

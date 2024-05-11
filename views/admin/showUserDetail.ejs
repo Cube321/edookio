@@ -212,8 +212,20 @@
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Administrátor</p>
                     </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <%= user.admin %> 
+                    <div class="col-8 d-flex justify-content-between">
+                        <% if (!user.admin) { %>
+                            <form action="/admin/<%= user._id %>/makeAdmin" method="POST" class="d-flex justify-content-between">
+                                <%= user.admin %> 
+                                <input type="text" class="form-control" id="adminpass" name="adminpass">
+                                <button class="btn btn-sm btn-info w-100">M-A</button>
+                            </form>
+                        <% } else { %>
+                        <form action="/admin/<%= user._id %>/removeAdmin" method="POST" class="d-flex justify-content-between">
+                            <%= user.admin %> 
+                            <input type="text" class="form-control" id="adminpass" name="adminpass">
+                            <button class="btn btn-sm btn-outline-info w-100">R-A</button>
+                        </form>
+                        <% } %>
                     </div>
                     <hr>
                     <div class="col-4 fw-bold d-flex align-items-center">

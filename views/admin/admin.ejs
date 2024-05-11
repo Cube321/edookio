@@ -171,13 +171,13 @@
         </div>
         <div class="col-md-6 mb-3 pt-2">
             <div class="card stats p-3">
-                <h6 class="mb-3">Fakulty</h6>
+                <h6 class="mb-3">Fakulty <span class="text-muted text-smaller">(celkem | aktivní za poslední týden | aktivní předplatná)</span></h6>
                 <div class="row">
                     <div class="col-md-10">
                         <p>PrF UP</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfUp %>
+                        <%= faculties.prfUp %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfUp %> | <%= activeSubscriptionsByFaculties.prfUp %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -185,7 +185,7 @@
                         <p>PrF UK</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfUk %>
+                        <%= faculties.prfUk %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfUk %> | <%= activeSubscriptionsByFaculties.prfUk %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -193,7 +193,7 @@
                         <p>PrF MUNI</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfMuni %>
+                        <%= faculties.prfMuni %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfMuni %> | <%= activeSubscriptionsByFaculties.prfMuni %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -201,7 +201,7 @@
                         <p>PrF ZČU</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfZcu %>
+                        <%= faculties.prfZcu %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfZcu %> | <%= activeSubscriptionsByFaculties.prfZcu %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -209,7 +209,7 @@
                         <p>Jiná</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfJina %>
+                        <%= faculties.prfJina %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfJina %> | <%= activeSubscriptionsByFaculties.prfJina %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -217,7 +217,7 @@
                         <p>Nestuduje</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfNestuduji %>
+                        <%= faculties.prfNestuduji %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfNestuduji %> | <%= activeSubscriptionsByFaculties.prfNestuduji %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -225,7 +225,7 @@
                         <p>Hlásím se ke studiu</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfUchazec %>
+                        <%= faculties.prfUchazec %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfUchazec %> | <%= activeSubscriptionsByFaculties.prfUchazec %></span>
                     </div>
                 </div>
                 <div class="row">
@@ -233,7 +233,7 @@
                         <p>Neuvedeno</p>
                     </div>
                     <div class="col-md-2">
-                        <%= faculties.prfNeuvedeno %>
+                        <%= faculties.prfNeuvedeno %> <span class="text-muted"> | <%= activeLastWeekByFaculty.prfNeuvedeno %> | <%= activeSubscriptionsByFaculties.prfNeuvedeno %></span>
                     </div>
                 </div>
             </div>
