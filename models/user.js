@@ -10,6 +10,7 @@ const UserSchema = new Schema ({
         required: true,
         unique: true
     },
+    passwordJWT: String,
     nickname: {
         type: String, 
         default: undefined

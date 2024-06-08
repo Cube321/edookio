@@ -62,7 +62,7 @@ async function generateQuizQuestion(card, sectionId, categoryId, user) {
         
         ` 
     }],
-      model: "gpt-4-turbo",
+      model: "gpt-4o",
       temperature: 0.8
     });
 

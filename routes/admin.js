@@ -251,7 +251,7 @@ router.get('/admin/activeSubscriptions', isLoggedIn, isAdmin, catchAsync(async (
             newUser.updatedDateOfRegistration = moment(user.dateOfRegistration).locale('cs').format('LL');
             newUser.updatedDateOfActivation = moment(user.premiumDateOfActivation).locale('cs').format('LL');
             if(user.premiumDateOfUpdate){
-                newUser.updatedDateOfUpdate = moment().locale('cs').format('LL');
+                newUser.updatedDateOfUpdate = moment(user.premiumDateOfUpdate).locale('cs').format('LL');
             } else {
                 newUser.updatedDateOfUpdate = "-"
             }

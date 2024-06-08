@@ -37,6 +37,8 @@ cron.schedule(cronHelpers.cronExpressionDaily5AM, cronHelpers.checkPremiumEnded)
 cron.schedule(cronHelpers.cronExpressionMonthly, cronHelpers.resetMonthlyCounters);
 //handle streaks logic daily at 1AM
 cron.schedule(cronHelpers.cronExpressionDaily3AM, cronHelpers.resetStreaks);
+//save daily stats daily at 1AM
+cron.schedule(cronHelpers.cronExpressionDaily3AM, cronHelpers.saveDailyStats);
 //send streak reminder daily at 9PM
 cron.schedule(cronHelpers.cronExpressionDaily9PM, cronHelpers.streakReminderEmail);
 
@@ -55,6 +57,9 @@ const questionsRoutes = require('./routes/questions');
 const invoicesRoutes = require('./routes/invoices');
 const chatGptRoutes = require('./routes/chatgpt');
 const leaderboardRoutes = require('./routes/leaderboard');
+const mobileApiRoutes = require('./routes/mobileApi');
+const mobileAuthRoutes = require('./routes/mobileAuth');
+const statsRoutes = require('./routes/stats');
 
 const dbUrl = process.env.DB_URL;
 
@@ -210,6 +215,9 @@ app.use('/', questionsRoutes);
 app.use('/', invoicesRoutes);
 app.use('/', chatGptRoutes);
 app.use('/', leaderboardRoutes);
+app.use('/', mobileApiRoutes);
+app.use('/', mobileAuthRoutes);
+app.use('/', statsRoutes);
 
 
 //error handling - has to be at the end!

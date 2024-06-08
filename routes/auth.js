@@ -10,6 +10,7 @@ const uuid = require('uuid');
 const mail = require('../mail/mail_inlege');
 const Stripe = require('../utils/stripe');
 const moment = require('moment');
+const bcrypt = require('bcryptjs');
 
 //PROFILE (show)
 //my profile view page
@@ -109,6 +110,11 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
                 marketing: req.session.cookiesMarketingove
             }
         }
+        //create hashed password for the JWT used with mobile app
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
+        const passwordJWT = hash;
+
         //register user
         const passChangeId = uuid.v1();
         const dateOfRegistration = Date.now();
@@ -116,6 +122,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
         const user = new User({
             email, 
             username: email, 
+            passwordJWT,
             admin, 
             dateOfRegistration, 
             firstname, 
@@ -209,6 +216,15 @@ router.post('/auth/user/changePassword', isLoggedIn, catchAsync(async(req, res) 
     try {
     if(req.body.newpassword === req.body.newpasswordcheck){
         const user = await User.findById(req.user._id);
+
+        //create hashed password for the JWT used with mobile app
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(req.body.newpassword, salt);
+        const passwordJWT = hash;
+
+        user.passwordJWT = passwordJWT;
+        await user.save();
+
         await user.changePassword(req.body.oldpassword, req.body.newpassword);
         req.flash('success','Heslo bylo změněno');
         res.redirect('/auth/user/profile');
@@ -269,6 +285,14 @@ router.post('/auth/user/setPassword/:passChangeId', catchAsync(async(req, res) =
         return res.redirect('/');
     } else if(req.body.newpassword === req.body.newpasswordcheck){
         await user.setPassword(req.body.newpassword);
+
+        //create hashed password for the JWT used with mobile app
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(req.body.newpassword, salt);
+        const passwordJWT = hash;
+
+        user.passwordJWT = passwordJWT;
+
         await user.save();
         req.login(user, err => {
             if (err) return next(err);

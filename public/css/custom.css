@@ -601,6 +601,19 @@ form .form-control.bordered {
 }
 
 
+/* ADMIN STATS */
+.chart-container {
+    max-height: 300px;
+    width: 100%;
+    margin-bottom: 32px;
+}
+
+.chart-canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+
 @media only screen and (max-width: 1200px) {
     .cards-amount-div {
         flex-direction: column;

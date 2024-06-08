@@ -75,6 +75,13 @@ cronHelpers.resetMonthlyCounters = catchAsync(async() => {
     mail.sendCronReport('resetMonthlyCounters', counter);
 })
 
+cronHelpers.saveDailyStats = catchAsync(async() => {
+    console.log('RUNNING CRON: saveDailyStats');
+    let simplifiedUsers = await User.find({}, 'faculty source');
+    countDailyStats(simplifiedUsers);
+    mail.sendCronReport('saveDailyStats', 'success');
+})
+
 //HELPERS
 let saveClash = catchAsync(async(users) => {
     console.log('RUNNING CRON: saveClash');
@@ -184,6 +191,40 @@ let saveLeaderboard = catchAsync(async(users) => {
     //send confirmation e-mail to admin
     mail.sendCronReport('saveLeaderboard', simplifiedTopUsers);
 })
+
+async function countDailyStats(users){
+        let facultyCounts = {};
+        let sourceCounts = {};
+    
+        users.forEach(user => {
+            const faculty = user.faculty;
+            const source = user.source;
+    
+            // Count faculties
+            if (facultyCounts[faculty]) {
+                facultyCounts[faculty] += 1;
+            } else {
+                facultyCounts[faculty] = 1;
+            }
+    
+            // Count sources
+            if (sourceCounts[source]) {
+                sourceCounts[source] += 1;
+            } else {
+                sourceCounts[source] = 1;
+            }
+        });
+        await Stats.findOneAndUpdate(
+            { eventName: 'saveDailyStatsFaculties' },
+            { $push: { payload: facultyCounts } },
+            { upsert: true, new: true }
+        );
+        await Stats.findOneAndUpdate(
+            { eventName: 'saveDailyStatsSource' },
+            { $push: { payload: sourceCounts } },
+            { upsert: true, new: true }
+        );    
+}
 
 // Schedule the function to run at midnight on the first day of every month
 cronHelpers.cronExpressionMonthly = '0 0 1 * *';

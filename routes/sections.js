@@ -309,14 +309,5 @@ router.get('/category/:category/section/:sectionId/listAllCards', isLoggedIn, is
     res.status(200).render('sections/listAllCards', {section});
 }))
 
-//generate GPT prompt from Cards of Section
-router.get('/category/:category/section/:sectionId/generateGPTprompt', isLoggedIn, isEditor, catchAsync(async(req, res) => {
-    const section = await Section.findById(req.params.sectionId).populate('cards');
-    if(!section){
-        throw Error("Balíček s tímto ID neexistuje");
-    }
-    res.status(200).render('sections/gptPrompt', {section});
-}))
-
 
 module.exports = router;
