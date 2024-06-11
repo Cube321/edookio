@@ -26,12 +26,30 @@ router.get('/admin/stats', isLoggedIn, isAdmin, catchAsync(async(req, res) => {
     }
 
     if(!show || show === 'month'){
-        data.registrationsPerDay = data.registrationsPerDay.slice(-30);
-        data.premiumActivationsPerDay = data.premiumActivationsPerDay.slice(-30);
-        data.premiumDeactivationsPerDay = data.premiumDeactivationsPerDay.slice(-30);
-        data.premiumProlongationsPerDay = data.premiumProlongationsPerDay.slice(-30);
-        data.registrationsPerDayByFaculties = data.registrationsPerDayByFaculties.slice(-30);
-        data.registrationsPerDayBySource = data.registrationsPerDayBySource.slice(-30);
+        data.registrationsPerDay = data.registrationsPerDay.slice(-31);
+        data.premiumActivationsPerDay = data.premiumActivationsPerDay.slice(-31);
+        data.premiumDeactivationsPerDay = data.premiumDeactivationsPerDay.slice(-31);
+        data.premiumProlongationsPerDay = data.premiumProlongationsPerDay.slice(-31);
+        data.registrationsPerDayByFaculties = data.registrationsPerDayByFaculties.slice(-31);
+        data.registrationsPerDayBySource = data.registrationsPerDayBySource.slice(-31);
+    }
+
+    if(show === 'quarter'){
+        data.registrationsPerDay = data.registrationsPerDay.slice(-90);
+        data.premiumActivationsPerDay = data.premiumActivationsPerDay.slice(-90);
+        data.premiumDeactivationsPerDay = data.premiumDeactivationsPerDay.slice(-90);
+        data.premiumProlongationsPerDay = data.premiumProlongationsPerDay.slice(-90);
+        data.registrationsPerDayByFaculties = data.registrationsPerDayByFaculties.slice(-90);
+        data.registrationsPerDayBySource = data.registrationsPerDayBySource.slice(-90);
+    }
+
+    if(show === 'halfyear'){
+        data.registrationsPerDay = data.registrationsPerDay.slice(-180);
+        data.premiumActivationsPerDay = data.premiumActivationsPerDay.slice(-180);
+        data.premiumDeactivationsPerDay = data.premiumDeactivationsPerDay.slice(-180);
+        data.premiumProlongationsPerDay = data.premiumProlongationsPerDay.slice(-180);
+        data.registrationsPerDayByFaculties = data.registrationsPerDayByFaculties.slice(-180);
+        data.registrationsPerDayBySource = data.registrationsPerDayBySource.slice(-180);
     }
 
     const dataJSON = JSON.stringify(data)

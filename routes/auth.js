@@ -110,6 +110,7 @@ router.post('/auth/user/new', validateUser, catchAsync(async (req, res, next) =>
                 marketing: req.session.cookiesMarketingove
             }
         }
+        
         //create hashed password for the JWT used with mobile app
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(password, salt);
