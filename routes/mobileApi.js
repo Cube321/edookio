@@ -26,7 +26,6 @@ router.get(
       "sections"
     );
     //add data to user's unfinishedSections
-
     category.sections.forEach((section, index) => {
       let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(
         (x) => x.sectionId.toString() == section._id.toString()
@@ -35,6 +34,13 @@ router.get(
         category.sections[index].isUnfinished = true;
         category.sections[index].lastSeenCard =
           req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
+      }
+      //check if the section is in the sections array of the user - if so, mark it as finished
+      let finishedSectionIndex = req.user.sections.findIndex((x) => {
+        return x.toString() == section._id.toString();
+      });
+      if (finishedSectionIndex > -1) {
+        category.sections[index].isFinished = true;
       }
     });
 
@@ -60,16 +66,27 @@ router.get(
     );
     if (unfinishedSectionIndex < 0) {
       //create new unfinished section and push it to the array
-      let newUnfinishedSection = { sectionId: sectionId, lastCard: 1 };
+      let newUnfinishedSection = { sectionId: sectionId, lastCard: 0 };
       user.unfinishedSections.push(newUnfinishedSection);
       section.countStarted++;
       await section.save();
+    } else {
+      //get last seen card
+      section.lastSeenCard =
+        user.unfinishedSections[unfinishedSectionIndex].lastCard;
     }
+    //remove the section from the finished sections array of the user using filter method
+    let updatedFinishedSections = user.sections.filter((x) => {
+      return x.toString() != sectionId.toString();
+    });
+
+    user.sections = updatedFinishedSections;
+
     //mark modified nested objects - otherwise Mongoose does not see it and save it
     user.markModified("unfinishedSections");
     await user.save();
 
-    res.status(200).json(section.cards);
+    res.status(200).json(section);
   })
 );
 
@@ -98,9 +115,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     let { sectionId, cardNum } = req.body;
-
-    console.log("sectionId", sectionId);
-    console.log("cardNum", cardNum);
 
     //update unfinished section
     if (req.user) {
@@ -133,6 +147,33 @@ router.post(
       await user.save();
     }
     res.status(201).json({ message: "Last seen card updated" });
+  })
+);
+
+router.post(
+  "/mobileApi/updateFinishedSections",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    //add new finished section to user's finishedSections
+    let { sectionId } = req.body;
+    let user = req.user;
+    let finishedSectionIndex = user.sections.findIndex(
+      (x) => x.toString() == sectionId.toString()
+    );
+    if (finishedSectionIndex < 0) {
+      user.sections.push(sectionId);
+    }
+    //remove section from unfinishedSections
+    let unfinishedSectionIndex = user.unfinishedSections.findIndex(
+      (x) => x.sectionId.toString() == sectionId.toString()
+    );
+    if (unfinishedSectionIndex > -1) {
+      user.unfinishedSections.splice(unfinishedSectionIndex, 1);
+    }
+    //mark modified nested objects - otherwise Mongoose does not see it and save it
+    user.markModified("unfinishedSections");
+    await user.save();
+    res.status(201).json({ message: "Finished section added to user" });
   })
 );
 
