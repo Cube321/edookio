@@ -5,6 +5,7 @@ const User = require("../models/user");
 const mail = require("../mail/mail_inlege");
 const Stripe = require("../utils/stripe");
 const uuid = require("uuid");
+const moment = require("moment");
 
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
@@ -167,7 +168,17 @@ router.get(
       if (!userExists) {
         return res.status(400).json({ message: "Uživatel neexistuje." });
       }
-      return res.status(200).json({ user: userExists });
+      let endDate = "";
+      let duplicatedUser = userExists.toObject();
+      duplicatedUser.dateOfRegistration = moment(userExists.dateOfRegistration)
+        .locale("cs")
+        .format("LL");
+      if (userExists.isPremium) {
+        duplicatedUser.endDate = moment(duplicatedUser.endDate)
+          .locale("cs")
+          .format("LL");
+      }
+      return res.status(200).json({ user: duplicatedUser });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: "Internal server error" });

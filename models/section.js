@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { isAdmin } = require("../utils/middleware");
 const Schema = mongoose.Schema;
 
 const SectionSchema = new Schema({
@@ -35,6 +36,10 @@ const SectionSchema = new Schema({
   isFinished: {
     type: Boolean,
     default: false,
+  },
+  isAccesible: {
+    type: Boolean,
+    default: undefined,
   },
   lastSeenCard: {
     type: Number,

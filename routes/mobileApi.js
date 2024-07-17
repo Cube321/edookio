@@ -22,6 +22,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     let { categoryName } = req.query;
+    let { user } = req;
     const category = await Category.findOne({ name: categoryName }).populate(
       "sections"
     );
@@ -41,6 +42,11 @@ router.get(
       });
       if (finishedSectionIndex > -1) {
         category.sections[index].isFinished = true;
+      }
+      if (!user.isPremium && section.isPremium) {
+        category.sections[index].isAccesible = false;
+      } else {
+        category.sections[index].isAccesible = true;
       }
     });
 
@@ -81,6 +87,16 @@ router.get(
     });
 
     user.sections = updatedFinishedSections;
+
+    //update date of user's last activity
+    user.lastActive = moment();
+    //increase cardSeen by 1
+    user.cardsSeen++;
+    user.cardsSeenThisMonth++;
+    user.actionsToday++;
+    if (user.actionsToday === 10) {
+      user.streakLength++;
+    }
 
     //mark modified nested objects - otherwise Mongoose does not see it and save it
     user.markModified("unfinishedSections");
