@@ -21,8 +21,8 @@ router.post(
         passwordconfirmation,
         firstname,
         lastname,
-        facultySelectedValue,
-        sourceSelectedValue,
+        //facultySelectedValue,
+        //sourceSelectedValue,
       } = req.body;
       const foundUser = await User.findOne({ email: email.toLowerCase() });
 
@@ -41,9 +41,10 @@ router.post(
         marketing: true,
       };
 
-      if (sourceSelectedValue === "neuvedeno") {
+      /*if (sourceSelectedValue === "neuvedeno") {
         sourceSelectedValue = "Neuvedeno";
-      }
+      }*/
+      let sourceSelectedValue = "Neuvedeno";
 
       const passChangeId = uuid.v1();
       const dateOfRegistration = Date.now();
@@ -62,7 +63,8 @@ router.post(
         plan: "none",
         endDate: null,
         isGdprApproved: true,
-        faculty: facultySelectedValue,
+        //faculty: facultySelectedValue,
+        faculty: "Neuvedeno",
         source: sourceSelectedValue,
         cookies,
       });
