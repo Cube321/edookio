@@ -17,12 +17,37 @@
                     <%= registeredUsersCount %>
                 </div>
             </div>
+            <hr>
             <div class="row">
                 <div class="col-md-10">
                     <p>Počet Premium uživatelů</p>
                 </div>
                 <div class="col-md-2">
                     <%= premiumUsersCount %>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p class="text-muted mx-3">- měsíční</p>
+                </div>
+                <div class="col-md-2">
+                    <span class="text-muted"><%= PUCMonth %></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p class="text-muted mx-3">- půlroční</p>
+                </div>
+                <div class="col-md-2">
+                    <span class="text-muted"><%= PUCHalfyear %></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    <p class="text-muted mx-3">- roční</p>
+                </div>
+                <div class="col-md-2">
+                    <span class="text-muted"><%= PUCYear %></span>
                 </div>
             </div>
             <div class="row">

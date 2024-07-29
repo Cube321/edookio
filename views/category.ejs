@@ -129,6 +129,12 @@
                         </div>
                     </div>
                     <div class="row mt-2">
+                        <label for="desc" class="col-lg-3 col-form-label">JSON</label>
+                        <div class="col-lg-6">
+                            <textarea id="jsonData" name="jsonData" class="form-control form-borders" placeholder="Vložte data ve formátu JSON (volitelné)"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
                         <label for="previousSection" class="col-lg-3 col-form-label">Navazuje na</label>
                         <div class="col-lg-6">
                             <select class="form-select form-borders" name="previousSection" id="previousSection">
@@ -286,6 +292,14 @@
                                 <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toZdarma" class="btn btn-sm btn-danger">Změnit na zdarma</a>
                                 <span class="text-muted">(aktuálně premium)</span>
                             <% } %>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            <p>Export</p>
+                        </div>
+                        <div class="col-9">
+                            <a href="/category/<%= category.name %>/generateJSON/<%= section._id %>" class="btn btn-sm btn-danger">Vygenerovat JSON</a>
                         </div>
                     </div>
                     <% if (currentUser.admin) { %>
