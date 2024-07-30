@@ -46,6 +46,23 @@ router.get(
           category.sections[index].lastSeenCard =
             req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
         }
+        //check if the section is in the sections array of the user - if so, mark it as finished
+        let finishedSectionIndex = req.user.sections.findIndex((x) => {
+          return x.toString() == section._id.toString();
+        });
+        if (finishedSectionIndex > -1) {
+          category.sections[index].isFinished = true;
+        }
+
+        //check if the section is in the finishedQuestions array of the user - if so, mark it as finished
+        let finishedQuestionsIndex = req.user.finishedQuestions.findIndex(
+          (x) => {
+            return x.toString() == section._id.toString();
+          }
+        );
+        if (finishedQuestionsIndex > -1) {
+          category.sections[index].isFinishedQuestions = true;
+        }
       });
     }
     //render category page

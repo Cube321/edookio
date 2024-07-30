@@ -58,6 +58,22 @@
                                         <% } %>
                                     </p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
+                                    <div class="d-flex">
+                                        <% if (section.isFinished){ %>
+                                            <p class="text-muted text-small mb-0 section-finished-badge"><i class="fas fa-check-circle"></i> Kartičky </p>
+                                        <% } else if (section.isUnfinished) { %>
+                                            <p class="text-muted text-small mb-0 section-unfinished-badge"><i class="fas fa-spinner"></i> Kartičky </p>
+                                        <% } else { %>
+                                            <p class="text-muted text-small mb-0 section-not-finished-badge"><i class="fas fa-circle-notch"></i> Kartičky </p>
+                                        <% } %>
+                                        <% if (section.questions.length > 0) { %>
+                                            <% if (section.isFinishedQuestions) { %>
+                                                <p class="text-muted text-small mb-0 mx-2 section-finished-badge"><i class="fas fa-check-circle"></i> Otázky </p>
+                                            <% } else { %>
+                                                <p class="text-muted text-small mb-0 mx-2 section-not-finished-badge"><i class="fas fa-circle-notch"></i> Otázky </p>
+                                            <% } %>
+                                        <% } %>
+                                    </div>
                                     <% if (currentUser && currentUser.isEditor) { %>
                                         <p class="mb-0 text-small text-muted">Spuštění: <%= section.countStarted %> | <%= section.countStartedTest %></p>
                                         <a href="#" class="text-small" data-bs-toggle="modal" data-bs-target="#editSectionModal<%=section._id%>">Editovat</a>

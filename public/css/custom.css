@@ -131,6 +131,14 @@ body {
     min-width: 9rem;
 }
 
+.section-finished-badge .fa-check-circle {
+    color: #9ae80f;
+}
+
+.section-unfinished-badge .fa-spinner {
+    color: #AF0171;
+}
+
 /* CATEGOGRIES - PREMIUM SECTIONS*/
 .golden {
     color: #FFB81C;
