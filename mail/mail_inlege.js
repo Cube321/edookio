@@ -1,17 +1,17 @@
-const  sgMail = require('@sendgrid/mail');
-const moment = require('moment');
+const sgMail = require("@sendgrid/mail");
+const moment = require("moment");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 var mail = {};
 
 //welcome e-mail
-mail.welcome = function(email, callback){
-    const msg = {
-        from: {email:"info@inlege.cz", name: "InLege"}, 
-        to: email,
-        subject: "Vítej na InLege",
-        html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+mail.welcome = function (email, callback) {
+  const msg = {
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: "Vítej na InLege",
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
                 <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                     <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                         <tbody>
@@ -73,22 +73,23 @@ mail.welcome = function(email, callback){
                         </tbody>
                     </table> 
                 </div>  
-            </div>`
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-        if(err){
-          console.log(err);}      
-      });
+            </div>`,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //info mail to admin mail - registration of a new user
-mail.adminInfoNewUser = function(newUser, callback){
+mail.adminInfoNewUser = function (newUser, callback) {
   const msg = {
-      from: "info@inlege.cz", 
-      to: process.env.ADMIN_MAIL,
-      subject: `(CZ) Zaregistroval se nový uživatel: ${newUser.email}`,
-      html: `
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Zaregistroval se nový uživatel: ${newUser.email}`,
+    html: `
           <h3>Registrace nového uživatele</h3>
           <p>Zaregistroval se nový uživatel:<p>
           <p>Jméno: ${newUser.firstname}</p>
@@ -96,64 +97,69 @@ mail.adminInfoNewUser = function(newUser, callback){
           <p>Email: ${newUser.email}</p>
           <p>Fakulta: ${newUser.faculty}</p>
           <p>Zdroj: ${newUser.source}</p>
-          <p>Datum registrace: ${moment(newUser.dateOfRegistration).locale('cs').format('LLLL')}</p>
+          <p>Datum registrace: ${moment(newUser.dateOfRegistration)
+            .locale("cs")
+            .format("LLLL")}</p>
           <p>Premium: ${newUser.isPremium}</p>
           <p>Stripe ID: ${newUser.billingId}</p>
           <p>Plán předplatného: ${newUser.plan}</p>
-      `
-    };
+      `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //user requested invoice
-mail.requestInvoice = function(email, invoiceNum){
-    const msg = {
-        from: "info@inlege.cz", 
-        to: process.env.ADMIN_MAIL,
-        subject: `(CZ) Uživatel ${email} vyžádal ${invoiceNum}`,
-        html: `
+mail.requestInvoice = function (email, invoiceNum) {
+  const msg = {
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Uživatel ${email} vyžádal ${invoiceNum}`,
+    html: `
             Uživatel ${email} vyžádal zaslání faktury ${invoiceNum} na svůj e-mail.
-        `
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-        if(err){
-          console.log(err);}      
-      });
+        `,
   };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
 
 //payment failed
-mail.adminInfoSubscriptionPaymentFailed = function(user, paymentStatus, data){
-const msg = {
-    from: "info@inlege.cz", 
+mail.adminInfoSubscriptionPaymentFailed = function (user, paymentStatus, data) {
+  const msg = {
+    from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
-    subject: `(CZ) Platba uživatele ${user.email} selhala`,
+    subject: `(CZ) Platba uživatele ${user.email} SELHALA`,
     html: `
         Platba uživatele ${user.email} selhala.
 
         Payment status: ${paymentStatus}
 
         Data object: ${JSON.stringify(data)}
-    `
-    };
-//send the mail
-sgMail.send(msg, function(err) {
-    if(err){
-        console.log(err);}      
-    });
+    `,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //subscription created e-mail
-mail.subscriptionCreated = function(email, callback){
+mail.subscriptionCreated = function (email, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: "Předplatné InLege Premium aktivováno",
-      html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: "Předplatné InLege Premium aktivováno",
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
                 <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                     <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                         <tbody>
@@ -215,75 +221,90 @@ mail.subscriptionCreated = function(email, callback){
                         </tbody>
                     </table> 
                 </div>  
-            </div>`
-    };
+            </div>`,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //info mail to admin mail - subscription activated
-mail.adminInfoNewSubscription = function(user, callback){
+mail.adminInfoNewSubscription = function (user, callback) {
   const msg = {
-      from: "info@inlege.cz", 
-      to: process.env.ADMIN_MAIL,
-      subject: `(CZ) Uživatel AKTIVOVAL Premium: ${user.email}`,
-      html: `
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Uživatel AKTIVOVAL Premium: ${user.email}`,
+    html: `
           <h3>Aktivace předplatného Premium</h3>
           <p>Tento uživatel aktivoval balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
-          <p>Datum registrace: ${moment(user.dateOfRegistration).locale('cs').format('LLLL')}</p>
-          <p>Datum vyčerpání free otázek: ${moment(user.reachedQuestionsLimitDate).locale('cs').format('LLLL')} </p>
+          <p>Datum registrace: ${moment(user.dateOfRegistration)
+            .locale("cs")
+            .format("LLLL")}</p>
+          <p>Datum vyčerpání free otázek: ${moment(
+            user.reachedQuestionsLimitDate
+          )
+            .locale("cs")
+            .format("LLLL")} </p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${moment(user.endDate).locale('cs').format('LLLL')}</p>
-      `
-    };
+          <p>Konec předplatného: ${moment(user.endDate)
+            .locale("cs")
+            .format("LLLL")}</p>
+      `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //info mail to admin mail - subscription updated
-mail.adminInfoSubscriptionUpdated = function(user, endDate, callback){
+mail.adminInfoSubscriptionUpdated = function (user, endDate, callback) {
   const msg = {
-      from: "info@inlege.cz", 
-      to: process.env.ADMIN_MAIL,
-      subject: `(CZ) Uživatel PRODLOUŽIL Premium: ${user.email}`,
-      html: `
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Uživatel PRODLOUŽIL Premium: ${user.email}`,
+    html: `
           <h3>Prodloužení předplatného Premium</h3>
           <p>Tento uživatel prodloužil balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
-          <p>Datum registrace: ${moment(user.dateOfRegistration).locale('cs').format('LLLL')}</p>
+          <p>Datum registrace: ${moment(user.dateOfRegistration)
+            .locale("cs")
+            .format("LLLL")}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${moment(endDate).locale('cs').format('LLLL')}</p>
-      `
-    };
+          <p>Konec předplatného: ${moment(endDate)
+            .locale("cs")
+            .format("LLLL")}</p>
+      `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //subscription Premium granted by admin
-mail.sendAdminGrantedPremium = function(email, endDate, callback){
+mail.sendAdminGrantedPremium = function (email, endDate, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: `Dárek: Předplatné InLege Premium aktivováno do ${endDate}`,
-      html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: `Dárek: Předplatné InLege Premium aktivováno do ${endDate}`,
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
               <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                   <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                       <tbody>
@@ -351,21 +372,22 @@ mail.sendAdminGrantedPremium = function(email, endDate, callback){
                       </tbody>
                   </table> 
               </div>  
-          </div> `
-    };
+          </div> `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
-mail.subscriptionCanceled = function(email, endDate, callback){
+mail.subscriptionCanceled = function (email, endDate, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: "Předplatné Premium ukončeno",
-      html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: "Předplatné Premium ukončeno",
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
               <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                   <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                       <tbody>
@@ -433,48 +455,54 @@ mail.subscriptionCanceled = function(email, endDate, callback){
                       </tbody>
                   </table> 
               </div>  
-          </div> `
-    };
+          </div> `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //info mail to admin mail - subscription canceled
-mail.adminInfoSubscriptionCanceled = function(user, endDate, callback){
+mail.adminInfoSubscriptionCanceled = function (user, endDate, callback) {
   const msg = {
-      from: "info@inlege.cz", 
-      to: process.env.ADMIN_MAIL,
-      subject: `(CZ) Uživatel UKONČIL Premium: ${user.email}`,
-      html: `
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Uživatel UKONČIL Premium: ${user.email}`,
+    html: `
           <h3>Ukončení předplatného Premium</h3>
           <p>Tento uživatel ukončil balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
-          <p>Datum registrace: ${moment(user.dateOfRegistration).locale('cs').format('LLLL')}</p>
+          <p>Datum registrace: ${moment(user.dateOfRegistration)
+            .locale("cs")
+            .format("LLLL")}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${moment(endDate).locale('cs').format('LLLL')}</p>
-      `
-    };
+          <p>Konec předplatného: ${moment(endDate)
+            .locale("cs")
+            .format("LLLL")}</p>
+      `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //info mail when Premium actually ended (is send when user uses InLege after Premium expired)
-mail.sendPremiumEnded = function(email, callback){
+mail.sendPremiumEnded = function (email, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: `Předplatné InLege Premium právě skončilo`,
-      html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: `Předplatné InLege Premium právě skončilo`,
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
                 <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                     <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                         <tbody>
@@ -541,31 +569,32 @@ mail.sendPremiumEnded = function(email, callback){
                         </tbody>
                     </table> 
                 </div>  
-            </div> `
-    };
+            </div> `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //reminder to keep the streak going
-mail.sendStreakReminder = function(email, days, callback){
-    let phrase = "dny";
-    let phrase2 = "dny";
-    if (days > 4){
-        phrase = "dní";
-    }
-    if (days > 3){
-        phrase2 = "dní";
-    }
+mail.sendStreakReminder = function (email, days, callback) {
+  let phrase = "dny";
+  let phrase2 = "dny";
+  if (days > 4) {
+    phrase = "dní";
+  }
+  if (days > 3) {
+    phrase2 = "dní";
+  }
 
-    const msg = {
-        from: {email:"info@inlege.cz", name: "InLege"}, 
-        to: email,
-        subject: `Neztrať svůj ${days}denní streak! Stačí 10 otázek`,
-        html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+  const msg = {
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: `Neztrať svůj ${days}denní streak! Stačí 10 otázek`,
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
         <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
             <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                 <tbody>
@@ -577,7 +606,9 @@ mail.sendStreakReminder = function(email, days, callback){
                                         <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top"> 
                                             <div style="box-sizing:border-box;text-align:center;margin-bottom:30px">
                                                 <h2 style="margin:0;margin-bottom:20px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Studuješ už ${days} ${phrase} v kuse! 🥳</h2> 
-                                                <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Již studuješ nepřetržitě ${days} ${phrase}! Projdi si dnes alespoň 10 kartiček nebo testových otázek a prodluž svůj streak na ${days + 1} ${phrase2}.</p> 
+                                                <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Již studuješ nepřetržitě ${days} ${phrase}! Projdi si dnes alespoň 10 kartiček nebo testových otázek a prodluž svůj streak na ${
+      days + 1
+    } ${phrase2}.</p> 
                                             </div> 
                                         </td> 
                                     </tr> 
@@ -630,61 +661,63 @@ mail.sendStreakReminder = function(email, days, callback){
                 </tbody>
             </table> 
         </div>  
-    </div> `
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-        if(err){
-          console.log(err);}      
-      });
+    </div> `,
   };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
 
 //send feedback
-mail.sendFeedback = function(email, name, text, callback){
+mail.sendFeedback = function (email, name, text, callback) {
   const msg = {
-      from: 'info@inlege.cz', 
-      to: 'jakub@inlege.cz',
-      subject: "(CZ) Zpětná vazba (formulář)",
-      html: `
+    from: "info@inlege.cz",
+    to: "jakub@inlege.cz",
+    subject: "(CZ) Zpětná vazba (formulář)",
+    html: `
           <p style="font-family:Helvetica Neue">Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</p>
           <p style="font-family:Helvetica Neue">${text}</p>
-      `
-    };
+      `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //send message from contact form
-mail.sendMessageFromContactForm = function(email, name, text, callback){
-    const msg = {
-        from: 'info@inlege.cz', 
-        to: 'jakub@inlege.cz',
-        subject: "(CZ) Nová zpráva z kontaktního formuláře",
-        html: `
+mail.sendMessageFromContactForm = function (email, name, text, callback) {
+  const msg = {
+    from: "info@inlege.cz",
+    to: "jakub@inlege.cz",
+    subject: "(CZ) Nová zpráva z kontaktního formuláře",
+    html: `
             <h3 style="font-family:Helvetica Neue">Nová zpráva z kontaktního formuláře:</h3>
             <p style="font-family:Helvetica Neue">E-mail: ${email}</p>
             <p style="font-family:Helvetica Neue">Jméno: ${name}</p>
             <p style="font-family:Helvetica Neue">Text: <br />${text}</p>
-        `
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-        if(err){
-          console.log(err);
-        }      
-      });
+        `,
   };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
 
 //forgotten password - change link
-mail.forgottenPassword = function(data, callback){
+mail.forgottenPassword = function (data, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: data.email,
-      subject: "Zapomenuté heslo",
-      html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: data.email,
+    subject: "Zapomenuté heslo",
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
               <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                   <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                       <tbody>
@@ -719,26 +752,27 @@ mail.forgottenPassword = function(data, callback){
                       </tbody>
                   </table> 
               </div>  
-          </div> `
-    };
+          </div> `,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //welcome e-mail
-mail.sendThankYou = function(email, text, type, callback){
-    let content = 'na kartičce';
-    if(type === 'question'){
-        content = 'v otázce'
-    }
-    const msg = {
-        from: {email:"jakub@inlege.cz", name: "Ondřej z InLege"}, 
-        to: email,
-        subject: `Oprava chyby ${content}`,
-        html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+mail.sendThankYou = function (email, text, type, callback) {
+  let content = "na kartičce";
+  if (type === "question") {
+    content = "v otázce";
+  }
+  const msg = {
+    from: { email: "jakub@inlege.cz", name: "Ondřej z InLege" },
+    to: email,
+    subject: `Oprava chyby ${content}`,
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
                 <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
                     <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
                         <tbody>
@@ -774,96 +808,102 @@ mail.sendThankYou = function(email, text, type, callback){
                         </tbody>
                     </table> 
                 </div>  
-            </div>`
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-        if(err){
-          console.log(err);}      
-      });
+            </div>`,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
 };
 
 //email for all users
-mail.sendEmergencyEmail = function(email, subject, text, callback){
+mail.sendEmergencyEmail = function (email, subject, text, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: subject,
-      html: `${text}`
-    };
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: subject,
+    html: `${text}`,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log('---ERROR--- Nepodarilo se odeslat e-mail z /admin/email');
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log("---ERROR--- Nepodarilo se odeslat e-mail z /admin/email");
+      console.log(err);
+    }
+  });
 };
 
 //email for subscribed users
-mail.sendEmailToSubscribedUsers = function(email, subject, text, callback){
+mail.sendEmailToSubscribedUsers = function (email, subject, text, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: subject,
-      html: `${text}
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: subject,
+    html: `${text}
               <br />
-              <p style="font-size:0.6rem;color=grey;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
-    };
+              <p style="font-size:0.6rem;color=grey;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`,
+  };
   //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log('---ERROR--- Nepodarilo se odeslat e-mail z /admin/email');
-        console.log(err);}      
-    });
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log("---ERROR--- Nepodarilo se odeslat e-mail z /admin/email");
+      console.log(err);
+    }
+  });
 };
 
 //email test
-mail.sendTestEmail = function(email, subject, text, callback){
+mail.sendTestEmail = function (email, subject, text, callback) {
   const msg = {
-      from: {email:"info@inlege.cz", name: "InLege"}, 
-      to: email,
-      subject: subject,
-      html: `${text}
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: subject,
+    html: `${text}
               <br />
               
-              <p style="font-size:0.6rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`
-    };
-  //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log('---ERROR--- Nepodarilo se odeslat e-mail z /admin/email');
-        console.log(err);}      
-    });
-};
-
-//account deleted - admin info mail
-mail.adminInfoUserDeleted = function(userEmail, callback){
-  const msg = {
-      from: "info@inlege.cz", 
-      to: process.env.ADMIN_MAIL,
-      subject: `(CZ) Uživatel zrušil účet: ${userEmail}`,
-      html: `Uživatel zrušil účet: ${userEmail}`
-    };
-  //send the mail
-  sgMail.send(msg, function(err) {
-      if(err){
-        console.log(err);}      
-    });
-};
-
-//account deleted - admin info mail
-mail.sendCronReport = function(action, data){
-    const msg = {
-        from: "info@inlege.cz", 
-        to: process.env.ADMIN_MAIL,
-        subject: `(CZ) Cron funkce právě proběhla: ${action}`,
-        html: `Dotčení uživatelé: ${data}`
-      };
-    //send the mail
-    sgMail.send(msg, function(err) {
-        if(err){
-          console.log(err);}      
-      });
+              <p style="font-size:0.6rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`,
   };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log("---ERROR--- Nepodarilo se odeslat e-mail z /admin/email");
+      console.log(err);
+    }
+  });
+};
+
+//account deleted - admin info mail
+mail.adminInfoUserDeleted = function (userEmail, callback) {
+  const msg = {
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Uživatel zrušil účet: ${userEmail}`,
+    html: `Uživatel zrušil účet: ${userEmail}`,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
+//account deleted - admin info mail
+mail.sendCronReport = function (action, data) {
+  const msg = {
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `(CZ) Cron funkce právě proběhla: ${action}`,
+    html: `Dotčení uživatelé: ${data}`,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
 
 module.exports = mail;
