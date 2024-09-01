@@ -50,6 +50,15 @@ router.get(
       }
     });
 
+    category.sections.forEach((section, index) => {
+      let finishedTestIndex = req.user.finishedQuestions.findIndex((x) => {
+        return x.toString() == section._id.toString();
+      });
+      if (finishedTestIndex > -1) {
+        category.sections[index].isTestFinished = true;
+      }
+    });
+
     res.status(200).json(category.sections);
   })
 );
@@ -103,6 +112,75 @@ router.get(
     await user.save();
 
     res.status(200).json(section);
+  })
+);
+
+router.get(
+  "/mobileApi/getQuestions",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let { sectionId } = req.query;
+    const section = await Section.findById(sectionId).populate("questions");
+    section.countStartedTest++;
+    await section.save();
+
+    let user = req.user;
+    //update date of user's last activity
+    user.lastActive = moment();
+    user.questionsSeenTotal++;
+    user.questionsSeenThisMonth++;
+    user.actionsToday++;
+    if (user.actionsToday === 10) {
+      user.streakLength++;
+    }
+
+    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+      return res.status(200).json({ limitReached: true });
+    }
+
+    res.status(200).json(section);
+  })
+);
+
+router.post(
+  "/mobileApi/registerAction",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let user = req.user;
+
+    //count new actions only every two seconds
+    let now = moment();
+    if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
+      //update date of user's last activity
+      user.lastActive = moment();
+      user.questionsSeenTotal++;
+      user.questionsSeenThisMonth++;
+      user.actionsToday++;
+      if (user.actionsToday === 10) {
+        user.streakLength++;
+      }
+      await user.save();
+    }
+    res.status(200).json({ message: "Action registered" });
+  })
+);
+
+router.post(
+  "/mobileApi/saveToFinishedSections",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let { sectionId } = req.body;
+    let user = req.user;
+    let finishedQuestionsIndex = user.finishedQuestions.findIndex(
+      (x) => x.toString() == sectionId.toString()
+    );
+    if (finishedQuestionsIndex < 0) {
+      user.finishedQuestions.push(sectionId);
+    }
+    //mark modified nested objects - otherwise Mongoose does not see it and save it
+    user.markModified("finishedQuestions");
+    await user.save();
+    res.status(201).json({ message: "Finished section added to user" });
   })
 );
 

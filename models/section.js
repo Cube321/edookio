@@ -41,6 +41,10 @@ const SectionSchema = new Schema({
     type: Boolean,
     default: undefined,
   },
+  isTestFinished: {
+    type: Boolean,
+    default: false,
+  },
   lastSeenCard: {
     type: Number,
     default: 0,

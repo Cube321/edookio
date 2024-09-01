@@ -197,6 +197,7 @@ router.post(
           importedCardId: card._id,
         });
         let savedCard = await newCard.save();
+        foundCategory.numOfCards++;
         savedSection.cards.push(savedCard._id);
       }
       //create questions
@@ -220,8 +221,10 @@ router.post(
         }
 
         let savedQuestion = await newQuestion.save();
+        foundCategory.numOfQuestions++;
         savedSection.questions.push(savedQuestion._id);
       }
+      await foundCategory.save();
       await savedSection.save();
     }
 
