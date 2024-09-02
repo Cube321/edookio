@@ -19,7 +19,11 @@
               <% invoices.forEach(invoice => { %>
                 <tr>
                   <td><a href="/invoice/show/<%= invoice._id %>" target="_blank">CZ<%= invoice.identificationNumber %></a></td>
-                  <td><%= invoice.user.email %></td>
+                  <% if(invoice.user && invoice.user.email){ %>
+                    <td><%= invoice.user.email %></td>
+                  <% } else { %>
+                    <td>Neznámý</td>
+                  <% } %>
                   <td>InLege Premium - 
                     <% if (invoice.subscriptionPeriod === "yearly") { %>Roční<% } %>
                     <% if (invoice.subscriptionPeriod === "monthly") { %>Měsíční<% } %>
