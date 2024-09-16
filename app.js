@@ -247,6 +247,8 @@ app.use("/", mobileAuthRoutes);
 app.use("/", mobilePaymentsRoutes);
 app.use("/", statsRoutes);
 
+app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
+
 //error handling - has to be at the end!
 //catch all for any error - all errors go here
 app.use((err, req, res, next) => {
