@@ -5,6 +5,8 @@ const passport = require("passport");
 const User = require("../models/user");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");
+const jwt = require("jsonwebtoken");
+const jwksClient = require("jwks-rsa");
 
 // Apple receipt validation endpoint
 router.post(
@@ -104,61 +106,121 @@ router.post(
 
 // Handle server-to-server notifications from Apple
 router.post("/payment/apple-notification", async (req, res) => {
-  const notification = req.body;
-
-  console.log(`Notificatin received: ${JSON.stringify(notification)}`);
+  const { signedPayload } = req.body;
 
   try {
-    const { notification_type, unified_receipt } = notification;
-    const latestReceiptInfo = unified_receipt.latest_receipt_info;
-    const latestReceipt = latestReceiptInfo[latestReceiptInfo.length - 1];
-    const originalTransactionId = latestReceipt.original_transaction_id;
-    const expirationDateMs = parseInt(latestReceipt.expires_date_ms, 10);
-    const expirationDate = moment(expirationDateMs);
+    // Determine the environment (sandbox or production)
+    const environment = decoded.data.environment; // "Sandbox" or "Production"
+    const isSandbox = environment === "Sandbox";
 
-    // Check for cancellation
-    const cancellationDateMs = latestReceipt.cancellation_date_ms
-      ? parseInt(latestReceipt.cancellation_date_ms, 10)
-      : null;
-    const isCanceled = cancellationDateMs !== null;
+    // Initialize JWKS client
+    const client = jwksClient({
+      jwksUri: isSandbox
+        ? "https://api.storekit-sandbox.itunes.apple.com/in-app-purchase/v1/keys"
+        : "https://api.storekit.itunes.apple.com/in-app-purchase/v1/keys",
+    });
 
-    // Find the user by original transaction ID
-    const user = await User.findOne({ originalTransactionId });
-
-    if (user) {
-      // Update user's subscription status
-      user.plan = "monthly"; // Adjust based on your product IDs if necessary
-      user.endDate = expirationDate.toISOString();
-      user.isPremium = !isCanceled && expirationDate.isAfter(moment());
-      user.premiumDateOfUpdate = moment();
-
-      await user.save();
-
-      // Handle different notification types
-      switch (notification_type) {
-        case "CANCEL":
-          // Subscription was canceled
-          mail.subscriptionCanceled(user.email);
-          mail.adminInfoSubscriptionCanceled(user);
-          break;
-        case "INTERACTIVE_RENEWAL":
-          // User renewed subscription interactively after cancellation
-          //mail.subscriptionRenewed(user.email);
-          //mail.adminInfoSubscriptionRenewed(user);
-          break;
-        // Handle other notification types as needed
-        default:
-          // For other notifications, handle accordingly
-          break;
-      }
-    } else {
-      console.warn(
-        "User not found for originalTransactionId:",
-        originalTransactionId
-      );
+    // Function to retrieve signing key
+    function getKey(header, callback) {
+      client.getSigningKey(header.kid, function (err, key) {
+        if (err) {
+          callback(err);
+        } else {
+          const signingKey = key.getPublicKey();
+          callback(null, signingKey);
+        }
+      });
     }
 
-    res.status(200).send("OK");
+    // Verify and decode the signed payload
+    jwt.verify(
+      signedPayload,
+      getKey,
+      {
+        algorithms: ["ES256"],
+        issuer: isSandbox
+          ? "https://sandbox.itunes.apple.com"
+          : "https://itunes.apple.com",
+      },
+      async (err, decoded) => {
+        if (err) {
+          console.error("Verification failed:", err);
+          return res.status(400).send("Invalid notification");
+        }
+
+        // Process the decoded notification
+        const notification = decoded;
+        console.log(`Decoded Notification: ${JSON.stringify(notification)}`);
+
+        const { notificationType, data } = notification;
+
+        const {
+          bundleId,
+          originalTransactionId,
+          productId,
+          purchaseDate,
+          transactionId,
+          expiresDate,
+          signedDate,
+          environment,
+        } = data;
+
+        // Convert dates from milliseconds to moment objects
+        const expirationDate = moment(parseInt(expiresDate, 10));
+        const isCanceled = notificationType === "DID_RENEW" ? false : true;
+
+        // Find the user by original transaction ID
+        const user = await User.findOne({ originalTransactionId });
+
+        if (user) {
+          // Update user's subscription status
+          user.plan = "monthly"; // Adjust based on your product IDs if necessary
+          user.endDate = expirationDate.toISOString();
+          user.isPremium = !isCanceled && expirationDate.isAfter(moment());
+          user.premiumDateOfUpdate = moment();
+
+          await user.save();
+
+          // Handle different notification types
+          switch (notificationType) {
+            case "DID_RENEW":
+              // Subscription was renewed
+              console.log("Subscription renewed");
+              //mail.subscriptionRenewed(user.email);
+              //mail.adminInfoSubscriptionRenewed(user);
+              break;
+            case "CANCEL":
+              // Subscription was canceled
+              mail.subscriptionCanceled(user.email);
+              mail.adminInfoSubscriptionCanceled(user);
+              break;
+            case "EXPIRED":
+              // Subscription expired
+              console.log("Subscription expired");
+              //mail.subscriptionExpired(user.email);
+              //mail.adminInfoSubscriptionExpired(user);
+              break;
+            case "DID_FAIL_TO_RENEW":
+              // Renewal failed
+              console.log("Renewal failed");
+              //mail.subscriptionRenewalFailed(user.email);
+              //mail.adminInfoSubscriptionRenewalFailed(user);
+              break;
+            // Handle other notification types as needed
+            default:
+              console.log("Unhandled notification type:", notificationType);
+              break;
+          }
+        } else {
+          console.warn(
+            "User not found for originalTransactionId:",
+            originalTransactionId
+          );
+        }
+
+        res.status(200).send("OK");
+      }
+    );
   } catch (error) {
     console.error("Error processing Apple notification:", error);
     res.status(500).send("Error");
