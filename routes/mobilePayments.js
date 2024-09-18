@@ -11,7 +11,7 @@ router.post(
   "/payment/verify-receipt",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    console.log("RUNNING");
+    console.log("Processing receipt verification");
     const { receiptData } = req.body;
 
     try {
@@ -46,35 +46,48 @@ router.post(
         // Receipt is valid
         const latestReceipt =
           latest_receipt_info[latest_receipt_info.length - 1];
+
+        const originalTransactionId = latestReceipt.original_transaction_id;
         const expirationDateMs = parseInt(latestReceipt.expires_date_ms, 10);
         const expirationDate = moment(expirationDateMs);
+
+        // Check for cancellation
+        const cancellationDateMs = latestReceipt.cancellation_date_ms
+          ? parseInt(latestReceipt.cancellation_date_ms, 10)
+          : null;
+        const isCanceled = cancellationDateMs !== null;
 
         // Update user's subscription status
         const user = await User.findById(req.user._id);
 
-        // Handle subscription
-        user.plan = "monthly";
-        user.endDate = expirationDate.format();
-        user.isPremium = expirationDate.isAfter(moment());
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
+
+        // Update user subscription data
+        user.plan = "monthly"; // Adjust based on your product IDs if necessary
+        user.endDate = expirationDate.toISOString();
+        user.isPremium = !isCanceled && expirationDate.isAfter(moment());
         user.premiumDateOfActivation = user.premiumDateOfActivation || moment();
         user.premiumDateOfUpdate = moment();
-        user.originalTransactionId = latestReceipt.original_transaction_id;
-
-        // Send confirmation emails
-        const endDateFormatted = expirationDate.locale("cs").format("LL");
-
-        if (user.isPremium) {
-          mail.adminInfoSubscriptionUpdated(user, endDateFormatted);
-        } else {
-          mail.subscriptionCreated(user.email);
-          mail.adminInfoNewSubscription(user);
-        }
+        user.originalTransactionId = originalTransactionId;
 
         // Reset any flags or discounts
         user.xmasDiscount = false;
         user.premiumGrantedByAdmin = false;
 
         await user.save();
+
+        // Send emails based on subscription status
+        if (user.isPremium) {
+          // Subscription is active
+          mail.subscriptionCreated(user.email);
+          mail.adminInfoNewSubscription(user);
+        } else {
+          // Subscription is canceled or expired
+          mail.subscriptionCanceled(user.email);
+          mail.adminInfoSubscriptionCanceled(user);
+        }
 
         res
           .status(200)
@@ -89,33 +102,58 @@ router.post(
   }
 );
 
-// Optionally, handle server-to-server notifications from Apple
+// Handle server-to-server notifications from Apple
 router.post("/payment/apple-notification", async (req, res) => {
   const notification = req.body;
 
   try {
-    const { unified_receipt } = notification;
+    const { notification_type, unified_receipt } = notification;
     const latestReceiptInfo = unified_receipt.latest_receipt_info;
     const latestReceipt = latestReceiptInfo[latestReceiptInfo.length - 1];
     const originalTransactionId = latestReceipt.original_transaction_id;
     const expirationDateMs = parseInt(latestReceipt.expires_date_ms, 10);
     const expirationDate = moment(expirationDateMs);
 
+    // Check for cancellation
+    const cancellationDateMs = latestReceipt.cancellation_date_ms
+      ? parseInt(latestReceipt.cancellation_date_ms, 10)
+      : null;
+    const isCanceled = cancellationDateMs !== null;
+
     // Find the user by original transaction ID
     const user = await User.findOne({ originalTransactionId });
 
     if (user) {
       // Update user's subscription status
-      user.plan = "monthly";
-      user.endDate = expirationDate.format();
-      user.isPremium = expirationDate.isAfter(moment());
+      user.plan = "monthly"; // Adjust based on your product IDs if necessary
+      user.endDate = expirationDate.toISOString();
+      user.isPremium = !isCanceled && expirationDate.isAfter(moment());
       user.premiumDateOfUpdate = moment();
 
-      // Send emails if necessary
-      const endDateFormatted = expirationDate.locale("cs").format("LL");
-      mail.adminInfoSubscriptionUpdated(user, endDateFormatted);
-
       await user.save();
+
+      // Handle different notification types
+      switch (notification_type) {
+        case "CANCEL":
+          // Subscription was canceled
+          mail.subscriptionCanceled(user.email);
+          mail.adminInfoSubscriptionCanceled(user);
+          break;
+        case "INTERACTIVE_RENEWAL":
+          // User renewed subscription interactively after cancellation
+          //mail.subscriptionRenewed(user.email);
+          //mail.adminInfoSubscriptionRenewed(user);
+          break;
+        // Handle other notification types as needed
+        default:
+          // For other notifications, handle accordingly
+          break;
+      }
+    } else {
+      console.warn(
+        "User not found for originalTransactionId:",
+        originalTransactionId
+      );
     }
 
     res.status(200).send("OK");
