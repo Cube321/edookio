@@ -110,8 +110,7 @@ router.post("/payment/apple-notification", async (req, res) => {
 
   try {
     // Determine the environment (sandbox or production)
-    const environment = decoded.data.environment; // "Sandbox" or "Production"
-    const isSandbox = environment === "Sandbox";
+    const isSandbox = process.env.NODE_ENV === "development";
 
     // Initialize JWKS client
     const client = jwksClient({
