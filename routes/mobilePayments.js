@@ -106,6 +106,8 @@ router.post(
 router.post("/payment/apple-notification", async (req, res) => {
   const notification = req.body;
 
+  console.log(`Notificatin received: ${JSON.stringify(notification)}`);
+
   try {
     const { notification_type, unified_receipt } = notification;
     const latestReceiptInfo = unified_receipt.latest_receipt_info;
