@@ -100,7 +100,6 @@ const UserSchema = new Schema({
     enum: ["none", "yearly", "monthly", "halfyear", "daily"],
     default: "none",
   },
-  originalTransactionId: { type: String },
   endDate: { type: Date, default: null },
   isGdprApproved: {
     type: Boolean,

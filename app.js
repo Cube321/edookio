@@ -69,7 +69,6 @@ const chatGptRoutes = require("./routes/chatgpt");
 const leaderboardRoutes = require("./routes/leaderboard");
 const mobileApiRoutes = require("./routes/mobileApi");
 const mobileAuthRoutes = require("./routes/mobileAuth");
-const mobilePaymentsRoutes = require("./routes/mobilePayments");
 const statsRoutes = require("./routes/stats");
 
 const dbUrl = process.env.DB_URL;
@@ -244,7 +243,6 @@ app.use("/", chatGptRoutes);
 app.use("/", leaderboardRoutes);
 app.use("/", mobileApiRoutes);
 app.use("/", mobileAuthRoutes);
-app.use("/", mobilePaymentsRoutes);
 app.use("/", statsRoutes);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
