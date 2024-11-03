@@ -135,6 +135,7 @@ router.post("/webhook", async (req, res) => {
           mail.adminInfoNewSubscription(user);
           user.premiumDateOfActivation = moment();
         }
+        user.subscriptionSource = "stripe";
         user.xmasDiscount = xmasDiscount;
         user.isPremium = true;
       }
@@ -159,6 +160,7 @@ router.post("/webhook", async (req, res) => {
           mail.adminInfoNewSubscription(user);
           user.premiumDateOfActivation = moment();
         }
+        user.subscriptionSource = "stripe";
         user.xmasDiscount = xmasDiscount;
         user.isPremium = true;
         //if on yearly and changes to monhtly, will loose the prepaid period
@@ -184,6 +186,7 @@ router.post("/webhook", async (req, res) => {
           mail.adminInfoNewSubscription(user);
           user.premiumDateOfActivation = moment();
         }
+        user.subscriptionSource = "stripe";
         user.xmasDiscount = xmasDiscount;
         user.isPremium = true;
         //if on halfyear changes to monhtly, will loose the prepaid period
@@ -209,6 +212,7 @@ router.post("/webhook", async (req, res) => {
           mail.adminInfoNewSubscription(user);
           user.premiumDateOfActivation = moment();
         }
+        user.subscriptionSource = "stripe";
         user.xmasDiscount = xmasDiscount;
         user.isPremium = true;
       }
@@ -222,6 +226,7 @@ router.post("/webhook", async (req, res) => {
         mail.subscriptionCanceled(user.email, endDate);
         mail.adminInfoSubscriptionCanceled(user, endDate);
         user.xmasDiscount = false;
+        user.subscriptionSource = "none";
       }
       user.premiumGrantedByAdmin = false;
       await user.save();

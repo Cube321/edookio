@@ -9,8 +9,6 @@ const mail = require("../mail/mail_inlege");
 const verifyRevenueCatAuthorization = (req, res, next) => {
   const receivedToken = req.headers["authorization"];
   const expectedToken = process.env.REVENUECAT_WEBHOOK_TOKEN; // Set this in your environment variables
-  console.log("Received token", receivedToken);
-  console.log("Expected token", expectedToken);
 
   if (receivedToken !== expectedToken) {
     console.error("Unauthorized request: Invalid token");
@@ -43,6 +41,7 @@ router.post(
         user.plan = "monthly";
         user.premiumDateOfActivation = new Date();
         user.endDate = new Date(entitlements.active[entitlement].expires_date);
+        user.subscriptionSource = "revenuecat";
         createOpenInvoice(user, "monthly");
         mail.subscriptionCreated(user.email);
         mail.adminInfoNewSubscription(user);
@@ -52,6 +51,7 @@ router.post(
         user.plan = "monthly";
         user.premiumDateOfActivation = new Date();
         user.endDate = new Date(entitlements.active[entitlement].expires_date);
+        user.subscriptionSource = "revenuecat";
         createOpenInvoice(user, "monthly");
         mail.adminInfoSubscriptionUpdated(user, endDate);
         break;
@@ -60,6 +60,7 @@ router.post(
         user.plan = "none";
         user.premiumDateOfCancelation = new Date();
         const endDate = moment(user.endDate).locale("cs").format("LL");
+        user.subscriptionSource = "none";
         mail.subscriptionCanceled(user.email, endDate);
         mail.adminInfoSubscriptionCanceled(user, endDate);
         break;

@@ -101,6 +101,10 @@ const UserSchema = new Schema({
     default: "none",
   },
   endDate: { type: Date, default: null },
+  subscriptionSource: {
+    type: String,
+    default: "none",
+  },
   isGdprApproved: {
     type: Boolean,
     default: false,

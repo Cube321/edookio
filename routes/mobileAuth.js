@@ -81,7 +81,7 @@ router.post(
 
       return res.status(201).json({
         message: "user created",
-        user: { email: createdUser.email, id: createdUser._id },
+        user: { email: createdUser.email, userId: createdUser._id },
       });
     } catch (error) {
       console.log(error);
@@ -124,6 +124,7 @@ router.post(
           message: "user logged in",
           accessToken: accessToken,
           email: userExists.email,
+          userId: userExists._id,
         });
       }
     } catch (error) {
