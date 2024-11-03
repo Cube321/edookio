@@ -272,21 +272,4 @@ router.post(
   })
 );
 
-router.post(
-  "/mobileApi/triggerBackendStatus",
-  passport.authenticate("jwt", { session: false }),
-  catchAsync(async (req, res) => {
-    const { sectionId, action } = req.body;
-    const { email } = req.user;
-    const section = await Section.findById(sectionId);
-    if (action === "locked") {
-      mail.premiumRequiredNotification(email, section.name);
-    }
-    if (action === "limitReached") {
-      mail.limitReachedNotification(email);
-    }
-    res.status(200);
-  })
-);
-
 module.exports = router;

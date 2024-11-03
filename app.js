@@ -70,6 +70,7 @@ const leaderboardRoutes = require("./routes/leaderboard");
 const mobileApiRoutes = require("./routes/mobileApi");
 const mobileAuthRoutes = require("./routes/mobileAuth");
 const statsRoutes = require("./routes/stats");
+const mobilePayments = require("./routes/mobilePayments");
 
 const dbUrl = process.env.DB_URL;
 
@@ -244,6 +245,7 @@ app.use("/", leaderboardRoutes);
 app.use("/", mobileApiRoutes);
 app.use("/", mobileAuthRoutes);
 app.use("/", statsRoutes);
+app.use("/", mobilePayments);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 

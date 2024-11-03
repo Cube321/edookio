@@ -32,9 +32,10 @@
 }
 
 .border-grey {
-    border: 1px solid #DFDFDF;
-    border-radius: 0.25rem;
-    }
+    border: 1px solid #e0e0e0;  /* Light border color */
+    border-radius: 8px;  /* Rounded corners */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);  /* Light shadow */
+  }
 
 .back-menu {
     padding: 10px;
