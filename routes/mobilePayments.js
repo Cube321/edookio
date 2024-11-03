@@ -3,34 +3,31 @@ const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
-const crypto = require("crypto");
 const mail = require("../mail/mail_inlege");
 
 // Middleware to verify RevenueCat webhook signature
-const verifyRevenueCatSignature = (req, res, next) => {
-  const signature = req.headers["x-revenuecat-signature"];
-  const secret = process.env.REVENUECAT_SECRET; // Set this in your environment variables
-  const body = JSON.stringify(req.body);
+const verifyRevenueCatAuthorization = (req, res, next) => {
+  const receivedToken = req.headers["authorization"];
+  const expectedToken = process.env.REVENUECAT_WEBHOOK_TOKEN; // Set this in your environment variables
+  console.log("Received token", receivedToken);
+  console.log("Expected token", expectedToken);
 
-  const hash = crypto.createHmac("sha1", secret).update(body).digest("base64");
-
-  if (signature !== hash) {
-    return res.status(401).send("Invalid signature");
+  if (receivedToken !== expectedToken) {
+    console.error("Unauthorized request: Invalid token");
+    return res.status(401).send("Unauthorized");
   }
   next();
 };
 
 router.post(
   "/revenuecat/webhook",
-  verifyRevenueCatSignature,
+  verifyRevenueCatAuthorization,
   catchAsync(async (req, res) => {
     const event = req.body;
     const { event: eventType, subscriber } = event;
 
     // Extract necessary information
     const { original_app_user_id, entitlements } = subscriber;
-    const isPremium =
-      entitlements.active && Object.keys(entitlements.active).length > 0;
     const entitlement = Object.keys(entitlements.active)[0]; // Assuming single entitlement
 
     // Find the user in your database
