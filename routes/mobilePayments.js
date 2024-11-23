@@ -47,10 +47,7 @@ router.post(
     }
 
     // Extract plan from entitlement_ids or default to 'monthly'
-    const plan =
-      entitlement_ids && entitlement_ids.length > 0
-        ? entitlement_ids[0]
-        : "monthly";
+    const plan = "monthly";
 
     // Update user's subscription status
     let formattedEndDate = "unknown";
