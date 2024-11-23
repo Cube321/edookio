@@ -59,15 +59,29 @@ router.post(
         user.isPremium = true;
         user.plan = plan;
         user.premiumDateOfActivation = new Date();
+
+        // Log the transaction expiration date
+        console.log(
+          "transaction.expiration_date:",
+          transaction.expiration_date
+        );
+
+        // Parse the expiration date
         user.endDate =
           transaction && transaction.expiration_date
-            ? new Date(transaction.expiration_date)
+            ? moment(transaction.expiration_date).toDate()
             : null;
+
+        // Validate the parsed date
+        if (user.endDate && !isNaN(user.endDate.getTime())) {
+          formattedEndDate = moment(user.endDate).locale("cs").format("LL");
+        } else {
+          console.warn("Invalid user.endDate:", user.endDate);
+          formattedEndDate = "unknown";
+        }
+
         user.subscriptionSource = "revenuecat";
         createOpenInvoice(user, user.plan);
-        formattedEndDate = user.endDate
-          ? moment(user.endDate).locale("cs").format("LL")
-          : "unknown";
         mail.subscriptionCreated(user.email, formattedEndDate);
         mail.adminInfoNewSubscription(user, formattedEndDate);
         break;
@@ -78,15 +92,16 @@ router.post(
         user.plan = "none";
         user.premiumDateOfCancelation = new Date();
         user.subscriptionSource = "none";
-        formattedEndDate = user.endDate
-          ? moment(user.endDate).locale("cs").format("LL")
-          : "unknown";
+
+        // Only format the date if user.endDate is valid
+        if (user.endDate) {
+          formattedEndDate = moment(user.endDate).locale("cs").format("LL");
+        } else {
+          formattedEndDate = null;
+        }
+
         mail.subscriptionCanceled(user.email, formattedEndDate);
         mail.adminInfoSubscriptionCanceled(user, formattedEndDate);
-        break;
-
-      default:
-        console.log("Unhandled event type in RevenueCat webhook", event_type);
         break;
     }
 
