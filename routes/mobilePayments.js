@@ -86,16 +86,19 @@ router.post(
         break;
 
       case "CANCELLATION":
-      case "EXPIRATION":
-        user.isPremium = false;
         user.plan = "none";
-        user.premiumDateOfCancelation = new Date();
+        const endDate = moment(user.endDate).locale("cs").format("LL");
         user.subscriptionSource = "none";
-        formattedEndDate = user.endDate
-          ? moment(user.endDate).locale("cs").format("LL")
-          : "unknown";
-        mail.subscriptionCanceled(user.email, formattedEndDate);
-        mail.adminInfoSubscriptionCanceled(user, formattedEndDate);
+        user.premiumDateOfCancelation = new Date();
+        mail.subscriptionCanceled(user.email, endDate);
+        mail.adminInfoSubscriptionCanceled(user, endDate);
+        break;
+
+      case "EXPIRATION":
+        console.log(
+          "REVENUECAT WEBHOOK - EXPIRATION: Subscription expired for user:",
+          user.email
+        );
         break;
 
       default:

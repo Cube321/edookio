@@ -90,6 +90,10 @@
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-xmas">
                                         Správa předplatného
                                     </button>
+                                <% } else if (user.subscriptionSource === "revenuecat"){ %>
+                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-revenuecat">
+                                        Správa předplatného
+                                    </button>
                                 <% } else if (!user.premiumGrantedByAdmin === true){ %>
                                     <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
                                         Správa předplatného
@@ -269,6 +273,26 @@
             <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
                 Pokračovat
             </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal Warning XMAS DISCOUNT -->
+    <div class="modal fade" id="modal-revenuecat" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Předplatné aktivováno přes mobilní aplikaci</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <p>Tvé předplatné Premium bylo aktivováno přes mobilní aplikaci. Zrušení předplatného je proto nutné provést prostřednictvím příslušné služby.</p>
+            <p>iOS: Zrušení předplatného je možné provést v Nastavení pod položkou Předplatná.</p>
+            <p>Android: Zrušení předplatného je možné provést v Google Play Store pod položkou Předplatná.</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
             </div>
         </div>
         </div>
