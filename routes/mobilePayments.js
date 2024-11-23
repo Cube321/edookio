@@ -31,7 +31,8 @@ router.post(
       return res.status(400).send("Invalid webhook payload");
     }
 
-    const { event_type, app_user_id, entitlement_ids, transaction } = event;
+    const { app_user_id, entitlement_ids, transaction } = event;
+    const event_type = event.type;
 
     // Log extracted data for debugging
     console.log("Event Type:", event_type);
