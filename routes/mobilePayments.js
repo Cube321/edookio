@@ -31,7 +31,7 @@ router.post(
       return res.status(400).send("Invalid webhook payload");
     }
 
-    const { app_user_id, entitlement_ids, transaction } = event;
+    const { app_user_id, entitlement_ids, expiration_at_ms } = event;
     const event_type = event.type;
 
     // Log extracted data for debugging
@@ -54,36 +54,35 @@ router.post(
 
     switch (event_type) {
       case "INITIAL_PURCHASE":
+        user.isPremium = true;
+        user.plan = plan;
+        user.premiumDateOfActivation = new Date();
+        user.endDate = expiration_at_ms
+          ? new Date(Number(expiration_at_ms))
+          : null;
+        user.subscriptionSource = "revenuecat";
+        createOpenInvoice(user, user.plan);
+        formattedEndDate = user.endDate
+          ? moment(user.endDate).locale("cs").format("LL")
+          : "unknown";
+        mail.subscriptionCreated(user.email, formattedEndDate);
+        mail.adminInfoNewSubscription(user, formattedEndDate);
+        break;
+
       case "RENEWAL":
       case "PRODUCT_CHANGE":
         user.isPremium = true;
         user.plan = plan;
         user.premiumDateOfActivation = new Date();
-
-        // Log the transaction expiration date
-        console.log(
-          "transaction.expiration_date:",
-          transaction.expiration_date
-        );
-
-        // Parse the expiration date
-        user.endDate =
-          transaction && transaction.expiration_date
-            ? moment(transaction.expiration_date).toDate()
-            : null;
-
-        // Validate the parsed date
-        if (user.endDate && !isNaN(user.endDate.getTime())) {
-          formattedEndDate = moment(user.endDate).locale("cs").format("LL");
-        } else {
-          console.warn("Invalid user.endDate:", user.endDate);
-          formattedEndDate = "unknown";
-        }
-
+        user.endDate = expiration_at_ms
+          ? new Date(Number(expiration_at_ms))
+          : null;
         user.subscriptionSource = "revenuecat";
         createOpenInvoice(user, user.plan);
-        mail.subscriptionCreated(user.email, formattedEndDate);
-        mail.adminInfoNewSubscription(user, formattedEndDate);
+        formattedEndDate = user.endDate
+          ? moment(user.endDate).locale("cs").format("LL")
+          : "unknown";
+        mail.adminInfoSubscriptionUpdated(user, formattedEndDate);
         break;
 
       case "CANCELLATION":
@@ -92,16 +91,15 @@ router.post(
         user.plan = "none";
         user.premiumDateOfCancelation = new Date();
         user.subscriptionSource = "none";
-
-        // Only format the date if user.endDate is valid
-        if (user.endDate) {
-          formattedEndDate = moment(user.endDate).locale("cs").format("LL");
-        } else {
-          formattedEndDate = null;
-        }
-
+        formattedEndDate = user.endDate
+          ? moment(user.endDate).locale("cs").format("LL")
+          : "unknown";
         mail.subscriptionCanceled(user.email, formattedEndDate);
         mail.adminInfoSubscriptionCanceled(user, formattedEndDate);
+        break;
+
+      default:
+        console.log("Unhandled event type in RevenueCat webhook", event_type);
         break;
     }
 
