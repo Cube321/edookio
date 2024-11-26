@@ -91,6 +91,14 @@ router.post(
         mail.adminInfoSubscriptionCanceled(user, endDate);
         break;
 
+      case "UNCANCELLATION":
+        user.plan = plan;
+        user.subscriptionSource = "revenuecat";
+        user.premiumDateOfCancelation = undefined;
+        mail.subscriptionUncancelled(user.email);
+        mail.adminInfoSubscriptionUncancelled(user);
+        break;
+
       case "EXPIRATION":
         console.log(
           "REVENUECAT WEBHOOK - EXPIRATION: Subscription expired for user:",
