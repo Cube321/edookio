@@ -22,8 +22,6 @@ router.post(
   "/revenuecat/webhook",
   verifyRevenueCatAuthorization,
   catchAsync(async (req, res) => {
-    console.log("Received webhook event:", JSON.stringify(req.body, null, 2));
-
     const event = req.body.event;
 
     if (!event) {
@@ -31,13 +29,12 @@ router.post(
       return res.status(400).send("Invalid webhook payload");
     }
 
-    const { app_user_id, entitlement_ids, expiration_at_ms } = event;
+    const { app_user_id, expiration_at_ms } = event;
     const event_type = event.type;
 
     // Log extracted data for debugging
-    console.log("Event Type:", event_type);
+    console.log("WEBHOOK Event Type:", event_type);
     console.log("App User ID:", app_user_id);
-    console.log("Entitlement IDs:", entitlement_ids);
 
     // Find the user in your database
     const user = await User.findOne({ _id: app_user_id });
