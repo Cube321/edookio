@@ -279,12 +279,12 @@ router.get(
     const { platform } = req.query;
     console.log("Platform: ", platform);
     const minimumVersion = {
-      ios: "1.0.12",
-      android: "1.0.12",
+      ios: "1.0.10",
+      android: "1.0.5",
     };
     const latestVersions = {
-      ios: "1.0.12",
-      android: "1.0.12",
+      ios: "1.0.10",
+      android: "1.0.5",
     };
     const updateUrl = {
       ios: "https://apps.apple.com/us/app/your-app-name/id6670204630",
