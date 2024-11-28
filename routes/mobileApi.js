@@ -279,16 +279,21 @@ router.get(
     const { platform } = req.query;
     console.log("Platform: ", platform);
     const minimumVersion = {
-      ios: "1.0.0",
-      android: "1.0.0",
+      ios: "1.0.12",
+      android: "1.0.12",
     };
     const latestVersions = {
-      ios: "1.0.0",
-      android: "1.0.0",
+      ios: "1.0.12",
+      android: "1.0.12",
+    };
+    const updateUrl = {
+      ios: "https://apps.apple.com/us/app/your-app-name/id6670204630",
+      android: "https://play.google.com/store/apps/details?id=cz.inlege.InLege",
     };
     const response = {
       minimumVersion: minimumVersion[platform],
       latestVersion: latestVersions[platform],
+      updateUrl: updateUrl[platform],
     };
     res.status(200).json(response);
   })
