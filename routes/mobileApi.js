@@ -272,4 +272,26 @@ router.post(
   })
 );
 
+//get required mobile version for app (ios and android)
+router.get(
+  "/mobileApi/getVersionInfo",
+  catchAsync(async (req, res) => {
+    const { platform } = req.query;
+    console.log("Platform: ", platform);
+    const minimumVersion = {
+      ios: "1.0.0",
+      android: "1.0.0",
+    };
+    const latestVersions = {
+      ios: "1.0.0",
+      android: "1.0.0",
+    };
+    const response = {
+      minimumVersion: minimumVersion[platform],
+      latestVersion: latestVersions[platform],
+    };
+    res.status(200).json(response);
+  })
+);
+
 module.exports = router;
