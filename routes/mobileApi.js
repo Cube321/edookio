@@ -174,6 +174,7 @@ router.post(
     let { sectionId, stats } = req.body;
 
     if (!sectionId || !stats) {
+      console.log("sectionId and stats are required");
       return res
         .status(400)
         .json({ error: "sectionId and stats are required" });
@@ -184,11 +185,13 @@ router.post(
     //get categoryId based on sectionId
     const section = await Section.findById(sectionId);
     if (!section) {
+      console.log("Section not found");
       return res.status(404).json({ error: "Section not found" });
     }
 
     const foundCategory = await Category.findOne({ name: section.category });
     if (!foundCategory) {
+      console.log("Category not found");
       return res.status(404).json({ error: "Category not found" });
     }
 
