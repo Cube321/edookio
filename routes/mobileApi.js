@@ -32,6 +32,9 @@ router.get(
       return res.status(404).json({ error: "Category not found" });
     }
 
+    // Initialize testResultsMap
+    let testResultsMap = {};
+
     // Fetch the latest test results for the user
     const testResults = await TestResult.find({
       user: user._id,
