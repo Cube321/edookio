@@ -27,8 +27,34 @@ router.get(
     const category = await Category.findOne({ name: categoryName }).populate(
       "sections"
     );
+
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    // Fetch the latest test results for the user
+    const testResults = await TestResult.find({
+      user: user._id,
+      category: category._id,
+    })
+      .sort({ date: -1 }) // Sort by most recent
+      .exec();
+
+    // Create a map of the latest test result for each section
+    testResults.forEach((result) => {
+      if (!testResultsMap[result.section]) {
+        testResultsMap[result.section] = result;
+      }
+    });
+
     //add data to user's unfinishedSections
     category.sections.forEach((section, index) => {
+      // Add last test result to the section
+      if (testResultsMap[section._id]) {
+        category.sections[index].lastTestResult =
+          testResultsMap[section._id].percentage;
+      }
+
       let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(
         (x) => x.sectionId.toString() == section._id.toString()
       );
