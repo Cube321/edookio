@@ -199,17 +199,13 @@ router.post(
   "/mobileApi/saveToFinishedSections",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    console.log("User finished test set");
     let { sectionId, stats } = req.body;
 
     if (!sectionId || !stats) {
-      console.log("sectionId and stats are required");
       return res
         .status(400)
         .json({ error: "sectionId and stats are required" });
     }
-
-    console.log("Stats received by the server: ", stats);
 
     //get categoryId based on sectionId
     const section = await Section.findById(sectionId);
@@ -223,8 +219,6 @@ router.post(
       console.log("Category not found");
       return res.status(404).json({ error: "Category not found" });
     }
-
-    console.log("Category found: ", foundCategory.name);
 
     const { correct, wrong, skipped, totalQuestions } = stats;
 
@@ -352,12 +346,12 @@ router.get(
     const { platform } = req.query;
     console.log("Platform: ", platform);
     const minimumVersion = {
-      ios: "1.0.10",
-      android: "1.0.5",
+      ios: "1.0.11",
+      android: "1.0.11",
     };
     const latestVersions = {
-      ios: "1.0.10",
-      android: "1.0.5",
+      ios: "1.0.11",
+      android: "1.0.11",
     };
     const updateUrl = {
       ios: "https://apps.apple.com/us/app/your-app-name/id6670204630",

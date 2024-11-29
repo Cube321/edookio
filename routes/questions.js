@@ -480,15 +480,4 @@ router.get(
   })
 );
 
-//get all test results from DB as json
-router.get(
-  "/api/testResults",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const testResults = await TestResult.find({});
-    res.status(200).json(testResults);
-  })
-);
-
 module.exports = router;

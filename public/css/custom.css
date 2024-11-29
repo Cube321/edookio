@@ -139,6 +139,36 @@ body {
     color: #AF0171;
 }
 
+.bg-red {
+    background-color: red;
+}
+
+.bg-light-grey {
+    background-color: #b0b0b0;
+}
+
+.bg-light-green {
+    background-color: #7ac705;
+}
+
+.badge-green-full {
+    background-color: #7ac705;
+    border: 1px solid #7ac705;
+    color: white;
+}
+
+.badge-green-outline {
+    background-color: white;
+    color: #7ac705;
+    border: 1px solid #7ac705;
+}
+
+.badge-grey-outline {
+    background-color: white;
+    color: #b0b0b0;
+    border: 1px solid #b0b0b0;
+}
+
 /* CATEGOGRIES - PREMIUM SECTIONS*/
 .golden {
     color: #FFB81C;
