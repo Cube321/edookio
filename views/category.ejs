@@ -68,9 +68,18 @@
                                         <% } %>
                                         <% if (section.questions.length > 0) { %>
                                             <% if (section.isFinishedQuestions) { %>
-                                                <p class="text-muted text-small mb-0 mx-2 section-finished-badge"><i class="fas fa-check-circle"></i> Otázky </p>
+                                                <p class="text-muted text-small mb-0 mx-2 section-finished-badge d-flex align-items-center"><i class="fas fa-check-circle" style="padding-right:3px"></i> Otázky 
+                                                    <% if (section.lastTestResult === 0) { %>
+                                                        <span class="badge bg-light-grey mx-1" title="Tvá úspěšnost v posledním testu">0 %</span>
+                                                    <% } else if (section.lastTestResult > 90) { %>
+                                                        <span class="badge bg-light-green mx-1" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
+                                                    <% } else { %>
+                                                        <span class="badge bg-light-grey mx-1" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
+                                                    <% } %>
+                                                </p>
+                                            </p>
                                             <% } else { %>
-                                                <p class="text-muted text-small mb-0 mx-2 section-not-finished-badge"><i class="fas fa-circle-notch"></i> Otázky </p>
+                                                <p class="text-muted text-small mb-0 mx-2 section-not-finished-badge d-flex justify-content-center align-items-center"><i class="fas fa-circle-notch" style="padding-right:3px"></i> Otázky <span class="badge bg-light-grey mx-1" title="Tento test jsi ještě neabsolvoval">0 %</span> </p>
                                             <% } %>
                                         <% } %>
                                     </div>

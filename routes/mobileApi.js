@@ -3,9 +3,9 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
+const TestResult = require("../models/testResult");
 const passport = require("passport");
 const moment = require("moment");
-const mail = require("../mail/mail_inlege");
 
 router.get(
   "/mobileApi/getCategories",
@@ -170,7 +170,32 @@ router.post(
   "/mobileApi/saveToFinishedSections",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    let { sectionId } = req.body;
+    console.log("User finished test set");
+    let { sectionId, stats } = req.body;
+
+    if (!sectionId || !stats) {
+      return res
+        .status(400)
+        .json({ error: "sectionId and stats are required" });
+    }
+
+    console.log("Stats received by the server: ", stats);
+
+    //get categoryId based on sectionId
+    const section = await Section.findById(sectionId);
+    if (!section) {
+      return res.status(404).json({ error: "Section not found" });
+    }
+
+    const foundCategory = await Category.findOne({ name: section.category });
+    if (!foundCategory) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    console.log("Category found: ", foundCategory.name);
+
+    const { correct, wrong, skipped, totalQuestions } = stats;
+
     let user = req.user;
     let finishedQuestionsIndex = user.finishedQuestions.findIndex(
       (x) => x.toString() == sectionId.toString()
@@ -178,6 +203,22 @@ router.post(
     if (finishedQuestionsIndex < 0) {
       user.finishedQuestions.push(sectionId);
     }
+
+    const percentage = Math.round((correct / totalQuestions) * 100);
+
+    // Save the test result
+    await TestResult.create({
+      user: user._id,
+      category: foundCategory._id,
+      section: sectionId,
+      testType: "section",
+      score: { correct, wrong, skipped },
+      percentage,
+      totalQuestions,
+    });
+
+    console.log("Test result saved");
+
     //mark modified nested objects - otherwise Mongoose does not see it and save it
     user.markModified("finishedQuestions");
     await user.save();

@@ -6,6 +6,8 @@ const Category = require("../models/category");
 const User = require("../models/user");
 const Card = require("../models/card");
 const Question = require("../models/question");
+const TestResult = require("../models/testResult");
+
 const {
   isLoggedIn,
   isAdmin,
@@ -27,6 +29,7 @@ router.get(
       req.flash("error", "Kategorie neexistuje.");
       return res.status(404).redirect("/");
     }
+
     //asign name of category
     let title = "";
     let categories = await Category.find({});
@@ -35,9 +38,32 @@ router.get(
         title = c.text;
       }
     });
+
+    let testResultsMap = {};
+
     //add data to user's unfinishedSections
     if (req.user) {
+      const testResults = await TestResult.find({
+        user: req.user._id,
+        category: category._id,
+      })
+        .sort({ date: -1 }) // Sort by most recent
+        .exec();
+
+      // Create a map of the latest test result for each section
+      testResults.forEach((result) => {
+        if (!testResultsMap[result.section]) {
+          testResultsMap[result.section] = result;
+        }
+      });
+
       category.sections.forEach((section, index) => {
+        // Add test result to the section
+        if (testResultsMap[section._id]) {
+          category.sections[index].lastTestResult =
+            testResultsMap[section._id].percentage;
+        }
+
         let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(
           (x) => x.sectionId.toString() == section._id.toString()
         );

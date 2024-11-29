@@ -53,7 +53,7 @@
                     <hr />
                 <% } %>
                 <!--pokud se jedna o posledni sekci zobrazi se tento kod (odkaz zpet na kategorii)-->
-                <% if (nextSection.name === "lastSection") { %>
+                <% if (!nextSection || nextSection.name === "lastSection" || nextSection.name === "" || nextSection.name === "nenalezena") { %>
                     <div class="row">
                         <div class="col-12 mb-2">
                             <h5 class="mb-0 mt-2">Tohle byl poslední balíček <br>v této kategorii.</h5> 

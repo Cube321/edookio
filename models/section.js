@@ -49,6 +49,10 @@ const SectionSchema = new Schema({
     type: Number,
     default: 0,
   },
+  lastTestResult: {
+    type: Number,
+    default: 0,
+  },
   nextSection: {
     type: String,
     default: "",

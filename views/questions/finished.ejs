@@ -94,7 +94,7 @@
                     </div>
                     <hr />
                     <div class="row mb-3 mt-2">
-                        <% if (nextSection === "lastSection" || !nextSection.isPublic) { %>
+                        <% if (!nextSection || nextSection === "lastSection" || !nextSection.isPublic) { %>
                             <div class="d-flex flex-column justify-content-center align-items-center mt-3">
                                 <h5 class="mb-3">Navazující balíček</h5>
                                 <p class="mb-0 grey-highlight px-3 py-2">Na tento balíček nenavazuje žádný jiný balíček.</p>

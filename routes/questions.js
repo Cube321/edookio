@@ -5,6 +5,7 @@ const Section = require("../models/section");
 const Category = require("../models/category");
 const Question = require("../models/question");
 const Mistake = require("../models/mistake");
+const TestResult = require("../models/testResult");
 const mail = require("../mail/mail_inlege");
 const {
   isLoggedIn,
@@ -77,7 +78,11 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
-    const { correct, wrong, skipped } = req.query;
+
+    const correct = parseInt(req.query.correct) || 0;
+    const wrong = parseInt(req.query.wrong) || 0;
+    const skipped = parseInt(req.query.skipped) || 0;
+
     let { user } = req;
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findById(categoryId);
@@ -95,6 +100,22 @@ router.get(
     ) {
       foundNextSection = await Section.findById(foundSection.nextSection);
     }
+
+    const totalQuestions =
+      parseInt(correct) + parseInt(wrong) + parseInt(skipped);
+    const percentage = Math.round((correct / totalQuestions) * 100);
+
+    // Save the test result
+    await TestResult.create({
+      user: user._id,
+      category: categoryId,
+      section: sectionId,
+      testType: "section",
+      score: { correct, wrong, skipped },
+      percentage,
+      totalQuestions,
+    });
+
     let counters = {
       correct: parseInt(correct),
       wrong: parseInt(wrong),
@@ -125,12 +146,31 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { categoryId } = req.params;
-    const { correct, wrong, skipped } = req.query;
+
+    const correct = parseInt(req.query.correct) || 0;
+    const wrong = parseInt(req.query.wrong) || 0;
+    const skipped = parseInt(req.query.skipped) || 0;
+
     let { user } = req;
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje");
     }
+
+    const totalQuestions =
+      parseInt(correct) + parseInt(wrong) + parseInt(skipped);
+    const percentage = Math.round((correct / totalQuestions) * 100);
+
+    // Save the random test result
+    await TestResult.create({
+      user: user._id,
+      category: categoryId,
+      testType: "random",
+      score: { correct, wrong, skipped },
+      percentage,
+      totalQuestions,
+    });
+
     let counters = {
       correct: parseInt(correct),
       wrong: parseInt(wrong),
@@ -437,6 +477,17 @@ router.get(
     user.reachedQuestionsLimitDate = Date.now();
     await user.save();
     res.status(200).render(`questions/reachedLimit`);
+  })
+);
+
+//get all test results from DB as json
+router.get(
+  "/api/testResults",
+  isLoggedIn,
+  isEditor,
+  catchAsync(async (req, res) => {
+    const testResults = await TestResult.find({});
+    res.status(200).json(testResults);
   })
 );
 
