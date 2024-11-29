@@ -340,21 +340,24 @@ form .form-borders {
 }
 
 .finished-test .finished-item.correct {
-    border-color: rgba(58, 232, 15, 0.2);
-    background-color: rgba(58, 232, 15, 0.2);
+    border: 3px solid;
+    border-color: #E80F88;
+    background-color: #E80F88;
+    color: white;
 }
 
 .finished-test .finished-item.wrong {
-    border-color: rgba(237, 11, 67, 0.1);
-    background-color: rgba(237, 11, 67, 0.1);
+    border: 2px solid;
+    border-color: #ebebeb;
+    background-color: #ebebeb;
 }
 
 .finished-test .finished-item.correct i {
-    color: rgb(54, 208, 16);
+    color: white;
 }
 
 .finished-test .finished-item.wrong i {
-    color: rgba(237, 11, 67, 1);
+    color: black;
 }
 
 /* REGISTRATION */
@@ -584,12 +587,16 @@ form .form-borders {
 
 .list-all-card .correct {
     border: 3px solid;
-    border-color: rgba(58, 232, 15, 0.2);
+    border-color: #E80F88;
+    background-color: #E80F88;
+    color: white;
 }
 
 .list-all-card .wrong {
-    border: 3px solid;
-    border-color: rgba(237, 11, 67, 0.1);
+    border: 2px solid;
+    border-color: #ebebeb;
+    background-color: #ebebeb;
+
 }
 
 .list-all-card a, .list-all-card button {

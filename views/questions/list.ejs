@@ -59,10 +59,10 @@
             <div class="col-sm-5 mb-5">
                 <div class="card list-all-card d-flex justify-content-between flex-column">
                     <div>
-                        <p class="question"><%= question.question %></p>
-                        <p class="answer-item correct"><i></i> <%- question.correctAnswers[0] %> </p>
-                        <p class="answer-item wrong"><i></i> <%- question.wrongAnswers[0] %> </p>
-                        <p class="answer-item wrong"><i></i> <%- question.wrongAnswers[1] %> </p>
+                        <p class="question"><%- question.question %></p>
+                        <p class="answer-item correct d-flex justify-content-between align-items-center"><span><%- question.correctAnswers[0] %></span><i class="far fa-check-circle icon-md"></i> </p>
+                        <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[0] %></span> <i class="far fa-times-circle icon-md"></i></p>
+                        <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[1] %></span> <i class="far fa-times-circle icon-md"></i></p>
                     </div>
                     
                     <div class="d-flex justify-content-end">
