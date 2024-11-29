@@ -975,8 +975,7 @@ mail.sendEmailToSubscribedUsers = function (email, subject, text, callback) {
     to: email,
     subject: subject,
     html: `${text}
-              <br />
-              <p style="font-size:0.6rem;color=grey;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`,
+                <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>              `,
   };
   //send the mail
   sgMail.send(msg, function (err) {
@@ -993,10 +992,8 @@ mail.sendTestEmail = function (email, subject, text, callback) {
     from: { email: "info@inlege.cz", name: "InLege" },
     to: email,
     subject: subject,
-    html: `${text}
-              <br />
-              
-              <p style="font-size:0.6rem;color=grey;font-family: Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>`,
+    html: `${text}              
+            <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>              `,
   };
   //send the mail
   sgMail.send(msg, function (err) {
