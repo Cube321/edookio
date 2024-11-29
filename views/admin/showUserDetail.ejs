@@ -200,7 +200,7 @@
                         <% if(user.isPremium && user.plan !== "none" && !user.premiumGrantedByAdmin){ %> 
                             <div class="col-8 d-flex align-items-between">
                                 <form action="/admin/<%= user._id %>/downgradeToFree?_method=PUT" method="POST"><button class="btn btn-sm btn-outline-danger">Zrušit předplatné</button></form>
-                                <p class="px-3">uživatel má stále aktivní předplatné na Stripe</p>
+                                <p class="px-3">uživatel má stále aktivní předplatné na <%= user.subscriptionSource %></p>
                             </div>
                         <% } else { %>
                             <div class="col-8">

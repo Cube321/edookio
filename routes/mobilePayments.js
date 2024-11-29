@@ -29,7 +29,7 @@ router.post(
       return res.status(400).send("Invalid webhook payload");
     }
 
-    const { app_user_id, expiration_at_ms } = event;
+    const { app_user_id, expiration_at_ms, store } = event;
     const event_type = event.type;
 
     // Log extracted data for debugging
@@ -49,6 +49,8 @@ router.post(
     // Update user's subscription status
     let formattedEndDate = "unknown";
 
+    const paymentSource = "revenuecat";
+
     switch (event_type) {
       case "INITIAL_PURCHASE":
         user.isPremium = true;
@@ -59,11 +61,8 @@ router.post(
           : null;
         user.subscriptionSource = "revenuecat";
         createOpenInvoice(user, user.plan);
-        formattedEndDate = user.endDate
-          ? moment(user.endDate).locale("cs").format("LL")
-          : "unknown";
         mail.subscriptionCreated(user.email, formattedEndDate);
-        mail.adminInfoNewSubscription(user, formattedEndDate);
+        mail.adminInfoNewSubscription(user, paymentSource, store);
         break;
 
       case "RENEWAL":
@@ -79,7 +78,12 @@ router.post(
         formattedEndDate = user.endDate
           ? moment(user.endDate).locale("cs").format("LL")
           : "unknown";
-        mail.adminInfoSubscriptionUpdated(user, formattedEndDate);
+        mail.adminInfoSubscriptionUpdated(
+          user,
+          formattedEndDate,
+          paymentSource,
+          store
+        );
         break;
 
       case "CANCELLATION":
@@ -88,7 +92,7 @@ router.post(
         user.subscriptionSource = "none";
         user.premiumDateOfCancelation = new Date();
         mail.subscriptionCanceled(user.email, endDate);
-        mail.adminInfoSubscriptionCanceled(user, endDate);
+        mail.adminInfoSubscriptionCanceled(user, endDate, paymentSource, store);
         break;
 
       case "UNCANCELLATION":
@@ -96,7 +100,7 @@ router.post(
         user.subscriptionSource = "revenuecat";
         user.premiumDateOfCancelation = undefined;
         mail.subscriptionUncancelled(user.email);
-        mail.adminInfoSubscriptionUncancelled(user);
+        mail.adminInfoSubscriptionUncancelled(user, paymentSource, store);
         break;
 
       case "EXPIRATION":

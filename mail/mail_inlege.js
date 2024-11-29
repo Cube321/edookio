@@ -308,13 +308,19 @@ mail.subscriptionUncancelled = function (email, callback) {
 };
 
 //info mail to admin mail - subscription activated
-mail.adminInfoNewSubscription = function (user, callback) {
+mail.adminInfoNewSubscription = function (
+  user,
+  paymentSource,
+  store,
+  callback
+) {
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
     subject: `(CZ) Uživatel AKTIVOVAL Premium: ${user.email}`,
     html: `
           <h3>Aktivace předplatného Premium</h3>
+          <p>(${paymentSource} - ${store})<p>
           <p>Tento uživatel aktivoval balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
           <p>Příjmení: ${user.lastname}</p>
@@ -344,12 +350,19 @@ mail.adminInfoNewSubscription = function (user, callback) {
 };
 
 //info mail to admin mail - subscription updated
-mail.adminInfoSubscriptionUpdated = function (user, endDate, callback) {
+mail.adminInfoSubscriptionUpdated = function (
+  user,
+  endDate,
+  paymentSource,
+  store,
+  callback
+) {
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
     subject: `(CZ) Uživatel PRODLOUŽIL Premium: ${user.email}`,
     html: `
+          <p>(${paymentSource} - ${store})<p>
           <h3>Prodloužení předplatného Premium</h3>
           <p>Tento uživatel prodloužil balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
@@ -375,12 +388,18 @@ mail.adminInfoSubscriptionUpdated = function (user, endDate, callback) {
 };
 
 //mail to inform admin that subscription has been uncancelled
-mail.adminInfoSubscriptionUncancelled = function (user, callback) {
+mail.adminInfoSubscriptionUncancelled = function (
+  user,
+  paymentSource,
+  store,
+  callback
+) {
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
     subject: `(CZ) Uživatel OBNOVIL PŘED ZRUŠENÍM Premium: ${user.email}`,
     html: `
+          <p>(${paymentSource} - ${store})<p>
           <h3>Uživatel OBNOVIL PŘED ZRUŠENÍM Premium</h3>
           <p>Tento uživatel zrušil a poté znovu obnovil balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
@@ -573,12 +592,19 @@ mail.subscriptionCanceled = function (email, endDate, callback) {
 };
 
 //info mail to admin mail - subscription canceled
-mail.adminInfoSubscriptionCanceled = function (user, endDate, callback) {
+mail.adminInfoSubscriptionCanceled = function (
+  user,
+  endDate,
+  paymentSource,
+  store,
+  callback
+) {
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
     subject: `(CZ) Uživatel UKONČIL Premium: ${user.email}`,
     html: `
+          <p>(${paymentSource} - ${store})<p>
           <h3>Ukončení předplatného Premium</h3>
           <p>Tento uživatel ukončil balíček Premium:<p>
           <p>Jméno: ${user.firstname}</p>
