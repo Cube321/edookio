@@ -142,7 +142,7 @@ async function generateEnQuizQuestion(card, sectionId, categoryId, user) {
     messages: [
       {
         role: "system",
-        content: `Below you can see a flashcard where on one side there is an english legal term and a sentence with example usage. On the other side there is the Czech translation. Create a quiz question with three answers of which only one is correct where the question is the Czech word and the answers are the English words. For the wrong answers use english legal terms: 
+        content: `Below you can see a flashcard where on one side there is an english legal term and a sentence with example usage. On the other side there is the Czech translation. Create a quiz question with three answers of which only one is correct where the question is the Czech word and the answers are the English words. For the wrong answers use english legal terms from the same area of law as the word on the flashcard and also from the same category of words (e.g. if the word is a type of contract, use other types of contracts as wrong answers).: 
 
         ${card.pageA}
         ${card.pageB}
