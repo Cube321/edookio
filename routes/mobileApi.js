@@ -165,7 +165,7 @@ router.get(
     }
 
     if (!user.isPremium && user.questionsSeenThisMonth > 50) {
-      return res.status(200).json({ limitReached: true });
+      return res.status(200).json({ limitReached: false });
     }
 
     res.status(200).json(section);
