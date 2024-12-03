@@ -164,9 +164,9 @@ router.get(
       user.streakLength++;
     }
 
-    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
-      return res.status(200).json({ limitReached: false });
-    }
+    //if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+    //  return res.status(200).json({ limitReached: true });
+    //}
 
     res.status(200).json(section);
   })
