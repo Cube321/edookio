@@ -70,6 +70,9 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
   let counter = 0;
   users.forEach((user) => {
     if (user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0) {
+      //if (!user.isPremium && user.reachedQuestionsLimitDate) {
+      //  mail.testQuestionsLimitReset(user.email);
+      //}
       user.questionsSeenThisMonth = 0;
       user.cardsSeenThisMonth = 0;
       user.reachedQuestionsLimitDate = null;
