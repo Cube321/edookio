@@ -96,7 +96,13 @@ router.post(
     try {
       const { email, password } = req.body;
       //check if user exists
-      const userExists = await User.findOne({ email: email.toLowerCase() });
+      let userExists = await User.findOne({ email: email.toLowerCase() });
+
+      //check if user exists with uppercase letters included
+      if (!userExists) {
+        userExists = await User.findOne({ email: email });
+      }
+
       if (!userExists) {
         return res
           .status(400)
