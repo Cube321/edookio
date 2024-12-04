@@ -1167,38 +1167,6 @@ router.get(
   })
 );
 
-//route to lowercase an email of a particular user
-router.get(
-  "/admin/lowercase/:userId",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    let user = await User.findById(req.params.userId);
-    user.email = user.email.toLowerCase();
-    user.username = user.email.toLowerCase();
-    console.log(user);
-    await user.save();
-    req.flash("success", "Email byl převeden na malá písmena.");
-    res.redirect(`/admin/${user._id}/showDetail`);
-  })
-);
-
-//route tu uppercase an email of a particular user
-router.get(
-  "/admin/uppercase/:userId",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    let user = await User.findById(req.params.userId);
-    user.email = user.email.toUpperCase();
-    user.username = user.email.toUpperCase();
-    console.log(user);
-    await user.save();
-    req.flash("success", "Email byl převeden na velká písmena.");
-    res.redirect(`/admin/${user._id}/showDetail`);
-  })
-);
-
 //SHOW RATINGS
 router.get(
   "/admin/ratings",

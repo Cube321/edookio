@@ -98,11 +98,6 @@ router.post(
       //check if user exists
       let userExists = await User.findOne({ email: email.toLowerCase() });
 
-      //check if user exists with uppercase letters included
-      if (!userExists) {
-        userExists = await User.findOne({ email: email });
-      }
-
       if (!userExists) {
         return res
           .status(400)
