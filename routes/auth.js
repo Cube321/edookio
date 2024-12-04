@@ -294,7 +294,7 @@ router.get("/auth/user/requestPassword", (req, res) => {
 router.post(
   "/auth/user/requestPassword",
   catchAsync(async (req, res) => {
-    const { email } = req.body.toLowerCase();
+    const email = req.body.email.toLowerCase();
     const user = await User.findOne({ email });
     //check if user exists
     if (!user) {
