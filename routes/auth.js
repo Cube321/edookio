@@ -235,13 +235,16 @@ const lowerCaseEmails = async () => {
   const users = await User.find({});
   users.forEach(async (user) => {
     user.email = user.email.toLowerCase();
-    user.username = user.username.toLowerCase();
     await user.save();
   });
 };
 
 //route to lower case all emails in the db
-router.get("/auth/lowerCaseEmails", lowerCaseEmails);
+router.get("/auth/lowerCaseEmails", (req, res) => {
+  lowerCaseEmails();
+  req.flash("success", "Emaily byly převedeny na malá písmena.");
+  res.status(200).redirect("/");
+});
 
 //logout request (GET)
 router.get("/auth/user/logout", isLoggedIn, (req, res, next) => {
