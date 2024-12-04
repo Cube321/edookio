@@ -214,9 +214,13 @@ router.get("/auth/user/login", (req, res) => {
   res.status(200).render("auth/login_form");
 });
 
-//login request (POST)
+//login route with middleware to lowerCase the e-mail before login
 router.post(
   "/auth/user/login",
+  function (req, res, next) {
+    req.body.username = req.body.username.toLowerCase();
+    next();
+  },
   passport.authenticate("local", {
     failureFlash: "Nesprávné heslo nebo e-mail.",
     failureRedirect: "/auth/user/login",
