@@ -164,9 +164,9 @@ router.get(
       user.streakLength++;
     }
 
-    //if (!user.isPremium && user.questionsSeenThisMonth > 50) {
-    //  return res.status(200).json({ limitReached: true });
-    //}
+    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+      return res.status(200).json({ limitReached: true });
+    }
 
     res.status(200).json(section);
   })
@@ -346,12 +346,12 @@ router.get(
     const { platform } = req.query;
     console.log("Platform: ", platform);
     const minimumVersion = {
-      ios: "1.0.11",
-      android: "1.0.11",
+      ios: "1.0.13",
+      android: "1.0.13",
     };
     const latestVersions = {
-      ios: "1.0.11",
-      android: "1.0.11",
+      ios: "1.0.13",
+      android: "1.0.13",
     };
     const updateUrl = {
       ios: "https://apps.apple.com/us/app/your-app-name/id6670204630",
