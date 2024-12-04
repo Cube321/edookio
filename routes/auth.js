@@ -214,13 +214,13 @@ router.get("/auth/user/login", (req, res) => {
   res.status(200).render("auth/login_form");
 });
 
-//login route with middleware to lowerCase the e-mail before login
+//route with middleware to lowercase the email before login
 router.post(
   "/auth/user/login",
-  function (req, res, next) {
+  catchAsync(async (req, res, next) => {
     req.body.username = req.body.username.toLowerCase();
     next();
-  },
+  }),
   passport.authenticate("local", {
     failureFlash: "Nesprávné heslo nebo e-mail.",
     failureRedirect: "/auth/user/login",
@@ -229,6 +229,19 @@ router.post(
     res.status(200).redirect("/");
   })
 );
+
+//function to go through all the users in the db and lower case their emails and usernames
+const lowerCaseEmails = async () => {
+  const users = await User.find({});
+  users.forEach(async (user) => {
+    user.email = user.email.toLowerCase();
+    user.username = user.username.toLowerCase();
+    await user.save();
+  });
+};
+
+//route to lower case all emails in the db
+router.get("/auth/lowerCaseEmails", lowerCaseEmails);
 
 //logout request (GET)
 router.get("/auth/user/logout", isLoggedIn, (req, res, next) => {
