@@ -7,7 +7,7 @@ const User = require("../models/user");
 const Card = require("../models/card");
 const Question = require("../models/question");
 const TestResult = require("../models/testResult");
-
+const mongoose = require("mongoose");
 const {
   isLoggedIn,
   isAdmin,
@@ -15,7 +15,6 @@ const {
   isPremiumUser,
   isEditor,
 } = require("../utils/middleware");
-const mongoose = require("mongoose");
 
 //SHOW SECTIONS OF CATEGORY
 router.get(
@@ -26,7 +25,7 @@ router.get(
       .populate("sections")
       .exec();
     if (!category) {
-      req.flash("error", "Kategorie neexistuje.");
+      req.flash("error", "Předmět neexistuje.");
       return res.status(404).redirect("/");
     }
 

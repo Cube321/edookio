@@ -71,6 +71,7 @@ const mobileApiRoutes = require("./routes/mobileApi");
 const mobileAuthRoutes = require("./routes/mobileAuth");
 const statsRoutes = require("./routes/stats");
 const mobilePayments = require("./routes/mobilePayments");
+const temporaryRoutes = require("./routes/temporary");
 
 const dbUrl = process.env.DB_URL;
 
@@ -140,12 +141,17 @@ const connectSrcUrls = [
   "https://api.mapbox.com/",
   "https://ka-f.fontawesome.com/",
   "https://region1.google-analytics.com/",
+  "https://www.google.com/",
 ];
 const fontSrcUrls = [];
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["https://js.stripe.com/", "https://td.doubleclick.net/"],
+      defaultSrc: [
+        "https://js.stripe.com/",
+        "https://td.doubleclick.net/",
+        "https://www.googletagmanager.com/",
+      ],
       connectSrc: ["'self'", ...connectSrcUrls],
       scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
@@ -246,6 +252,7 @@ app.use("/", mobileApiRoutes);
 app.use("/", mobileAuthRoutes);
 app.use("/", statsRoutes);
 app.use("/", mobilePayments);
+app.use("/", temporaryRoutes);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 

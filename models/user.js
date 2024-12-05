@@ -127,6 +127,10 @@ const UserSchema = new Schema({
       marketing: true,
     },
   },
+  appAnnouncementModalShown: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.plugin(passportLocalMongoose);

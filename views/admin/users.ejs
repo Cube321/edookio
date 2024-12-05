@@ -12,7 +12,7 @@
                 <p><%= users.length - i %></p>
             </div>
             <div class="col-sm-2 col-7 d-flex justify-content-between align-items-start">
-                <p class="mb-0 text-bold"><%= user.email %></p>
+                <p class="mb-0 text-bold"><%= user.email %> <a href="/temporary/af">reset app announcement</a></p>
                 <% if (user.activeInLast48Hours) { %>
                     <span style="color:green"><b>A</b></span>
                 <% } %> 
