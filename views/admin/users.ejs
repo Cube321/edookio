@@ -12,7 +12,7 @@
                 <p><%= users.length - i %></p>
             </div>
             <div class="col-sm-2 col-7 d-flex justify-content-between align-items-start">
-                <p class="mb-0 text-bold"><%= user.email %> <a href="/temporary/af">reset app announcement</a></p>
+                <p class="mb-0 text-bold"><%= user.email %></p>
                 <% if (user.activeInLast48Hours) { %>
                     <span style="color:green"><b>A</b></span>
                 <% } %> 
@@ -44,8 +44,12 @@
                         <div class="col-sm-1 d-flex justify-content-center align-items-center">
                             <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
                         </div>
-                        <div class="col-sm-2 text-center w-100">
-                            <p class="text-muted mb-0">- aktivní placené Premium -</p>
+                        <div class="d-flex">
+                            <% if (user.usedMobileApp) { %>
+                                <p class="mb-1 mx-1" style="color:blue;font: bold;">APP</p>
+                               <% } %>
+                            <p class="mb-0 mx-1"><%= user.registrationPlatform %></p>
+                            <p class="text-muted mb-0"><span style="color: green;font-weight: bold;">- A -</span></p>
                         </div>
                     </div>
                 </div>
@@ -55,8 +59,12 @@
                         <div class="col-sm-1 d-flex justify-content-center align-items-center">
                             <a href="/admin/<%=user._id%>/showDetail" class="btn btn-sm btn-danger">Detail</a>
                         </div>
-                        <div class="col-sm-2 text-center w-100">
-                            <p class="text-muted mb-0"></p>
+                        <div class="d-flex">
+                            <% if (user.usedMobileApp) { %>
+                                <p class="mb-1 mx-1" style="color:blue;font: bold;">APP</p>
+                               <% } %>
+                            <p class="mb-0 mx-1"><%= user.registrationPlatform %></p>
+                            <p class="text-muted mb-0">- N -</p>
                         </div>
                     </div>
                 </div>

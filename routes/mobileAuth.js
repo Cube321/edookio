@@ -67,6 +67,7 @@ router.post(
         faculty: "Neuvedeno",
         source: sourceSelectedValue,
         cookies,
+        registrationPlatform: "mobile",
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -172,6 +173,7 @@ router.get(
       if (!userExists) {
         return res.status(400).json({ message: "Uživatel neexistuje." });
       }
+      userExists.usedMobileApp = true;
       let endDate = "";
       let duplicatedUser = userExists.toObject();
       duplicatedUser.dateOfRegistration = moment(userExists.dateOfRegistration)
@@ -182,6 +184,7 @@ router.get(
           .locale("cs")
           .format("LL");
       }
+      await userExists.save();
       return res.status(200).json({ user: duplicatedUser });
     } catch (error) {
       console.log(error);

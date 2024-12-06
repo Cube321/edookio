@@ -23,6 +23,14 @@ const UserSchema = new Schema({
     type: String,
     default: "neuvedeno",
   },
+  registrationPlatform: {
+    type: String,
+    default: "web",
+  },
+  usedMobileApp: {
+    type: Boolean,
+    default: false,
+  },
   admin: {
     type: Boolean,
     default: false,
