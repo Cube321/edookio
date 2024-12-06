@@ -354,7 +354,7 @@ router.get(
       android: "1.0.13",
     };
     const updateUrl = {
-      ios: "https://apps.apple.com/us/app/your-app-name/id6670204630",
+      ios: "https://apps.apple.com/us/app/inlege/id6670204630",
       android: "https://play.google.com/store/apps/details?id=cz.inlege.InLege",
     };
     const response = {
