@@ -2,6 +2,10 @@
     max-height: 185px;
 }
 
+.color-primary {
+  color: #E80F88;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 #questions-list::-webkit-scrollbar {
     display: none;

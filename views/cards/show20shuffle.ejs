@@ -73,6 +73,19 @@
               </div>
             </div>
           </div>
+          <% if(!currentUser || (currentUser && !currentUser.usedMobileApp)){ %>
+            <div class="card d-flex flex-row justify-content-center align-items-center border-grey mt-3">
+              <div class="card-body">
+                <div class="d-flex justify-content-evenly align-items-center">
+                  <p class="text-center mb-0 px-1">Mobilní aplikace <span class="color-primary">InLege</span> je tady!</p>
+                  <div class="d-flex justify-content-center align-items-center">
+                  <a href="https://apps.apple.com/us/app/inlege/id6670204630" target="_blank" class="btn btn-outline-danger text-small"><i class="fab fa-apple"></i> <span class="hide-under-1200">iOS</span></a>
+                  <a href="https://play.google.com/store/apps/details?id=cz.inlege.InLege" target="_blank" class="btn btn-outline-danger mx-1 text-small"><i class="fab fa-android"></i> <span class="hide-under-1200">Android</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
         </div>
 
 
@@ -112,6 +125,19 @@
               </div>
             </div>
           </div>
+          <% if(!currentUser || (currentUser && !currentUser.usedMobileApp)) {%>
+            <div class="card border-grey mt-3">
+              <div class="card-body" id="questions-list" style="padding: 0.5rem;padding-left:1rem;overflow: scroll;">
+                <div>
+                  <p class="text-center text-smaller">Vyzkoušej i <b>mobilní aplikaci</b> <b class="color-primary">InLege</b>!</p>
+                  <div class="d-flex justify-content-evenly align-items-center">
+                    <a href="https://apps.apple.com/us/app/inlege/id6670204630" target="_blank" class="btn btn-outline-danger mx-2 text-small"><i class="fab fa-apple"></i> <span class="hide-under-1200">iOS</span></a>
+                    <a href="https://play.google.com/store/apps/details?id=cz.inlege.InLege" target="_blank" class="btn btn-outline-danger mx-2 text-small"><i class="fab fa-android"></i> <span class="hide-under-1200">Android</span></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% } %>
         </div>
       </div>
         

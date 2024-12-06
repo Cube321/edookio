@@ -26,6 +26,15 @@
                     <% } %>
                 </div>
             </div>
+            <% if(!currentUser || (currentUser && !currentUser.usedMobileApp)){ %>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <p class="text-center">Vyzkoušej i <b>mobilní aplikaci</b> <b class="color-primary">InLege</b>!</p>
+                    <div class="d-flex justify-content-evenly align-items-center">
+                    <a href="https://apps.apple.com/us/app/inlege/id6670204630" target="_blank" class="btn btn-outline-danger mx-2 text-small"><i class="fab fa-apple"></i> <span class="hide-under-1200">iOS</span></a>
+                    <a href="https://play.google.com/store/apps/details?id=cz.inlege.InLege" target="_blank" class="btn btn-outline-danger mx-2 text-small"><i class="fab fa-android"></i> <span class="hide-under-1200">Android</span></a>
+                    </div>
+                </div>
+            <% } %>
         </div>
     </div>
 

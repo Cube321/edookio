@@ -4,6 +4,10 @@ body {
     font-family: 'Nunito', sans-serif;
 }
 
+.color-primary {
+    color: #E80F88;
+  }
+
 .navbar-brand img {
     margin-bottom: 4px;
     margin-right: 10px;
