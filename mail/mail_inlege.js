@@ -808,7 +808,7 @@ mail.sendStreakReminder = function (email, days, callback) {
 mail.sendFeedback = function (email, name, text, callback) {
   const msg = {
     from: "info@inlege.cz",
-    to: "jakub@inlege.cz",
+    to: "info@inlege.cz",
     subject: "(CZ) Zpětná vazba (formulář)",
     html: `
           <p style="font-family:Helvetica Neue">Uživatel ${name} (${email}) zasílá následující feedback prostřednictvím formuláře:</p>
@@ -827,7 +827,7 @@ mail.sendFeedback = function (email, name, text, callback) {
 mail.sendMessageFromContactForm = function (email, name, text, callback) {
   const msg = {
     from: "info@inlege.cz",
-    to: "jakub@inlege.cz",
+    to: "info@inlege.cz",
     subject: "(CZ) Nová zpráva z kontaktního formuláře",
     html: `
             <h3 style="font-family:Helvetica Neue">Nová zpráva z kontaktního formuláře:</h3>
@@ -902,7 +902,7 @@ mail.sendThankYou = function (email, text, type, callback) {
     content = "v otázce";
   }
   const msg = {
-    from: { email: "jakub@inlege.cz", name: "Ondřej z InLege" },
+    from: { email: "info@inlege.cz", name: "Ondřej z InLege" },
     to: email,
     subject: `Oprava chyby ${content}`,
     html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
