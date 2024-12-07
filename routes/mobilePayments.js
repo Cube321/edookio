@@ -89,7 +89,6 @@ router.post(
       case "CANCELLATION":
         user.plan = "none";
         const endDate = moment(user.endDate).locale("cs").format("LL");
-        user.subscriptionSource = "none";
         user.premiumDateOfCancelation = new Date();
         mail.subscriptionCanceled(user.email, endDate);
         mail.adminInfoSubscriptionCanceled(user, endDate, paymentSource, store);

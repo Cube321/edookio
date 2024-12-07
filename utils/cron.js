@@ -17,6 +17,7 @@ cronHelpers.checkPremiumEnded = catchAsync(async () => {
       user.isPremium = false;
       user.premiumGrantedByAdmin = false;
       user.endDate = null;
+      user.subscriptionSource = "none";
       user.plan = "none";
       user.save();
       mail.sendPremiumEnded(user.email);
