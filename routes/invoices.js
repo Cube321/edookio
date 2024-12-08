@@ -124,6 +124,7 @@ router.get(
         exactDate: user.openInvoiceData.date,
         plan: user.openInvoiceData.plan,
         endDate: moment(user.endDate).format("DD.MM.YYYY"),
+        subscriptionSource: user.subscriptionSource,
       };
       updatedUsers.push(updatedUser);
     });
@@ -237,7 +238,7 @@ router.get(
         `CZ${inv.identificationNumber}`, // Invoice number
         inv.subscriptionPeriod, // Subscription version/period
         inv.amount, // Price/amount of the invoice
-        "CZK", // Currency
+        "CZK", // Currencya
       ];
       csvRows.push(row.join(","));
     });
