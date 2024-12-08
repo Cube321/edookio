@@ -12,13 +12,13 @@
                     <form action="/invoice/new/<%= user._id %>" method="POST">
                         <div class="row g-3 align-items-center">
                             <div class="col-12 col-lg-2">
-                                <p class="mt-1 mb-0 text-bold"><%= user.email %></p>
+                                <p class="mt-1 mb-0 text-bold"><a href="/admin/<%= user._id %>/showDetail"><%= user.email %></a></p>
                             </div>
                             <div class="col-12 col-lg-1">
                                 <input type="text" id="subscriptionPeriod" name="subscriptionPeriod" placeholder="Období" value="<%= user.plan %>" class="form-control" required>
                             </div>
                             <div class="col-12 col-lg-1">
-                                <%= user.endDate %>
+                                <%= user.subscriptionSource %>
                             </div>
                             <div class="col-12 col-lg-2">
                                 <input type="text" id="invoiceNum" name="invoiceNum" placeholder="Číslo FA" value="<%= lastInvoiceNumber + i + 1 %>" class="form-control" required>

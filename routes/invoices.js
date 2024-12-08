@@ -187,6 +187,73 @@ router.get(
   })
 );
 
+//export last month invoices in csv
+router.get(
+  "/invoices/exportLastMonth",
+  isLoggedIn,
+  isAdmin,
+  catchAsync(async (req, res) => {
+    // Determine the start and end of the previous calendar month
+    const startOfLastMonth = moment().subtract(1, "month").startOf("month");
+    const endOfLastMonth = moment().subtract(1, "month").endOf("month");
+
+    // Get the name of the month and year for the title
+    const reportMonth = moment().subtract(1, "month").format("MMMM YYYY");
+
+    // Fetch all invoices
+    let invoices = await Invoice.find({});
+
+    // Filter for invoices in the last calendar month
+    let filteredInvoices = invoices.filter((invoice) => {
+      let invoiceDate = moment(invoice.dateIssued, "DD.MM.YYYY");
+      return invoiceDate.isBetween(
+        startOfLastMonth,
+        endOfLastMonth,
+        null,
+        "[]"
+      );
+    });
+
+    // Prepare CSV rows
+    const csvRows = [];
+    csvRows.push(`${reportMonth}`); // Add the title row
+
+    // Prepare CSV headers
+    const headers = ["Datum", "Číslo faktury", "Položka", "Částka", "Měna"];
+
+    // Build CSV rows
+    csvRows.push(headers.join(",")); // Header row
+    filteredInvoices.forEach((inv) => {
+      if (inv.subscriptionPeriod === "monthly") {
+        inv.subscriptionPeriod = "InLege Premium - měsíční";
+      } else if (inv.subscriptionPeriod === "halfyear") {
+        inv.subscriptionPeriod = "InLege Premium - půlroční";
+      } else if (inv.subscriptionPeriod === "yearly") {
+        inv.subscriptionPeriod = "InLege Premium - roční";
+      }
+
+      const row = [
+        inv.dateIssued, // Date invoice was issued
+        `CZ${inv.identificationNumber}`, // Invoice number
+        inv.subscriptionPeriod, // Subscription version/period
+        inv.amount, // Price/amount of the invoice
+        "CZK", // Currency
+      ];
+      csvRows.push(row.join(","));
+    });
+
+    const csvString = csvRows.join("\n");
+
+    // Set headers to force download of CSV
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=last_month_invoices.csv"
+    );
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.status(200).send(csvString);
+  })
+);
+
 //LEGACY CODE  - old invoices before 01_05_2024 (still in use)
 router.get(
   "/invoice/remove/:userId/:invoiceNum",
