@@ -223,7 +223,7 @@ router.get(
     const headers = ["Datum", "Číslo faktury", "Položka", "Částka", "Měna"];
 
     // Build CSV rows
-    csvRows.push(headers.join(",")); // Header row
+    csvRows.push(headers.join(";")); // Header row
     filteredInvoices.forEach((inv) => {
       if (inv.subscriptionPeriod === "monthly") {
         inv.subscriptionPeriod = "InLege Premium - měsíční";
@@ -238,9 +238,9 @@ router.get(
         `CZ${inv.identificationNumber}`, // Invoice number
         inv.subscriptionPeriod, // Subscription version/period
         inv.amount, // Price/amount of the invoice
-        "CZK", // Currencya
+        "CZK", // Currency
       ];
-      csvRows.push(row.join(","));
+      csvRows.push(row.join(";"));
     });
 
     const csvString = csvRows.join("\n");
