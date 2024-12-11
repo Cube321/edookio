@@ -346,12 +346,12 @@ router.get(
     const { platform } = req.query;
     console.log("Platform: ", platform);
     const minimumVersion = {
-      ios: "1.0.13",
-      android: "1.0.13",
+      ios: "1.0.15",
+      android: "1.0.15",
     };
     const latestVersions = {
-      ios: "1.0.13",
-      android: "1.0.13",
+      ios: "1.0.15",
+      android: "1.0.15",
     };
     const updateUrl = {
       ios: "https://apps.apple.com/us/app/inlege/id6670204630",
