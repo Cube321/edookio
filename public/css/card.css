@@ -6,6 +6,17 @@ body {
   color: #E80F88;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
+#questions-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#questions-list {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 /* NEW CARD DESIGN*/
 .flip-card {
     width: 100%;
