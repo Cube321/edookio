@@ -1,0 +1,243 @@
+<% layout ('layouts/boilerplate.ejs')  %> 
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h4>Dashboard</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Přehled</h5>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Registrovaní uživatelé</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsers %></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Dnešní registrace</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersRegisteredToday %></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Měsíční registrace</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersRegisteredInLast30Days %></h2>
+                    <p class="dashboard-info">posledních 30 dnů</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>MRR brutto</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= monthlyRevenueBrutto %> Kč</h2>
+                    <p class="dashboard-info">pouze měsíční předplatné</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>MRR netto</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= monthlyRevenueNetto %> Kč</h2>
+                    <p class="dashboard-info">pouze měsíční předplatné</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Aktivováno předplatných</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActivatedSubscriptionInLast30Days %></h2>
+                    <p class="dashboard-info">posledních 30 dnů</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Prodlouženo předplatných</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersUpdatedSubscriptionInLast30Days %></h2>
+                    <p class="dashboard-info">posledních 30 dnů</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Zrušeno předplatných</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersDeactivatedSubscriptionInLast30Days %></h2>
+                    <p class="dashboard-info">posledních 30 dnů</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Premium (aktivní)</h5>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Celkem</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersWithActiveSubscription %></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Měsíční</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersWithActiveMonthlySubscription %></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Půlroční</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersWithActiveHalfyearSubscription %></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Roční</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersWithActiveYearlySubscription %></h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Aktivní uživatelé</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Dnes</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveToday %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveToday %> %)</span></h2>
+                    <p class="dashboard-info">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Týden</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveThisWeek %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveThisWeek %> %)</span></h2>
+                    <p class="dashboard-info">posledních 7 dní</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Měsíc</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveThisMonth %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveThisMonth %> %)</span></h2>
+                    <p class="dashboard-info">posledních 30 dní</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Čtvrtletí</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveInLast90Days %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveInLast90Days %> %)</span></h2>
+                    <p class="dashboard-info">posledních 90 dní</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Půlrok</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveInLast180Days %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveInLast180Days %> %)</h2>
+                    <p class="dashboard-info">posledních 180 dní</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Rok</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveInLast365Days %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveInLast365Days %> %)</h2>
+                    <p class="dashboard-info">posledních 365 dní</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Nikdy</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersNeverActive %> <span class="text-muted text-smaller">(<%= percentageOfUsersNeverActive %> %)</h2>
+                    <p class="dashboard-info">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Pouze v den registrace</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfUsersActiveOnlyOnRegistrationDay %> <span class="text-muted text-smaller">(<%= percentageOfUsersActiveOnlyOnRegistrationDay %> %)</h2>
+                    <p class="dashboard-info">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

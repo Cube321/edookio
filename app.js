@@ -72,6 +72,7 @@ const mobileAuthRoutes = require("./routes/mobileAuth");
 const statsRoutes = require("./routes/stats");
 const mobilePayments = require("./routes/mobilePayments");
 const temporaryRoutes = require("./routes/temporary");
+const dashboardRoutes = require("./routes/dashboard");
 
 const dbUrl = process.env.DB_URL;
 
@@ -253,6 +254,7 @@ app.use("/", mobileAuthRoutes);
 app.use("/", statsRoutes);
 app.use("/", mobilePayments);
 app.use("/", temporaryRoutes);
+app.use("/", dashboardRoutes);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 

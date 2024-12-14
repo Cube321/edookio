@@ -662,6 +662,38 @@ form .form-control.bordered {
     height: auto !important;
 }
 
+/* DASHBOARD PAGE */
+.dashboard-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+}
+
+.dashboard-card-header {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 10px 15px;
+}
+
+.dashboard-card-header h6 {
+    margin: 0;
+    font-size: larger;
+}
+
+.dashboard-card-body {
+    padding: 10px 15px;
+}
+
+.dashboard-card-body h2 {
+    margin: 0;
+}
+
+.dashboard-card-body .dashboard-info {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6C657D;
+}
+
 
 @media only screen and (max-width: 1200px) {
     .cards-amount-div {

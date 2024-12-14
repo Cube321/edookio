@@ -10,7 +10,6 @@ const moment = require("moment");
 const mail = require("../mail/mail_inlege");
 
 //ADMIN - SHOW ADMIN
-//show all registered users
 router.get(
   "/admin/admin",
   isLoggedIn,
