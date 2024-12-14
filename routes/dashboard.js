@@ -81,6 +81,10 @@ router.get(
       getNumberOfUsersDeactivatedSubscriptionInLast30Days(users);
     const numberOfUsersUpdatedSubscriptionInLast30Days =
       getNumberOfUsersUpdatedSubscriptionInLast30Days(users);
+    const numberOfUsersWithRevenuecatSubscription =
+      getNumberOfUsersWithRevenuecatSubscription(users);
+    const numberOfUsersWithStripeSubscription =
+      getNumberOfUsersWithStripeSubscription(users);
 
     res.render("admin/dashboard", {
       numberOfUsers,
@@ -111,6 +115,8 @@ router.get(
       numberOfUsersActivatedSubscriptionInLast30Days,
       numberOfUsersDeactivatedSubscriptionInLast30Days,
       numberOfUsersUpdatedSubscriptionInLast30Days,
+      numberOfUsersWithRevenuecatSubscription,
+      numberOfUsersWithStripeSubscription,
     });
   })
 );
@@ -331,7 +337,7 @@ function getPercentageOfUsersActiveInLast365Days(users) {
 
 //users never active
 function getNumberOfUsersNeverActive(users) {
-  return users.filter((user) => user.lastActive === undefined).length;
+  return users.filter((user) => user.lastActive === null).length;
 }
 
 //function to get percentage of users never active
@@ -381,6 +387,17 @@ function getNumberOfUsersUpdatedSubscriptionInLast30Days(users) {
   return users.filter((user) =>
     moment(user.premiumDateOfUpdate).isBetween(startOf30Days, today)
   ).length;
+}
+
+//function to get number of users with subscriptionSource = revenuecat
+function getNumberOfUsersWithRevenuecatSubscription(users) {
+  return users.filter((user) => user.subscriptionSource === "revenuecat")
+    .length;
+}
+
+//function to get number of users with subscriptionSource = stripe or none
+function getNumberOfUsersWithStripeSubscription(users) {
+  return users.filter((user) => user.subscriptionSource === "stripe").length;
 }
 
 module.exports = router;

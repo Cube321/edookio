@@ -103,6 +103,7 @@ router.post(
         break;
 
       case "EXPIRATION":
+        user.subscriptionSource = "none";
         console.log(
           "REVENUECAT WEBHOOK - EXPIRATION: Subscription expired for user:",
           user.email
