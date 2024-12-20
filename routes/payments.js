@@ -107,9 +107,7 @@ router.post("/webhook", async (req, res) => {
       if (data.status === "past_due") {
         // code here
         console.log("PAST_DUE is running");
-        user.openInvoiceData = {};
-        user.hasOpenInvoice = false;
-        mail.adminInfoSubscriptionPaymentFailed(user, data.status, data);
+        mail.adminInfoSubscriptionPaymentFailed(user, data.status);
         await user.save();
         //break so the rest of the switch code below will not run
         break;
@@ -122,7 +120,6 @@ router.post("/webhook", async (req, res) => {
           data.plan.id == process.env.PRODUCT_YEARLY_XMAS)
       ) {
         user.plan = "yearly";
-        user = createOpenInvoice(user, data, "yearly");
         user.endDate = moment(today).add("1", "year").format();
         //format endDate
         const endDate = moment(user.endDate).locale("cs").format("LL");
@@ -148,7 +145,6 @@ router.post("/webhook", async (req, res) => {
           data.plan.id == process.env.PRODUCT_MONTHLY_229)
       ) {
         user.plan = "monthly";
-        user = createOpenInvoice(user, data, "monthly");
         user.endDate = moment(today).add("1", "month").format();
         //format endDate
         const endDate = moment(user.endDate).locale("cs").format("LL");
@@ -174,7 +170,6 @@ router.post("/webhook", async (req, res) => {
           data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS)
       ) {
         user.plan = "halfyear";
-        user = createOpenInvoice(user, data, "halfyear");
         user.endDate = moment(today).add("6", "month").format();
         //format endDate
         const endDate = moment(user.endDate).locale("cs").format("LL");
@@ -234,6 +229,39 @@ router.post("/webhook", async (req, res) => {
       await user.save();
       break;
     }
+
+    case "invoice.payment_succeeded": {
+      // Extract payment details
+      const user = await User.findOne({ billingId: data.customer });
+      if (!user) {
+        console.error(`User not found for customer ID: ${data.customer}`);
+        return res.sendStatus(404);
+      }
+
+      const amountPaid = data.amount_paid / 100; // Convert cents to currency
+      const originalPrice = data.subtotal / 100;
+
+      let plan = "none";
+
+      if (
+        originalPrice === 229 ||
+        originalPrice === 199 ||
+        originalPrice === 99
+      ) {
+        plan = "monthly";
+      } else if (originalPrice === 445 || originalPrice === 890) {
+        plan = "halfyear";
+      } else if (originalPrice === 745 || originalPrice === 1490) {
+        plan = "yearly";
+      }
+
+      console.log(`User ${user.email} paid ${amountPaid} CZK`);
+
+      updatedUser = createOpenInvoice(user, amountPaid, plan);
+
+      await updatedUser.save();
+      break;
+    }
   }
   res.sendStatus(200);
 });
@@ -246,16 +274,14 @@ router.post("/billing", async (req, res) => {
 });
 
 //HELPERS
-const createOpenInvoice = (user, data, plan) => {
+const createOpenInvoice = (user, amountPaid, plan) => {
   //create open invoice
   user.hasOpenInvoice = true;
   user.openInvoiceData = {
-    amount: data.items.data[0].plan.amount / 100,
+    amount: amountPaid,
     date: Date.now(),
     plan: plan,
   };
-
-  console.log("Data:" + data.items.data[0]);
   return user;
 };
 
