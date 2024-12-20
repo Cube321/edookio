@@ -150,60 +150,156 @@
 
 <!-- Pouze editor - formular pro pridani sekce -->
 <% if (currentUser && currentUser.isEditor) { %>
-<div class="row">
-    <div class="col-md-7 offset-md-4 mb-3 mt-4">
-        <div class="card add-section">
-            <div class="card-body pb-0">
-                <h4>Přidat nový balíček</h4>
-                <form action="/category/<%= category.name  %>/newSection" method="POST">
+    <div class="row">
+        <div class="col-md-7 offset-md-4 mb-3 mt-4">
+            <div class="card add-section">
+                <div class="card-body pb-0">
+                    <h4>Přidat nový balíček</h4>
+                    <form action="/category/<%= category.name  %>/newSection" method="POST">
+                        <div class="form-group row">
+                            <label for="name" class="col-lg-3 col-form-label">Nadpis</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control form-borders" id="name" name="name" required>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label for="desc" class="col-lg-3 col-form-label">Podnadpis</label>
+                            <div class="col-lg-6">
+                                <input type="text" class="form-control form-borders" id="desc" name="desc" required>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label for="desc" class="col-lg-3 col-form-label">JSON</label>
+                            <div class="col-lg-6">
+                                <textarea id="jsonData" name="jsonData" class="form-control form-borders" placeholder="Vložte data ve formátu JSON (volitelné)"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label for="previousSection" class="col-lg-3 col-form-label">Navazuje na</label>
+                            <div class="col-lg-6">
+                                <select class="form-select form-borders" name="previousSection" id="previousSection">
+                                    <option value="lastSection">nenavazuje na jiný balíček</option>
+                                    <% category.sections.forEach(section => { %>
+                                        <option value="<%= section._id %>"><%= section.name %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label for="isPremium" class="col-lg-3 col-form-label">Dostupnost</label>
+                            <div class="col-lg-4">
+                                <select class="form-select form-borders" name="isPremium" id="isPremium">
+                                    <option value="zdarma">Zdarma</option>
+                                    <option value="premium">Premium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 my-3">
+                                <button class="btn btn-danger">Přidat balíček</button>
+                                <a href="" class="btn btn-danger m-1" data-bs-toggle="modal" data-bs-target="#createWithAIModal">Vytvořit pomocí AI</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL - Create section with AI -->
+    <div class="modal fade" id="createWithAIModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vytvořit nový balíček (pomocí AI)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body m-2 pt-0">
+                <div id="document-formats-container">
+                    <p class="text-muted text-smaller mb-1">Nahrajte soubor ve formátu .docx, .pdf nebo .pptx.</p>
+                    <p class="text-muted text-smaller mb-3">Zbývá vám ještě <b><%= currentUser.credits %></b> kreditů.</p>
+                </div>
+                <form action="/category/<%= category._id  %>/newSectionFromDocument" id="add-section-with-ai-form" method="POST" enctype="multipart/form-data">
                     <div class="form-group row">
-                        <label for="name" class="col-lg-3 col-form-label">Nadpis</label>
-                        <div class="col-lg-6">
+                        <label for="name" class="col-lg-4 col-form-label">Nadpis</label>
+                        <div class="col-lg-8">
                             <input type="text" class="form-control form-borders" id="name" name="name" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="desc" class="col-lg-3 col-form-label">Podnadpis</label>
-                        <div class="col-lg-6">
+                        <label for="desc" class="col-lg-4 col-form-label">Podnadpis</label>
+                        <div class="col-lg-8">
                             <input type="text" class="form-control form-borders" id="desc" name="desc" required>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="desc" class="col-lg-3 col-form-label">JSON</label>
-                        <div class="col-lg-6">
-                            <textarea id="jsonData" name="jsonData" class="form-control form-borders" placeholder="Vložte data ve formátu JSON (volitelné)"></textarea>
+                        <label for="desc" class="col-lg-4 col-form-label d-flex align-items-center">Kartiček/strana</label>
+                        <div class="col-lg-8">
+                        <div class="scale-container">
+                                <input type="range" class="scale-input" name="cardsPerPage" min="1" max="8" step="1" value="4">
+                                <div class="scale-labels">
+                                <span>1</span>
+                                <span>2</span>
+                                <span>3</span>
+                                <span>4</span>
+                                <span>5</span>
+                                <span>6</span>
+                                <span>7</span>
+                                <span>8</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row mt-2">
-                        <label for="previousSection" class="col-lg-3 col-form-label">Navazuje na</label>
-                        <div class="col-lg-6">
-                            <select class="form-select form-borders" name="previousSection" id="previousSection">
-                                <option value="lastSection">nenavazuje na jiný balíček</option>
-                                <% category.sections.forEach(section => { %>
-                                    <option value="<%= section._id %>"><%= section.name %></option>
-                                <% }) %>
-                              </select>
+                        <label for="desc" class="col-lg-4 col-form-label d-flex align-items-center">Velikost balíčku</label>
+                        <div class="col-lg-8">
+                        <div class="scale-container">
+                                <input type="range" class="scale-input" name="sectionSize" min="10" max="30" step="5" value="20">
+                                <div class="scale-labels">
+                                <span>10</span>
+                                <span>15</span>
+                                <span>20</span>
+                                <span>25</span>
+                                <span>30</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <label for="isPremium" class="col-lg-3 col-form-label">Dostupnost</label>
-                        <div class="col-lg-4">
-                            <select class="form-select form-borders" name="isPremium" id="isPremium">
-                                <option value="zdarma">Zdarma</option>
-                                <option value="premium">Premium</option>
-                              </select>
+                    
+                    <div class="row mt-5">
+                        <label for="document" class="col-lg-4 col-form-label">Nahrát dokument</label>
+                        <div class="col-lg-8">
+                            <input class="form-control form-borders border-darkgrey" type="file" id="document" name="document" accept=".pdf, .docx, .pptx" required>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 my-3">
-                            <button class="btn btn-danger">Přidat balíček</button>
+                        <div class="col-12 d-flex justify-content-center mt-5">
+                            <button class="btn btn-danger w-100" id="add-section-with-ai-btn">Vygenerovat balíček z dokumentu</button>
                         </div>
                     </div>
                 </form>
+                <div id="document-progress-container">
+                    <h5 class="mt-3 text-center mb-3">Generuji kartičky a otázky...</h5>
+                    <div id="progress-bar-container">
+                    <div id="progress-bar"></div>
+                    </div>
+                    <p id="progress-text">Čekám na nahrání souboru...</p>
+                </div>
+                <div id="document-success-container" style="display: none;">
+                    <h5 class="mt-3 text-center">Dokončeno!</h5>
+                    <p id="document-success-text" class="text-center">Zbývá vám ještě 0 kreditů.</p>
+                    <p class="text-smaller text-muted text-center">Za vytvoření každé kartičky nebo testové otázky se vám odečte jeden kredit.</p>
+                </div>   
+                <div id="document-error-container" style="display: none;">
+                    <h5 class="mt-3 text-center">Nemáte dostatek kreditů</h5>
+                    <p class="text-center" id="document-error-text"></p>
+                </div>                  
             </div>
         </div>
+        </div>
     </div>
-</div>
+
+
 <% } %>
 
 <% if (category.sections.length > 0 && currentUser && currentUser.isEditor) { %>
@@ -374,6 +470,10 @@
             </div>
         </div>
     <% }) %>
+<% } %>
+
+<% if (currentUser && (currentUser.admin || currentUser.isEditor)) { %>
+    <script src="/js/document.js"></script>
 <% } %>
 
 <% if(currentUser && !currentUser.appAnnouncementModalShown){ %>

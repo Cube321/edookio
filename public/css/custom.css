@@ -174,11 +174,10 @@ body {
 }
 
 #document-progress-container {
-    margin-top: 20px;
+    margin-top: 10px;
     display: none;
     flex-direction: column;
     align-items: center;
-    font-family: 'Arial', sans-serif;
     color: #333;
 }
 
@@ -234,6 +233,100 @@ body {
         transform: translateX(150%);
     }
 }
+
+.scale-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .scale-input {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    position: relative;
+    margin: 20px 0;
+  }
+  
+  .scale-input::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .scale-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #E80F88;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    margin-top: -6px; /* Centers the thumb */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .scale-input::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+  }
+  
+  .scale-input::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #E80F88;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .scale-input::-ms-track {
+    width: 100%;
+    height: 8px;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  
+  .scale-input::-ms-fill-lower {
+    background: #e0e0e0;
+    border-radius: 4px;
+  }
+  
+  .scale-input::-ms-fill-upper {
+    background: #e0e0e0;
+    border-radius: 4px;
+  }
+  
+  .scale-input::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: #E80F88;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: -5px;
+  }
+  
+  .scale-labels span {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    position: relative;
+    top: 0;
+  }
 
 /* CATEGOGRIES - PREMIUM SECTIONS*/
 .golden {
