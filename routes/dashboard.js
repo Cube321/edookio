@@ -248,7 +248,7 @@ function getNumberOfUsersActiveToday(users) {
 //function to get number of users active in the last 7 days
 function getNumberOfUsersActiveThisWeek(users) {
   const today = moment().endOf("day");
-  const startOfWeek = moment().startOf("week");
+  const startOfWeek = moment().subtract(7, "days");
   return users.filter((user) =>
     moment(user.lastActive).isBetween(startOfWeek, today)
   ).length;
@@ -257,7 +257,7 @@ function getNumberOfUsersActiveThisWeek(users) {
 //function to get number of users active in the last 30 days
 function getNumberOfUsersActiveThisMonth(users) {
   const today = moment().endOf("day");
-  const startOfMonth = moment().startOf("month");
+  const startOfMonth = moment().subtract(30, "days");
   return users.filter((user) =>
     moment(user.lastActive).isBetween(startOfMonth, today)
   ).length;

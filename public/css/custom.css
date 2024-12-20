@@ -173,6 +173,68 @@ body {
     border: 1px solid #b0b0b0;
 }
 
+#document-progress-container {
+    margin-top: 20px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+#document-progress-container #progress-bar-container {
+    width: 100%;
+    max-width: 600px;
+    background: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#document-progress-container #progress-bar {
+    width: 0%;
+    height: 20px;
+    background: linear-gradient(90deg, #4caf50, #81c784);
+    transition: width 0.4s ease-in-out;
+}
+
+#document-progress-container #progress-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-top: 5px;
+    text-align: center;
+    position: relative;
+}
+
+#document-progress-container #progress-bar-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.15) 10px,
+        rgba(0, 0, 0, 0.05) 10px,
+        rgba(0, 0, 0, 0.05) 20px
+    );
+    animation: shimmer 3s infinite linear; /* Slower animation */
+}
+
+@keyframes shimmer {
+    from {
+        transform: translateX(-150%);
+    }
+    to {
+        transform: translateX(150%);
+    }
+}
+
 /* CATEGOGRIES - PREMIUM SECTIONS*/
 .golden {
     color: #FFB81C;

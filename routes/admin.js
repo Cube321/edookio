@@ -1190,6 +1190,15 @@ router.get(
   })
 );
 
+//route to add 100 credits to a user
+router.get("/admin/:userId/addCredits", async (req, res) => {
+  let { userId } = req.params;
+  let { amount } = req.query;
+  await User.findByIdAndUpdate(userId, { $inc: { credits: amount } });
+  req.flash("successOverlay", `Uživateli bylo přidáno ${amount} kreditů.`);
+  res.redirect(`/admin/${userId}/showDetail`);
+});
+
 //HELPERS
 const monthsInCzech = [
   "Leden", // January

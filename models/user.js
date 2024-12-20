@@ -75,6 +75,38 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
+  generatedCardsCounterTotal: {
+    type: Number,
+    default: 0,
+  },
+  generatedQuestionsCounterTotal: {
+    type: Number,
+    default: 0,
+  },
+  generatedCardsCounterMonth: {
+    type: Number,
+    default: 0,
+  },
+  generatedQuestionsCounterMonth: {
+    type: Number,
+    default: 0,
+  },
+  credits: {
+    type: Number,
+    default: 0,
+  },
+  usedCreditsMonth: {
+    type: Number,
+    default: 0,
+  },
+  lastJobCredits: {
+    type: Number,
+    default: 0,
+  },
+  usedCreditsTotal: {
+    type: Number,
+    default: 0,
+  },
   hasUnsubscribedFromStreak: {
     type: Boolean,
     default: false,

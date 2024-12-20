@@ -79,6 +79,16 @@
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Zbývající kredity</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <%= user.credits %> 
+                        <% if (currentUser.admin) { %>
+                            <a href="/admin/<%= user._id%>/addCredits?amount=100" class="btn btn-sm btn-outline-danger mx-3">+100</a>
+                           <% } %>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Streak připomínky odmítnuty</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">
