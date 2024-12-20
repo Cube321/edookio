@@ -223,6 +223,8 @@ router.post("/webhook", async (req, res) => {
         mail.subscriptionCanceled(user.email, endDate);
         mail.adminInfoSubscriptionCanceled(user, endDate);
         user.xmasDiscount = false;
+        user.monthlySubscriptionPrice = 0;
+        user.subscriptionPrice = 0;
         user.subscriptionSource = "none";
       }
       user.premiumGrantedByAdmin = false;
@@ -258,6 +260,17 @@ router.post("/webhook", async (req, res) => {
       console.log(`User ${user.email} paid ${amountPaid} CZK`);
 
       updatedUser = createOpenInvoice(user, amountPaid, plan);
+
+      updatedUser.subscriptionPrice = amountPaid;
+
+      //count monthly subscription price
+      if (plan === "monthly") {
+        updatedUser.monthlySubscriptionPrice = amountPaid;
+      } else if (plan === "halfyear") {
+        updatedUser.monthlySubscriptionPrice = amountPaid / 6;
+      } else if (plan === "yearly") {
+        updatedUser.monthlySubscriptionPrice = amountPaid / 12;
+      }
 
       await updatedUser.save();
       break;

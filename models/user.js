@@ -144,6 +144,14 @@ const UserSchema = new Schema({
     enum: ["none", "yearly", "monthly", "halfyear", "daily"],
     default: "none",
   },
+  subscriptionPrice: {
+    type: Number,
+    default: 0,
+  },
+  monthlySubscriptionPrice: {
+    type: Number,
+    default: 0,
+  },
   endDate: { type: Date, default: null },
   subscriptionSource: {
     type: String,

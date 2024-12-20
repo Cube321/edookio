@@ -212,7 +212,11 @@ function getMonthlyRevenueBrutto(users) {
       if (user.subscriptionSource === "revenuecat") {
         revenue += 249;
       } else {
-        revenue += 199;
+        if (user.monthlySubscriptionPrice === 0 && user.plan === "monthly") {
+          revenue += 199;
+        } else {
+          revenue += user.monthlySubscriptionPrice;
+        }
       }
     }
   });
@@ -231,7 +235,11 @@ function getMonthlyRevenueNetto(users) {
       if (user.subscriptionSource === "revenuecat") {
         revenue += 175;
       } else {
-        revenue += 190;
+        if (user.monthlySubscriptionPrice === 0 && user.plan === "monthly") {
+          revenue += 190;
+        } else {
+          revenue += user.monthlySubscriptionPrice * 0.8;
+        }
       }
     }
   });
