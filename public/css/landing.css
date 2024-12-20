@@ -45,6 +45,12 @@ body {
     background-blend-mode: darken;
 }
 
+.card-info {
+    background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
+    /* Optional: To ensure backward compatibility */
+    background-color: rgb(221, 195, 127); /* Fallback for older browsers */
+}
+
 /*STREAK BOX*/
 .streak-box {
     background-color: white;

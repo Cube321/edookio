@@ -10,6 +10,10 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
+  isEmailVerified: {
+    type: Boolean,
+    default: true,
+  },
   passwordJWT: String,
   nickname: {
     type: String,

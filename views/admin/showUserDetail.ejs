@@ -26,6 +26,21 @@
                         <%= user.email %> 
                     </div>
                     <hr />
+                    
+                    <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>E-mail ověřen</p>
+                    </div>
+                    <div class="col-8 d-flex align-items-center">
+                        <% if(user.isEmailVerified){ %> 
+                            <p>Ano</p>
+                        <% } else { %>
+                            <p>Ne</p>
+                            <% if (currentUser.admin) { %>
+                             <a href="/admin/<%= user._id%>/verifyEmail" class="btn btn-sm btn-outline-danger mx-3">Ověřit</a>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>ID</p>
                     </div>
@@ -381,7 +396,7 @@
                                 <input type="text" id="subscriptionPeriod" name="subscriptionPeriod" placeholder="Období" title="yearly, halfyear, monthly, daily" class="form-control" required>
                             </div>
                             <div class="col-2">
-                                <input type="number" id="invoiceAmount" name="invoiceAmount" placeholder="Částka" class="form-control" required>
+                                <input type="number" id="invoiceAmount" name="invoiceAmount" placeholder="Částka" class="form-control" step="0.01" required>
                             </div>
                             <div class="col-3">
                                 <input type="date" id="invoiceDate" name="invoiceDate" class="form-control" required>

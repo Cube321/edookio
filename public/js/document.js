@@ -98,14 +98,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const documentErrorContainer = document.getElementById(
     "document-error-container"
   );
-  const categoryPage = document.getElementById("category-page");
+  const sectionsContainer = document.getElementById("sections-container");
+  const addSectionContainer = document.getElementById("add-section-container");
   const loader = document.getElementById("loader");
 
   createWithAIModal.addEventListener("hidden.bs.modal", () => {
     // Check if the success container is visible
     if (documentSuccessContainer.style.display !== "none") {
       if (loader) loader.style.display = "block";
-      if (categoryPage) categoryPage.style.display = "none";
+      if (sectionsContainer) sectionsContainer.style.display = "none";
+      if (addSectionContainer) addSectionContainer.style.display = "none";
       window.location.reload();
     }
     // Check if the error container is visible

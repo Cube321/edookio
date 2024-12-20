@@ -70,6 +70,10 @@
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
 }
 
+.text-primary {
+    color: #E80F88!important;
+}
+
 
 a {
     color: #E80F88;

@@ -20,7 +20,10 @@ router.post(
       req.flash("error", "Uživatel neexistuje");
       return res.redirect("/admin/users");
     }
-    let { invoiceNum, invoiceAmount, invoiceDate, subscriptionPeriod } = data;
+    let { invoiceNum, invoiceDate, subscriptionPeriod } = data;
+
+    let invoiceAmount = parseFloat(req.body.invoiceAmount);
+
     let newInvoice = {
       identificationNumber: invoiceNum,
       dateIssued: moment(invoiceDate).locale("cs").format("l"),

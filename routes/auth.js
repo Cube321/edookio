@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const Stats = require("../models/stats");
 const passport = require("passport");
-const { isLoggedIn } = require("../utils/middleware");
+const { isLoggedIn, isEditor } = require("../utils/middleware");
 const { validateUser } = require("../utils/middleware");
 const uuid = require("uuid");
 const mail = require("../mail/mail_inlege");
@@ -164,6 +164,7 @@ router.post(
         faculty,
         source,
         cookies,
+        isEmailVerified: false,
       });
       const newUser = await User.register(user, password);
       await req.login(newUser, (err) => {
@@ -171,6 +172,7 @@ router.post(
       });
       //send info e-mails
       mail.welcome(newUser.email);
+      mail.emailVerification(newUser.email, newUser._id);
       mail.adminInfoNewUser(newUser);
       //
       if (req.session.demoCardsSeen && req.session.demoCardsSeen > 5) {
@@ -240,6 +242,45 @@ router.get("/auth/user/logout", isLoggedIn, (req, res, next) => {
   });
   res.status(200).redirect("/");
 });
+
+//verify email logic
+router.get(
+  "/auth/user/verifyEmail/:userId",
+  catchAsync(async (req, res) => {
+    let user = await User.findById(req.params.userId);
+    if (!user) {
+      req.flash("error", "Uživatel neexistuje.");
+      return res.redirect("/");
+    }
+    if (user.isEmailVerified) {
+      req.flash("success", "E-mail již byl ověřen.");
+      return res.redirect("/");
+    }
+    user.isEmailVerified = true;
+    await user.save();
+    req.flash("success", "E-mail byl ověřen.");
+    res.status(200).redirect("/");
+  })
+);
+
+//request email verification resend
+router.get(
+  "/auth/user/requestEmailVerification",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    let user = await User.findById(req.user._id);
+    if (!user) {
+      req.flash("error", "Uživatel neexistuje.");
+      return res.redirect("/");
+    }
+    if (user.isEmailVerified) {
+      req.flash("success", "E-mail již byl ověřen.");
+      return res.redirect("/");
+    }
+    mail.emailVerification(user.email, user._id);
+    res.status(200).redirect("/");
+  })
+);
 
 //PASSWORD RELATED ROUTES
 //change password (GET)

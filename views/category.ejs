@@ -1,6 +1,6 @@
 <% layout ('layouts/boilerplate.ejs')  %> 
 
-<div class="row mb-3">
+<div class="row mb-3" id="sections-container">
     <!-- CATEGORY left box (ikon + name) -->
     <div class="col-md-4 col-lg-3 offset-lg-1 mb-3">
         <div class="card">
@@ -32,6 +32,19 @@
                     <div class="d-flex justify-content-evenly align-items-center">
                     <a href="https://apps.apple.com/us/app/inlege/id6670204630" target="_blank" class="btn btn-outline-danger mx-2 text-small"><i class="fab fa-apple"></i> <span class="hide-under-1200">iOS</span></a>
                     <a href="https://play.google.com/store/apps/details?id=cz.inlege.InLege" target="_blank" class="btn btn-outline-danger mx-2 text-small"><i class="fab fa-android"></i> <span class="hide-under-1200">Android</span></a>
+                    </div>
+                </div>
+            <% } %>
+
+            <% if(currentUser && !currentUser.isEmailVerified){ %>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card border-grey m-2">
+                            <div class="card-body card-info d-flex flex-row align-items-center justify-content-around">
+                                <p class="text-center mb-0">Ověř prosím svou <b>e-mailovou adresu</b></p>
+                                <a href="/auth/user/requestEmailVerification" class="btn btn-sm btn-danger mx-2">Ověřit</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             <% } %>
@@ -150,7 +163,7 @@
 
 <!-- Pouze editor - formular pro pridani sekce -->
 <% if (currentUser && currentUser.isEditor) { %>
-    <div class="row">
+    <div class="row" id="add-section-container">
         <div class="col-md-7 offset-md-4 mb-3 mt-4">
             <div class="card add-section">
                 <div class="card-body pb-0">

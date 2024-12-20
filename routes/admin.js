@@ -1037,6 +1037,14 @@ router.post(
   })
 );
 
+//route to set isEmailVerified to true
+router.get("/admin/:userId/verifyEmail", async (req, res) => {
+  let { userId } = req.params;
+  await User.findByIdAndUpdate(userId, { isEmailVerified: true });
+  req.flash("successOverlay", "E-mail byl ověřen.");
+  res.redirect(`/admin/${userId}/showDetail`);
+});
+
 //SOUBOJ FAKULT
 router.get(
   "/clash/soubojfakult",
