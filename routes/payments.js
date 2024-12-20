@@ -12,6 +12,7 @@ let productToPriceMap = {
   HALFYEAR: process.env.PRODUCT_HALFYEAR,
   MONTHLY: process.env.PRODUCT_MONTHLY,
   DAILY: process.env.PRODUCT_DAILY,
+  MONTHLY_229: process.env.PRODUCT_MONTHLY_229,
 };
 
 if (process.env.XMAS === "on") {
@@ -32,7 +33,7 @@ router.post(
     if (req.body.product === "monthly") {
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
-        productToPriceMap.MONTHLY
+        productToPriceMap.MONTHLY_229
       );
     }
     if (req.body.product === "halfyear") {
@@ -143,7 +144,8 @@ router.post("/webhook", async (req, res) => {
       if (
         !data.canceled_at &&
         (data.plan.id == process.env.PRODUCT_MONTHLY ||
-          data.plan.id == process.env.PRODUCT_MONTHLY_XMAS)
+          data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
+          data.plan.id == process.env.PRODUCT_MONTHLY_229)
       ) {
         user.plan = "monthly";
         user = createOpenInvoice(user, data, "monthly");
@@ -252,6 +254,8 @@ const createOpenInvoice = (user, data, plan) => {
     date: Date.now(),
     plan: plan,
   };
+
+  console.log("Data:" + data.items.data[0]);
   return user;
 };
 

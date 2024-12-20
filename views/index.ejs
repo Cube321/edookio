@@ -189,7 +189,7 @@
                 </div>
             <div class="row" id="categories-row">
                 <div class="offset-lg-2 col-lg-8">
-                    <% if(currentUser && currentUser.isEmailVerified){ %>
+                    <% if(currentUser && !currentUser.isEmailVerified){ %>
                         <div class="row">
                             <div class="col-12 mb-4">
                                 <div class="card border-grey">
