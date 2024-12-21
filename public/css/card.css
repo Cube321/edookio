@@ -196,6 +196,29 @@ body {
   cursor: pointer;
 }
 
+.chevron-back-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chevron-back {
+  color: #E80F88;
+  font-size: 1.2em;
+  padding: 0.5rem;
+}
+
+.chevron-back-disabled {
+  color: #e80f8677;
+  font-size: 1.2em;
+  padding: 0.5rem;
+  cursor:default;
+}
+
+.chevron-back-disabled:hover {
+  color: #e80f8677;
+}
+
 .save-star {
     color: #E80F88;
     height: 100%;
@@ -219,7 +242,7 @@ body {
 #rotate-div {
   min-width: 40px;
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
 }
 

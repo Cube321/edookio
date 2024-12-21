@@ -5,6 +5,7 @@ const Section = require("../models/section");
 const Category = require("../models/category");
 const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
+const CardInfo = require("../models/cardInfo");
 const passport = require("passport");
 const moment = require("moment");
 
@@ -19,77 +20,99 @@ router.get(
   })
 );
 
+// GET SECTIONS FOR MOBILE (SHOW HOW MANY CARDS LEFT TO STUDY)
 router.get(
   "/mobileApi/getSections",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    let { categoryName } = req.query;
-    let { user } = req;
-    const category = await Category.findOne({ name: categoryName }).populate(
-      "sections"
-    );
+    const { categoryName } = req.query;
+    const { user } = req;
+
+    // 1) Find category & populate sections (and their cards)
+    //    so we can know how many cards each section has
+    const category = await Category.findOne({ name: categoryName })
+      .populate({
+        path: "sections",
+        populate: {
+          path: "cards", // ensures section.cards is populated
+        },
+      })
+      .lean();
 
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
 
-    // Initialize testResultsMap
+    // 2) Build a map of the latest test results for each section
     let testResultsMap = {};
-
-    // Fetch the latest test results for the user
     const testResults = await TestResult.find({
       user: user._id,
       category: category._id,
-    })
-      .sort({ date: -1 }) // Sort by most recent
-      .exec();
+    }).sort({ date: -1 });
 
-    // Create a map of the latest test result for each section
     testResults.forEach((result) => {
       if (!testResultsMap[result.section]) {
         testResultsMap[result.section] = result;
       }
     });
 
-    //add data to user's unfinishedSections
-    category.sections.forEach((section, index) => {
-      // Add last test result to the section
+    // 3) For each section, attach test results, premium accessibility, etc.
+    for (let i = 0; i < category.sections.length; i++) {
+      const section = category.sections[i];
+
+      // Add last test result (if available)
       if (testResultsMap[section._id]) {
-        category.sections[index].lastTestResult =
+        category.sections[i].lastTestResult =
           testResultsMap[section._id].percentage;
       }
 
-      let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(
-        (x) => x.sectionId.toString() == section._id.toString()
-      );
-      if (unfinishedSectionIndex > -1) {
-        category.sections[index].isUnfinished = true;
-        category.sections[index].lastSeenCard =
-          req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
-      }
-      //check if the section is in the sections array of the user - if so, mark it as finished
-      let finishedSectionIndex = req.user.sections.findIndex((x) => {
-        return x.toString() == section._id.toString();
-      });
-      if (finishedSectionIndex > -1) {
-        category.sections[index].isFinished = true;
-      }
+      // Mark as accessible or not (depending on user's premium status)
       if (!user.isPremium && section.isPremium) {
-        category.sections[index].isAccesible = false;
+        category.sections[i].isAccesible = false;
       } else {
-        category.sections[index].isAccesible = true;
+        category.sections[i].isAccesible = true;
       }
-    });
 
-    category.sections.forEach((section, index) => {
-      let finishedTestIndex = req.user.finishedQuestions.findIndex((x) => {
-        return x.toString() == section._id.toString();
-      });
+      // Mark if the test in this section is finished
+      const finishedTestIndex = user.finishedQuestions.findIndex(
+        (x) => x.toString() === section._id.toString()
+      );
       if (finishedTestIndex > -1) {
-        category.sections[index].isTestFinished = true;
+        category.sections[i].isTestFinished = true;
       }
-    });
+    }
 
+    // 4) Count "left to study" for each section
+    //    (how many cards the user hasn't marked as known = true)
+    for (let i = 0; i < category.sections.length; i++) {
+      const section = category.sections[i];
+
+      // If this section has no cards or is not accessible, skip counting
+      if (!section.cards || !section.cards.length || !section.isAccesible) {
+        category.sections[i].leftToStudy = section.cards?.length || 0;
+        continue;
+      }
+
+      const cardIds = section.cards.map((card) => card._id);
+
+      // Count how many are known
+      const knownCount = await CardInfo.countDocuments({
+        user: user._id,
+        card: { $in: cardIds },
+        known: true,
+      });
+
+      // Compute how many are left
+      const totalCards = cardIds.length;
+      const leftToStudy = totalCards - knownCount;
+
+      // Store on the section object so you can render in the mobile app
+      category.sections[i].totalCards = totalCards;
+      category.sections[i].knownCount = knownCount;
+      category.sections[i].leftToStudy = leftToStudy;
+    }
+
+    // 5) Return the sections as JSON
     res.status(200).json(category.sections);
   })
 );
@@ -99,36 +122,40 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     let { sectionId } = req.query;
+
+    // 1) Find the requested section and populate its cards
     const section = await Section.findById(sectionId).populate("cards");
-
-    section.cards.forEach((card) => {
-      card.pageA = removeITags(card.pageA);
-    });
-
-    let user = req.user;
-    //update lastSeenCard in unfinishedSection
-    let unfinishedSectionIndex = user.unfinishedSections.findIndex(
-      (x) => x.sectionId.toString() == sectionId.toString()
-    );
-    if (unfinishedSectionIndex < 0) {
-      //create new unfinished section and push it to the array
-      let newUnfinishedSection = { sectionId: sectionId, lastCard: 0 };
-      user.unfinishedSections.push(newUnfinishedSection);
-      section.countStarted++;
-      await section.save();
-    } else {
-      //get last seen card
-      section.lastSeenCard =
-        user.unfinishedSections[unfinishedSectionIndex].lastCard;
+    if (!section) {
+      return res.status(404).json({ error: "Section not found" });
     }
-    //remove the section from the finished sections array of the user using filter method
-    let updatedFinishedSections = user.sections.filter((x) => {
-      return x.toString() != sectionId.toString();
-    });
 
-    user.sections = updatedFinishedSections;
+    // 2) If we want to exclude known cards, find them in CardInfo
+    const allCardIds = section.cards.map((card) => card._id);
+    const allCards = section.cards;
+
+    section.countStarted++;
+    //WARNING: section.save has to be called before filtering cards otherwise the cards will be removed from the section
+    await section.save();
+
+    const { mode } = req.query;
+    console.log("Mode: ", mode);
+    if (mode === "unknown") {
+      const knownCards = await CardInfo.find({
+        user: req.user._id,
+        card: { $in: allCardIds },
+        known: true,
+      });
+      const knownCardIds = new Set(knownCards.map((c) => c.card.toString()));
+      section.cards = section.cards.filter(
+        (card) => !knownCardIds.has(card._id.toString())
+      );
+      if (section.cards.length === 0) {
+        section.cards = allCards;
+      }
+    }
 
     //update date of user's last activity
+    let user = req.user;
     user.lastActive = moment();
     //increase cardSeen by 1
     user.cardsSeen++;
@@ -138,8 +165,6 @@ router.get(
       user.streakLength++;
     }
 
-    //mark modified nested objects - otherwise Mongoose does not see it and save it
-    user.markModified("unfinishedSections");
     await user.save();
 
     res.status(200).json(section);
@@ -196,6 +221,7 @@ router.post(
   })
 );
 
+//finished QUESTIONS - save to user's finishedQuestions route
 router.post(
   "/mobileApi/saveToFinishedSections",
   passport.authenticate("jwt", { session: false }),
@@ -279,19 +305,8 @@ router.post(
   catchAsync(async (req, res) => {
     let { sectionId, cardNum } = req.body;
 
-    //update unfinished section
     if (req.user) {
       let user = req.user;
-      //update lastSeenCard in unifnishedSection
-      let unfinishedSectionIndex = user.unfinishedSections.findIndex(
-        (x) => x.sectionId.toString() == sectionId.toString()
-      );
-      if (unfinishedSectionIndex > -1) {
-        user.unfinishedSections[unfinishedSectionIndex].lastCard =
-          parseInt(cardNum);
-      }
-      //mark modified nested objects - otherwise Mongoose does not see it and save it
-      user.markModified("unfinishedSections");
 
       //count new actions only every two seconds
       let now = moment();
@@ -319,13 +334,8 @@ router.post(
   catchAsync(async (req, res) => {
     //add new finished section to user's finishedSections
     let { sectionId } = req.body;
+    const { cardsCount } = req.query;
     let user = req.user;
-    let finishedSectionIndex = user.sections.findIndex(
-      (x) => x.toString() == sectionId.toString()
-    );
-    if (finishedSectionIndex < 0) {
-      user.sections.push(sectionId);
-    }
 
     const foundSection = await Section.findById(sectionId);
     if (!foundSection) {
@@ -339,13 +349,6 @@ router.post(
       console.log("Category not found");
       return res.status(404).json({ error: "Category not found" });
     }
-    //remove section from unfinishedSections
-    let unfinishedSectionIndex = user.unfinishedSections.findIndex(
-      (x) => x.sectionId.toString() == sectionId.toString()
-    );
-    if (unfinishedSectionIndex > -1) {
-      user.unfinishedSections.splice(unfinishedSectionIndex, 1);
-    }
 
     //create new CardsResult
     const createdCardsResult = await CardsResult.create({
@@ -353,15 +356,13 @@ router.post(
       category: foundCategory._id,
       section: sectionId,
       cardsType: "section",
-      totalCards: foundSection.cards.length,
+      totalCards: cardsCount,
     });
 
     console.log("Cards result created:" + createdCardsResult);
 
-    //mark modified nested objects - otherwise Mongoose does not see it and save it
-    user.markModified("unfinishedSections");
     await user.save();
-    res.status(201).json({ message: "Finished section added to user" });
+    res.status(201).json({ message: "Result created section added to user" });
   })
 );
 

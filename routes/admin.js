@@ -521,9 +521,9 @@ router.get(
   isLoggedIn,
   isAdmin,
   catchAsync(async (req, res) => {
-    let user = await User.findById(req.params.userId)
-      .populate("sections", "name")
-      .populate("invoicesDbObjects");
+    let user = await User.findById(req.params.userId).populate(
+      "invoicesDbObjects"
+    );
     if (!user) {
       req.flash("error", "Uživatel nebyl nalezen.");
       return res.redirect("/admin/users");
@@ -561,9 +561,6 @@ router.get(
       ? (premiumDateOfCancelation = "-")
       : premiumDateOfCancelation;
 
-    //remove duplicate finished sections from user.sections
-    let uniqueFinishedSectionsSet = new Set(user.sections);
-    user.sections = [...uniqueFinishedSectionsSet];
     //render view
     res.status(200).render("admin/showUserDetail", {
       user,

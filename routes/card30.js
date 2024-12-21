@@ -9,11 +9,11 @@ const CardsResult = require("../models/cardsResult");
 const { isLoggedIn } = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");
 
-//CARD 2.0 RENDER ROUTES
+//CARD 3.0 RENDER ROUTES
 //repeat section (incl. filter section out of the array of finished sections)
 //IMPORTANT: This route has be in the code before "render empty show card page"
 router.get(
-  "/category/:category/section/:sectionId/card20/repeatSection",
+  "/category/:category/section/:sectionId/card30/repeatSection",
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { user } = req;
@@ -31,16 +31,20 @@ router.get(
     res
       .status(200)
       .redirect(
-        `/category/${foundSection.category}/section/${foundSection._id}/card20/1`
+        `/category/${foundSection.category}/section/${foundSection._id}/card30/1`
       );
   })
 );
 
 //render empty show card page
 router.get(
-  "/category/:category/section/:sectionId/card20/:cardNum",
+  "/category/:category/section/:sectionId/card30/:cardNum",
   catchAsync(async (req, res) => {
-    let { sectionId, cardNum } = req.params;
+    let { cardNum } = req.params;
+    let { mode } = req.query;
+    if (!mode) {
+      mode = "all";
+    }
     if (cardNum === "repeatSection") {
       cardNum = 1;
     }
@@ -68,35 +72,8 @@ router.get(
     }
     //handle lastSeenCard
     if (req.user) {
-      let user = req.user;
-      //update lastSeenCard in unfinishedSection
-      let unfinishedSectionIndex = user.unfinishedSections.findIndex(
-        (x) => x.sectionId.toString() == sectionId.toString()
-      );
-      if (unfinishedSectionIndex > -1) {
-        user.unfinishedSections[unfinishedSectionIndex].lastCard =
-          parseInt(cardNum);
-      } else {
-        //create new unfinished section and push it to the array
-        let newUnfinishedSection = { sectionId: sectionId, lastCard: 1 };
-        user.unfinishedSections.push(newUnfinishedSection);
-        foundSection.countStarted++;
-        await foundSection.save();
-      }
-      //mark modified nested objects - otherwise Mongoose does not see it and save it
-      user.markModified("unfinishedSections");
-      await user.save();
-
-      //create new CardsResult
-      const createdCardsResult = await CardsResult.create({
-        user: user._id,
-        category: foundCategory._id,
-        section: foundSection._id,
-        cardsType: "section",
-        totalCards: foundSection.cards.length,
-      });
-
-      console.log("Cards result created");
+      foundSection.countStarted++;
+      await foundSection.save();
     }
 
     //xmas
@@ -104,10 +81,11 @@ router.get(
     if (process.env.xmas === "on") {
       xmas = true;
     }
-    res.render("cards/show20", {
+    res.render("cards/show30", {
       section: foundSection,
       xmas,
       categoryIcon: foundCategory.icon,
+      mode,
     });
   })
 );
@@ -125,15 +103,8 @@ router.get(
       return res.status(404).redirect("back");
     }
     incrementEventCount("startRandomCards");
-    //create new CardsResult
-    const createdCardsResult = await CardsResult.create({
-      user: req.user._id,
-      category: foundCategory._id,
-      cardsType: "random",
-      totalCards: 20,
-    });
-    console.log("Cards result created");
-    res.render("cards/show20shuffle", {
+
+    res.render("cards/show30shuffle", {
       category: foundCategory,
     });
   })
@@ -143,6 +114,10 @@ router.get(
 router.get(
   "/category/section/:sectionId/finished",
   catchAsync(async (req, res) => {
+    let cardsCount = 0;
+    if (req.query.cardsCount) {
+      cardsCount = req.query.cardsCount;
+    }
     let foundSection = await Section.findById(req.params.sectionId);
     if (!foundSection) {
       throw Error("Balíček s tímto ID neexistuje.");
@@ -170,20 +145,21 @@ router.get(
     }
     if (req.user) {
       let user = req.user;
-      //remove section from unfinishedSections
-      const filteredUnfinishedSections = user.unfinishedSections.filter(
-        (section) =>
-          section.sectionId.toString() !== foundSection._id.toString()
-      );
-      user.unfinishedSections = filteredUnfinishedSections;
-      //add section to finished sections
-      user.sections.push(foundSection._id);
-      user.markModified("unfinishedSections");
-      await user.save();
 
       //increase finishedSection count by 1
       foundSection.countFinished++;
       await foundSection.save();
+
+      //create new CardsResult
+      await CardsResult.create({
+        user: user._id,
+        category: foundCategory._id,
+        section: foundSection._id,
+        cardsType: "section",
+        totalCards: cardsCount,
+      });
+
+      console.log("Cards result created");
 
       res.render("sections/finishedLive", {
         category: foundSection.category,
@@ -205,6 +181,20 @@ router.get(
   "/category/:category/finishedRandomCards",
   isLoggedIn,
   catchAsync(async (req, res) => {
+    let foundCategory = await Category.findOne({ name: req.params.category });
+    if (!foundCategory) {
+      req.flash("error", "Předmět se zadaným názvem neexistuje.");
+      return res.status(404).redirect("back");
+    }
+    incrementEventCount("finishRandomCards");
+    //create new CardsResult
+    await CardsResult.create({
+      user: req.user._id,
+      category: foundCategory._id,
+      cardsType: "random",
+      totalCards: 20,
+    });
+    console.log("Cards result created");
     res.render("cards/finishedRandom", { category: req.params.category });
   })
 );

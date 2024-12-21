@@ -29,14 +29,6 @@ const SectionSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  isUnfinished: {
-    type: Boolean,
-    default: false,
-  },
-  isFinished: {
-    type: Boolean,
-    default: false,
-  },
   isAccesible: {
     type: Boolean,
     default: undefined,

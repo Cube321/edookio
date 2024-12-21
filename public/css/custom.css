@@ -83,6 +83,18 @@ body {
     font-size: 1.125rem;
 }
 
+.section-box {
+    border-radius: 0.3rem;
+}
+
+.section-box p {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+
+
 .category-box {
     text-align: center;
 }
@@ -151,10 +163,6 @@ body {
     color: #7ac705;
 }
 
-.section-unfinished-badge .fa-spinner {
-    color: #AF0171;
-}
-
 .bg-red {
     background-color: red;
 }
@@ -165,6 +173,10 @@ body {
 
 .bg-light-green {
     background-color: #7ac705;
+}
+
+.section-progress-badge {
+    width: 100%;
 }
 
 .badge-green-full {

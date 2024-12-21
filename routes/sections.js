@@ -3,9 +3,9 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
-const User = require("../models/user");
 const Card = require("../models/card");
 const Question = require("../models/question");
+const CardInfo = require("../models/cardInfo");
 const TestResult = require("../models/testResult");
 const mongoose = require("mongoose");
 const {
@@ -22,11 +22,49 @@ router.get(
   isPremiumUser,
   catchAsync(async (req, res, next) => {
     const category = await Category.findOne({ name: req.params.category })
-      .populate("sections")
+      .populate({
+        path: "sections",
+        populate: {
+          path: "cards", // <-- populate the cards array in each section
+        },
+      })
       .exec();
+
     if (!category) {
       req.flash("error", "Předmět neexistuje.");
       return res.status(404).redirect("/");
+    }
+
+    if (req.user) {
+      const CardInfo = require("../models/cardInfo");
+
+      for (let section of category.sections) {
+        const cardIds = section.cards.map((c) => c._id);
+
+        // How many of these card IDs does the user know?
+        const knownCount = await CardInfo.countDocuments({
+          user: req.user._id,
+          card: { $in: cardIds },
+          known: true,
+        });
+
+        // Store this info so you can use it in your EJS
+        section.knownCount = knownCount;
+        section.leftToStudy = cardIds.length - knownCount;
+        //how many percent of the cards the user already knows
+        section.knownPercentage = Math.round(
+          (knownCount / cardIds.length) * 100
+        );
+      }
+    }
+
+    //if there is not user, set knownCount to 0
+    if (!req.user) {
+      category.sections.forEach((section) => {
+        section.knownCount = 0;
+        section.leftToStudy = section.cards.length;
+        section.knownPercentage = 0;
+      });
     }
 
     //asign name of category
@@ -40,7 +78,6 @@ router.get(
 
     let testResultsMap = {};
 
-    //add data to user's unfinishedSections
     if (req.user) {
       const testResults = await TestResult.find({
         user: req.user._id,
@@ -61,22 +98,6 @@ router.get(
         if (testResultsMap[section._id]) {
           category.sections[index].lastTestResult =
             testResultsMap[section._id].percentage;
-        }
-
-        let unfinishedSectionIndex = req.user.unfinishedSections.findIndex(
-          (x) => x.sectionId.toString() == section._id.toString()
-        );
-        if (unfinishedSectionIndex > -1) {
-          category.sections[index].isUnfinished = true;
-          category.sections[index].lastSeenCard =
-            req.user.unfinishedSections[unfinishedSectionIndex].lastCard;
-        }
-        //check if the section is in the sections array of the user - if so, mark it as finished
-        let finishedSectionIndex = req.user.sections.findIndex((x) => {
-          return x.toString() == section._id.toString();
-        });
-        if (finishedSectionIndex > -1) {
-          category.sections[index].isFinished = true;
         }
 
         //check if the section is in the finishedQuestions array of the user - if so, mark it as finished
@@ -290,27 +311,6 @@ router.delete(
     foundCategory.numOfQuestions =
       foundCategory.numOfQuestions - deletedSection.questions.length;
     await foundCategory.save();
-    //remove section from list of unfinished sections of all users
-    let searchQuery = mongoose.Types.ObjectId(sectionId);
-    let foundUsersUnfinished = await User.find({
-      unfinishedSections: { $elemMatch: { sectionId: searchQuery.toString() } },
-    });
-    for (let user of foundUsersUnfinished) {
-      let updatedSections = user.unfinishedSections.filter(
-        (section) => section.sectionId !== searchQuery.toString()
-      );
-      user.unfinishedSections = updatedSections;
-      await user.save();
-    }
-    //remove section from list of finished sections of all users
-    let foundUsersFinished = await User.find({ sections: searchQuery });
-    for (let user of foundUsersFinished) {
-      let updatedSections = user.sections.filter(
-        (section) => section.toString() !== searchQuery.toString()
-      );
-      user.sections = updatedSections;
-      await user.save();
-    }
 
     //remove connection with previous section
     if (

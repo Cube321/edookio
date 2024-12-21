@@ -61,8 +61,8 @@ const sectionRoutes = require("./routes/sections");
 const paymentRoutes = require("./routes/payments");
 const legalRoutes = require("./routes/legal");
 const blogRoutes = require("./routes/blog");
-const apiRoutes = require("./routes/api");
-const card20Routes = require("./routes/card20");
+const api30Routes = require("./routes/api30");
+const card30Routes = require("./routes/card30");
 const questionsRoutes = require("./routes/questions");
 const invoicesRoutes = require("./routes/invoices");
 const chatGptRoutes = require("./routes/chatgpt");
@@ -74,6 +74,7 @@ const mobilePayments = require("./routes/mobilePayments");
 const temporaryRoutes = require("./routes/temporary");
 const dashboardRoutes = require("./routes/dashboard");
 const documentRoutes = require("./routes/document");
+const spaceRepetitionRoutes = require("./routes/spacedRepetition");
 
 const dbUrl = process.env.DB_URL;
 
@@ -244,8 +245,8 @@ app.use("/", sectionRoutes);
 app.use("/", paymentRoutes);
 app.use("/", legalRoutes);
 app.use("/", blogRoutes);
-app.use("/", apiRoutes);
-app.use("/", card20Routes);
+app.use("/", api30Routes);
+app.use("/", card30Routes);
 app.use("/", questionsRoutes);
 app.use("/", invoicesRoutes);
 app.use("/", chatGptRoutes);
@@ -257,6 +258,7 @@ app.use("/", mobilePayments);
 app.use("/", temporaryRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", documentRoutes);
+app.use("/", spaceRepetitionRoutes);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 

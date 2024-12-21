@@ -58,6 +58,4 @@ module.exports.categoryPage = {
   cards: "kartiček",
 };
 
-module.exports.show20Page = {};
-
 module.exports.premiumPage = {};

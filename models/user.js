@@ -43,8 +43,6 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  sections: [{ type: Schema.Types.ObjectId, ref: "Section" }],
-  unfinishedSections: Array,
   finishedQuestions: Array,
   dateOfRegistration: {
     type: Date,

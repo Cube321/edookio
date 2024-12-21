@@ -51,7 +51,7 @@
                                                 </p>
                                                 <p class="text-muted text-tiny mb-0">
                                                     <span><%= result.category.text %> / </span>
-                                                    <span><%= result.type === 'test' ? 'Test' : 'Kartičky' %> (<%= result.countTotal %>)</span>
+                                                    <span><%= result.type === 'test' ? 'Test' : 'Kartičky' %></span>
                                                 </p>
                                                 <p class="text-muted text-tiny mb-0">
                                                     <span> <%= result.formattedDate  %></span>
@@ -62,7 +62,13 @@
                                         <!-- Right section: Date -->
                                         <div   class="mt-3 mb-2 mb-sm-0 mt-md-0 mx-auto mx-md-0 text-center text-md-end">
                                             <% if (result.type === "cards") { %>
-                                                <p class="badge rounded-pill badge-green-full mb-0">Dokončeno</p>
+                                                <% if (result.countTotal === 1) { %>
+                                                    <p class="badge rounded-pill badge-green-full mb-0"><%= result.countTotal %> kartička</p>
+                                                <% } else if (result.countTotal > 1 && result.countTotal < 5){ %>
+                                                    <p class="badge rounded-pill badge-green-full mb-0"><%= result.countTotal %> kartičky</p>
+                                                <% } else { %>
+                                                    <p class="badge rounded-pill badge-green-full mb-0"><%= result.countTotal %> kartiček</p>
+                                                <% } %>
                                             <% } else { %>
                                                 <% if (result.percentage === 100) { %>
                                                     <p class="badge rounded-pill badge-green-full mb-0">Úspěšnost <%= result.percentage %> %</p>

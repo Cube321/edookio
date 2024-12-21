@@ -276,28 +276,6 @@
                         </div>
                     </div>
                     <hr />
-                    <div class="col-4 fw-bold d-flex align-items-start">
-                        <p>Dokončené sekce</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <ul>
-                        <% user.sections.forEach(section => { %>
-                            <li><%= section.name  %></li>
-                        <% }) %>
-                        </ul>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-start">
-                        <p>Nedokončené sekce</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <ul>
-                        <% user.unfinishedSections.forEach(section => { %>
-                            <li><span class="unfinishedSectionId" style="cursor: pointer;""><%= section.sectionId  %></span> | poslední karta: <%= section.lastCard  %></li>
-                        <% }) %>
-                        </ul>
-                    </div>
-                    <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Počet uložených kartiček</p>
                     </div>
@@ -468,4 +446,3 @@
 <script src="/js/jquery.min.js" ></script>
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript" src="/js/profile.js"></script>
-<script type="text/javascript" src="/js/showUserDetail.js"></script>
