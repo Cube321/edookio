@@ -3,6 +3,8 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const Stats = require("../models/stats");
+const TestResult = require("../models/testResult");
+const CardsResult = require("../models/cardsResult");
 const passport = require("passport");
 const { isLoggedIn, isEditor } = require("../utils/middleware");
 const { validateUser } = require("../utils/middleware");
@@ -466,6 +468,65 @@ router.post(
     foundUser.nickname = req.body.nickname;
     await foundUser.save();
     res.status(200).redirect("/leaderboard");
+  })
+);
+
+//ACTIVITY ROUTE
+//route to render user's activity page where he can see his test results and cards results sorted based on date (GET)
+router.get(
+  "/auth/user/activity",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      req.flash("error", "Uživatel nebyl nalezen.");
+      return res.redirect("/");
+    }
+    let testResults = await TestResult.find({ user: user._id }).populate(
+      "section category"
+    );
+    let cardsResults = await CardsResult.find({ user: user._id }).populate(
+      "section category"
+    );
+
+    //mark the results as tests or cards
+    testResults.forEach((result) => {
+      result.type = "test";
+    });
+    cardsResults.forEach((result) => {
+      result.type = "cards";
+    });
+
+    let allResults = testResults.concat(cardsResults);
+
+    //sort the results by date and combine cards and tests
+    allResults.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    //transform date to human readable format and update the array
+    allResults.forEach((result) => {
+      result.formattedDate = moment(result.date).locale("cs").format("LLL");
+    });
+
+    //count questions in the test by adding correct, incorrect and skipped
+    allResults.forEach((result) => {
+      if (result.type === "test") {
+        result.totalQuestions =
+          result.correct + result.incorrect + result.skipped;
+      }
+    });
+
+    //set the number of cards or questions as a countTotal property
+    allResults.forEach((result) => {
+      if (result.type === "test") {
+        result.countTotal = result.totalQuestions;
+      } else {
+        result.countTotal = result.totalCards;
+      }
+    });
+
+    res.status(200).render("auth/activity", { allResults });
   })
 );
 

@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
 const TestResult = require("../models/testResult");
+const CardsResult = require("../models/cardsResult");
 const passport = require("passport");
 const moment = require("moment");
 
@@ -325,6 +326,19 @@ router.post(
     if (finishedSectionIndex < 0) {
       user.sections.push(sectionId);
     }
+
+    const foundSection = await Section.findById(sectionId);
+    if (!foundSection) {
+      console.log("Section not found");
+      return res.status(404).json({ error: "Section not found" });
+    }
+    const foundCategory = await Category.findOne({
+      name: foundSection.category,
+    });
+    if (!foundCategory) {
+      console.log("Category not found");
+      return res.status(404).json({ error: "Category not found" });
+    }
     //remove section from unfinishedSections
     let unfinishedSectionIndex = user.unfinishedSections.findIndex(
       (x) => x.sectionId.toString() == sectionId.toString()
@@ -332,6 +346,18 @@ router.post(
     if (unfinishedSectionIndex > -1) {
       user.unfinishedSections.splice(unfinishedSectionIndex, 1);
     }
+
+    //create new CardsResult
+    const createdCardsResult = await CardsResult.create({
+      user: user._id,
+      category: foundCategory._id,
+      section: sectionId,
+      cardsType: "section",
+      totalCards: foundSection.cards.length,
+    });
+
+    console.log("Cards result created:" + createdCardsResult);
+
     //mark modified nested objects - otherwise Mongoose does not see it and save it
     user.markModified("unfinishedSections");
     await user.save();

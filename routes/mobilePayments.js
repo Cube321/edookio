@@ -74,6 +74,8 @@ router.post(
           ? new Date(Number(expiration_at_ms))
           : null;
         user.subscriptionSource = "revenuecat";
+        user.subscriptionPrice = 249;
+        user.monthlySubscriptionPrice = 249;
         createOpenInvoice(user, user.plan);
         formattedEndDate = user.endDate
           ? moment(user.endDate).locale("cs").format("LL")
@@ -90,6 +92,8 @@ router.post(
         user.plan = "none";
         const endDate = moment(user.endDate).locale("cs").format("LL");
         user.premiumDateOfCancelation = new Date();
+        user.subscriptionPrice = 0;
+        user.monthlySubscriptionPrice = 0;
         mail.subscriptionCanceled(user.email, endDate);
         mail.adminInfoSubscriptionCanceled(user, endDate, paymentSource, store);
         break;
@@ -97,6 +101,8 @@ router.post(
       case "UNCANCELLATION":
         user.plan = plan;
         user.subscriptionSource = "revenuecat";
+        user.subscriptionPrice = 249;
+        user.monthlySubscriptionPrice = 249;
         user.premiumDateOfCancelation = undefined;
         mail.subscriptionUncancelled(user.email);
         mail.adminInfoSubscriptionUncancelled(user, paymentSource, store);

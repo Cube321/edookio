@@ -74,6 +74,11 @@
     color: #E80F88!important;
 }
 
+.form-check-input:checked {
+    background-color: #E80F88;
+    border-color: #E80F88;
+}
+
 
 a {
     color: #E80F88;

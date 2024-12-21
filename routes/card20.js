@@ -4,6 +4,8 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
+const User = require("../models/user");
+const CardsResult = require("../models/cardsResult");
 const { isLoggedIn } = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");
 
@@ -49,6 +51,13 @@ router.get(
       req.flash("error", "Balíček se zadaným ID neexistuje.");
       return res.status(404).redirect("back");
     }
+    const foundCategory = await Category.findOne({
+      name: foundSection.category,
+    });
+    if (!foundCategory) {
+      req.flash("error", "Předmět se zadaným názvem neexistuje.");
+      return res.status(404).redirect("back");
+    }
     //check if Premium access required and allowed
     if (foundSection.isPremium && !req.user.isPremium) {
       req.flash(
@@ -77,18 +86,23 @@ router.get(
       //mark modified nested objects - otherwise Mongoose does not see it and save it
       user.markModified("unfinishedSections");
       await user.save();
+
+      //create new CardsResult
+      const createdCardsResult = await CardsResult.create({
+        user: user._id,
+        category: foundCategory._id,
+        section: foundSection._id,
+        cardsType: "section",
+        totalCards: foundSection.cards.length,
+      });
+
+      console.log("Cards result created");
     }
 
     //xmas
     let xmas = false;
     if (process.env.xmas === "on") {
       xmas = true;
-    }
-    //icon for category
-    let foundCategory = await Category.findOne({ name: foundSection.category });
-    if (!foundCategory) {
-      req.flash("error", "Kategorie se zadaným názvem neexistuje.");
-      return res.status(404).redirect("back");
     }
     res.render("cards/show20", {
       section: foundSection,
@@ -111,6 +125,14 @@ router.get(
       return res.status(404).redirect("back");
     }
     incrementEventCount("startRandomCards");
+    //create new CardsResult
+    const createdCardsResult = await CardsResult.create({
+      user: req.user._id,
+      category: foundCategory._id,
+      cardsType: "random",
+      totalCards: 20,
+    });
+    console.log("Cards result created");
     res.render("cards/show20shuffle", {
       category: foundCategory,
     });

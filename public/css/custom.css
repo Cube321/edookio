@@ -25,6 +25,10 @@ body {
     font-size: 0.875rem;
 }
 
+.text-tiny {
+    font-size: 0.7rem;
+}
+
 .text-bold {
     font-weight: bold;
 }
@@ -179,6 +183,14 @@ body {
     background-color: white;
     color: #b0b0b0;
     border: 1px solid #b0b0b0;
+}
+
+.discount-badge {
+    background-color: #7ac705;
+    border: 1px solid #7ac705;
+    color: white;
+    margin: 16px 48px;
+
 }
 
 #document-progress-container {
@@ -856,6 +868,13 @@ form .form-control.bordered {
     font-size: 0.9rem;
     color: #6C657D;
 }
+
+/* ACTIVITY */
+.grey-highlight:hover {
+    background-color: #f5f5f5;
+    transition: all 0.3s;
+  }
+  
 
 
 @media only screen and (max-width: 1200px) {
