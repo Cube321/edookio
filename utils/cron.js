@@ -72,9 +72,13 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
   let counter = 0;
   users.forEach((user) => {
     if (user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0) {
-      //if (!user.isPremium && user.reachedQuestionsLimitDate) {
-      //  mail.testQuestionsLimitReset(user.email);
-      //}
+      if (
+        !user.isPremium &&
+        user.reachedQuestionsLimitDate &&
+        !user.hasUnsubscribed
+      ) {
+        mail.testQuestionsLimitReset(user.email);
+      }
       user.questionsSeenThisMonth = 0;
       user.cardsSeenThisMonth = 0;
       user.reachedQuestionsLimitDate = null;
@@ -90,6 +94,34 @@ cronHelpers.saveDailyStats = catchAsync(async () => {
   let simplifiedUsers = await User.find({}, "faculty source");
   countDailyStats(simplifiedUsers);
   mail.sendCronReport("saveDailyStats", "success");
+});
+
+//cronHelper to send e-mail with information about InLege to all users registered three days ago
+cronHelpers.sendInfoEmail = catchAsync(async () => {
+  console.log("RUNNING CRON: sendInfoEmail");
+
+  // 1) Fetch all users who haven’t gotten the email yet
+  let users = await User.find({}, "email dateOfRegistration infoEmailSent");
+  let counter = 0;
+  for (const user of users) {
+    // 2) Compare today's date and the user's registration date
+    // moment().diff(registrationDate, 'days') => how many days since registration
+    const diffInDays = moment().diff(moment(user.dateOfRegistration), "days");
+    // 3) Check if 3+ days have passed
+    if (diffInDays >= 3 && !user.infoEmailSent && !user.hasUnsubscribed) {
+      // 4) Send the email
+      mail.sendInfoEmail(user.email);
+
+      // 5) Mark the user so we don't send again
+      user.infoEmailSent = true;
+      await user.save();
+
+      counter++;
+    }
+  }
+
+  // 6) Send a summary to the admin (optional)
+  mail.sendCronReport("sendInfoEmail", counter);
 });
 
 //HELPERS
@@ -268,6 +300,9 @@ cronHelpers.cronExpressionDaily3AM = "0 1 * * *";
 
 // Schedule the function to run at 8 pm (9 pm on summer time)
 cronHelpers.cronExpressionDaily9PM = "0 19 * * *";
+
+// Schedule the function to run at 7 pm (8 pm on summer time)
+cronHelpers.cronExpressionDaily8PM = "0 18 * * *";
 
 // Schedule the function to run every 1st second of every minute
 cronHelpers.cronExpressionMinutes = "1 * * * * *";

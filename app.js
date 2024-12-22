@@ -51,6 +51,8 @@ cron.schedule(
   cronHelpers.cronExpressionDaily9PM,
   cronHelpers.streakReminderEmail
 );
+//send infoEmail to users registered 3 days ago
+cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);
 
 //routes
 const cardRoutes = require("./routes/cards");

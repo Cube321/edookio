@@ -47,6 +47,10 @@ const UserSchema = new Schema({
   dateOfRegistration: {
     type: Date,
   },
+  infoEmailSent: {
+    type: Boolean,
+    default: false,
+  },
   lastActive: {
     type: Date,
   },

@@ -75,7 +75,7 @@
                                         </div>
                                     </div>
                                 <p class="header">
-                                    Aktuální streak: <span class="text-bold"><%= currentUser.streakLength %></span>
+                                    Studuješ již <span class="color-primary"><%= currentUser.streakLength %></span>
                                     <% if (currentUser.streakLength === 1) { %>
                                         den
                                     <% } else if (currentUser.streakLength > 0 && currentUser.streakLength < 5){ %>
@@ -83,6 +83,7 @@
                                     <% } else { %>
                                         dní
                                     <% } %>
+                                    v řadě
                                 </p>
                                 
                                 <hr style="color:#E80F88">
