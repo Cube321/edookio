@@ -61,10 +61,6 @@ const SectionSchema = new Schema({
     type: Number,
     default: 0,
   },
-  countRepeated: {
-    type: Number,
-    default: 0,
-  },
   countStartedTest: {
     type: Number,
     default: 0,

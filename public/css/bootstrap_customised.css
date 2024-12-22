@@ -19,8 +19,7 @@
 }
 
 .btn-warning.disabled {
-    background-color: #FFB81C;
-    border-color: #FFB81C;
+    border-color: rgb(221, 195, 127);
 }
 
 .btn-outline-danger {
@@ -39,15 +38,27 @@
 }
 
 .btn-warning {
-    color: white;
+    background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
+    /* Optional: To ensure backward compatibility */
+    background-color: rgb(221, 195, 127); /* Fallback for older browsers */
+    border-color: rgb(221, 195, 127);
+    transition: 0.3s;
 }
 
 .btn-warning:hover {
-    color: white;
+    opacity: 0.85;
+    border-color: rgb(221, 195, 127);
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
 }
 
 .btn-warning:active, .btn-warning:focus {
-    color: white;
+    background: linear-gradient(135deg, rgb(245, 235, 200), rgb(221, 195, 127));
+    /* Optional: To ensure backward compatibility */
+    background-color: rgb(245, 235, 200); /* Fallback for older browsers */
+    border-color: rgb(245, 235, 200);
 }
 
 .btn-info {

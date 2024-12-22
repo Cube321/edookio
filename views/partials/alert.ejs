@@ -5,6 +5,13 @@
     </div>
 <% } %>
 
+<% if (successOverlay && successOverlay.length){ %>
+    <div class="alert alert-dismissible fade show alert-success-small d-flex justify-content-between align-items-center" role="alert" id="successOverlay">
+        <span><%= successOverlay %> </span>
+        <button type="button" class="close-btn" data-bs-dismiss="alert" aria-label="Close"><i class="far fa-times-circle icon-md"></i></button>
+    </div>
+<% } %>
+
 <% if (error && error.length){ %> 
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <%= error %>

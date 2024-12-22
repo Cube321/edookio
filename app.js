@@ -224,6 +224,7 @@ function sortByOrderNum(array) {
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.successOverlay = req.flash("successOverlay");
   res.locals.cookiesAgreed = req.session.cookiesAgreed;
   //gives access to currectUser on all templates
   res.locals.currentUser = req.user;

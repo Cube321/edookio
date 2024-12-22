@@ -17,6 +17,14 @@ body {
     color: #E80F88;
 }
 
+.color-premium {
+    color: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
+}
+
+.color-text {
+    color: #161619;
+}
+
 .text-small {
     font-size: 0.8rem;
 }
@@ -31,6 +39,10 @@ body {
 
 .text-bold {
     font-weight: bold;
+}
+
+.text-normal {
+    font-weight: normal;
 }
 
 .grey-highlight {
@@ -61,6 +73,26 @@ body {
     background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
     /* Optional: To ensure backward compatibility */
     background-color: rgb(221, 195, 127); /* Fallback for older browsers */
+}
+
+/* .alert-success-small  should create a small banner in the bottom ledft corner of green color and white text which does not move the content around it and is on the top of it*/
+.alert-success-small {
+    position: fixed;
+    bottom: 8px;
+    left: 16px;
+    background-color: #6aad04;
+    color: white;
+    padding: 8px 8px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+.alert-success-small .close-btn {
+    color: white;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    margin-left: 16px;
 }
 
 
@@ -362,7 +394,7 @@ body {
 
 /* CATEGOGRIES - PREMIUM SECTIONS*/
 .golden {
-    color: #FFB81C;
+    color: rgb(221, 195, 127)
 }
 
 /* LOGIN / REGISTRATION */
@@ -543,7 +575,7 @@ form .form-borders {
 
 .green-check {
     color: #f44dac;
-    font-size: 6rem;
+    font-size: 4rem;
 }
 
 .finished-test .finished-item {

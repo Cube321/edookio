@@ -288,10 +288,14 @@ $(document).ready(function () {
     push--;
   });
 
-  //flip with space
   document.body.onkeyup = function (e) {
+    // 1) SPACE key logic
     if (
-      (e.key == " " || e.code == "Space") &&
+      (e.key === " " ||
+        e.code === "Space" ||
+        e.key === "m" ||
+        e.key === "M" ||
+        e.code === "KeyM") &&
       ($("#data-loaded").length || push === 0)
     ) {
       push++;
@@ -301,7 +305,10 @@ $(document).ready(function () {
         $("#front-menu-row").toggleClass("hide");
       }
       if (push === 2) {
-        //redirect if finished
+        // mark card as known
+        markCardKnowledge(true, cards[currentCard]._id);
+
+        // redirect if finished
         if (nextCard === cards.length) {
           $("#pageB")
             .empty()
@@ -312,11 +319,57 @@ $(document).ready(function () {
             `/category/${cards[0].category}/finishedRandomCards`
           );
         } else {
-          //else render next card
+          $("#m-key").addClass("vibrate");
+          // remove after 300ms
+          setTimeout(() => {
+            $("#m-key").removeClass("vibrate");
+          }, 300);
+          // else render next card
           $("#flip-card").toggleClass("flipped");
           $("#back-menu-row").toggleClass("hide");
           $("#front-menu-row").toggleClass("hide");
           renderCard(nextCard);
+          push = 0;
+        }
+      }
+    }
+    // 2) "U" key logic (mark unknown)
+    else if (
+      (e.key === "n" || e.key === "N" || e.code === "KeyN") &&
+      ($("#data-loaded").length || push === 0)
+    ) {
+      push++;
+      if (push === 1) {
+        $("#flip-card").toggleClass("flipped");
+        $("#back-menu-row").toggleClass("hide");
+        $("#front-menu-row").toggleClass("hide");
+      }
+      if (push === 2) {
+        // Directly mark card as unknown:
+        markCardKnowledge(false, cards[currentCard]._id);
+
+        // Move to the next card the same way as for known
+        if (nextCard === cards.length) {
+          $("#pageB")
+            .empty()
+            .append(
+              `<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>`
+            );
+          return window.location.replace(
+            `/category/${cards[0].category}/finishedRandomCards`
+          );
+        } else {
+          $("#n-key").addClass("vibrate");
+          // remove after 300ms
+          setTimeout(() => {
+            $("#n-key").removeClass("vibrate");
+          }, 300);
+          // else render next card
+          $("#flip-card").toggleClass("flipped");
+          $("#back-menu-row").toggleClass("hide");
+          $("#front-menu-row").toggleClass("hide");
+          renderCard(nextCard);
+          // reset push for the next card
           push = 0;
         }
       }

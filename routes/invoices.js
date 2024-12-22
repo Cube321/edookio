@@ -46,7 +46,7 @@ router.post(
       { settingValue: invoiceNum },
       { upsert: true, new: true }
     );
-    req.flash("success", "Faktura byla vložena");
+    req.flash("successOverlay", "Faktura byla vložena");
     res.status(201).redirect(`/invoices/open`);
   })
 );
@@ -167,7 +167,7 @@ router.get(
     );
     foundUser.invoicesDbObjects = filteredInvoices;
     foundUser.save();
-    req.flash("success", "Faktura byla odstraněna");
+    req.flash("successOverlay", "Faktura byla odstraněna");
     res.status(201).redirect(`/admin/${userId}/showDetail`);
   })
 );
@@ -186,7 +186,7 @@ router.get(
     foundUser.hasOpenInvoice = false;
     foundUser.openInvoiceData = {};
     await foundUser.save();
-    req.flash("success", "Koncept faktury byl odstraněn");
+    req.flash("successOverlay", "Koncept faktury byl odstraněn");
     res.status(201).redirect(`/invoices/open`);
   })
 );
@@ -280,7 +280,7 @@ router.get(
     );
     foundUser.invoices = filteredInvoices;
     foundUser.save();
-    req.flash("success", "Faktura byla odstraněna");
+    req.flash("successOverlay", "Faktura byla odstraněna");
     res.status(201).redirect(`/admin/${userId}/showDetail`);
   })
 );

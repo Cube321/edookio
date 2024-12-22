@@ -4,37 +4,12 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
-const User = require("../models/user");
 const CardsResult = require("../models/cardsResult");
+const CardInfo = require("../models/cardInfo");
 const { isLoggedIn } = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");
 
 //CARD 3.0 RENDER ROUTES
-//repeat section (incl. filter section out of the array of finished sections)
-//IMPORTANT: This route has be in the code before "render empty show card page"
-router.get(
-  "/category/:category/section/:sectionId/card30/repeatSection",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    const { user } = req;
-    const foundSection = await Section.findById(req.params.sectionId);
-    if (!foundSection) {
-      throw Error("Sekce s tímto ID neexistuje");
-    }
-    const filteredSections = user.sections.filter(
-      (section) => section.toString() !== foundSection._id.toString()
-    );
-    user.sections = filteredSections;
-    foundSection.countRepeated++;
-    await foundSection.save();
-    await user.save();
-    res
-      .status(200)
-      .redirect(
-        `/category/${foundSection.category}/section/${foundSection._id}/card30/1`
-      );
-  })
-);
 
 //render empty show card page
 router.get(
@@ -45,9 +20,7 @@ router.get(
     if (!mode) {
       mode = "all";
     }
-    if (cardNum === "repeatSection") {
-      cardNum = 1;
-    }
+
     let foundSection = await Section.findById(req.params.sectionId).populate(
       "cards"
     );
@@ -161,11 +134,34 @@ router.get(
 
       console.log("Cards result created");
 
+      //count how many cards from this package are known to the user and how many are unknown or he has not seen them yet
+      let knownCards = 0;
+
+      for (let card of foundSection.cards) {
+        let cardInfo = await CardInfo.findOne({
+          user: user._id,
+          card: card,
+        });
+        if (cardInfo && cardInfo.known) {
+          knownCards++;
+        }
+      }
+      const cardsTotal = foundSection.cards.length;
+
+      //knowsAll
+      let knowsAll = false;
+      if (knownCards === cardsTotal) {
+        knowsAll = true;
+      }
+
       res.render("sections/finishedLive", {
         category: foundSection.category,
         categoryId: foundCategory._id,
         section: foundSection,
         nextSection,
+        knownCards,
+        cardsTotal,
+        knowsAll,
       });
     } else {
       return res.status(200).render("sections/finishedDemo", {

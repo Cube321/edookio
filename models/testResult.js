@@ -39,6 +39,10 @@ const testResultSchema = new Schema({
     type: Number,
     required: true,
   },
+  showOnCategoryPage: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 module.exports = mongoose.model("TestResult", testResultSchema);

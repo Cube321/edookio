@@ -53,7 +53,6 @@ module.exports.categoryPage = {
   packages: "Balíčky",
   noPackages: "Předmět neobsahuje žádné balíčky.",
   start: "Kartičky",
-  repeat: "Opakovat",
   continue: "Pokračovat",
   cards: "kartiček",
 };

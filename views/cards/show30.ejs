@@ -49,7 +49,12 @@
                 class="fas fa-chevron-left me-2 mb-2"></i>Zpět na předmět</a></li>
           <li>
             <p class="m-0"><small id="sectionId" name="<%= section._id %>">
-              <span class="nezobrazovat-na-mobilu"><%= section.name %></span>
+              <span class="nezobrazovat-na-mobilu d-flex align-items-center">
+                  <span><%= section.name %></span>
+                  <% if (section.isPremium) { %>
+                    <span class="badge bg-warning color-text text-normal mx-1"><i class="fas fa-crown text-tiny" title="Premium balíček"></i></span>
+                  <% } %>
+              </span>
             </p></small>
           </li>
         </ul>
@@ -194,7 +199,8 @@
               <a href="#" class="text-muted mx-2" id="btn-odstranit">Odstranit kartu</a>
             <% } %>
             <a href="#" target="_blank" class="text-muted mx-2" id="btn-nahlasit">Nahlásit chybu</a>
-            <a class="text-muted mx-2 nezobrazovat-na-mobilu">Otáčej [mezerníkem]</a>
+            <a class="text-muted mx-2 nezobrazovat-na-mobilu" id="n-key">[N = <i class="far fa-thumbs-down"></i>]</a>
+            <a class="text-muted mx-2 nezobrazovat-na-mobilu" id="m-key">[mezerník / M = <i class="far fa-thumbs-up"></i>]</a>
           </div>
         </div>
       </div>
@@ -216,6 +222,50 @@
         </div>
       </div>
     </div>
+
+    <% if(!currentUser || (currentUser && !currentUser.card30ExplanationModalShown)){ %>
+      <!-- MODAL - App Anouncement with script -->
+      <div class="modal fade" id="card30ExplanationModal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered edit-modal">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <div class="d-flex justify-content-between w-100">
+                      <div></div>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <% if (currentUser && currentUser.cardsSeen > 10) { %>
+                    <h3 class="text-center mt-3 mb-4">Představujeme palce!</h3>
+                  <% } else { %>
+                    <h3 class="text-center mt-3 mb-4">Jak fungují palce?</h3>
+                  <% } %>
+                  <div class="d-flex justify-content-center mt-4">
+                    <div class="d-flex">
+                      <div class="d-flex flex-column align-items-center mx-4">
+                        <a href="#" class="btn btn-lg btn-outline-danger easy-btn no-click" style="min-width: 5rem;"><i class="far fa-thumbs-down"></i></a>
+                        <h5 class="text-center mt-2">Nevím</h5>
+                      </div>
+                      <div class="d-flex flex-column align-items-center mx-4">
+                        <a href="#" class="btn btn-lg btn-danger easy-btn no-click" style="min-width: 5rem;"><i class="far fa-thumbs-up"></i></a>
+                        <h5 class="text-center mt-2">Vím</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-center mt-4">
+                    <p>Označ kartičku podle toho, zda už ji ovládáš nebo se k ní potřebuješ později vrátit. Při <span class="color-1"><b>dalším procházení</b></span> balíčku ti ukážeme <span class="color-1"><b>jen ty</b></span> kartičky, ke kterým se <span class="color-1"><b>potřebuješ</b></span> vrátit.</p>
+                    <% if (!currentUser) { %>
+                      <p class="mt-3 text-smaller text-muted mx-4">Funkce je plnohodnotně dostupná po bezplatné registraci přihlášeným uživatelům.</p>
+                    <% } %>
+                  </div>
+                  <div>
+                    <div class="d-flex justify-content-center mt-4 mb-3">
+                      <a href="#" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Jdeme na to!</a>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+      </div>
+    <% } %>
     
     <div id="show-mode" style="opacity: 0" name="<%= mode %>"></div>
 
@@ -236,5 +286,22 @@
         <div id="data-loaded"></div>
       </div>
 </body>
+
+<% if(!currentUser || (currentUser && !currentUser.card30ExplanationModalShown)){ %>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var card30ExplanationModal = new bootstrap.Modal(document.getElementById("card30ExplanationModal"));
+        card30ExplanationModal.show();
+    });
+    //send post request to /admin/appAnnounced to set appAnnouncementModalShown to true to prevent showing the modal again
+    fetch("/api/card30Explained", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+    });
+  </script>
+<% } %>
 
 </html>

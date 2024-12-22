@@ -172,6 +172,25 @@ body {
   font-size: 1.2em;
 }
 
+@keyframes vibrate {
+  0%   { transform: translateY(0); }
+  20%  { transform: translateY(2px); }
+  40%  { transform: translateY(-2px); }
+  60%  { transform: translateY(2px); }
+  80%  { transform: translateY(-1px); }
+  100% { transform: translateY(0); }
+}
+
+.vibrate {
+  animation: vibrate 0.5s ease-in-out 1;
+}
+
+.no-click {
+  pointer-events: none;
+  user-select: none;  
+}
+
+
 #btn-dalsi,
 #btn-dalsi-rendered,
 #btn-dalsi-last-card,

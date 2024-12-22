@@ -161,8 +161,9 @@ router.get(
     user.cardsSeen++;
     user.cardsSeenThisMonth++;
     user.actionsToday++;
-    if (user.actionsToday === 10) {
+    if (user.actionsToday === user.dailyGoal) {
       user.streakLength++;
+      user.dailyGoalReachedToday = true;
     }
 
     await user.save();
@@ -186,8 +187,9 @@ router.get(
     user.questionsSeenTotal++;
     user.questionsSeenThisMonth++;
     user.actionsToday++;
-    if (user.actionsToday === 10) {
+    if (user.actionsToday === user.dailyGoal) {
       user.streakLength++;
+      user.dailyGoalReachedToday = true;
     }
 
     if (!user.isPremium && user.questionsSeenThisMonth > 50) {
@@ -212,8 +214,9 @@ router.post(
       user.questionsSeenTotal++;
       user.questionsSeenThisMonth++;
       user.actionsToday++;
-      if (user.actionsToday === 10) {
+      if (user.actionsToday === user.dailyGoal) {
         user.streakLength++;
+        user.dailyGoalReachedToday = true;
       }
       await user.save();
     }
@@ -317,8 +320,9 @@ router.post(
         user.cardsSeen++;
         user.cardsSeenThisMonth++;
         user.actionsToday++;
-        if (user.actionsToday === 10) {
+        if (user.actionsToday === user.dailyGoal) {
           user.streakLength++;
+          user.dailyGoalReachedToday = true;
         }
       }
 

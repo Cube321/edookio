@@ -67,18 +67,10 @@
                                         <div class="percent">
                                         <svg>
                                             <circle cx="80" cy="80" r="60"></circle>
-                                            <% if (currentUser.actionsToday <10 ) { %>
-                                                <circle cx="80" cy="80" r="60" style="--percent: <%= currentUser.actionsToday * 10%>"></circle>
-                                            <% } else { %>
-                                                <circle cx="80" cy="80" r="60" style="--percent: 100"></circle>
-                                            <% } %>
+                                            <circle cx="80" cy="80" r="60" style="--percent: <%= percent %>"></circle>
                                         </svg>
                                         <div class="number">
-                                            <% if (currentUser.actionsToday <10 ) { %>
-                                                <h3><%= currentUser.actionsToday * 10 %><span> %</span></h3>
-                                            <% } else { %>
-                                                <h3>100<span> %</span></h3>
-                                            <% } %>
+                                            <h3><%= percent %><span> %</span></h3>
                                         </div>
                                         </div>
                                     </div>
@@ -347,16 +339,19 @@
     </section>
 </main>
 
-<!-- STREAK INFO MODAL-->
-<div class="modal fade" id="streakInfoModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered edit-modal">
-    <div class="modal-content">
-        <div class="modal-body d-flex justify-content-center align-items-center">
-            <p class="text-center">Ke splnění denního cíle je třeba projít dohromady alespoň 10 kartiček nebo testových otázek, a to nejpozději do půlnoci.</p>
+<% if (currentUser) { %>
+    <!-- STREAK INFO MODAL-->
+    <div class="modal fade" id="streakInfoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered edit-modal">
+        <div class="modal-content">
+            <div class="modal-body d-flex justify-content-center align-items-center">
+                <p class="text-center">Tvůj aktuální denní cíl je <b class="color-1"><%= currentUser.dailyGoal %> bodů</b>. Změnit jej můžeš ve svém profilu.</p>
+            </div>
+        </div>
         </div>
     </div>
-    </div>
-</div>
+<% } %>
+
 
     <%- include('./partials/footer') %>
     <%- include('./partials/cookiesBar')%> 

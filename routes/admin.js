@@ -582,7 +582,7 @@ router.get(
   catchAsync(async (req, res) => {
     let { userId } = req.params;
     await User.findByIdAndUpdate(userId, { cardsSeen: 0 });
-    req.flash("success", "Vynulováno - cardsSeen.");
+    req.flash("successOverlay", "Vynulováno - cardsSeen.");
     res.redirect(`/admin/${userId}/showDetail`);
   })
 );
@@ -595,7 +595,7 @@ router.get(
   catchAsync(async (req, res) => {
     let { userId } = req.params;
     await User.findByIdAndUpdate(userId, { questionsSeenTotal: 0 });
-    req.flash("success", "Vynulováno - questionsSeenTotal.");
+    req.flash("successOverlay", "Vynulováno - questionsSeenTotal.");
     res.redirect(`/admin/${userId}/showDetail`);
   })
 );
@@ -608,7 +608,7 @@ router.get(
   catchAsync(async (req, res) => {
     let { userId } = req.params;
     await User.findByIdAndUpdate(userId, { actionsToday: 0 });
-    req.flash("success", "Vynulováno - actionsToday.");
+    req.flash("successOverlay", "Vynulováno - actionsToday.");
     res.redirect(`/admin/${userId}/showDetail`);
   })
 );
@@ -664,7 +664,7 @@ router.get(
     await user.save();
     let endDate = moment(user.endDate).locale("cs").format("LL");
     mail.sendAdminGrantedPremium(user.email, endDate);
-    req.flash("success", "Uživatel je nyní Premium");
+    req.flash("successOverlay", "Uživatel je nyní Premium");
     res.status(201).redirect("/admin/users");
   })
 );
@@ -690,7 +690,7 @@ router.put(
 
     await user.save();
     req.flash(
-      "success",
+      "successOverlay",
       "Premium ukončeno. Uživateli byl nastaven balíček Free."
     );
     res.status(201).redirect(`/admin/${user._id}/showDetail`);
@@ -763,7 +763,7 @@ router.post(
       return res.status(400).redirect("/admin/email");
     }
     //redirect back and flash admin with confirmation
-    req.flash("success", "E-mail byl odeslán všem uživatelům");
+    req.flash("successOverlay", "E-mail byl odeslán všem uživatelům");
     res.status(200).redirect("/admin/email");
   })
 );
@@ -778,7 +778,7 @@ router.get(
       user.hasUnsubscribed = true;
       await user.save();
       req.flash(
-        "success",
+        "successOverlay",
         "Zasílání informačních e-mailů na váš e-mail bylo zrušeno."
       );
       return res.redirect("/");
@@ -801,7 +801,10 @@ router.get(
     if (user) {
       user.hasUnsubscribedFromStreak = true;
       await user.save();
-      req.flash("success", "Zasílání připomínek na váš e-mail bylo zrušeno.");
+      req.flash(
+        "successOverlay",
+        "Zasílání připomínek na váš e-mail bylo zrušeno."
+      );
       return res.redirect("/");
     } else {
       req.flash(
@@ -902,10 +905,9 @@ router.get(
     await Section.findByIdAndUpdate(req.params.sectionId, {
       countStarted: 0,
       countFinished: 0,
-      countRepeated: 0,
     });
     //redirect back
-    req.flash("success", "Statistiky sekce byly vynulovány.");
+    req.flash("successOverlay", "Statistiky sekce byly vynulovány.");
     res.status(201).redirect("/admin/categories");
   })
 );
@@ -925,7 +927,7 @@ router.post(
     }
     user.isEditor = true;
     await user.save();
-    req.flash("success", "Editorská oprávnění byla udělena.");
+    req.flash("successOverlay", "Editorská oprávnění byla udělena.");
     res.redirect("/admin/users");
   })
 );
@@ -944,7 +946,7 @@ router.post(
     }
     user.isEditor = false;
     await user.save();
-    req.flash("success", "Editorská oprávnění byle odebrána.");
+    req.flash("successOverlay", "Editorská oprávnění byle odebrána.");
     res.redirect("/admin/users");
   })
 );
@@ -969,7 +971,7 @@ router.post(
     }
     user.admin = true;
     await user.save();
-    req.flash("success", "Administrátorská oprávnění byla udělena.");
+    req.flash("successOverlay", "Administrátorská oprávnění byla udělena.");
     res.redirect("/admin/users");
   })
 );
@@ -993,7 +995,7 @@ router.post(
     }
     user.admin = false;
     await user.save();
-    req.flash("success", "Administrátorská oprávnění byla odebrána.");
+    req.flash("successOverlay", "Administrátorská oprávnění byla odebrána.");
     res.redirect("/admin/users");
   })
 );
@@ -1017,7 +1019,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { email, name, text } = req.body;
     mail.sendFeedback(email, name, text);
-    req.flash("success", "Feedback byl odeslán. Díky!");
+    req.flash("successOverlay", "Feedback byl odeslán. Díky!");
     res.status(201).redirect(`/legal/feedback`);
   })
 );
@@ -1029,7 +1031,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { email, name, text } = req.body;
     mail.sendMessageFromContactForm(email, name, text);
-    req.flash("success", "Zpráva byla odeslána.");
+    req.flash("successOverlay", "Zpráva byla odeslána.");
     res.status(201).redirect(`/legal/contact`);
   })
 );

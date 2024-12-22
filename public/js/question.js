@@ -5,6 +5,7 @@ let nextQuestion = 0;
 let currentQuestion = 0;
 let sectionId = "";
 let categoryId = "";
+let freeQuestionsLeft = 50;
 
 $(document).ready(function () {
   //get section ID from DOM element
@@ -17,6 +18,12 @@ $(document).ready(function () {
     let category = $("#sectionId").attr("cat");
     getQuestionsUrl = `/api/getQuestions/section/${sectionId}?category=${category}`;
   }
+
+  if ($("#free-questions-left")) {
+    freeQuestionsLeft = parseInt($("#free-questions-left").attr("name"));
+  }
+
+  console.log(freeQuestionsLeft);
 
   //get cards
   $.ajax({
@@ -141,6 +148,29 @@ $(document).ready(function () {
     $("#progressBarMobile").css("width", `${progressStatus}%`);
     $("#progressNumMobile").text(currentQuestion + 1);
     $("#progressBarStatusMobileNum").text(`${progressStatus}`);
+
+    //update free questions left
+    if ($("#free-questions-left")) {
+      $("#free-questions-left").text(freeQuestionsLeft - 1);
+      freeQuestionsLeft--;
+      if (freeQuestionsLeft < 26) {
+        console.log("less than 26");
+        $("#free-questions-text")
+          .removeClass("opacity-0")
+          .addClass("opacity-1");
+      }
+      if (freeQuestionsLeft < 5 && freeQuestionsLeft > 1) {
+        $("#free-questions-ending").text("testové otázky");
+      }
+      if (freeQuestionsLeft === 1) {
+        $("#free-questions-ending").text("testovou otázku");
+      }
+      if (freeQuestionsLeft < 1) {
+        $("#free-questions-text").html(
+          `<span class="text-small text-muted text-center">Bezplatné testové otázky byly vyčerpány, můžeš však dokončit tutu sadu otázek.<span> <a href="#" data-bs-toggle="modal" data-bs-target="#premiumInfo">Chci více otázek...</a></span>`
+        );
+      }
+    }
 
     //update list of questions
     renderListOfQuestions();

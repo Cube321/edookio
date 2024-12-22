@@ -82,6 +82,7 @@ router.get(
       const testResults = await TestResult.find({
         user: req.user._id,
         category: category._id,
+        showOnCategoryPage: true,
       })
         .sort({ date: -1 }) // Sort by most recent
         .exec();
@@ -138,7 +139,7 @@ router.post(
     });
     let savedCategory = await newCategory.save();
     console.log(savedCategory);
-    req.flash("success", "Předmět byl vytvořen.");
+    req.flash("successOverlay", "Předmět byl vytvořen.");
     res.status(201).redirect(`/admin/categories`);
   })
 );
@@ -157,7 +158,7 @@ router.put(
       return res.redirect("/admin/categories");
     }
     await Category.findByIdAndUpdate(categoryId, { text, icon, orderNum });
-    req.flash("success", "Změny byly uloženy.");
+    req.flash("successOverlay", "Změny byly uloženy.");
     res.status(201).redirect(`/admin/categories`);
   })
 );
@@ -176,7 +177,7 @@ router.delete(
     }
     if (foundCategory.sections.length === 0) {
       await Category.findByIdAndDelete(categoryId);
-      req.flash("success", "Předmět byl odstraněn.");
+      req.flash("successOverlay", "Předmět byl odstraněn.");
     } else {
       req.flash(
         "error",
@@ -185,6 +186,63 @@ router.delete(
     }
     res.status(200).redirect("/admin/categories");
   })
+);
+
+//RESETING USER`S STATS (GET)
+router.get(
+  "/category/:category/resetCards",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    const category = await Category.findOne({
+      name: req.params.category,
+    }).populate("sections");
+    if (!category) {
+      req.flash("error", "Předmět neexistuje.");
+      return res.status(404).redirect("/");
+    }
+    const cardIds = category.sections
+      .map((section) => section.cards)
+      .flat()
+      .map((card) => card._id);
+
+    await CardInfo.deleteMany({
+      user: req.user._id,
+      card: { $in: cardIds },
+    });
+
+    req.flash("successOverlay", "Tvé kartičky byly smazány.");
+    res.status(200).redirect(`/category/${req.params.category}`);
+  })
+);
+
+router.get(
+  "/category/:category/resetQuestions",
+  isLoggedIn,
+  async (req, res) => {
+    const category = await Category.findOne({
+      name: req.params.category,
+    }).populate("sections");
+    if (!category) {
+      req.flash("error", "Předmět neexistuje.");
+      return res.status(404).redirect("/");
+    }
+
+    req.user.finishedQuestions = req.user.finishedQuestions.filter(
+      (sectionId) =>
+        !category.sections.map((section) => section._id).includes(sectionId)
+    );
+
+    //mark all testResults of this user for this category as not showOnCategoryPage
+    await TestResult.updateMany(
+      { user: req.user._id, category: category._id },
+      { showOnCategoryPage: false }
+    );
+
+    await req.user.save();
+
+    req.flash("successOverlay", "Tvé výsledky byly smazány.");
+    res.status(200).redirect(`/category/${req.params.category}`);
+  }
 );
 
 //SECTIONS IN CATEGORY
@@ -274,7 +332,7 @@ router.post(
       await savedSection.save();
     }
 
-    req.flash("success", `Balíček ${savedSection.name} byl vytvořen.`);
+    req.flash("successOverlay", `Balíček ${savedSection.name} byl vytvořen.`);
     res.status(200).redirect(`/category/${savedSection.category}`);
   })
 );
@@ -326,7 +384,7 @@ router.delete(
       }
     }
     //flash a redirect
-    req.flash("success", "Balíček byl odstraněn.");
+    req.flash("successOverlay", "Balíček byl odstraněn.");
     res.status(200).redirect(`/category/${category}`);
   })
 );
@@ -393,7 +451,7 @@ router.put(
       foundSection.previousSection = "lastSection";
     }
     await foundSection.save();
-    req.flash("success", "Informace byly aktualizovány.");
+    req.flash("successOverlay", "Informace byly aktualizovány.");
     res
       .status(201)
       .redirect(
@@ -487,7 +545,7 @@ router.get(
       foundSection.testIsPublic = true;
     }
     await foundSection.save();
-    req.flash("success", "Balíček byl zveřejněn");
+    req.flash("successOverlay", "Balíček byl zveřejněn");
     res.status(200).redirect(`/category/${req.params.category}`);
   })
 );

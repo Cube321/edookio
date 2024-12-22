@@ -268,7 +268,7 @@ router.post(
     foundSection.questions.push(createdQuestion._id);
     await foundSection.save();
 
-    req.flash("success", "Otázka byla vložena do databáze.");
+    req.flash("successOverlay", "Otázka byla vložena do databáze.");
     res
       .status(201)
       .redirect(`/category/${categoryId}/section/${sectionId}/question/new`);
@@ -320,7 +320,7 @@ router.patch(
       wrongAnswers: [wrongAnswer1, wrongAnswer2],
     };
     await Question.findByIdAndUpdate(questionId, updatedQuestion);
-    req.flash("success", "Otázka byla upravena.");
+    req.flash("successOverlay", "Otázka byla upravena.");
     res
       .status(201)
       .redirect(`/category/${categoryId}/section/${sectionId}/list`);
@@ -383,7 +383,7 @@ router.get(
     await foundCategory.save();
     await foundSection.save();
 
-    req.flash("success", "Všechny otázky z balíčku byly odstraněny");
+    req.flash("successOverlay", "Všechny otázky z balíčku byly odstraněny");
     res.status(200).render("questions/list", {
       questions: foundSection.questions,
       section: foundSection,
@@ -458,11 +458,11 @@ router.get(
         "question"
       );
       req.flash(
-        "success",
+        "successOverlay",
         "Report odstraněn a uživateli zaslán e-mail s poděkováním."
       );
     } else {
-      req.flash("success", "Report odstraněn.");
+      req.flash("successOverlay", "Report odstraněn.");
     }
     res.status(200).redirect(`/admin/listAllReports`);
   })

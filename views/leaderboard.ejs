@@ -76,7 +76,12 @@
                                 <% } %>
                             </div>
                             <div class="d-flex align-items-center content" style="width:100%">
-                                <p class="nickname"><%= user.nickname %></p>
+                                <p class="nickname">
+                                    <span><%= user.nickname %></span>
+                                </p>
+                                <% if (user.isPremium) { %>
+                                    <span><i class="fas fa-crown golden text-small" title="Aktivní Premium"></i></span>
+                                <% } %>
                                 <% if (order === "day") { %>
                                     <p class="points"><%= user.pointsToday %></p>
                                 <% } %>

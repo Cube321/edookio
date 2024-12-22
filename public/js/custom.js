@@ -33,6 +33,17 @@ $(document).ready(function () {
     $(".modal-body").append("<p>Odesláno, díky!</p>");
   });
 
+  if ($("#successOverlay")) {
+    setTimeout(function () {
+      var alertElement = document.getElementById("successOverlay");
+      if (alertElement) {
+        // Bootstrap's built-in close method
+        var bsAlert = new bootstrap.Alert(alertElement);
+        bsAlert.close();
+      }
+    }, 3000);
+  }
+
   $("#generate-ai").click(function () {
     $(this).addClass("disabled");
     $(this).empty();

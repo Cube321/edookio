@@ -18,6 +18,18 @@ router.get(
     const numOfCards = await Card.count();
     const numOfQuestions = await Question.count();
     const numOfSections = await Section.count();
+    let percent = 0;
+
+    //count how many percept of the dailyGoal has the user already seen today
+    if (req.user) {
+      let dailyGoal = req.user.dailyGoal;
+      let actionsToday = req.user.actionsToday;
+      percent = Math.round((actionsToday / dailyGoal) * 100);
+      if (percent > 100) {
+        percent = 100;
+      }
+    }
+
     sortByOrderNum(categories);
     res.status(200).render("index", {
       categories,
@@ -25,6 +37,7 @@ router.get(
       numOfQuestions,
       numOfSections,
       numOfCategories,
+      percent,
     });
   })
 );

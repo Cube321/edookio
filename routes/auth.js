@@ -48,7 +48,7 @@ router.get("/cookies-agreed-form", function (req, res) {
   req.session.cookiesAgreed = true;
   req.session.cookiesAnalyticke = true;
   req.session.cookiesMarketingove = true;
-  req.flash("success", "Nastavení cookies bylo uloženo.");
+  req.flash("successOverlay", "Nastavení cookies bylo uloženo.");
   res.status(200).redirect("/");
 });
 
@@ -80,7 +80,7 @@ router.post(
       req.session.cookiesMarketingove = false;
     }
     req.session.cookiesAgreed = true;
-    req.flash("success", "Nastavení cookies bylo uloženo.");
+    req.flash("successOverlay", "Nastavení cookies bylo uloženo.");
     res.status(200).redirect("/");
   })
 );
@@ -180,7 +180,7 @@ router.post(
       if (req.session.demoCardsSeen && req.session.demoCardsSeen > 5) {
         incrementEventCount("registeredAfterDemoLimit");
       }
-      req.flash("success", "Skvělé! Účet byl vytvořen.");
+      req.flash("successOverlay", "Skvělé! Účet byl vytvořen.");
       if (req.query.requiresPremium) {
         res.status(201).redirect("/premium");
       } else {
@@ -255,12 +255,12 @@ router.get(
       return res.redirect("/");
     }
     if (user.isEmailVerified) {
-      req.flash("success", "E-mail již byl ověřen.");
+      req.flash("successOverlay", "E-mail již byl ověřen.");
       return res.redirect("/");
     }
     user.isEmailVerified = true;
     await user.save();
-    req.flash("success", "E-mail byl ověřen.");
+    req.flash("successOverlay", "E-mail byl ověřen.");
     res.status(200).redirect("/");
   })
 );
@@ -276,7 +276,7 @@ router.get(
       return res.redirect("/");
     }
     if (user.isEmailVerified) {
-      req.flash("success", "E-mail již byl ověřen.");
+      req.flash("successOverlay", "E-mail již byl ověřen.");
       return res.redirect("/");
     }
     mail.emailVerification(user.email, user._id);
@@ -308,7 +308,7 @@ router.post(
         await user.save();
 
         await user.changePassword(req.body.oldpassword, req.body.newpassword);
-        req.flash("success", "Heslo bylo změněno");
+        req.flash("successOverlay", "Heslo bylo změněno");
         res.redirect("/auth/user/profile");
       } else {
         req.flash(
@@ -393,7 +393,7 @@ router.post(
       req.login(user, (err) => {
         if (err) return next(err);
       });
-      req.flash("success", "Heslo bylo změněno");
+      req.flash("successOverlay", "Heslo bylo změněno");
       res.status(200).redirect("/");
     } else {
       req.flash(
@@ -417,7 +417,7 @@ router.get(
     if (foundUser.plan === "none") {
       await User.findByIdAndDelete(req.user._id);
       mail.adminInfoUserDeleted(foundUser.email);
-      req.flash("success", "Tvůj účet byl odstraněn.");
+      req.flash("successOverlay", "Tvůj účet byl odstraněn.");
       res.status(201).redirect("/");
     } else {
       req.flash(
@@ -468,6 +468,34 @@ router.post(
     foundUser.nickname = req.body.nickname;
     await foundUser.save();
     res.status(200).redirect("/leaderboard");
+  })
+);
+
+//CHANGE DAILY GOAL
+//route to change daily goal from profile page
+router.post(
+  "/auth/user/changeDailyGoal",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    let dailyGoal = req.body.dailyGoal;
+    let foundUser = await User.findById(req.user._id);
+    if (!foundUser) {
+      req.flash("error", "Uživatel s tímto ID nebyl nenalezen.");
+      return res.redirect("/auth/user/profile");
+    }
+    foundUser.dailyGoal = dailyGoal;
+
+    if (
+      !foundUser.dailyGoalReachedToday &&
+      foundUser.actionsToday >= dailyGoal
+    ) {
+      foundUser.dailyGoalReachedToday = true;
+      foundUser.streakLength++;
+    }
+
+    await foundUser.save();
+    req.flash("successOverlay", "Denní cíl byl změněn.");
+    res.status(200).redirect("/auth/user/profile");
   })
 );
 

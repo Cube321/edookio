@@ -61,28 +61,10 @@
                         <h5 class="m-0 mb-1 mt-1">Balíčky</h5>
                     </div>
                     <div class="col-1 d-flex justify-content-end align-items-center">
-                        <div class="dropdown">
-                          <!-- Toggle Button -->
-                          <button
-                            class="btn btn-light border-0 dropdown-toggle"
-                            style="background-color:transparent"
-                            type="button"
-                            id="dropdownMenuButton"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <i class="fas fa-bars"></i>
-                          </button>
-                      
-                          <!-- Dropdown Menu -->
-                          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Action 1</a></li>
-                            <li><a class="dropdown-item" href="#">Action 2</a></li>
-                            <li><a class="dropdown-item" href="#">Action 3</a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      
+                        <% if (currentUser) { %>
+                            <a href="" class="color-text" id="menu-icon" data-bs-toggle="modal" data-bs-target="#sectionSettingsModal"><i class="fas fa-bars"></i></a>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,160 +75,84 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-8 col-12 d-flex align-items-center">
+                            <% if (!section.isPublic && !section.testIsPublic) { %>
+                                <div class="col-lg-12 col-12 d-flex align-items-center">
+                                    <div class="w-100"><span class="badge bg-warning w-100">Nepublikováno - celý balíček</span></div>
+                                </div>
+                            <% } else if (section.isPublic && !section.testIsPublic && section.questions && (currentUser && (currentUser.admin || currentUser.isEditor))){ %>
+                                <div class="col-lg-12 col-12 d-flex align-items-center">
+                                    <div class="w-100"><span class="badge bg-warning w-100">Nepublikováno - testové otázky nejsou zveřejněny</span></div>
+                                </div>
+                            <% } %>
+                            <div class="col-lg-8 col-12 d-flex align-items-center">
                                 <div>  
                                     <p class="m-0 section-name"><%= section.name %></p>
                                     <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                                    <p class="text-muted text-small mb-2"><%= section.cards.length %> kartiček / <%= section.questions.length %> otázek</p>
-                                    
+                                    <p class="text-muted text-small mb-1"><%= section.cards.length %> kartiček / <%= section.questions.length %> otázek</p>
+                                    <% if (section.isPremium) { %>
+                                        <span class="badge bg-warning color-text text-normal mb-2 mb-lg-0"><i class="fas fa-crown text-tiny"></i> Premium</span>
+                                    <% } %>
+                                    <% if (currentUser && currentUser.isEditor) { %>
+                                        <a href="#" class="text-small" data-bs-toggle="modal" data-bs-target="#editSectionModal<%=section._id%>"><i class="fas fa-cog"></i> Upravit</a>
+                                    <% } %>
                                 </div>
                             </div>
-                            <% if (section.isPremium && (!currentUser || !currentUser.isPremium || !currentUser.isEditor)) { %>
-                                <div class="col-md-4 col-12 d-flex justify-content-center align-items-center">  
-                                    <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
+                                <div class="col-lg-2 col-6">  
+                                    <% if (section.cards.length) { %> 
+                                    <div class="section-box">
+                                        <p>Kartičky</p>
+                                        <div><% if (section.knownPercentage === 100) { %>
+                                                <span class="badge section-progress-badge badge-green-full" title="Umíš <%= section.knownCount %> z <%= section.cards.length %> kartiček"><%= section.knownCount %> / <%= section.cards.length %></span>
+                                            <% } else if (section.knownPercentage > 90) { %>
+                                                <span class="badge section-progress-badge badge-green-outline" title="Umíš <%= section.knownCount %> z <%= section.cards.length %> kartiček"><%= section.knownCount %> / <%= section.cards.length %></span>
+                                            <% } else { %>
+                                                <span class="badge section-progress-badge badge-grey-outline" title="Umíš <%= section.knownCount %> z <%= section.cards.length %> kartiček"><%= section.knownCount %> / <%= section.cards.length %></span>
+                                            <% } %>
+                                        </div>
+                                        <div>
+                                            <% if (section.isPremium && (!currentUser || !currentUser.isPremium || !currentUser.isEditor)) { %> 
+                                                <a href="/premium" class="btn btn-sm btn-warning btn-spustit w-100 mt-2"><i class="fas fa-crown text-small"></i> Premium</a>
+                                            <% } else if (section.cards.length > 0) { %>
+                                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=unknown" class="btn btn-sm btn-danger btn-spustit w-100 mt-2">Spustit</a>
+                                            <% } %>
+                                        </div>
+                                    </div> 
+                                    <% } %>
                                 </div>
-                            <% } else { %>
-                            <div class="col-md-2 col-6">  
-                                <div class="section-box">
-                                    <p>Kartičky</p>
-                                    <div><% if (section.knownPercentage === 100) { %>
-                                            <span class="badge section-progress-badge badge-green-full" title="Umíš <%= section.knownCount %> z <%= section.cards.length %> kartiček"><%= section.knownCount %> / <%= section.cards.length %></span>
-                                        <% } else if (section.knownPercentage > 90) { %>
-                                            <span class="badge section-progress-badge badge-green-outline" title="Umíš <%= section.knownCount %> z <%= section.cards.length %> kartiček"><%= section.knownCount %> / <%= section.cards.length %></span>
-                                        <% } else { %>
-                                            <span class="badge section-progress-badge badge-grey-outline" title="Umíš <%= section.knownCount %> z <%= section.cards.length %> kartiček"><%= section.knownCount %> / <%= section.cards.length %></span>
-                                        <% } %>
-                                    </div>
-                                    <div>
-                                        <% if (section.cards.length > 0) { %>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=unknown" class="btn btn-sm btn-danger btn-spustit w-100 mt-2">Spustit</a>
-                                        <% } %>
-                                    </div>
-                                </div> 
-                            </div>
-                            <div class="col-md-2 col-6">  
-                                <div class="section-box">
-                                    <p>Otázky</p>
-                                    <div>
-                                        <% if (section.isFinishedQuestions) { %>
-                                                <% if (section.lastTestResult === 100) { %>
-                                                    <span class="badge section-progress-badge badge-green-full" title="Tvá úspěšnost v posledním testu">100 %</span>
-                                                <% } else if (section.lastTestResult > 90) { %>
-                                                    <span class="badge section-progress-badge badge-green-outline" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
-                                                <% } else { %>
-                                                    <span class="badge section-progress-badge badge-grey-outline" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
-                                                <% } %>
-                                        <% } else { %>
-                                            <span class="badge section-progress-badge badge-grey-outline" title="Tento test jsi ještě neabsolvoval">0 %</span>
-                                        <% } %>
-                                    </div>
-                                    <div>
-                                        <% if (section.questions.length > 0) { %>
-                                            <% if (currentUser) { %>
+                            <div class="col-lg-2 col-6">  
+                                <% if (section.questions.length) { %> 
+                                    <div class="section-box">
+                                        <p>Otázky</p>
+                                        <div>
+                                            <% if (section.isFinishedQuestions) { %>
+                                                    <% if (section.lastTestResult === 100) { %>
+                                                        <span class="badge section-progress-badge badge-green-full" title="Tvá úspěšnost v posledním testu">100 %</span>
+                                                    <% } else if (section.lastTestResult > 90) { %>
+                                                        <span class="badge section-progress-badge badge-green-outline" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
+                                                    <% } else { %>
+                                                        <span class="badge section-progress-badge badge-grey-outline" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
+                                                    <% } %>
+                                            <% } else { %>
+                                                <span class="badge section-progress-badge badge-grey-outline" title="Tento test jsi ještě neabsolvoval">0 %</span>
+                                            <% } %>
+                                        </div>
+                                        <div>
+                                            <% if (section.isPremium && (!currentUser || !currentUser.isPremium || !currentUser.isEditor)) { %> 
+                                                <a href="/premium" class="btn btn-sm btn-warning btn-spustit w-100 mt-2"><i class="fas fa-crown text-small"></i> Premium</a>
+                                            <% } else if (section.questions.length > 0) { %>
                                                 <a href="/category/<%= category._id %>/section/<%= section._id %>/test" class="btn btn-sm btn-danger btn-spustit w-100 mt-2">Spustit</a>
                                             <% } else { %>
                                                 <a href="#" class="btn btn-sm btn-danger btn-spustit w-100 mt-2 disabled">Po registraci</a>
-                                            <% } %>                                        
-                                        <% } %>
-                                    </div>
-                                </div> 
+                                            <% } %>                                      
+                                        </div>
+                                    </div> 
+                                <% } %>
                             </div>
-                            <% } %>
                         </div>
                     </div>
                 </div>
             <% } %>
         <% })} %>
-        <div class="card">
-            <div class="card-body">
-                <% if (category.sections.length < 1) { %>
-                    <p><%= texts.categoryPage.noPackages %></p>
-                <% } else { category.sections.forEach(section => { %>
-                    <% if (section.isPublic || (currentUser && (currentUser.admin || currentUser.isEditor))) { %>
-                        <div class="row py-2 section-row">
-                            <div class="col-7 d-flex align-items-center">                    
-                                <div>
-                                    <p class="m-0 section-name">
-                                        <%= section.name %><% if (section.isPremium && currentUser && currentUser.admin) { %> <span style="color:gold;font:bold"> ☆</span><% } %>
-                                        <% if (!section.isPublic) { %>
-                                            <span class="text-muted text-smaller">[balíček čeká na zveřejnění]</span><br>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/publish" class="btn btn-success btn-sm">Zveřejnit</a>
-                                        <% } %>
-                                        <% if (section.isPublic && !section.testIsPublic && section.questions.length > 0 && (currentUser && (currentUser.admin || currentUser.isEditor))) { %>
-                                            <span class="text-muted text-smaller">[testové otázky čekají na zveřejnění]</span><br>
-                                            <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest" class="btn btn-success btn-sm">Zveřejnit</a>
-                                        <% } %>
-                                    </p>
-                                    <p class="text-muted text-small mb-0"><%= section.shortDescription %> </p>
-                                    <div class="d-flex">
-                                        <% if (section.questions.length > 0) { %>
-                                            <% if (section.isFinishedQuestions) { %>
-                                                <p class="text-muted text-small mb-0 mx-2 section-finished-badge d-flex align-items-center"><i class="fas fa-check-circle" style="padding-right:3px"></i> Otázky 
-                                                    <% if (section.lastTestResult === 100) { %>
-                                                        <span class="badge badge-green-full mx-1" title="Tvá úspěšnost v posledním testu">100 %</span>
-                                                    <% } else if (section.lastTestResult > 90) { %>
-                                                        <span class="badge badge-green-outline mx-1" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
-                                                    <% } else { %>
-                                                        <span class="badge badge-grey-outline mx-1" title="Tvá úspěšnost v posledním testu"><%= section.lastTestResult %> %</span>
-                                                    <% } %>
-                                                </p>
-                                            </p>
-                                            <% } else { %>
-                                                <p class="text-muted text-small mb-0 mx-2 section-not-finished-badge d-flex justify-content-center align-items-center"><i class="fas fa-circle-notch" style="padding-right:3px"></i> Otázky <span class="badge badge-grey-outline mx-1" title="Tento test jsi ještě neabsolvoval">0 %</span> </p>
-                                            <% } %>
-                                        <% } %>
-                                    </div>
-                                    <% if (currentUser && currentUser.isEditor) { %>
-                                        <p class="mb-0 text-small text-muted">Spuštění: <%= section.countStarted %> | <%= section.countStartedTest %></p>
-                                        <a href="#" class="text-small" data-bs-toggle="modal" data-bs-target="#editSectionModal<%=section._id%>">Editovat</a>
-                                    <% } %>
-                                </div>
-                            </div>
-                            <div class="col-3 d-flex flex-column justify-content-center align-items-center">
-                                <% if (!currentUser){ %> 
-                                    <% if(!section.isPremium){ %> 
-                                        <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1" class="btn btn-sm btn-danger btn-spustit"><%= texts.categoryPage.start %></a>    
-                                    <% } else { %>
-                                        <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
-                                    <% } %>  
-                                <% } else if(!currentUser.isPremium && section.isPremium){ %> 
-                                    <a href="/premium" class="btn btn-sm btn-warning" style="float:right">Premium</a>
-                                <% } else { %> 
-                                    <% if (section.cards.length > 0) { %>
-                                        <% if (section.leftToStudy === 0) { %>
-                                            <a href="#" class="btn btn-sm btn-success btn-spustit" style="float:right">Umíš všechny kartičky</a>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=all" class="link text-small text-muted mt-1" style="float:right">Všechny kartičky</a>
-                                        <% } else if (section.leftToStudy === section.cards.length) { %>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=unknown" class="btn btn-sm btn-danger btn-spustit" style="float:right">Začít studovat</a>
-                                        <% } else { %>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=unknown" class="btn btn-sm btn-danger btn-spustit" style="float:right">Opakovat <%= section.leftToStudy %> kartiček</a>
-                                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=all" class="link text-small text-muted mt-1" style="float:right">Všechny kartičky</a>
-                                        <% } %>
-                                    <% } %>
-                                <% } %>
-                                <% if (currentUser && section.questions.length > 0 && (section.testIsPublic || (currentUser.admin || currentUser.isEditor)) && (!section.isPremium || (section.isPremium && currentUser.isPremium))) { %>
-                                    <a href="/category/<%= category._id %>/section/<%= section._id %>/test" class="btn btn-sm btn-outline-danger m-1">Test</a>
-                                <% } %>
-                            </div>
-                            <div class="col-2 d-flex flex-column justify-content-center align-items-center cards-amount-div">
-                                <div class="d-flex justify-content-evenly align-items-center cards-amount-div">
-                                    <p class="my-0 mx-1"><%= section.cards.length %> </p>
-                                    <p class="text-muted text-small mb-0"><%= texts.categoryPage.cards %></p>
-                                </div>
-                                <div class="d-flex justify-content-evenly align-items-center cards-amount-div">
-                                    <% if (section.testIsPublic && section.questions.length > 0) { %>
-                                        <p class="my-0 mx-1"><%= section.questions.length %> </p>
-                                        <p class="text-muted text-small mb-0">otázek</p>
-                                    <% } %>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="">
-                        <% } %>
-                    <% }) }%>
-                </div>
-            
-        </div>
     </div>
 </div>
 
@@ -255,6 +161,47 @@
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
+
+   <!-- MODAL - Section Settings (Flexbox version) -->
+<div class="modal fade" id="sectionSettingsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable edit-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nastavení předmětu</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Resetování kartiček -->
+          <div class="d-flex flex-column mb-3">
+            <h6 class="mb-2">Resetování kartiček</h6>
+            <div class="d-flex justify-content-between align-items-center flex-sm-row flex-column">
+              <p class="me-3 flex-grow-1 text-smaller">
+                Resetování kartiček znamená, informace o tom, které kartičky umíš a které ne budou odstraněny a začneš studovat tento předmět od začátku.
+              </p>
+              <a href="/category/<%= category.name %>/resetCards" class="btn btn-danger btn-sm">Resetovat</a>
+            </div>
+          </div>
+          <hr />
+          <!-- Resetování otázek -->
+          <div class="d-flex flex-column">
+            <h6 class="mb-2">Resetování otázek</h6>
+            <div class="d-flex justify-content-between align-items-center flex-sm-row flex-column">
+              <p class="me-3 flex-grow-1 text-smaller">
+                Resetování otázek znamená, že tvé výsledky testů v tomto předmětu budou odstraněny.
+              </p>
+              <a href="/category/<%= category.name %>/resetQuestions" class="btn btn-danger btn-sm">Resetovat</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
 <!-- Pouze editor - formular pro pridani sekce -->
 <% if (currentUser && currentUser.isEditor) { %>
@@ -479,7 +426,6 @@
                             <div class="d-flex">
                                 <p class="text-muted mb-0">Spuštění: <%= section.countStarted %> <span class="mx-2">|</span></p>
                                 <p class="text-muted mb-0">Dokončení: <%= section.countFinished %> <span class="mx-2">|</span></p>
-                                <p class="text-muted mb-0">Opakování: <%= section.countRepeated %></p>
                             </div>
                         </div>
                     </div>

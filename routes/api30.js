@@ -234,8 +234,9 @@ router.post(
         user.cardsSeen++;
         user.cardsSeenThisMonth++;
         user.actionsToday++;
-        if (user.actionsToday === 10) {
+        if (user.actionsToday === user.dailyGoal) {
           user.streakLength++;
+          user.dailyGoalReachedToday = true;
         }
       }
 
@@ -259,8 +260,9 @@ router.post(
       user.cardsSeen++;
       user.cardsSeenThisMonth++;
       user.actionsToday++;
-      if (user.actionsToday === 10) {
+      if (user.actionsToday === user.dailyGoal) {
         user.streakLength++;
+        user.dailyGoalReachedToday = true;
       }
       await user.save();
     }
@@ -337,8 +339,9 @@ router.post(
         user.questionsSeenThisMonth++;
         user.questionsSeenTotal++;
         user.actionsToday++;
-        if (user.actionsToday === 10) {
+        if (user.actionsToday === user.dailyGoal) {
           user.streakLength++;
+          user.dailyGoalReachedToday = true;
         }
         await user.save();
       }
@@ -400,6 +403,18 @@ router.post(
   catchAsync(async (req, res) => {
     let { user } = req;
     user.appAnnouncementModalShown = true;
+    await user.save();
+    res.sendStatus(200);
+  })
+);
+
+//ROUTE /api/cards30ExplanationModalShown
+router.post(
+  "/api/card30Explained",
+  catchAsync(async (req, res) => {
+    console.log("card30Explained route running");
+    let { user } = req;
+    user.card30ExplanationModalShown = true;
     await user.save();
     res.sendStatus(200);
   })

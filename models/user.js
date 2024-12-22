@@ -73,6 +73,14 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
+  dailyGoal: {
+    type: Number,
+    default: 10,
+  },
+  dailyGoalReachedToday: {
+    type: Boolean,
+    default: false,
+  },
   streakLength: {
     type: Number,
     default: 0,
@@ -178,6 +186,10 @@ const UserSchema = new Schema({
     },
   },
   appAnnouncementModalShown: {
+    type: Boolean,
+    default: false,
+  },
+  card30ExplanationModalShown: {
     type: Boolean,
     default: false,
   },
