@@ -278,15 +278,21 @@ router.get(
   catchAsync(async (req, res) => {
     let { sectionId } = req.params;
     if (sectionId !== "random_test") {
-      let foundSection = await Section.findById(sectionId).populate(
-        "questions"
-      );
+      let foundSection = await Section.findById(sectionId).populate({
+        path: "questions",
+        populate: {
+          path: "sourceCard",
+        },
+      });
+
       if (!foundSection) {
         return res.status(404).send({ error: "Section not found" });
       }
+
       const resData = JSON.stringify({
         questions: foundSection.questions,
       });
+
       res.status(200).send(resData);
     } else {
       let { category } = req.query;
@@ -295,6 +301,7 @@ router.get(
       const resData = JSON.stringify({
         questions: randomQuestions,
       });
+
       res.status(200).send(resData);
     }
   })
@@ -302,9 +309,12 @@ router.get(
 
 async function getRandomQuestions(cat, isUserPremium) {
   let foundCategory = await Category.findOne({ name: cat });
-  let sections = await Section.find({ category: foundCategory.name }).populate(
-    "questions"
-  );
+  let sections = await Section.find({ category: foundCategory.name }).populate({
+    path: "questions",
+    populate: {
+      path: "sourceCard",
+    },
+  });
   let publishedQuestions = [];
   sections.forEach((section) => {
     if (section.testIsPublic) {

@@ -33,7 +33,7 @@
 
 .question-card {
     width: 100%;
-    height: 350px;
+    height: 320px;
     font-size: 1rem;
     
     overflow: auto;
@@ -41,6 +41,10 @@
 
   #question-content {
     padding: 0.25rem 1rem 1rem 1rem;
+}
+
+.hide {
+    display: none;
 }
 
 .border-grey {
@@ -84,6 +88,12 @@
   border: 3px solid;
   border-color: #ebebeb;
   background-color: #ebebeb;
+}
+
+.disabled-modal-link {
+    pointer-events: none;
+    cursor: default;
+    color: #6c757d;
 }
 
 /* QUESTIONS LIST */

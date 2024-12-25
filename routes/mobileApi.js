@@ -427,6 +427,17 @@ router.post(
   })
 );
 
+router.post(
+  "/mobileApi/toggleDailyReminder",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let user = req.user;
+    user.dailyActivityReminder = !user.dailyActivityReminder;
+    await user.save();
+    res.status(201).json({ message: "Daily reminder toggled" });
+  })
+);
+
 //get required mobile version for app (ios and android)
 router.get(
   "/mobileApi/getVersionInfo",

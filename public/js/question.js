@@ -58,6 +58,7 @@ $(document).ready(function () {
             clicked: false,
             type: "wrong2",
           },
+          sourceCard: question.sourceCard,
         };
         editedQuestions.push(editedQuestion);
       });
@@ -141,6 +142,19 @@ $(document).ready(function () {
       `/category/${questionData.category}/section/${questionData.section}/questions/${questionData._id}/reportMistake`
     );
 
+    console.log(questionData);
+
+    //update sourceCard
+    if (questionData.sourceCard) {
+      $("#sourceCardFront").empty().append(questionData.sourceCard.pageA);
+      $("#sourceCardBack").empty().append(questionData.sourceCard.pageB);
+    } else {
+      $("#sourceCardFront").empty().append("Není k dispozici");
+      $("#sourceCardBack").empty().append("");
+    }
+    $("#sourceCardIcon").addClass("hide");
+    $("#sourceCardIconPlaceholder").removeClass("hide");
+
     //update progress bars
     $("#progressNumMac").text(currentQuestion + 1);
     $("#progressBarMac").css("width", `${progressStatus}%`);
@@ -180,6 +194,8 @@ $(document).ready(function () {
 
     //evaluate answer
     $(".answer-item").click(function () {
+      $("#sourceCardIcon").removeClass("hide");
+      $("#sourceCardIconPlaceholder").addClass("hide");
       if (
         editedQuestions[currentQuestion].status === "none" ||
         editedQuestions[currentQuestion].status === "skipped"

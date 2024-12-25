@@ -69,10 +69,8 @@ router.post(
       case "PRODUCT_CHANGE":
         user.isPremium = true;
         user.plan = plan;
-        user.premiumDateOfActivation = new Date();
-        user.endDate = expiration_at_ms
-          ? new Date(Number(expiration_at_ms))
-          : null;
+        user.premiumDateOfUpdate = new Date();
+        user.endDate = moment(user.endDate).add(1, "months");
         user.subscriptionSource = "revenuecat";
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
