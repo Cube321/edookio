@@ -46,7 +46,12 @@
                         </div>
                         <div class="d-flex">
                             <% if (user.usedMobileApp) { %>
-                                <p class="mb-1 mx-1" style="color:blue;font: bold;">APP</p>
+                                <p class="mb-1 mx-1" style="color:blue;font: bold;">
+                                    APP
+                                    <% if (user.appNotificationsAllowed) { %>
+                                     (notifikace)
+                                    <% } %>
+                                </p>
                                <% } %>
                             <p class="mb-0 mx-1"><%= user.registrationPlatform %></p>
                             <p class="text-muted mb-0"><span style="color: green;font-weight: bold;">- A -</span></p>
@@ -61,7 +66,9 @@
                         </div>
                         <div class="d-flex">
                             <% if (user.usedMobileApp) { %>
-                                <p class="mb-1 mx-1" style="color:blue;font: bold;">APP</p>
+                                <p class="mb-1 mx-1" style="color:blue;font: bold;">APP <% if (user.appNotificationsAllowed) { %>
+                                    (notifikace)
+                                   <% } %></p>
                                <% } %>
                             <p class="mb-0 mx-1"><%= user.registrationPlatform %></p>
                             <p class="text-muted mb-0">- N -</p>

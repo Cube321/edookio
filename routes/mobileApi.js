@@ -61,7 +61,10 @@ router.get(
       const section = category.sections[i];
 
       // Add last test result (if available)
-      if (testResultsMap[section._id]) {
+      if (
+        testResultsMap[section._id] &&
+        testResultsMap[section._id].showOnCategoryPage
+      ) {
         category.sections[i].lastTestResult =
           testResultsMap[section._id].percentage;
       }
@@ -71,14 +74,6 @@ router.get(
         category.sections[i].isAccesible = false;
       } else {
         category.sections[i].isAccesible = true;
-      }
-
-      // Mark if the test in this section is finished
-      const finishedTestIndex = user.finishedQuestions.findIndex(
-        (x) => x.toString() === section._id.toString()
-      );
-      if (finishedTestIndex > -1) {
-        category.sections[i].isTestFinished = true;
       }
     }
 
@@ -132,6 +127,8 @@ router.get(
     // 2) If we want to exclude known cards, find them in CardInfo
     const allCardIds = section.cards.map((card) => card._id);
     const allCards = section.cards;
+    const allCardsCount = allCards.length;
+    let knowsAllCards = false;
 
     section.countStarted++;
     //WARNING: section.save has to be called before filtering cards otherwise the cards will be removed from the section
@@ -151,6 +148,7 @@ router.get(
       );
       if (section.cards.length === 0) {
         section.cards = allCards;
+        knowsAllCards = true;
       }
     }
 
@@ -168,7 +166,7 @@ router.get(
 
     await user.save();
 
-    res.status(200).json(section);
+    res.status(200).json({ section, knowsAllCards, allCardsCount });
   })
 );
 
@@ -177,7 +175,14 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     let { sectionId } = req.query;
-    const section = await Section.findById(sectionId).populate("questions");
+
+    const section = await Section.findById(sectionId).populate({
+      path: "questions",
+      populate: {
+        path: "sourceCard",
+      },
+    });
+
     section.countStartedTest++;
     await section.save();
 
@@ -191,12 +196,14 @@ router.get(
       user.streakLength++;
       user.dailyGoalReachedToday = true;
     }
+    let questionsSeenThisMonth = user.questionsSeenThisMonth;
+    let isUserPremium = user.isPremium;
 
     if (!user.isPremium && user.questionsSeenThisMonth > 50) {
       return res.status(200).json({ limitReached: true });
     }
 
-    res.status(200).json(section);
+    res.status(200).json({ section, questionsSeenThisMonth, isUserPremium });
   })
 );
 
@@ -282,6 +289,57 @@ router.post(
   })
 );
 
+//RESETING USER`S STATS (GET)
+router.post(
+  "/mobileApi/resetCards",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    const category = await Category.findOne({
+      name: req.body.categoryName,
+    }).populate("sections");
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    const cardIds = category.sections
+      .map((section) => section.cards)
+      .flat()
+      .map((card) => card._id);
+
+    await CardInfo.deleteMany({
+      user: req.user._id,
+      card: { $in: cardIds },
+    });
+    res.status(201).json({ message: "Cards reset" });
+  })
+);
+
+router.post(
+  "/mobileApi/resetQuestions",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const category = await Category.findOne({
+      name: req.body.categoryName,
+    }).populate("sections");
+    if (!category) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+
+    req.user.finishedQuestions = req.user.finishedQuestions.filter(
+      (sectionId) =>
+        !category.sections.map((section) => section._id).includes(sectionId)
+    );
+
+    //mark all testResults of this user for this category as not showOnCategoryPage
+    await TestResult.updateMany(
+      { user: req.user._id, category: category._id },
+      { showOnCategoryPage: false }
+    );
+
+    await req.user.save();
+    res.status(201).json({ message: "Questions reset" });
+  }
+);
+
 //HELPERS
 function sortByOrderNum(array) {
   // Use the Array.prototype.sort() method to sort the array
@@ -333,12 +391,11 @@ router.post(
 );
 
 router.post(
-  "/mobileApi/updateFinishedSections",
+  "/mobileApi/createCardsResult",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    //add new finished section to user's finishedSections
     let { sectionId } = req.body;
-    const { cardsCount } = req.query;
+    const { cardsCount } = req.body;
     let user = req.user;
 
     const foundSection = await Section.findById(sectionId);
@@ -375,7 +432,6 @@ router.get(
   "/mobileApi/getVersionInfo",
   catchAsync(async (req, res) => {
     const { platform } = req.query;
-    console.log("Platform: ", platform);
     const minimumVersion = {
       ios: "1.0.15",
       android: "1.0.15",
@@ -392,6 +448,8 @@ router.get(
       minimumVersion: minimumVersion[platform],
       latestVersion: latestVersions[platform],
       updateUrl: updateUrl[platform],
+      messageForUser:
+        "Aktualizujte prosím aplikaci na nejnovější verzi, ve které nově budete mít možnost ukládat výsledky testů a sledovat svůj pokrok.",
     };
     res.status(200).json(response);
   })

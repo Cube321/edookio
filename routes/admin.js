@@ -703,6 +703,12 @@ router.get("/admin/email", isLoggedIn, isAdmin, (req, res) => {
   res.status(200).render("admin/email");
 });
 
+//NOTIFICATIONS FROM ADMIN TO USERS
+//notification (render)
+router.get("/admin/notifications", isLoggedIn, isAdmin, (req, res) => {
+  res.status(200).render("admin/notifications");
+});
+
 //email (send)
 router.post(
   "/admin/email",

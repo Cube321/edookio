@@ -3,6 +3,7 @@ const Stats = require("../models/stats");
 const catchAsync = require("../utils/catchAsync");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");
+const { sendPushNotification } = require("../utils/pushNotifications");
 
 let cronHelpers = {};
 
@@ -53,10 +54,20 @@ cronHelpers.streakReminderEmail = catchAsync(async () => {
     if (
       user.streakLength > 1 &&
       !user.hasUnsubscribedFromStreak &&
-      user.actionsToday < 10
+      user.actionsToday < user.dailyGoal
     ) {
-      mail.sendStreakReminder(user.email, user.streakLength);
-      console.log(`streak reminder sent to: ${user.email}`);
+      if (user.expoPushToken) {
+        sendPushNotification(
+          user.expoPushToken,
+          "InLege",
+          `Neztrať svůj ${user.streakLength} denní streak! Stačí 10 otázek...`,
+          {}
+        );
+        console.log(`streak notification sent to: ${user.email}`);
+      } else {
+        mail.sendStreakReminder(user.email, user.streakLength);
+        console.log(`streak reminder e-mail sent to: ${user.email}`);
+      }
       counter++;
     }
   });

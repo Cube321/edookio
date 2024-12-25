@@ -68,6 +68,7 @@ router.post(
         source: sourceSelectedValue,
         cookies,
         registrationPlatform: "mobile",
+        isEmailVerified: false,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -216,6 +217,49 @@ router.delete(
       res.status(500).json({ message: "Internal server error" });
     }
   })
+);
+
+router.post(
+  "/mobileAuth/notificationsAllowed",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    try {
+      const userId = req.user.id;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Uživatel neexistuje." });
+      }
+      user.appNotificationsAllowed = true;
+      await user.save();
+      return res.status(200).json({ message: "Notifikace povoleny." });
+    } catch (error) {
+      console.log("Error setting notifications:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  })
+);
+
+router.post(
+  "/mobileAuth/storePushToken",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { pushToken } = req.body;
+      const userId = req.user._id;
+
+      console.log("Storing push token for user:", pushToken);
+
+      // Find the user in DB and store the token
+      const user = await User.findById(userId);
+      user.expoPushToken = pushToken;
+      await user.save();
+
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error storing push token:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
 );
 
 module.exports = router;

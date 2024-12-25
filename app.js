@@ -77,6 +77,7 @@ const temporaryRoutes = require("./routes/temporary");
 const dashboardRoutes = require("./routes/dashboard");
 const documentRoutes = require("./routes/document");
 const spaceRepetitionRoutes = require("./routes/spacedRepetition");
+const mobilePushNotifications = require("./routes/mobilePushNotifications");
 
 const dbUrl = process.env.DB_URL;
 
@@ -262,6 +263,7 @@ app.use("/", temporaryRoutes);
 app.use("/", dashboardRoutes);
 app.use("/", documentRoutes);
 app.use("/", spaceRepetitionRoutes);
+app.use("/", mobilePushNotifications);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 

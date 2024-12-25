@@ -35,6 +35,14 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  appNotificationsAllowed: {
+    type: Boolean,
+    default: false,
+  },
+  expoPushToken: {
+    type: String,
+    default: null,
+  },
   admin: {
     type: Boolean,
     default: false,
