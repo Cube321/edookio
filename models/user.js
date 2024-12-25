@@ -43,6 +43,10 @@ const UserSchema = new Schema({
     type: String,
     default: null,
   },
+  dailyActivityReminder: {
+    type: Boolean,
+    default: true,
+  },
   admin: {
     type: Boolean,
     default: false,

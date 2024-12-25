@@ -448,8 +448,10 @@ router.get(
       minimumVersion: minimumVersion[platform],
       latestVersion: latestVersions[platform],
       updateUrl: updateUrl[platform],
-      messageForUser:
+      messageForUserRequiredUpdate:
         "Aktualizujte prosím aplikaci na nejnovější verzi, ve které nově budete mít možnost ukládat výsledky testů a sledovat svůj pokrok.",
+      messageForUserRecommendedUpdate:
+        "Máte starší verzi aplikace. Doporučujeme aktualizovat na nejnovější verzi.",
     };
     res.status(200).json(response);
   })

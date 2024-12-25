@@ -56,22 +56,41 @@ cronHelpers.streakReminderEmail = catchAsync(async () => {
       !user.hasUnsubscribedFromStreak &&
       user.actionsToday < user.dailyGoal
     ) {
-      if (user.expoPushToken) {
-        sendPushNotification(
-          user.expoPushToken,
-          "InLege",
-          `Neztrať svůj ${user.streakLength} denní streak! Stačí 10 otázek...`,
-          {}
-        );
-        console.log(`streak notification sent to: ${user.email}`);
-      } else {
-        mail.sendStreakReminder(user.email, user.streakLength);
-        console.log(`streak reminder e-mail sent to: ${user.email}`);
-      }
+      mail.sendStreakReminder(user.email, user.streakLength);
+      console.log(`streak reminder e-mail sent to: ${user.email}`);
       counter++;
     }
   });
   mail.sendCronReport("streakReminderEmail", counter);
+});
+
+//cron notification to all users with expoPushToken and dailyActivityReminder set to true to remind them to do their daily goal
+cronHelpers.dailyActivityReminder = catchAsync(async () => {
+  console.log("RUNNING CRON: dailyActivityReminder");
+  let users = await User.find({ dailyActivityReminder: true });
+  let counter = 0;
+  users.forEach((user) => {
+    if (user.expoPushToken && user.actionsToday === user.dailyGoal) {
+      sendPushNotification(
+        user.expoPushToken,
+        "InLege",
+        `Nezapomeň si dnes procvičit své znalosti!`,
+        {}
+      );
+      counter++;
+    } else if (user.expoPushToken && user.actionsToday < user.dailyGoal) {
+      sendPushNotification(
+        user.expoPushToken,
+        "InLege",
+        `Ještě ti chybí ${
+          user.dailyGoal - user.actionsToday
+        } bodů k dosažení dnešního cíle!`,
+        {}
+      );
+      counter++;
+    }
+  });
+  mail.sendCronReport("dailyActivityReminder", counter);
 });
 
 cronHelpers.resetMonthlyCounters = catchAsync(async () => {
@@ -314,6 +333,9 @@ cronHelpers.cronExpressionDaily9PM = "0 19 * * *";
 
 // Schedule the function to run at 7 pm (8 pm on summer time)
 cronHelpers.cronExpressionDaily8PM = "0 18 * * *";
+
+// Schedule the function to run at 6:30 pm (7:30 pm on summer time)
+cronHelpers.cronExpressionDaily730PM = "30 17 * * *";
 
 // Schedule the function to run every 1st second of every minute
 cronHelpers.cronExpressionMinutes = "1 * * * * *";
