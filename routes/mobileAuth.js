@@ -262,4 +262,48 @@ router.post(
   }
 );
 
+router.post(
+  "/mobileAuth/saveFaculty",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      console.log("Saving faculty for user:", req.user.email);
+      const userId = req.user.id;
+      const { faculty } = req.body;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Uživatel neexistuje." });
+      }
+      user.faculty = faculty;
+      await user.save();
+      return res.status(200).json({ message: "Fakulta uložena." });
+    } catch (error) {
+      console.log("Error saving faculty:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+);
+
+router.post(
+  "/mobileAuth/saveSource",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      console.log("Saving source for user:", req.user.email);
+      const userId = req.user.id;
+      const { source } = req.body;
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: "Uživatel neexistuje." });
+      }
+      user.source = source;
+      await user.save();
+      return res.status(200).json({ message: "Zdroj uložen." });
+    } catch (error) {
+      console.log("Error saving source:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+);
+
 module.exports = router;

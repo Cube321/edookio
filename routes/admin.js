@@ -130,6 +130,12 @@ router.get(
 
     users.forEach((user) => {
       let newUser = user;
+      if (newUser.faculty === "-") {
+        newUser.faculty = "Neuvedeno";
+      }
+      if (newUser.source === "-") {
+        newUser.source = "neuvedeno";
+      }
       //mark user as active in the last 48 hours
       newUser.updatedDateOfRegistration = moment(user.dateOfRegistration)
         .locale("cs")
