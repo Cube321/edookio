@@ -237,6 +237,7 @@ passport.use(
         }
         if (userWithEmail) {
           userWithEmail.googleId = profile.id;
+          username = userWithEmail.email;
           await userWithEmail.save();
           user = userWithEmail;
         }
