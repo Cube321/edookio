@@ -112,7 +112,7 @@ router.get(
         nextSection = { name: "lastSection" };
       } else {
         nextSection = {
-          name: "notValidId - udelejte prosim screen teto obrazovky a zaslete jej na e-mail info@inlege.cz",
+          name: "Na tento balíček nenavazuje žádný další balíček.",
         };
       }
     }

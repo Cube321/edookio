@@ -353,7 +353,7 @@ router.post(
         user = new User({
           googleId: payload.sub,
           email: payload.email.toLowerCase(),
-          username: profile.emails[0].value.toLowerCase(),
+          username: payload.email.toLowerCase(),
           firstname: payload.given_name || "",
           lastname: payload.family_name || "",
           isEmailVerified: true, // Google ensures verified email
