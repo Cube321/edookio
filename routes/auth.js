@@ -200,6 +200,28 @@ router.post(
   })
 );
 
+// Redirect user to Google's OAuth 2.0 server
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+// Handle callback after Google has authenticated the user
+router.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "/auth/user/login",
+    failureFlash:
+      "Přihlášení Google bylo neúspěšné. Zkuste se přihlásit jménem a heslem.",
+  }),
+  (req, res) => {
+    // Successful authentication, redirect to profile
+    res.redirect("/");
+  }
+);
+
 async function incrementEventCount(eventName) {
   try {
     await Stats.findOneAndUpdate(

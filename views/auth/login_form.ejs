@@ -7,6 +7,14 @@
                     <div class="text-center">
                         <h3 class="mb-3 mt-2">Přihlášení</h3>
                     </div>
+                    <div class="text-center mt-3">
+                        <a class="btn btn-outline-danger w-100 mt-2" href="/auth/google">
+                        <i class="fab fa-google me-1"></i> Přihlásit se přes Google
+                        </a>
+                    </div>
+                    <div class="text-center my-2">
+                        <span class="text-muted"><small>nebo</small></span>
+                    </div>
                     <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/login" method="POST">
                         <div class="mt-1">
                             <input type="email" class="form-control" id="username" name="username" placeholder="E-mail" autofocus required>

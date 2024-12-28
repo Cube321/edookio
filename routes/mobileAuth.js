@@ -11,6 +11,9 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 router.post(
   "/mobileAuth/createUser",
   catchAsync(async (req, res) => {
@@ -304,6 +307,83 @@ router.post(
       res.status(500).json({ message: "Internal server error" });
     }
   }
+);
+
+router.post(
+  "/mobileAuth/googleLogin",
+  catchAsync(async (req, res) => {
+    try {
+      console.log("googleLogin request:", req.body);
+      const { idToken } = req.body;
+      const { platform } = req.body;
+      if (!idToken) {
+        return res.status(400).json({ message: "Missing Google ID token" });
+      }
+
+      let clientId = process.env.GOOGLE_CLIENT_ID;
+
+      if (platform === "ios") {
+        clientId = process.env.GOOGLE_CLIENT_ID_IOS;
+      }
+
+      if (platform === "android") {
+        clientId = process.env.GOOGLE_CLIENT_ID_ANDROID;
+      }
+
+      // 1. Verify token with Google
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: clientId,
+      });
+      const payload = ticket.getPayload();
+      // payload includes .email, .sub (Google ID), .given_name, .family_name, etc.
+
+      if (!payload) {
+        return res.status(401).json({ message: "Invalid Google token" });
+      }
+
+      // 2. Check if user already exists by googleId or by email
+      let user = await User.findOne({ googleId: payload.sub });
+      let userByEmail = await User.findOne({
+        email: payload.email.toLowerCase(),
+      });
+
+      // 3. If no user, create new
+      if (!user && !userByEmail) {
+        user = new User({
+          googleId: payload.sub,
+          email: payload.email.toLowerCase(),
+          username: profile.emails[0].value.toLowerCase(),
+          firstname: payload.given_name || "",
+          lastname: payload.family_name || "",
+          isEmailVerified: true, // Google ensures verified email
+          dateOfRegistration: Date.now(),
+          registrationPlatform: "mobile",
+        });
+        await user.save();
+      } else if (userByEmail && !user) {
+        // user with that email exists => link googleId
+        userByEmail.googleId = payload.sub;
+        await userByEmail.save();
+        user = userByEmail;
+      }
+
+      // 4. Create your own app's JWT
+      const tokenPayload = { id: user._id };
+      const accessToken = jwt.sign(tokenPayload, process.env.JWT_SECRET);
+
+      // 5. Return the JWT + user info
+      return res.status(200).json({
+        message: "Google login successful",
+        accessToken,
+        email: user.email,
+        userId: user._id,
+      });
+    } catch (error) {
+      console.log("googleLogin error:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
+  })
 );
 
 module.exports = router;

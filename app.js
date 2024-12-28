@@ -15,6 +15,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const ExtractJwt = require("passport-jwt").ExtractJwt;
 const JwtStrategy = require("passport-jwt").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 
 const User = require("./models/user");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -25,6 +26,7 @@ const Category = require("./models/category");
 const texts = require(`./utils/texts.${process.env.PROJECT}`);
 const cron = require("node-cron");
 const cronHelpers = require(`./utils/cron`);
+const mail = require("./mail/mail_inlege");
 
 app.use("/webhook", bodyParser.raw({ type: "application/json" }));
 
@@ -203,6 +205,47 @@ passport.use(
       return done(error);
     }
   })
+);
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "/auth/google/callback",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        // Find or create the user
+        let user = await User.findOne({ googleId: profile.id });
+        let userWithEmail = await User.findOne({
+          email: profile.emails[0].value.toLowerCase(),
+        });
+        if (!user && !userWithEmail) {
+          user = new User({
+            googleId: profile.id,
+            username: profile.emails[0].value.toLowerCase(),
+            email: profile.emails[0].value.toLowerCase(),
+            firstname: profile.name.givenName,
+            lastname: profile.name.familyName,
+            isEmailVerified: true, // Google ensures verified email
+            dateOfRegistration: Date.now(),
+          });
+          await user.save();
+          mail.welcome(user.email);
+          mail.adminInfoNewUser(user);
+        }
+        if (userWithEmail) {
+          userWithEmail.googleId = profile.id;
+          await userWithEmail.save();
+          user = userWithEmail;
+        }
+        return done(null, user);
+      } catch (err) {
+        return done(err, null);
+      }
+    }
+  )
 );
 
 passport.serializeUser(User.serializeUser());

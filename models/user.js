@@ -10,10 +10,15 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
+  username: {
+    type: String,
+    unique: true,
+  },
   isEmailVerified: {
     type: Boolean,
     default: true,
   },
+  googleId: String,
   passwordJWT: String,
   nickname: {
     type: String,

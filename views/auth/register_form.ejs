@@ -12,6 +12,14 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#moreInfo">Zjistit více</a>
                     </p>
                 </div>
+                <div class="text-center mt-3">
+                    <a class="btn btn-outline-danger w-100 mt-2" href="/auth/google">
+                    <i class="fab fa-google me-1"></i> Registrovat se přes Google
+                    </a>
+                </div>
+                <div class="text-center my-2">
+                    <span class="text-muted"><small>nebo</small></span>
+                </div>
                 <% if (requiresPremium) { %>
                     <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new?requiresPremium=true" method="POST">
                 <% } else { %>
@@ -108,7 +116,7 @@
                                     <div class="col-8">
                                         <div class="ml-3">
                                             <h5 class="reason-title">Unikátní přístup</h5>
-                                            <p class="reason-content mt-2">Zkušenosti absolventů práv přetavené do více než 5 000 interaktivních otázek a odpovědí.</p>
+                                            <p class="reason-content mt-2">Zkušenosti absolventů práv přetavené do více než 10 000 interaktivních otázek a odpovědí.</p>
                                         </div>
                                     </div>
                                     
