@@ -1,4 +1,5 @@
 const express = require("express");
+const moment = require("moment");
 const mongoose = require("mongoose");
 const router = express.Router();
 const Card = require("../models/card");
@@ -14,9 +15,6 @@ router.post("/api/markCardKnown/:cardId", async (req, res) => {
 
       await Card.findById(cardId);
 
-      console.log("cardId", cardId);
-      console.log("known", known);
-
       // Find or create a CardInfo document
       let cardInfo = await CardInfo.findOne({
         user: req.user._id,
@@ -30,6 +28,28 @@ router.post("/api/markCardKnown/:cardId", async (req, res) => {
       // Update the known status
       cardInfo.known = known;
       await cardInfo.save();
+
+      let user = req.user;
+
+      //count new actions only every two seconds
+      let now = moment();
+      if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
+        //update date of user's last activity
+        user.lastActive = moment();
+        //increase cardSeen by 1
+        user.cardsSeen++;
+        user.cardsSeenThisMonth++;
+        user.actionsToday++;
+        if (
+          user.actionsToday === user.dailyGoal &&
+          !user.dailyGoalReachedToday
+        ) {
+          user.streakLength++;
+          user.dailyGoalReachedToday = true;
+        }
+      }
+
+      await user.save();
 
       return res.status(200).json({ success: true, known: cardInfo.known });
     } else {
@@ -53,9 +73,6 @@ router.post(
 
         await Card.findById(cardId);
 
-        console.log("cardId", cardId);
-        console.log("known", known);
-
         // Find or create a CardInfo document
         let cardInfo = await CardInfo.findOne({
           user: req.user._id,
@@ -69,6 +86,28 @@ router.post(
         // Update the known status
         cardInfo.known = known;
         await cardInfo.save();
+
+        let user = req.user;
+
+        //count new actions only every two seconds
+        let now = moment();
+        if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
+          //update date of user's last activity
+          user.lastActive = moment();
+          //increase cardSeen by 1
+          user.cardsSeen++;
+          user.cardsSeenThisMonth++;
+          user.actionsToday++;
+          if (
+            user.actionsToday === user.dailyGoal &&
+            !user.dailyGoalReachedToday
+          ) {
+            user.streakLength++;
+            user.dailyGoalReachedToday = true;
+          }
+        }
+
+        await user.save();
 
         return res.status(200).json({ success: true, known: cardInfo.known });
       } else {

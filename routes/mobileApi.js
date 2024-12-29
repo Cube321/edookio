@@ -6,6 +6,7 @@ const Category = require("../models/category");
 const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
 const CardInfo = require("../models/cardInfo");
+const User = require("../models/user");
 const passport = require("passport");
 const moment = require("moment");
 
@@ -359,37 +360,6 @@ function removeITags(str) {
   });
 }
 
-//update last seen Card of Section
-router.post(
-  "/mobileApi/updateLastSeenCard",
-  passport.authenticate("jwt", { session: false }),
-  catchAsync(async (req, res) => {
-    let { sectionId, cardNum } = req.body;
-
-    if (req.user) {
-      let user = req.user;
-
-      //count new actions only every two seconds
-      let now = moment();
-      if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-        //update date of user's last activity
-        user.lastActive = moment();
-        //increase cardSeen by 1
-        user.cardsSeen++;
-        user.cardsSeenThisMonth++;
-        user.actionsToday++;
-        if (user.actionsToday === user.dailyGoal) {
-          user.streakLength++;
-          user.dailyGoalReachedToday = true;
-        }
-      }
-
-      await user.save();
-    }
-    res.status(201).json({ message: "Last seen card updated" });
-  })
-);
-
 router.post(
   "/mobileApi/createCardsResult",
   passport.authenticate("jwt", { session: false }),
@@ -465,6 +435,59 @@ router.get(
         "Máte starší verzi aplikace. Doporučujeme aktualizovat na nejnovější verzi.",
     };
     res.status(200).json(response);
+  })
+);
+
+router.get(
+  "/mobileApi/getActivity",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    let testResults = await TestResult.find({ user: user._id }).populate(
+      "section category"
+    );
+    let cardsResults = await CardsResult.find({ user: user._id }).populate(
+      "section category"
+    );
+
+    // Convert documents to plain objects to allow adding new properties
+    testResults = testResults.map((result) => result.toObject());
+    cardsResults = cardsResults.map((result) => result.toObject());
+
+    // Mark the results as tests or cards
+    testResults.forEach((result) => {
+      result.type = "test";
+    });
+    cardsResults.forEach((result) => {
+      result.type = "cards";
+    });
+
+    let allResults = testResults.concat(cardsResults);
+
+    // Sort the results by date descending
+    allResults.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Add formattedDate and other computed properties
+    allResults.forEach((result) => {
+      result.formattedDate = moment(result.date).locale("cs").format("LLL");
+
+      if (result.type === "test") {
+        result.totalQuestions =
+          result.correct + result.incorrect + result.skipped;
+        result.countTotal = result.totalQuestions;
+      } else if (result.type === "cards") {
+        result.countTotal = result.totalCards;
+      }
+    });
+
+    console.log("All results: ", allResults);
+
+    res.status(200).json(allResults);
   })
 );
 
