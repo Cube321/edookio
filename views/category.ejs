@@ -139,7 +139,7 @@
                                         <div>
                                             <% if (section.isPremium && (!currentUser || !currentUser.isPremium)) { %> 
                                                 <a href="/premium" class="btn btn-sm btn-warning btn-spustit w-100 mt-2"><i class="fas fa-crown text-small"></i> Premium</a>
-                                            <% } else if (section.questions.length > 0) { %>
+                                            <% } else if (currentUser) { %>
                                                 <a href="/category/<%= category._id %>/section/<%= section._id %>/test" class="btn btn-sm btn-danger btn-spustit w-100 mt-2">Spustit</a>
                                             <% } else { %>
                                                 <a href="#" class="btn btn-sm btn-danger btn-spustit w-100 mt-2 disabled">Po registraci</a>

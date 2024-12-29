@@ -156,7 +156,11 @@
                         <p>Heslo</p>
                     </div>
                     <div class="col-8 d-flex justify-content-end align-items-center">
-                        <a href="/auth/user/changePassword" class="btn btn-danger btn-sm" style="margin-bottom: 5px">Změnit heslo</a>
+                        <% if (user.registrationMethod === "google" && !user.passwordJWT) { %>
+                            <a href="/auth/user/setUpPassword" class="btn btn-danger btn-sm" style="margin-bottom: 5px">Nastavit heslo</a>
+                        <% } else { %>
+                            <a href="/auth/user/changePassword" class="btn btn-danger btn-sm" style="margin-bottom: 5px">Změnit heslo</a>
+                        <% } %>
                         <!--the following input transfers customer billing ID to Javascript -->
                         <input type="text" id="customerID" name="customerID" value="<%= user.billingId %>" style="display:none" />
                     </div>

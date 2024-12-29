@@ -217,7 +217,6 @@ router.get(
       "Přihlášení Google bylo neúspěšné. Zkuste se přihlásit jménem a heslem.",
   }),
   (req, res) => {
-    // Successful authentication, redirect to profile
     res.redirect("/");
   }
 );
@@ -302,6 +301,10 @@ router.get(
       return res.redirect("/");
     }
     mail.emailVerification(user.email, user._id);
+    req.flash(
+      "successOverlay",
+      `Ověřovací e-mail byl odeslán na ${user.email}.`
+    );
     res.status(200).redirect("/");
   })
 );
@@ -349,6 +352,12 @@ router.post(
     }
   })
 );
+
+//set up password (GET)
+router.get("/auth/user/setUpPassword", isLoggedIn, (req, res) => {
+  const passChangeId = req.user.passChangeId;
+  res.status(200).render("auth/set_up_password", { passChangeId });
+});
 
 //request forgotten password form (GET)
 router.get("/auth/user/requestPassword", (req, res) => {

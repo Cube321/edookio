@@ -28,6 +28,9 @@ const cron = require("node-cron");
 const cronHelpers = require(`./utils/cron`);
 const mail = require("./mail/mail_inlege");
 
+const Stripe = require("./utils/stripe");
+const uuid = require("uuid");
+
 app.use("/webhook", bodyParser.raw({ type: "application/json" }));
 
 app.use(bodyParser.json());
@@ -222,6 +225,18 @@ passport.use(
           email: profile.emails[0].value.toLowerCase(),
         });
         if (!user && !userWithEmail) {
+          let admin = false;
+          //create cookies object
+          let cookies = {
+            technical: true,
+            analytical: true,
+            marketing: true,
+          };
+          const passChangeId = uuid.v1();
+          const customer = await Stripe.addNewCustomer(
+            profile.emails[0].value.toLowerCase()
+          );
+
           user = new User({
             googleId: profile.id,
             username: profile.emails[0].value.toLowerCase(),
@@ -230,6 +245,15 @@ passport.use(
             lastname: profile.name.familyName,
             isEmailVerified: true, // Google ensures verified email
             dateOfRegistration: Date.now(),
+            registrationMethod: "google",
+            registrationPlatform: "web",
+            admin: admin,
+            cookies: cookies,
+            passChangeId: passChangeId,
+            billingId: customer.id,
+            plan: "none",
+            endDate: null,
+            isGdprApproved: true,
           });
           await user.save();
           mail.welcome(user.email);

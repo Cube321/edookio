@@ -109,6 +109,18 @@ router.post(
           .json({ message: "Nesprávný e-mail nebo heslo." });
       }
 
+      if (
+        userExists &&
+        !userExists.passwordJWT &&
+        userExists.registrationMethod === "google"
+      ) {
+        return res.status(400).json({
+          message:
+            "Pro přihlášení přes aplikaci je třeba nastavit heslo. (passwordSetUpRequired)",
+          code: "passwordSetUpRequired",
+        });
+      }
+
       if (userExists && !userExists.passwordJWT) {
         return res.status(400).json({
           message:
@@ -313,7 +325,6 @@ router.post(
   "/mobileAuth/googleLogin",
   catchAsync(async (req, res) => {
     try {
-      console.log("googleLogin request:", req.body);
       const { idToken } = req.body;
       const { platform } = req.body;
       if (!idToken) {
@@ -326,6 +337,7 @@ router.post(
         clientId = process.env.GOOGLE_CLIENT_ID_IOS;
       }
 
+      //Android Google Login Does Not Work
       if (platform === "android") {
         clientId = process.env.GOOGLE_CLIENT_ID_ANDROID;
       }
@@ -350,6 +362,18 @@ router.post(
 
       // 3. If no user, create new
       if (!user && !userByEmail) {
+        let admin = false;
+        //create cookies object
+        let cookies = {
+          technical: true,
+          analytical: true,
+          marketing: true,
+        };
+        const passChangeId = uuid.v1();
+        const customer = await Stripe.addNewCustomer(
+          payload.email.toLowerCase()
+        );
+
         user = new User({
           googleId: payload.sub,
           email: payload.email.toLowerCase(),
@@ -359,11 +383,22 @@ router.post(
           isEmailVerified: true, // Google ensures verified email
           dateOfRegistration: Date.now(),
           registrationPlatform: "mobile",
+          registrationMethod: "google",
+          admin: admin,
+          cookies: cookies,
+          passChangeId: passChangeId,
+          billingId: customer.id,
+          plan: "none",
+          endDate: null,
+          isGdprApproved: true,
         });
         await user.save();
+        mail.welcome(user.email);
+        mail.adminInfoNewUser(user);
       } else if (userByEmail && !user) {
         // user with that email exists => link googleId
         userByEmail.googleId = payload.sub;
+        userByEmail.username = payload.email.toLowerCase();
         await userByEmail.save();
         user = userByEmail;
       }

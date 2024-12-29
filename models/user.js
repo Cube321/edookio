@@ -36,6 +36,10 @@ const UserSchema = new Schema({
     type: String,
     default: "web",
   },
+  registrationMethod: {
+    type: String,
+    default: "email",
+  },
   usedMobileApp: {
     type: Boolean,
     default: false,
