@@ -1,15 +1,11 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const ExpressError = require("../utils/ExpressError");
 const Card = require("../models/card");
 const Section = require("../models/section");
-const Stats = require("../models/stats");
 const User = require("../models/user");
 const Category = require("../models/category");
 const Mistake = require("../models/mistake");
-const moment = require("moment");
 const mail = require("../mail/mail_inlege");
 const { validateCard, isLoggedIn, isEditor } = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");
@@ -26,13 +22,11 @@ router.get(
     if (!foundSection) {
       throw Error("Sekce s tímto ID neexistuje");
     }
-    res
-      .status(200)
-      .render("cards/new", {
-        category,
-        sectionId,
-        sectionName: foundSection.name,
-      });
+    res.status(200).render("cards/new", {
+      category,
+      sectionId,
+      sectionName: foundSection.name,
+    });
   })
 );
 
@@ -46,13 +40,6 @@ router.post(
     const { pageA, pageB } = req.body;
     const author = req.user.email;
     const { category, sectionId } = req.params;
-    const newCard = new Card({
-      category,
-      section: sectionId,
-      pageA,
-      pageB,
-      author,
-    });
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findOne({ name: req.params.category });
     if (!foundSection) {
@@ -61,6 +48,14 @@ router.post(
     if (!foundCategory) {
       throw Error("Kategorie s tímto ID neexistuje");
     }
+    const newCard = new Card({
+      category,
+      section: sectionId,
+      categoryId: foundCategory._id,
+      pageA,
+      pageB,
+      author,
+    });
     const createdCard = await newCard.save();
     foundCategory.numOfCards++;
     await foundCategory.save();
@@ -176,67 +171,24 @@ router.post(
     if (!foundCard) {
       throw Error("Kartička s tímto ID neexistuje");
     }
-    const newReport = {
-      date: Date.now(),
-      reportMsg: req.body.reportMsg,
-      solved: false,
-      user: req.user.email,
+    const newMistake = {
+      content: req.body.reportMsg,
+      card: foundCard._id,
+      author: req.user.email,
     };
-    foundCard.factualMistakeReports.push(newReport);
-    await foundCard.save();
+    await Mistake.create(newMistake);
     res.status(201).render("cards/reportSubmited");
   })
 );
 
-//show all reported cards
+//show all mistakes
 router.get(
-  "/admin/listAllReports",
+  "/admin/mistakes",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res) => {
-    const cards = await Card.find({
-      factualMistakeReports: { $exists: true, $ne: [] },
-    });
-    const mistakes = await Mistake.find().populate("question");
-    res.status(200).render("admin/reports", { cards, mistakes });
-  })
-);
-
-//mark as solved
-router.get(
-  "/cards/report/solved/:cardId/:userEmail",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const foundCard = await Card.findById(req.params.cardId);
-    if (!foundCard) {
-      throw Error("Kartička s tímto ID neexistuje");
-    }
-    foundCard.factualMistakeReports = [];
-    await Card.findByIdAndUpdate(req.params.cardId, foundCard);
-    mail.sendThankYou(req.params.userEmail, foundCard.pageA, "card");
-    req.flash(
-      "successOverlay",
-      "Označeno jako vyřešené a e-mail s poděkováním byl odeslán uživateli."
-    );
-    res.status(200).redirect("/admin/listAllReports");
-  })
-);
-
-//delete report
-router.get(
-  "/cards/report/delete/:cardId",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const foundCard = await Card.findById(req.params.cardId);
-    if (!foundCard) {
-      throw Error("Kartička s tímto ID neexistuje");
-    }
-    foundCard.factualMistakeReports = [];
-    await Card.findByIdAndUpdate(req.params.cardId, foundCard);
-    req.flash("successOverlay", "Report odstraněn.");
-    res.status(200).redirect("/admin/listAllReports");
+    const mistakes = await Mistake.find().populate("question card");
+    res.status(200).render("admin/reports", { mistakes });
   })
 );
 

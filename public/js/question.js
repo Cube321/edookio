@@ -23,8 +23,6 @@ $(document).ready(function () {
     freeQuestionsLeft = parseInt($("#free-questions-left").attr("name"));
   }
 
-  console.log(freeQuestionsLeft);
-
   //get cards
   $.ajax({
     method: "GET",
@@ -142,8 +140,6 @@ $(document).ready(function () {
       `/category/${questionData.category}/section/${questionData.section}/questions/${questionData._id}/reportMistake`
     );
 
-    console.log(questionData);
-
     //update sourceCard
     if (questionData.sourceCard) {
       $("#sourceCardFront").empty().append(questionData.sourceCard.pageA);
@@ -168,7 +164,6 @@ $(document).ready(function () {
       $("#free-questions-left").text(freeQuestionsLeft - 1);
       freeQuestionsLeft--;
       if (freeQuestionsLeft < 26) {
-        console.log("less than 26");
         $("#free-questions-text")
           .removeClass("opacity-0")
           .addClass("opacity-1");
@@ -229,6 +224,12 @@ $(document).ready(function () {
             );
           }
           editedQuestions[currentQuestion].status = "wrong";
+          if (editedQuestions[currentQuestion].sourceCard) {
+            markCardKnowledge(
+              false,
+              editedQuestions[currentQuestion].sourceCard._id
+            );
+          }
           renderListOfQuestions();
         }
       }
@@ -349,3 +350,11 @@ $(document).ready(function () {
     renderQuestion(previousQuestion);
   });
 });
+
+function markCardKnowledge(known, cardId) {
+  fetch(`/api/markCardKnown/${cardId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ known: known }),
+  });
+}

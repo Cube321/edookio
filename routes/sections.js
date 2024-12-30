@@ -35,6 +35,8 @@ router.get(
       return res.status(404).redirect("/");
     }
 
+    let knownCardsOfCategory = 0;
+
     if (req.user) {
       const CardInfo = require("../models/cardInfo");
 
@@ -50,6 +52,7 @@ router.get(
 
         // Store this info so you can use it in your EJS
         section.knownCount = knownCount;
+        knownCardsOfCategory += knownCount;
         section.leftToStudy = cardIds.length - knownCount;
         //how many percent of the cards the user already knows
         section.knownPercentage = Math.round(
@@ -57,6 +60,10 @@ router.get(
         );
       }
     }
+
+    let knownPercentageOfCategory = Math.round(
+      (knownCardsOfCategory / category.numOfCards) * 100
+    );
 
     //if there is not user, set knownCount to 0
     if (!req.user) {
@@ -113,7 +120,9 @@ router.get(
       });
     }
     //render category page
-    res.status(200).render("category", { category, title });
+    res
+      .status(200)
+      .render("category", { category, title, knownPercentageOfCategory });
   })
 );
 
@@ -271,6 +280,7 @@ router.post(
     const newSection = new Section({
       name,
       category: categoryName,
+      categoryId: foundCategory._id,
       cards: [],
       questions: [],
       isPremium: isPremiumBoolean,
@@ -297,6 +307,7 @@ router.post(
           pageA: card.pageA,
           pageB: card.pageB,
           category: categoryName,
+          categoryId: foundCategory._id,
           author: card.author,
           importedCardId: card._id,
         });
@@ -309,6 +320,7 @@ router.post(
         let newQuestion = new Question({
           section: savedSection._id,
           category: foundCategory._id,
+          categoryId: foundCategory._id,
           question: question.question,
           correctAnswers: [...question.correctAnswers],
           wrongAnswers: [...question.wrongAnswers],

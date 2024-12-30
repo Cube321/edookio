@@ -7,6 +7,10 @@ const CardSchema = new Schema({
     required: true,
     default: "notset",
   },
+  categoryId: {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+  },
   pageA: String,
   pageB: String,
   author: {

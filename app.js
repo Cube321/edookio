@@ -91,6 +91,8 @@ const mobilePushNotifications = require("./routes/mobilePushNotifications");
 
 const dbUrl = process.env.DB_URL;
 
+mongoose.set("strictQuery", false);
+
 mongoose
   .connect(dbUrl, { dbName: process.env.DB_NAME })
   .then(() => {

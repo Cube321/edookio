@@ -6,6 +6,10 @@ const QuestionSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
+  categoryId: {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+  },
   section: {
     type: Schema.Types.ObjectId,
     ref: "Section",

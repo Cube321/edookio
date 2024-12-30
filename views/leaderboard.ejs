@@ -80,7 +80,9 @@
                                     <span><%= user.nickname %></span>
                                 </p>
                                 <% if (user.isPremium) { %>
-                                    <span><i class="fas fa-crown golden text-small" title="Aktivní Premium"></i></span>
+                                    <span style="width:24px"><i class="fas fa-crown golden text-small" title="Aktivní Premium"></i></span>
+                                <% } else { %>
+                                    <span style="width:24px"></span>
                                 <% } %>
                                 <% if (order === "day") { %>
                                     <p class="points"><%= user.pointsToday %></p>

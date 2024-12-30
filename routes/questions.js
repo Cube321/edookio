@@ -254,6 +254,7 @@ router.post(
     }
     let newQuestion = new Question({
       category: categoryId,
+      categoryId: categoryId,
       section: sectionId,
       author: email,
       question,
@@ -443,19 +444,30 @@ router.post(
 
 //delete mistake
 router.get(
-  "/category/:categoryId/section/:sectionId/questions/:questionId/deleteMistakeReport/:mistakeId",
+  "/deleteMistakeReport/:mistakeId",
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { mistakeId } = req.params;
     const { thankUser } = req.query;
     const deletedMistake = await Mistake.findByIdAndRemove(mistakeId).populate(
-      "question"
+      "question card"
     );
-    if (thankUser) {
+
+    if (thankUser && deletedMistake.question) {
       mail.sendThankYou(
         deletedMistake.author,
         deletedMistake.question.question,
         "question"
+      );
+      req.flash(
+        "successOverlay",
+        "Report odstraněn a uživateli zaslán e-mail s poděkováním."
+      );
+    } else if (thankUser && deletedMistake.card) {
+      mail.sendThankYou(
+        deletedMistake.author,
+        deletedMistake.card.pageA,
+        "card"
       );
       req.flash(
         "successOverlay",

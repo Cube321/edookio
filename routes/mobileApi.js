@@ -7,8 +7,10 @@ const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
 const CardInfo = require("../models/cardInfo");
 const User = require("../models/user");
+const Mistake = require("../models/mistake");
 const passport = require("passport");
 const moment = require("moment");
+const card = require("../models/card");
 
 router.get(
   "/mobileApi/getCategories",
@@ -42,6 +44,11 @@ router.get(
 
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
+    }
+
+    if (!category.sections || category.sections.length === 0) {
+      let sections = [];
+      return res.status(200).json(sections);
     }
 
     // 2) Build a map of the latest test results for each section
@@ -78,6 +85,8 @@ router.get(
       }
     }
 
+    let knownInCategoryCount = 0;
+
     // 4) Count "left to study" for each section
     //    (how many cards the user hasn't marked as known = true)
     for (let i = 0; i < category.sections.length; i++) {
@@ -98,6 +107,8 @@ router.get(
         known: true,
       });
 
+      knownInCategoryCount += knownCount;
+
       // Compute how many are left
       const totalCards = cardIds.length;
       const leftToStudy = totalCards - knownCount;
@@ -108,8 +119,18 @@ router.get(
       category.sections[i].leftToStudy = leftToStudy;
     }
 
+    let percentageOfKnownCards = Math.floor(
+      (knownInCategoryCount / category.numOfCards) * 100
+    );
+    if (isNaN(percentageOfKnownCards)) {
+      percentageOfKnownCards = 0;
+    }
+
     // 5) Return the sections as JSON
-    res.status(200).json(category.sections);
+    res.status(200).json({
+      sections: category.sections,
+      percentageOfKnownCards,
+    });
   })
 );
 
@@ -136,7 +157,6 @@ router.get(
     await section.save();
 
     const { mode } = req.query;
-    console.log("Mode: ", mode);
     if (mode === "unknown") {
       const knownCards = await CardInfo.find({
         user: req.user._id,
@@ -390,8 +410,6 @@ router.post(
       totalCards: cardsCount,
     });
 
-    console.log("Cards result created:" + createdCardsResult);
-
     await user.save();
     res.status(201).json({ message: "Result created section added to user" });
   })
@@ -405,36 +423,6 @@ router.post(
     user.dailyActivityReminder = !user.dailyActivityReminder;
     await user.save();
     res.status(201).json({ message: "Daily reminder toggled" });
-  })
-);
-
-//get required mobile version for app (ios and android)
-router.get(
-  "/mobileApi/getVersionInfo",
-  catchAsync(async (req, res) => {
-    const { platform } = req.query;
-    const minimumVersion = {
-      ios: "1.0.15",
-      android: "1.0.15",
-    };
-    const latestVersions = {
-      ios: "1.0.15",
-      android: "1.0.15",
-    };
-    const updateUrl = {
-      ios: "https://apps.apple.com/us/app/inlege/id6670204630",
-      android: "https://play.google.com/store/apps/details?id=cz.inlege.InLege",
-    };
-    const response = {
-      minimumVersion: minimumVersion[platform],
-      latestVersion: latestVersions[platform],
-      updateUrl: updateUrl[platform],
-      messageForUserRequiredUpdate:
-        "Aktualizujte prosím aplikaci na nejnovější verzi, ve které nově budete mít možnost ukládat výsledky testů a sledovat svůj pokrok.",
-      messageForUserRecommendedUpdate:
-        "Máte starší verzi aplikace. Doporučujeme aktualizovat na nejnovější verzi.",
-    };
-    res.status(200).json(response);
   })
 );
 
@@ -485,9 +473,327 @@ router.get(
       }
     });
 
-    console.log("All results: ", allResults);
-
     res.status(200).json(allResults);
+  })
+);
+
+//route to post a mistake on a question or a card (POST)
+router.post(
+  "/mobileApi/reportMistake",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    console.log("Mistake report api route hit");
+    console.log("Request body", req.body);
+
+    let { questionId, cardId, content } = req.body;
+    let user = req.user;
+
+    if (!questionId && !cardId) {
+      return res.status(400).json({
+        error: "QuestionId or cardId is required",
+      });
+    }
+
+    let newMistake = {
+      content: content,
+      card: cardId,
+      question: questionId,
+      author: user.email,
+    };
+
+    const savedMistake = await Mistake.create(newMistake);
+    res.status(201).json({ message: "Mistake reported" });
+  })
+);
+
+//get leaderboard data
+router.get(
+  "/mobileApi/getLeaderboard",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let users = await User.find();
+
+    //simpligy the user to only the necessary data
+    users = users.map((user) => {
+      return {
+        _id: user._id,
+        email: user.email,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        nickname: user.nickname,
+        faculty: user.faculty,
+        cardsSeen: user.cardsSeen,
+        questionsSeenTotal: user.questionsSeenTotal,
+        cardsSeenThisMonth: user.cardsSeenThisMonth,
+        questionsSeenThisMonth: user.questionsSeenThisMonth,
+        actionsToday: user.actionsToday,
+        dailyGoal: user.dailyGoal,
+        isPremium: user.isPremium,
+      };
+    });
+
+    let { order } = req.query;
+    let { user } = req;
+
+    if (!order) {
+      order = "day";
+    }
+
+    users.forEach((user) => {
+      user.pointsTotal = user.cardsSeen + user.questionsSeenTotal;
+      user.pointsMonth = user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+      user.pointsToday = user.actionsToday;
+    });
+
+    let positionInArray = undefined;
+    let isInTop = true;
+    let topUsers = [];
+
+    //check if the user is in the users array
+    positionInArray = users.findIndex(
+      (u) => u._id.toString() === user._id.toString()
+    );
+
+    if (order === "day") {
+      users.sort(function (a, b) {
+        return b.pointsToday - a.pointsToday;
+      });
+      //check if the user is in the users array
+      positionInArray = users.findIndex(
+        (u) => u._id.toString() === user._id.toString()
+      );
+      topUsers = users.slice(0, 10);
+    } else if (order === "total") {
+      users.sort(function (a, b) {
+        return b.pointsTotal - a.pointsTotal;
+      });
+      //check if the user is in the users array
+      positionInArray = users.findIndex(
+        (u) => u._id.toString() === user._id.toString()
+      );
+      topUsers = users.slice(0, 50);
+    } else {
+      users.sort(function (a, b) {
+        return b.pointsMonth - a.pointsMonth;
+      });
+      //check if the user is in the users array
+      positionInArray = users.findIndex(
+        (u) => u._id.toString() === user._id.toString()
+      );
+      topUsers = users.slice(0, 25);
+    }
+
+    //give nickname to each user that does not have any yet
+    users.forEach((user) => {
+      if (!user.nickname && user.firstname && user.lastname) {
+        if (user.lastname.charAt(user.lastname.length - 1) === "á") {
+          let firstPart = user.firstname.substring(0, 3);
+          let lastPart = user.lastname.substring(0, 3);
+          user.nickname = `${firstPart}${lastPart}${Math.round(
+            user.email.length / 2
+          )}`;
+        } else {
+          let firstPart = user.firstname.substring(0, 3);
+          let lastPart = user.lastname.substring(0, 3);
+          user.nickname = `${firstPart}${lastPart}${Math.round(
+            user.email.length / 2
+          )}`;
+        }
+      }
+    });
+    let hasSavedNickname = true;
+    if (!user.nickname) {
+      let firstPart = user.firstname.substring(0, 3);
+      let lastPart = user.lastname.substring(0, 3);
+      user.nickname = `${firstPart}${lastPart}${Math.round(
+        user.email.length / 2
+      )}`;
+      hasSavedNickname = false;
+    }
+
+    //create current user object with only the necessary data
+    let currentUser = {
+      _id: user._id,
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      nickname: user.nickname,
+      faculty: user.faculty,
+      cardsSeen: user.cardsSeen,
+      questionsSeenTotal: user.questionsSeenTotal,
+      cardsSeenThisMonth: user.cardsSeenThisMonth,
+      questionsSeenThisMonth: user.questionsSeenThisMonth,
+      actionsToday: user.actionsToday,
+      dailyGoal: user.dailyGoal,
+      pointsTotal: user.cardsSeen + user.questionsSeenTotal,
+      pointsMonth: user.cardsSeenThisMonth + user.questionsSeenThisMonth,
+      pointsToday: user.actionsToday,
+      isPremium: user.isPremium,
+    };
+
+    //check if currentUser is in the topUsers based on _id using for loop
+    for (let i = 0; i < topUsers.length; i++) {
+      if (topUsers[i]._id.toString() === user._id.toString()) {
+        isInTop = true;
+        break;
+      } else {
+        isInTop = false;
+      }
+    }
+
+    const leaderboardData = {
+      topUsers,
+      positionInArray,
+      isInTop,
+      order,
+      hasSavedNickname,
+      user: currentUser,
+    };
+
+    res.status(200).json(leaderboardData);
+  })
+);
+
+//SOUBOJ FAKULT
+router.get(
+  "/mobileApi/getClash",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let { user } = req;
+    let faculties = {
+      prfUp: 0,
+      prfUk: 0,
+      prfMuni: 0,
+      prfZcu: 0,
+      prfJina: 0,
+      prfNestuduji: 0,
+      prfUchazec: 0,
+    };
+    let total = {
+      prfUp: 0,
+      prfUk: 0,
+      prfMuni: 0,
+      prfZcu: 0,
+      prfJina: 0,
+      prfNestuduji: 0,
+      prfUchazec: 0,
+    };
+
+    let usersFaculty = undefined;
+
+    if (user) {
+      if (user.faculty === "PrF UP") {
+        usersFaculty = "prfUp";
+      }
+      if (user.faculty === "PrF UK") {
+        usersFaculty = "prfUk";
+      }
+      if (user.faculty === "PrF MUNI") {
+        usersFaculty = "prfMuni";
+      }
+      if (user.faculty === "PrF ZČU") {
+        usersFaculty = "prfZcu";
+      }
+      if (user.faculty === "Jiná") {
+        usersFaculty = "prfJina";
+      }
+      if (user.faculty === "Nestuduji") {
+        usersFaculty = "prfNestuduji";
+      }
+      if (user.faculty === "Uchazeč") {
+        usersFaculty = "prfUchazec";
+      }
+    }
+
+    let users = await User.find();
+    users.forEach((user) => {
+      //count points
+      if (user.faculty === "PrF UP") {
+        faculties.prfUp =
+          faculties.prfUp +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfUp++;
+      }
+      if (user.faculty === "PrF UK") {
+        faculties.prfUk =
+          faculties.prfUk +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfUk++;
+      }
+      if (user.faculty === "PrF MUNI") {
+        faculties.prfMuni =
+          faculties.prfMuni +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfMuni++;
+      }
+      if (user.faculty === "PrF ZČU") {
+        faculties.prfZcu =
+          faculties.prfZcu +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfZcu++;
+      }
+      if (user.faculty === "Jiná") {
+        faculties.prfJina =
+          faculties.prfJina +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfJina++;
+      }
+      if (user.faculty === "Nestuduji") {
+        faculties.prfNestuduji =
+          faculties.prfNestuduji +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfNestuduji++;
+      }
+      if (user.faculty === "Uchazeč") {
+        faculties.prfUchazec =
+          faculties.prfUchazec +
+          user.cardsSeenThisMonth +
+          user.questionsSeenThisMonth;
+        total.prfUchazec++;
+      }
+    });
+    //order faculties according to the points - top to bottom
+    let facultiesOrdered = Object.entries(faculties);
+    facultiesOrdered.sort((a, b) => b[1] - a[1]);
+
+    //render
+    res.status(200).json(facultiesOrdered);
+  })
+);
+
+//get required mobile version for app (ios and android)
+router.get(
+  "/mobileApi/getVersionInfo",
+  catchAsync(async (req, res) => {
+    const { platform } = req.query;
+    const minimumVersion = {
+      ios: "1.0.15",
+      android: "1.0.15",
+    };
+    const latestVersions = {
+      ios: "1.0.15",
+      android: "1.0.15",
+    };
+    const updateUrl = {
+      ios: "https://apps.apple.com/us/app/inlege/id6670204630",
+      android: "https://play.google.com/store/apps/details?id=cz.inlege.InLege",
+    };
+    const response = {
+      minimumVersion: minimumVersion[platform],
+      latestVersion: latestVersions[platform],
+      updateUrl: updateUrl[platform],
+      messageForUserRequiredUpdate:
+        "Aktualizujte prosím aplikaci na nejnovější verzi, ve které nově budete mít možnost ukládat výsledky testů a sledovat svůj pokrok.",
+      messageForUserRecommendedUpdate:
+        "Máte starší verzi aplikace. Doporučujeme aktualizovat na nejnovější verzi.",
+    };
+    res.status(200).json(response);
   })
 );
 

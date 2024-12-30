@@ -9,6 +9,15 @@
                     <img src="/img/<%= category.icon %>" class="img-fit" alt="" />
                 </div>
                 <h4 class="mt-4 mb-2"><%= title %> </h4>
+                <p class="text-center">
+                    <% if (knownPercentageOfCategory >= 100) { %>
+                        <span class="badge section-progress-badge badge-green-full" title="Procento kartiček, které už umíš">100 %</span>
+                    <% } else if (knownPercentageOfCategory > 89) { %>
+                        <span class="badge section-progress-badge badge-green-outline" title="Procento kartiček, které už umíš"><%= knownPercentageOfCategory %> %</span>
+                    <% } else { %>
+                        <span class="badge section-progress-badge badge-grey-outline" title="Procento kartiček, které už umíš"><%= knownPercentageOfCategory %> %</span>
+                    <% } %>
+                </p>
                 <div>
                     <div class="mb-2 mt-3 px-3 py-2 category-info d-flex align-items-center justify-content-between">
                         <p class="mb-0"><b><%= category.numOfCards  %></b> <%= texts.categoryPage.cardsToStudy %></p>

@@ -15,6 +15,10 @@ const SectionSchema = new Schema({
     type: String,
     required: true,
   },
+  categoryId: {
+    type: Schema.Types.ObjectId,
+    ref: "Category",
+  },
   isPublic: {
     type: Boolean,
     default: false,

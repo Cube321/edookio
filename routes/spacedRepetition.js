@@ -5,9 +5,10 @@ const router = express.Router();
 const Card = require("../models/card");
 const CardInfo = require("../models/cardInfo");
 const passport = require("passport");
+const { isLoggedIn } = require("../utils/middleware");
 
 //WEB
-router.post("/api/markCardKnown/:cardId", async (req, res) => {
+router.post("/api/markCardKnown/:cardId", isLoggedIn, async (req, res) => {
   try {
     if (req.user) {
       const { cardId } = req.params;
