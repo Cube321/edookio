@@ -506,25 +506,26 @@ mail.adminInfoNewSubscription = function (
   store,
   callback
 ) {
+  if (!paymentSource) paymentSource = "stripe";
+  if (!store) store = "stripe";
+  let questionsLimitReachedDate = "-";
+  if (user.reachedQuestionsLimitDate) {
+    questionsLimitReachedDate = moment(user.reachedQuestionsLimitDate)
+      .locale("cs")
+      .format("LLLL");
+  }
+
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
-    subject: `(CZ) Uživatel AKTIVOVAL Premium: ${user.email}`,
+    subject: `(CZ) AKTIVACE | ${user.plan}: ${user.email}`,
     html: `
-          <h3>Aktivace předplatného Premium</h3>
           <p>(${paymentSource} - ${store})<p>
-          <p>Tento uživatel aktivoval balíček Premium:<p>
-          <p>Jméno: ${user.firstname}</p>
-          <p>Příjmení: ${user.lastname}</p>
-          <p>Email: ${user.email}</p>
+          <p>${user.firstname} ${user.lastname} | ${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
-          <p>Datum vyčerpání free otázek: ${moment(
-            user.reachedQuestionsLimitDate
-          )
-            .locale("cs")
-            .format("LLLL")} </p>
+          <p>Datum vyčerpání free otázek: ${questionsLimitReachedDate}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
@@ -549,24 +550,22 @@ mail.adminInfoSubscriptionUpdated = function (
   store,
   callback
 ) {
+  if (!paymentSource) paymentSource = "stripe";
+  if (!store) store = "stripe";
+
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
-    subject: `(CZ) Uživatel PRODLOUŽIL Premium: ${user.email}`,
+    subject: `(CZ) PRODLOUŽENÍ | ${user.plan}: ${user.email}`,
     html: `
           <p>(${paymentSource} - ${store})<p>
-          <h3>Prodloužení předplatného Premium</h3>
-          <p>Tento uživatel prodloužil balíček Premium:<p>
-          <p>Jméno: ${user.firstname}</p>
-          <p>Příjmení: ${user.lastname}</p>
-          <p>Email: ${user.email}</p>
+          <p>${user.firstname} ${user.lastname} | ${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
-          <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${moment(endDate)
+          <p>Konec předplatného: ${moment(user.endDate)
             .locale("cs")
             .format("LLLL")}</p>
       `,
@@ -586,6 +585,8 @@ mail.adminInfoSubscriptionUncancelled = function (
   store,
   callback
 ) {
+  if (!paymentSource) paymentSource = "stripe";
+  if (!store) store = "stripe";
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
@@ -791,24 +792,22 @@ mail.adminInfoSubscriptionCanceled = function (
   store,
   callback
 ) {
+  if (!paymentSource) paymentSource = "stripe";
+  if (!store) store = "stripe";
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
-    subject: `(CZ) Uživatel UKONČIL Premium: ${user.email}`,
+    subject: `(CZ) UKONČENÍ | ${user.plan}: ${user.email}`,
     html: `
           <p>(${paymentSource} - ${store})<p>
-          <h3>Ukončení předplatného Premium</h3>
-          <p>Tento uživatel ukončil balíček Premium:<p>
-          <p>Jméno: ${user.firstname}</p>
-          <p>Příjmení: ${user.lastname}</p>
-          <p>Email: ${user.email}</p>
+          <p>${user.firstname} ${user.lastname} | ${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
           <p>Plán předplatného: ${user.plan}</p>
-          <p>Konec předplatného: ${moment(endDate)
+          <p>Konec předplatného: ${moment(user.endDate)
             .locale("cs")
             .format("LLLL")}</p>
       `,

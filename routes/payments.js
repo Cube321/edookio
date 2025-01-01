@@ -195,7 +195,7 @@ router.post("/webhook", async (req, res) => {
           data.plan.id == process.env.PRODUCT_DAILY_XMAS)
       ) {
         user.plan = "daily";
-        user = createOpenInvoice(user, data, "daily");
+        //user = createOpenInvoice(user, data, "daily");
         user.endDate = moment(today).add("1", "day").format();
         //format endDate
         const endDate = moment(user.endDate).locale("cs").format("LL");

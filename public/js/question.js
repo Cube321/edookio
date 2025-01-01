@@ -227,7 +227,8 @@ $(document).ready(function () {
           if (editedQuestions[currentQuestion].sourceCard) {
             markCardKnowledge(
               false,
-              editedQuestions[currentQuestion].sourceCard._id
+              editedQuestions[currentQuestion].sourceCard._id,
+              "question"
             );
           }
           renderListOfQuestions();
@@ -351,10 +352,10 @@ $(document).ready(function () {
   });
 });
 
-function markCardKnowledge(known, cardId) {
+function markCardKnowledge(known, cardId, mode) {
   fetch(`/api/markCardKnown/${cardId}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ known: known }),
+    body: JSON.stringify({ known: known, mode: mode }),
   });
 }

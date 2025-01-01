@@ -65,6 +65,10 @@ router.get(
       (knownCardsOfCategory / category.numOfCards) * 100
     );
 
+    if (isNaN(knownPercentageOfCategory)) {
+      knownPercentageOfCategory = 0;
+    }
+
     //if there is not user, set knownCount to 0
     if (!req.user) {
       category.sections.forEach((section) => {

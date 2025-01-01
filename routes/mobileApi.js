@@ -233,7 +233,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     let user = req.user;
-
     //count new actions only every two seconds
     let now = moment();
     if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
@@ -245,6 +244,9 @@ router.post(
       if (user.actionsToday === user.dailyGoal) {
         user.streakLength++;
         user.dailyGoalReachedToday = true;
+      }
+      if (!user.isPremium && user.questionsSeenThisMonth === 50) {
+        user.reachedQuestionsLimitDate = Date.now();
       }
       await user.save();
     }

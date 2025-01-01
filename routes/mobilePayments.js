@@ -75,9 +75,7 @@ router.post(
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
         createOpenInvoice(user, user.plan);
-        formattedEndDate = user.endDate
-          ? moment(user.endDate).locale("cs").format("LL")
-          : "unknown";
+        formattedEndDate = "-";
         mail.adminInfoSubscriptionUpdated(
           user,
           formattedEndDate,

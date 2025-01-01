@@ -13,6 +13,7 @@ router.post("/api/markCardKnown/:cardId", isLoggedIn, async (req, res) => {
     if (req.user) {
       const { cardId } = req.params;
       const { known } = req.body;
+      const { mode } = req.body;
 
       await Card.findById(cardId);
 
@@ -32,21 +33,23 @@ router.post("/api/markCardKnown/:cardId", isLoggedIn, async (req, res) => {
 
       let user = req.user;
 
-      //count new actions only every two seconds
-      let now = moment();
-      if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-        //update date of user's last activity
-        user.lastActive = moment();
-        //increase cardSeen by 1
-        user.cardsSeen++;
-        user.cardsSeenThisMonth++;
-        user.actionsToday++;
-        if (
-          user.actionsToday === user.dailyGoal &&
-          !user.dailyGoalReachedToday
-        ) {
-          user.streakLength++;
-          user.dailyGoalReachedToday = true;
+      if (mode !== "question") {
+        //count new actions only every two seconds
+        let now = moment();
+        if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
+          //update date of user's last activity
+          user.lastActive = moment();
+          //increase cardSeen by 1
+          user.cardsSeen++;
+          user.cardsSeenThisMonth++;
+          user.actionsToday++;
+          if (
+            user.actionsToday === user.dailyGoal &&
+            !user.dailyGoalReachedToday
+          ) {
+            user.streakLength++;
+            user.dailyGoalReachedToday = true;
+          }
         }
       }
 
@@ -71,6 +74,7 @@ router.post(
       if (req.user) {
         const { cardId } = req.params;
         const { known } = req.body;
+        const { mode } = req.body;
 
         await Card.findById(cardId);
 
@@ -90,21 +94,23 @@ router.post(
 
         let user = req.user;
 
-        //count new actions only every two seconds
-        let now = moment();
-        if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-          //update date of user's last activity
-          user.lastActive = moment();
-          //increase cardSeen by 1
-          user.cardsSeen++;
-          user.cardsSeenThisMonth++;
-          user.actionsToday++;
-          if (
-            user.actionsToday === user.dailyGoal &&
-            !user.dailyGoalReachedToday
-          ) {
-            user.streakLength++;
-            user.dailyGoalReachedToday = true;
+        if (mode !== "question") {
+          //count new actions only every two seconds
+          let now = moment();
+          if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
+            //update date of user's last activity
+            user.lastActive = moment();
+            //increase cardSeen by 1
+            user.cardsSeen++;
+            user.cardsSeenThisMonth++;
+            user.actionsToday++;
+            if (
+              user.actionsToday === user.dailyGoal &&
+              !user.dailyGoalReachedToday
+            ) {
+              user.streakLength++;
+              user.dailyGoalReachedToday = true;
+            }
           }
         }
 

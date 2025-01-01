@@ -353,6 +353,9 @@ router.post(
           user.streakLength++;
           user.dailyGoalReachedToday = true;
         }
+        if (!user.isPremium && user.questionsSeenThisMonth === 50) {
+          user.reachedQuestionsLimitDate = Date.now();
+        }
         await user.save();
       }
       res.sendStatus(201);
