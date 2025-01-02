@@ -218,6 +218,10 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  feedbackFormShown: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.plugin(passportLocalMongoose);

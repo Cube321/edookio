@@ -1,0 +1,21 @@
+<% layout('layouts/boilerplate.ejs') %>
+<div class="container">
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Feedback z aplikace</h5>
+        </div>
+    </div>
+    <div class="row">
+    <% feedbacks.forEach((feedback, i) => { %> 
+        <div class="col-md-2">
+            <p class="mb-0"><%= feedback.author %></p>
+        </div>
+        <div class="col-md-8">
+            <p class="mb-0"><%= feedback.content %></p>
+        </div>
+        <div class="col-md-2">
+            <p class="mb-0 text-muted text-smaller"><%= feedback.updatedDate %></p>
+        </div>
+    <% }) %> 
+</div>
+</div>

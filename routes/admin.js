@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Category = require("../models/category");
 const Section = require("../models/section");
 const Stats = require("../models/stats");
+const Feedback = require("../models/feedback");
 const { isLoggedIn, isAdmin } = require("../utils/middleware");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");
@@ -702,6 +703,18 @@ router.put(
     res.status(201).redirect(`/admin/${user._id}/showDetail`);
   })
 );
+
+//show all feedbacks
+router.get("/admin/feedbacks", isLoggedIn, isAdmin, async (req, res) => {
+  const feedbacks = await Feedback.find({});
+
+  //edit the date on each feedback to be more readable
+  feedbacks.forEach((feedback) => {
+    feedback.updatedDate = moment(feedback.date).locale("cs").format("LL");
+  });
+
+  res.status(200).render("admin/feedbacks", { feedbacks });
+});
 
 //EMAILS FROM ADMIN TO USERS
 //email (render)

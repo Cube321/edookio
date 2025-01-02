@@ -8,9 +8,10 @@ const CardsResult = require("../models/cardsResult");
 const CardInfo = require("../models/cardInfo");
 const User = require("../models/user");
 const Mistake = require("../models/mistake");
+const Feedback = require("../models/feedback");
 const passport = require("passport");
 const moment = require("moment");
-const card = require("../models/card");
+const { PARTNERS } = require("../utils/partners");
 
 router.get(
   "/mobileApi/getCategories",
@@ -185,9 +186,24 @@ router.get(
       user.dailyGoalReachedToday = true;
     }
 
+    const cardsSeenTotal = user.cardsSeen;
+    const feedbackFormShown = user.feedbackFormShown;
+    const isUserPremium = user.isPremium;
+
+    let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
+    console.log(randomPartner);
+
     await user.save();
 
-    res.status(200).json({ section, knowsAllCards, allCardsCount });
+    res.status(200).json({
+      section,
+      knowsAllCards,
+      allCardsCount,
+      cardsSeenTotal,
+      feedbackFormShown,
+      randomPartner,
+      isUserPremium,
+    });
   })
 );
 
@@ -224,7 +240,12 @@ router.get(
       return res.status(200).json({ limitReached: true });
     }
 
-    res.status(200).json({ section, questionsSeenThisMonth, isUserPremium });
+    let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
+    console.log(randomPartner);
+
+    res
+      .status(200)
+      .json({ section, questionsSeenThisMonth, isUserPremium, randomPartner });
   })
 );
 
@@ -484,9 +505,6 @@ router.post(
   "/mobileApi/reportMistake",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    console.log("Mistake report api route hit");
-    console.log("Request body", req.body);
-
     let { questionId, cardId, content } = req.body;
     let user = req.user;
 
@@ -505,6 +523,33 @@ router.post(
 
     const savedMistake = await Mistake.create(newMistake);
     res.status(201).json({ message: "Mistake reported" });
+  })
+);
+
+//route to post a feedback on the app (POST)
+router.post(
+  "/mobileApi/sendFeedback",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let { content } = req.body;
+    let user = req.user;
+
+    if (!content) {
+      return res.status(400).json({
+        error: "Content is required",
+      });
+    }
+
+    let newFeedback = {
+      content: content,
+      author: user.email,
+    };
+
+    user.feedbackFormShown = true;
+    await user.save();
+    await Feedback.create(newFeedback);
+
+    res.status(201).json({ message: "Feedback saved" });
   })
 );
 
@@ -766,6 +811,16 @@ router.get(
 
     //render
     res.status(200).json(facultiesOrdered);
+  })
+);
+
+//get one partner of PARTNERS array
+router.get(
+  "/mobileApi/getPartner",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    const partner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
+    res.status(200).json(partner);
   })
 );
 
