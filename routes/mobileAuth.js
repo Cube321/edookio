@@ -82,6 +82,7 @@ router.post(
 
       //send info e-mails
       mail.welcome(createdUser.email);
+      mail.emailVerification(createdUser.email, createdUser._id);
       mail.adminInfoNewUser(createdUser);
 
       return res.status(201).json({

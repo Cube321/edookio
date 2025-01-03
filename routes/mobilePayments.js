@@ -61,8 +61,16 @@ router.post(
           : null;
         user.subscriptionSource = "revenuecat";
         createOpenInvoice(user, user.plan);
-        mail.subscriptionCreated(user.email, formattedEndDate);
-        mail.adminInfoNewSubscription(user, paymentSource, store);
+        try {
+          await mail.subscriptionCreated(user.email, formattedEndDate);
+          await mail.adminInfoNewSubscription(user, paymentSource, store);
+        } catch (error) {
+          console.error(
+            "Error sending email - initial purchase MobilePayments",
+            error
+          );
+        }
+
         break;
 
       case "RENEWAL":
@@ -76,12 +84,17 @@ router.post(
         user.monthlySubscriptionPrice = 249;
         createOpenInvoice(user, user.plan);
         formattedEndDate = "-";
-        mail.adminInfoSubscriptionUpdated(
-          user,
-          formattedEndDate,
-          paymentSource,
-          store
-        );
+        try {
+          await mail.adminInfoSubscriptionUpdated(
+            user,
+            formattedEndDate,
+            paymentSource,
+            store
+          );
+        } catch (error) {
+          console.error("Error sending email - renewal MobilePayments", error);
+        }
+
         break;
 
       case "CANCELLATION":
@@ -90,8 +103,20 @@ router.post(
         user.premiumDateOfCancelation = new Date();
         user.subscriptionPrice = 0;
         user.monthlySubscriptionPrice = 0;
-        mail.subscriptionCanceled(user.email, endDate);
-        mail.adminInfoSubscriptionCanceled(user, endDate, paymentSource, store);
+        try {
+          await mail.subscriptionCanceled(user.email, endDate);
+          await mail.adminInfoSubscriptionCanceled(
+            user,
+            endDate,
+            paymentSource,
+            store
+          );
+        } catch (error) {
+          console.error(
+            "Error sending email - cancellation MobilePayments",
+            error
+          );
+        }
         break;
 
       case "UNCANCELLATION":
@@ -100,8 +125,19 @@ router.post(
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
         user.premiumDateOfCancelation = undefined;
-        mail.subscriptionUncancelled(user.email);
-        mail.adminInfoSubscriptionUncancelled(user, paymentSource, store);
+        try {
+          await mail.subscriptionUncancelled(user.email);
+          await mail.adminInfoSubscriptionUncancelled(
+            user,
+            paymentSource,
+            store
+          );
+        } catch (error) {
+          console.error(
+            "Error sending email - uncancellation MobilePayments",
+            error
+          );
+        }
         break;
 
       case "EXPIRATION":
