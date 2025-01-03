@@ -476,7 +476,7 @@ router.get(
     } else {
       req.flash("successOverlay", "Report odstraněn.");
     }
-    res.status(200).redirect(`/admin/listAllReports`);
+    res.status(200).redirect(`/admin/mistakes`);
   })
 );
 

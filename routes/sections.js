@@ -123,10 +123,38 @@ router.get(
         }
       });
     }
+
+    //get last test result for each section (percentage) and make an average, if the section has no test result, count is as 0
+    let totalTestPercentage = 0;
+    let testResultsCount = 0;
+    category.sections.forEach((section) => {
+      if (section.isPublic && section.testIsPublic) {
+        if (section.lastTestResult) {
+          totalTestPercentage += section.lastTestResult;
+          testResultsCount++;
+        } else {
+          totalTestPercentage += 0;
+          testResultsCount++;
+        }
+      }
+    });
+    if (testResultsCount > 0) {
+      averageTestPercentage = Math.round(
+        totalTestPercentage / testResultsCount
+      );
+    } else {
+      averageTestPercentage = 0;
+    }
+
+    let proficiencyPercetage = Math.floor(
+      (averageTestPercentage + knownPercentageOfCategory) / 2
+    );
     //render category page
-    res
-      .status(200)
-      .render("category", { category, title, knownPercentageOfCategory });
+    res.status(200).render("category", {
+      category,
+      title,
+      knownPercentageOfCategory: proficiencyPercetage,
+    });
   })
 );
 

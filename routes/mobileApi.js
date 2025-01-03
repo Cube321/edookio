@@ -127,10 +127,36 @@ router.get(
       percentageOfKnownCards = 0;
     }
 
+    //get last test result for each section (percentage) and make an average, if the section has no test result, count is as 0
+    let totalTestPercentage = 0;
+    let testResultsCount = 0;
+    category.sections.forEach((section) => {
+      if (section.isPublic && section.testIsPublic) {
+        if (section.lastTestResult) {
+          totalTestPercentage += section.lastTestResult;
+          testResultsCount++;
+        } else {
+          totalTestPercentage += 0;
+          testResultsCount++;
+        }
+      }
+    });
+    if (testResultsCount > 0) {
+      averageTestPercentage = Math.round(
+        totalTestPercentage / testResultsCount
+      );
+    } else {
+      averageTestPercentage = 0;
+    }
+
+    let proficiencyPercetage = Math.floor(
+      (averageTestPercentage + percentageOfKnownCards) / 2
+    );
+
     // 5) Return the sections as JSON
     res.status(200).json({
       sections: category.sections,
-      percentageOfKnownCards,
+      percentageOfKnownCards: proficiencyPercetage,
     });
   })
 );
@@ -191,7 +217,6 @@ router.get(
     const isUserPremium = user.isPremium;
 
     let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
-    console.log(randomPartner);
 
     await user.save();
 
@@ -241,7 +266,6 @@ router.get(
     }
 
     let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
-    console.log(randomPartner);
 
     res
       .status(200)

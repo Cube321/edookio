@@ -11,11 +11,11 @@
                 <h4 class="mt-4 mb-2"><%= title %> </h4>
                 <p class="text-center">
                     <% if (knownPercentageOfCategory >= 100) { %>
-                        <span class="badge section-progress-badge badge-green-full" title="Procento kartiček, které už umíš">100 %</span>
+                        <span class="badge section-progress-badge badge-green-full" title="Míra splnění předmětu">100 %</span>
                     <% } else if (knownPercentageOfCategory > 89) { %>
-                        <span class="badge section-progress-badge badge-green-outline" title="Procento kartiček, které už umíš"><%= knownPercentageOfCategory %> %</span>
+                        <span class="badge section-progress-badge badge-green-outline" title="Míra splnění předmětu"><%= knownPercentageOfCategory %> %</span>
                     <% } else { %>
-                        <span class="badge section-progress-badge badge-grey-outline" title="Procento kartiček, které už umíš"><%= knownPercentageOfCategory %> %</span>
+                        <span class="badge section-progress-badge badge-grey-outline" title="Míra splnění předmětu"><%= knownPercentageOfCategory %> %</span>
                     <% } %>
                 </p>
                 <div>
@@ -129,7 +129,7 @@
                                     <% } %>
                                 </div>
                             <div class="col-lg-2 col-6">  
-                                <% if (section.questions.length) { %> 
+                                <% if (section.questions.length && (section.testIsPublic || (currentUser && currentUser.isEditor))) { %> 
                                     <div class="section-box">
                                         <p>Otázky</p>
                                         <div>
