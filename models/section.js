@@ -49,14 +49,6 @@ const SectionSchema = new Schema({
     type: Number,
     default: 0,
   },
-  nextSection: {
-    type: String,
-    default: "",
-  },
-  previousSection: {
-    type: String,
-    default: "",
-  },
   countStarted: {
     type: Number,
     default: 0,

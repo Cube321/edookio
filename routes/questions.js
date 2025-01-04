@@ -92,14 +92,6 @@ router.get(
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje");
     }
-    let foundNextSection = "lastSection";
-    if (
-      foundSection.nextSection &&
-      foundSection.nextSection !== "lastSection" &&
-      foundSection.nextSection !== ""
-    ) {
-      foundNextSection = await Section.findById(foundSection.nextSection);
-    }
 
     const totalQuestions =
       parseInt(correct) + parseInt(wrong) + parseInt(skipped);
@@ -135,7 +127,6 @@ router.get(
       step,
       section: foundSection,
       category: foundCategory,
-      nextSection: foundNextSection,
     });
   })
 );

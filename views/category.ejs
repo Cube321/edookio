@@ -239,17 +239,6 @@
                             </div>
                         </div>
                         <div class="row mt-2">
-                            <label for="previousSection" class="col-lg-3 col-form-label">Navazuje na</label>
-                            <div class="col-lg-6">
-                                <select class="form-select form-borders" name="previousSection" id="previousSection">
-                                    <option value="lastSection">nenavazuje na jiný balíček</option>
-                                    <% category.sections.forEach(section => { %>
-                                        <option value="<%= section._id %>"><%= section.name %></option>
-                                    <% }) %>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
                             <label for="isPremium" class="col-lg-3 col-form-label">Dostupnost</label>
                             <div class="col-lg-4">
                                 <select class="form-select form-borders" name="isPremium" id="isPremium">
@@ -436,14 +425,6 @@
                                 <p class="text-muted mb-0">Spuštění: <%= section.countStarted %> <span class="mx-2">|</span></p>
                                 <p class="text-muted mb-0">Dokončení: <%= section.countFinished %> <span class="mx-2">|</span></p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <p>Navazující balíček</p>
-                        </div>
-                        <div class="col-9">
-                            <p class="text-muted"><%= section.nextSection %></p>
                         </div>
                     </div>
                     <div class="row mt-4">

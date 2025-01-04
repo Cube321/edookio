@@ -99,23 +99,7 @@ router.get(
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje.");
     }
-    let nextSection = "notDefined";
-    //check if string is valid ObjectID
-    let isValidId = mongoose.isValidObjectId(foundSection.nextSection);
-    if (isValidId) {
-      nextSection = await Section.findById(foundSection.nextSection);
-      if (!nextSection) {
-        nextSection = { name: "nenalezena" };
-      }
-    } else {
-      if (foundSection.nextSection === "lastSection") {
-        nextSection = { name: "lastSection" };
-      } else {
-        nextSection = {
-          name: "Na tento balíček nenavazuje žádný další balíček.",
-        };
-      }
-    }
+
     if (req.user) {
       let user = req.user;
 
@@ -158,7 +142,6 @@ router.get(
         category: foundSection.category,
         categoryId: foundCategory._id,
         section: foundSection,
-        nextSection,
         knownCards,
         cardsTotal,
         knowsAll,

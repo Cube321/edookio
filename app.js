@@ -120,7 +120,7 @@ const sessionConfig = {
     secret: process.env.SESSION_SECRET,
     touchAfter: 24 * 3600,
   }),
-  name: "ulpianus",
+  name: "edookio_session",
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,

@@ -14,19 +14,6 @@
                 <label for="desc" class="form-label text-bold">Podnadpis</label>
                 <input type="text" name="desc" id="desc" class="form-control form-borders" value="<%= section.shortDescription %>" required></input>
             </div>
-            <div class="mt-4">
-                <label for="next" class="form-label text-bold">Navazuje na balíček</label>
-                <select class="form-select form-borders" name="previousSection" id="previousSection">
-                    <option value="lastSection">nenavazuje na jiný balíček</option>
-                    <% category.sections.forEach(sec => { %>
-                        <option value="<%= sec._id %>"
-                            <% if(sec.name ===  previousSection.name){ %>
-                                selected
-                            <% } %>
-                        ><%= sec.name %></option>
-                    <% }) %>
-                  </select>
-            </div>
             <div class="col-12">
                 <button class="btn btn-danger btn-sm" type="submit">Uložit</button>
                 <a href="/category/<%= section.category %>" class="btn btn-outline-danger btn-sm" type="submit">Zpět na předmět</a>

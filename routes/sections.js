@@ -302,7 +302,7 @@ router.post(
     }
     //create new Section and add it to Category
     const categoryName = foundCategory.name;
-    let { name, isPremium, desc, previousSection, jsonData } = req.body;
+    let { name, isPremium, desc, jsonData } = req.body;
     //isPremium logic
     let isPremiumBoolean = false;
     if (isPremium === "premium") {
@@ -317,15 +317,8 @@ router.post(
       questions: [],
       isPremium: isPremiumBoolean,
       shortDescription: desc,
-      nextSection: "lastSection",
-      previousSection,
     });
     const savedSection = await newSection.save();
-    if (previousSection !== "lastSection") {
-      const foundPreviousSection = await Section.findById(previousSection);
-      foundPreviousSection.nextSection = savedSection._id;
-      await foundPreviousSection.save();
-    }
     foundCategory.sections.push(savedSection._id);
     await foundCategory.save();
 
@@ -414,19 +407,6 @@ router.delete(
       foundCategory.numOfQuestions - deletedSection.questions.length;
     await foundCategory.save();
 
-    //remove connection with previous section
-    if (
-      deletedSection.previousSection &&
-      deletedSection.previousSection !== "lastSection"
-    ) {
-      let previousSection = await Section.findById(
-        deletedSection.previousSection
-      );
-      if (previousSection) {
-        previousSection.nextSection = deletedSection.nextSection;
-        await previousSection.save();
-      }
-    }
     //flash a redirect
     req.flash("successOverlay", "Balíček byl odstraněn.");
     res.status(200).redirect(`/category/${category}`);
@@ -449,20 +429,9 @@ router.get(
     if (!foundCategory) {
       throw Error("Kategorie s tímto označením neexistuje");
     }
-    let previousSection = "";
-    if (
-      foundSection.previousSection &&
-      foundSection.previousSection !== "lastSection"
-    ) {
-      previousSection = await Section.findById(foundSection.previousSection);
-      if (!previousSection) {
-        throw Error("Předchozí balíček s uvedeným ID neexistuje");
-      }
-    }
     res.render("sections/edit", {
       section: foundSection,
       category: foundCategory,
-      previousSection,
     });
   })
 );
@@ -477,23 +446,9 @@ router.put(
     if (!foundSection) {
       throw Error("Balíček s tímto ID neexistuje");
     }
-    let previousSection = "";
-    if (req.body.previousSection !== "lastSection") {
-      previousSection = await Section.findById(req.body.previousSection);
-      if (!previousSection) {
-        throw Error("Předchozí balíček s uvedeným ID neexistuje");
-      }
-    }
     let { name, desc } = req.body;
     foundSection.name = name;
     foundSection.shortDescription = desc;
-    if (previousSection !== "") {
-      foundSection.previousSection = previousSection._id;
-      previousSection.nextSection = foundSection._id;
-      await previousSection.save();
-    } else {
-      foundSection.previousSection = "lastSection";
-    }
     await foundSection.save();
     req.flash("successOverlay", "Informace byly aktualizovány.");
     res

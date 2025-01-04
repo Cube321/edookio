@@ -92,35 +92,6 @@
                             <a href="/category/<%= category._id%>/section/<%= section._id%>/test" class="btn btn-danger">Opakovat test</a>
                         </div>
                     </div>
-                    <hr />
-                    <div class="row mb-3 mt-2">
-                        <% if (!nextSection || nextSection === "lastSection" || !nextSection.isPublic) { %>
-                            <div class="d-flex flex-column justify-content-center align-items-center mt-3">
-                                <h5 class="mb-3">Navazující balíček</h5>
-                                <p class="mb-0 grey-highlight px-3 py-2">Na tento balíček nenavazuje žádný jiný balíček.</p>
-                            </div>
-                        <% } %>
-                        <% if (!currentUser.isPremium && nextSection && nextSection.isPremium) { %>
-                            <div class="d-flex flex-column justify-content-center align-items-center mt-3">
-                                <h5 class="mb-0">Navazující balíček</h5>
-                                <p class="mb-3"><%= nextSection.name %></p>
-                                <p class="mb-0 grey-highlight px-3 py-2">Navazující balíček je přístupný jen <br>s <a href="/premium" target="_blank"><b>předplatným Premium</b></a>.</p>
-                            </div>
-                        <% } else if(nextSection && nextSection.isPublic) { %>
-                            <div class="col-12">
-                                <h5 class="mb-0">Navazující balíček</h5>
-                                <p class="mb-3"><%= nextSection.name %></p>
-                            </div>
-                            <div class="col-12">
-                                <a href="/category/<%= category.name %>/section/<%= nextSection._id %>/card30/1" class="btn btn-danger">Zobrazit kartičky</a>
-                                <% if (nextSection.questions.length > 0 && nextSection.testIsPublic) { %>
-                                    <a href="/category/<%= category._id %>/section/<%= nextSection._id%>/test" class="btn btn-danger">Spustit test</a>
-                                <% } else { %>
-                                    <button class="btn btn-danger disabled">Neobsahuje test</button>
-                                <% } %>
-                            </div>
-                        <% } %>
-                    </div>
                 <% } %>
                 <div class="row mt-3">
                     <div class="col-12">

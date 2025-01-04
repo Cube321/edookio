@@ -1,4 +1,4 @@
-module.exports.general = { projectName: "InLege" };
+module.exports.general = { projectName: "Edookio" };
 
 module.exports.header = {
   description:
