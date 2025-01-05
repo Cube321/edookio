@@ -8,6 +8,7 @@ let currentCard = 0;
 let sectionId = "";
 let receivedData = {};
 let demoCardsSeen = 0;
+let knowsAllCards = false;
 
 $(document).ready(function () {
   //get section ID from DOM element
@@ -37,6 +38,7 @@ $(document).ready(function () {
         userEmail = data.user.email;
         startAt = data.startAt;
         demoCardsSeen = data.demoCardsSeen;
+        knowsAllCards = data.knowsAllCards;
       }
       $("#btn-otocit").removeClass("disabled");
       renderCard(startAt);
@@ -60,6 +62,15 @@ $(document).ready(function () {
     //check demo limit
     if (receivedData.user === "none") {
       console.log("neni user");
+    }
+
+    //check if user knows all cards
+    if(knowsAllCards){
+      console.log("knows all cards");
+      $("#knows-all-badge").removeClass("hide");
+    } else {
+      console.log("doesnt know all cards");
+      $("#knows-all-badge").addClass("hide");
     }
 
     //update card content
@@ -175,6 +186,9 @@ $(document).ready(function () {
 
     //mark card as not known
     markCardKnowledge(false, cards[currentCard]._id);
+
+    //change knowsAllCards badge
+    knowsAllCards = false;
 
     //redirect if finished
     if (nextCard === cards.length) {

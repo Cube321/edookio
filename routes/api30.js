@@ -101,8 +101,11 @@ router.get(
     // End of known-cards filtering
     // ---------------------------------------------------
 
+    let knowsAllCards = false;
+
     if (cards.length === 0) {
       cards = foundSection.cards;
+      knowsAllCards = true;
     }
 
     //DEMO MODE
@@ -144,6 +147,7 @@ router.get(
       user,
       startAt: 0,
       demoCardsSeen,
+      knowsAllCards
     });
     res.status(200).send(resData);
   })

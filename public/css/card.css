@@ -292,6 +292,13 @@ body {
     line-height: 1;
   }
 
+  .knows-all-badge {
+    background-color: #7ac705;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+  }
+
   /*DEMO FINISHED CARD*/
   .demo-finished-card {
     padding: 3rem;
