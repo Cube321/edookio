@@ -1,48 +1,102 @@
-<% layout ('layouts/boilerplate.ejs')  %> 
-    <div class="col-lg-6 offset-lg-3">
-        <h4 class="text-center">Upravit testovou otázku</h4>
-        <p class="text-center">do balíčku <%= section.name %> <span class="text-muted">(<%= category.text %>)</span></p>
-        <% if (question.sourceCard) { %>
-            <div class="row">
-                <div class="card p-3">
-                    <p class="text-bold text-center"><%= question.sourceCard.pageA %></p>
-                    <p><%- question.sourceCard.pageB %></p>
-                </div>
-            </div>
-        <% } %>
-        <form class="row g-3 mt-3 needs-validation" novalidate action="/category/<%= category._id %>/section/<%= section._id %>/questions/<%= question._id %>?_method=PATCH" method="POST">
-            <div class="card p-3 mt-2">
-                <div class="form-group row">
-                    <label for="question" class="col-lg-3 col-form-label text-bold">Otázka</label>
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control form-borders" id="question" name="question" value="<%= question.question %>" required>
-                    </div>
-                </div>
-                <div class="form-group row my-4">
-                    <label for="correctAnswer" class="col-lg-3 col-form-label text-bold">Správná odpověď</label>
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control form-borders" id="correctAnswer" name="correctAnswer" value="<%= question.correctAnswers[0] %>" required>
-                    </div>
-                </div>
-                <div class="form-group row mb-2">
-                    <label for="wrongAnswer1" class="col-lg-3 col-form-label text-bold">Špatná odp. (1)</label>
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control form-borders" id="wrongAnswer1" name="wrongAnswer1" value="<%= question.wrongAnswers[0] %>" required>
-                    </div>
-                </div>
-                <div class="form-group row mb-2">
-                    <label for="wrongAnswer2" class="col-lg-3 col-form-label text-bold">Špatná odp. (2)</label>
-                    <div class="col-lg-9">
-                        <input type="text" class="form-control form-borders" id="wrongAnswer2" name="wrongAnswer2" value="<%= question.wrongAnswers[1] %>" required>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <button class="btn btn-danger btn-sm" type="submit">Uložit změny</button>
-                    <a href="/category/<%= category._id %>/section/<%= section._id %>/list" class="btn btn-sm btn-outline-danger">Všechny otázky k balíčku</a>
-                    <a href="/category/<%= category.name %>" class="btn btn-sm btn-outline-danger">Zpět na předmět</a>
-                </div>
-            </div>
-        </form>
+<% layout ('layouts/boilerplate.ejs') %>
+<div class="col-lg-6 offset-lg-3">
+  <h4 class="text-center">Upravit testovou otázku</h4>
+  <p class="text-center">
+    do balíčku <%= section.name %>
+    <span class="text-muted">(<%= category.text %>)</span>
+  </p>
+  <% if (question.sourceCard) { %>
+  <div class="row">
+    <div class="card p-3">
+      <p class="text-bold text-center"><%= question.sourceCard.pageA %></p>
+      <p><%- question.sourceCard.pageB %></p>
     </div>
-    
-    <script src="/js/validateForms.js"></script>
+  </div>
+  <% } %>
+  <form
+    class="row g-3 mt-3 needs-validation"
+    novalidate
+    action="/category/<%= category._id %>/section/<%= section._id %>/questions/<%= question._id %>?_method=PATCH"
+    method="POST"
+  >
+    <div class="card p-3 mt-2">
+      <div class="form-group row">
+        <label for="question" class="col-lg-3 col-form-label text-bold"
+          >Otázka</label
+        >
+        <div class="col-lg-9">
+          <input
+            type="text"
+            class="form-control form-borders"
+            id="question"
+            name="question"
+            value="<%= question.question %>"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-group row my-4">
+        <label for="correctAnswer" class="col-lg-3 col-form-label text-bold"
+          >Správná odpověď</label
+        >
+        <div class="col-lg-9">
+          <input
+            type="text"
+            class="form-control form-borders"
+            id="correctAnswer"
+            name="correctAnswer"
+            value="<%= question.correctAnswers[0] %>"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-group row mb-2">
+        <label for="wrongAnswer1" class="col-lg-3 col-form-label text-bold"
+          >Špatná odp. (1)</label
+        >
+        <div class="col-lg-9">
+          <input
+            type="text"
+            class="form-control form-borders"
+            id="wrongAnswer1"
+            name="wrongAnswer1"
+            value="<%= question.wrongAnswers[0] %>"
+            required
+          />
+        </div>
+      </div>
+      <div class="form-group row mb-2">
+        <label for="wrongAnswer2" class="col-lg-3 col-form-label text-bold"
+          >Špatná odp. (2)</label
+        >
+        <div class="col-lg-9">
+          <input
+            type="text"
+            class="form-control form-borders"
+            id="wrongAnswer2"
+            name="wrongAnswer2"
+            value="<%= question.wrongAnswers[1] %>"
+            required
+          />
+        </div>
+      </div>
+      <div class="mt-4">
+        <button class="btn btn-danger btn-sm" type="submit">
+          Uložit změny
+        </button>
+        <a
+          href="/review/<%= section._id %>/showAll"
+          class="btn btn-sm btn-outline-danger"
+          >Všechny otázky k balíčku</a
+        >
+        <a
+          href="/category/<%= category.name %>"
+          class="btn btn-sm btn-outline-danger"
+          >Zpět na předmět</a
+        >
+      </div>
+    </div>
+  </form>
+</div>
+
+<script src="/js/validateForms.js"></script>

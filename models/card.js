@@ -11,6 +11,10 @@ const CardSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
+  connectedQuestionId: {
+    type: Schema.Types.ObjectId,
+    ref: "Question",
+  },
   pageA: String,
   pageB: String,
   author: {

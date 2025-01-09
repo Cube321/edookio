@@ -181,33 +181,6 @@ router.get(
   })
 );
 
-//list all questions
-router.get(
-  "/category/:categoryId/section/:sectionId/list",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const { categoryId, sectionId } = req.params;
-    const foundSection = await Section.findById(sectionId).populate({
-      path: "questions",
-      populate: {
-        path: "sourceCard",
-        model: "Card",
-      },
-    });
-    if (!foundSection) {
-      req.flash("error", "Balíček nebyl nalezen");
-      return res.redirect("/");
-    }
-
-    res.status(200).render("questions/list", {
-      questions: foundSection.questions,
-      section: foundSection,
-      categoryId,
-    });
-  })
-);
-
 //new
 router.get(
   "/category/:categoryId/section/:sectionId/question/new",
@@ -313,9 +286,7 @@ router.patch(
     };
     await Question.findByIdAndUpdate(questionId, updatedQuestion);
     req.flash("successOverlay", "Otázka byla upravena.");
-    res
-      .status(201)
-      .redirect(`/category/${categoryId}/section/${sectionId}/list`);
+    res.status(201).redirect(`/review/${sectionId}/showAll`);
   })
 );
 
@@ -339,12 +310,16 @@ router.delete(
     foundCategory.numOfQuestions--;
     await foundCategory.save();
 
+    let connectedCard = await Card.findById(foundQuestion.sourceCard);
+    if (connectedCard) {
+      connectedCard.connectedQuestionId = null;
+      await connectedCard.save();
+    }
+
     if (api) {
       res.sendStatus(200);
     } else {
-      res
-        .status(201)
-        .redirect(`/category/${categoryId}/section/${sectionId}/list`);
+      res.status(201).redirect(`/review/${sectionId}/showAll`);
     }
   })
 );
@@ -375,12 +350,14 @@ router.get(
     await foundCategory.save();
     await foundSection.save();
 
+    //delete connected Questions in Cards
+    await Card.updateMany(
+      { section: sectionId },
+      { $set: { connectedQuestionId: null } }
+    );
+
     req.flash("successOverlay", "Všechny otázky z balíčku byly odstraněny");
-    res.status(200).render("questions/list", {
-      questions: foundSection.questions,
-      section: foundSection,
-      categoryId,
-    });
+    res.status(201).redirect(`/review/${sectionId}/showAll`);
   })
 );
 

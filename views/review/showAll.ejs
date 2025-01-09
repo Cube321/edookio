@@ -1,0 +1,165 @@
+<% layout('layouts/boilerplate.ejs') %>
+<div class="container">
+
+    <div class="row">
+      <div class="offset-1 col-10 d-flex justify-content-between mb-4">
+          <a href="/category/<%= section.category %>" class="btn btn-outline-danger d-flex justify-content-center align-items-center px-3"><i class="fas fa-arrow-left"></i></a>
+          <div></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-12 text-center">
+          <h2 class="text-center"><%= section.name %></h2> 
+          <p class="text-center"><%= section.shortDescription %></p>
+      </div>
+  </div>
+
+  <div class="row mt-4 mb-3">
+    <div class="offset-sm-1 col-sm-5 d-flex flex-column justify-content-between align-items-center">
+      <h4 class="mb-2">Kartičky</h4>
+      <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger">Přidat kartičku</a>
+    </div>  
+    <div class="col-sm-5 d-flex flex-column justify-content-center align-items-center">
+      <h4 class="mb-2">Otázky</h4>
+      <div>
+          <% if (section.questions && !containesCardWithoutQuestion) { %>  
+              <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#questionsExistModal">Vygenerovat otázky z kartiček</a>
+          <% } else if (section.cards && section.cards.length === 0){ %>
+              <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#noCardsModal">Vygenerovat otázky z kartiček</a>
+          <% } else { %>
+              <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/generate" class="btn btn-sm btn-outline-danger" style='min-width:124px' id="generate-ai">Vygenerovat otázky z kartiček</a>
+          <% } %>
+          <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-outline-danger">Přidat otázku</a>
+      </div>
+    </div>
+  </div>
+
+  <% pairs.forEach((pair) => { 
+       const card = pair.card;
+       const question = pair.question;
+  %>
+    <div class="row">
+      <!-- Card Column -->
+      <div class="offset-sm-1 col-sm-5 mb-5">
+              <% if (card) { %>
+                <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= card._id %>">
+                  <div class="question"><%- card.pageA %></div>
+                    <div><%- card.pageB %></div>
+                    <div class="d-flex justify-content-end">
+                        <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
+                        <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn">Odstranit</a>
+                    </div>
+                  </div>  
+              <% } else { %>
+                <div class="card list-all-card d-flex justify-content-between flex-column">
+                  <div class="d-center h-100">
+                      <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
+                  </div>
+                </div>
+              <% } %>
+      </div>
+
+      <!-- Question Column -->
+      <div class="col-sm-5 mb-5">
+          <% if (question) { %>
+            <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= question._id %>">
+              <div>
+                  <p class="question"><%- question.question %></p>
+                  <p class="answer-item correct d-flex justify-content-between align-items-center"><span><%- question.correctAnswers[0] %></span><i class="far fa-check-circle icon-md"></i> </p>
+                  <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[0] %></span> <i class="far fa-times-circle icon-md"></i></p>
+                  <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[1] %></span> <i class="far fa-times-circle icon-md"></i></p>
+              </div>
+              
+              <div class="d-flex justify-content-end">
+                <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
+                <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
+              </div>
+            </div>
+          <% } else { %>
+            <div class="card list-all-card d-flex justify-content-between flex-column">
+              <div class="d-center h-100">
+                <p class="text-center text-muted">K této kartičce není přiřazena <br> žádná otázka.</p>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+
+  <!-- 
+    2) Now show orphaned questions at the end 
+       (those that were not paired with any card)
+  -->
+  <% if (orphanedQuestions.length > 0) { %>
+    <% orphanedQuestions.forEach((question) => { %>
+      <div class="row">
+      <!-- Card Column -->
+      <div class="offset-sm-1 col-sm-5 mb-5">
+        <div class="card list-all-card d-flex justify-content-between flex-column">
+            <div class="d-center h-100">
+                <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
+            </div>
+        </div>
+      </div>
+
+      <!-- Question Column -->
+      <div class="col-sm-5 mb-5">
+        <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= question._id %>">
+          <div>
+              <p class="question"><%- question.question %></p>
+              <p class="answer-item correct d-flex justify-content-between align-items-center"><span><%- question.correctAnswers[0] %></span><i class="far fa-check-circle icon-md"></i> </p>
+              <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[0] %></span> <i class="far fa-times-circle icon-md"></i></p>
+              <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[1] %></span> <i class="far fa-times-circle icon-md"></i></p>
+          </div>
+          
+          <div class="d-flex justify-content-end">
+            <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
+            <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<!-- MODAL - Questions exist, can not generate with AI -->
+<div class="modal fade" id="questionsExistModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered edit-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title text-center">Generování nelze provést, protože tento balíček již obsahuje otázky</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p>Všechny kartičky v tomto balíčku obsahují testové otázky. Chcete-li vygenerovat nové otázky, odstraňte prosím existující otázky a aktualizujte stránku.</p>
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-danger mt-4" data-bs-dismiss="modal">Zavřít</button>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- MODAL - No cards, can not generate with AI -->
+<div class="modal fade" id="noCardsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered edit-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title text-center">Generování nelze provést, protože tento balíček neobsahuje žádné kartičky</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+            <p></p>
+            <p>Generování testových otázek prostřednictvím umělé inteligence je možné pouze pokud balíček obsahuje <b>opakovací kartičky</b>.</p><p> Tyto kartičky slouží jako podklad, na základě kterého jsou následně testové otázky generovány.</p>
+            <p>Chcete-li otázky vygenerovat, <b>vytvořte</b> v tomto balíčku opakovací kartičky.</p>
+            <div class="d-flex justify-content-center">
+                <a href="/category/<%= section.category %>/section/<%= section._id %>/newCard" class="btn btn-danger mt-3 mx-2 mb-2">Vytvořit kartičky</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<script src="/js/review.js"></script>

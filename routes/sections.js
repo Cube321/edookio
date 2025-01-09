@@ -571,20 +571,4 @@ router.get(
   })
 );
 
-//list all cards in section
-router.get(
-  "/category/:category/section/:sectionId/listAllCards",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const section = await Section.findById(req.params.sectionId).populate(
-      "cards"
-    );
-    if (!section) {
-      throw Error("Balíček s tímto ID neexistuje");
-    }
-    res.status(200).render("sections/listAllCards", { section });
-  })
-);
-
 module.exports = router;

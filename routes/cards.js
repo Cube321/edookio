@@ -109,11 +109,7 @@ router.put(
       throw Error("Kartička s tímto ID neexistuje");
     }
     req.flash("successOverlay", "Kartička byla aktualizována.");
-    res
-      .status(201)
-      .redirect(
-        `/category/${foundCard.category}/section/${foundCard.section}/listAllCards`
-      );
+    res.status(201).redirect(`/review/${foundCard.section}/showAll`);
   })
 );
 
@@ -136,15 +132,20 @@ router.get(
     foundCategory.numOfCards--;
     await foundCategory.save();
 
+    //delete the sourceCard from connected question
+    let connectedQuestion = await Question.findById(
+      foundCard.connectedQuestionId
+    );
+    if (connectedQuestion) {
+      connectedQuestion.sourceCard = null;
+      await connectedQuestion.save();
+    }
+
     //removed card from cards saved by users
     await User.updateMany({}, { $pull: { savedCards: id } });
 
     req.flash("successOverlay", "Kartička byla odstraněna.");
-    res
-      .status(201)
-      .redirect(
-        `/category/${foundCard.category}/section/${foundCard.section}/listAllCards`
-      );
+    res.status(201).redirect(`/review/${foundCard.section}/showAll`);
   })
 );
 

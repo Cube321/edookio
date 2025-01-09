@@ -187,9 +187,15 @@ async function processDocumentJob(job) {
       question: cardData.testQuestion,
       correctAnswers: [cardData.correctAnswer],
       wrongAnswers: [cardData.wrongAnswerOne, cardData.wrongAnswerTwo],
-      sourceCard: card._id,
+      sourceCard: card?._id,
     });
     await question.save();
+
+    if (card) {
+      card.connectedQuestionId = question?._id;
+      await card.save();
+    }
+
     questionsCreated++;
     foundCategory.numOfQuestions++;
 

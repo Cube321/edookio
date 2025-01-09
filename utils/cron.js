@@ -101,6 +101,15 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
   saveLeaderboard(users);
   let counter = 0;
   users.forEach((user) => {
+    //reset credit counters
+    if (user.isEditor) {
+      user.generatedCardsCounterMonth = 0;
+      user.generatedQuestionsCounterMonth = 0;
+      user.usedCreditsMonth = 0;
+      user.save();
+    }
+
+    //reset monthly counters
     if (user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0) {
       if (
         !user.isPremium &&

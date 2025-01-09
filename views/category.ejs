@@ -359,20 +359,34 @@
     <% category.sections.forEach(section => { %>
         <!-- MODAL - Edit section -->
         <div class="modal fade" id="editSectionModal<%=section._id%>" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-centered edit-modal">
+            <div class="modal-dialog modal-dialog-centered edit-modal">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Upravit balíček</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <% if (section.isForReview) { %>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
+                                    <p class="mb-0">Balíček byl vygenerován AI</p>
+                                    <% if(currentUser.email === section.author.email || currentUser.isFacultyAdmin){ %>
+                                        <a href="/review/<%= section._id %>/showAll" class="btn btn-sm btn-success mx-2">Zkontrolovat obsah</a>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
                     <% if (!section.isPublic) { %>
                         <div class="row">
                             <div class="col-12">
                                 <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
                                     <p class="mb-0">Balíček není zveřejněn pro studenty</p>
-                                    <a href="/category/<%= category.name %>/section/<%= section._id %>/publish"" class="btn btn-sm btn-success mx-2">Zveřejnit</a>
-                                  </div>
+                                    <% if(currentUser.email === section.author.email || currentUser.isFacultyAdmin){ %>
+                                        <a href="/review/<%= section._id %>/publish" class="btn btn-success mx-2">Zveřejnit</a>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     <% } %>
@@ -381,18 +395,20 @@
                             <div class="col-12">
                                 <div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
                                     <p class="mb-0">Testové otázky nejsou zveřejněny pro studenty</p>
-                                    <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest"" class="btn btn-sm btn-success mx-2">Zveřejnit</a>
-                                  </div>
+                                    <% if(currentUser.email === section.author.email || currentUser.isFacultyAdmin){ %>
+                                        <a href="/category/<%= category._id %>/section/<%= section._id %>/publishTest"" class="btn btn-sm btn-success mx-2">Zveřejnit</a>
+                                    <% } %>
+                                </div>
                             </div>
                         </div>
                     <% } %>
-                    <div class="row">
+                    <div class="row mx-2">
                         <div class="col-12 d-flex justify-content-between">
                             <h5>Základní informace</h5>
                             <a href="/category/<%= category.name %>/editSection/<%= section._id %>" class="text-smaller">změnit</a>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mx-2">
                         <div class="col-3">
                             <p>Nadpis</p>
                         </div>
@@ -400,7 +416,7 @@
                             <p class="text-muted"><%= section.name %></p>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mx-2">
                         <div class="col-3">
                             <p>Podnadpis</p>
                         </div>
@@ -408,88 +424,31 @@
                             <p class="text-muted"><%= section.shortDescription %></p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <p>ID</p>
-                        </div>
-                        <div class="col-9">
-                            <p class="text-muted"><%= section._id %></p>
+                    
+                    <div class="row mb-2 mt-2 d-flex mx-3">
+                        <a href="/review/<%= section._id %>/showAll" class="btn btn-sm btn-danger my-1"><i class="far fa-edit"></i> Editovat obsah</a>
+                        <div class="d-flex justify-content-between align-items-center p-0">
+                            <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-right: 4px"><i class="far fa-plus-square"></i> Přidat kartičku</a>
+                            <a href="/category/<%= category._id %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-left: 4px"><i class="far fa-plus-square"></i> Přidat otázku</a>
+                        </div>   
+                    </div>
+                    <div class="row my-3 mx-3 d-flex">
+                        <div class="d-flex justify-content-between align-items-center p-0">
+                            <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-right: 4px"><i class="far fa-caret-square-up"></i> Posunout nahoru</a>
+                            <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-left: 4px"><i class="far fa-caret-square-down"></i> Posunout dolů</a>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <p>Statistiky</p>
+
+                    <% if (currentUser && currentUser.isEditor) { %>
+                        <div class="row mb-2 mt2 mx-3 d-flex">
+                            <a href="/category/<%= category.name %>/section/<%= section._id %>/unpublish" class="btn btn-sm btn-outline-danger my-1"><i class="fas fa-eye-slash"></i> Skrýt balíček</a>
+                            <a href="#" class="btn btn-sm btn-danger btn-red my-1" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="far fa-trash-alt"></i> Odstranit balíček</a>
                         </div>
-                        <div class="col-9">
-                            <div class="d-flex">
-                                <p class="text-muted mb-0">Spuštění: <%= section.countStarted %> <span class="mx-2">|</span></p>
-                                <p class="text-muted mb-0">Dokončení: <%= section.countFinished %> <span class="mx-2">|</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <h5>Akce</h5>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-3">
-                            <p>Kartičky</p>
-                        </div>
-                        <div class="col-9">
-                            <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger">Přidat kartičku</a>
-                            <a href="/category/<%= category.name %>/section/<%= section._id %>/listAllCards" class="btn btn-sm btn-outline-danger">Zobrazit všechny kartičky</a>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-3">
-                            <p>Otázky</p>
-                        </div>
-                        <div class="col-9">
-                            <a href="/category/<%= category._id %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-danger">Přidat otázku</a>
-                            <a href="/category/<%= category._id %>/section/<%= section._id %>/list" class="btn btn-sm btn-outline-danger">Zobrazit všechny otázky</a>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-3">
-                            <p>Pořadí balíčku</p>
-                        </div>
-                        <div class="col-9">
-                            <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>" class="btn btn-sm btn-danger">Posunout nahoru</a>
-                            <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>" class="btn btn-sm btn-outline-danger">Posunout dolů</a>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-3">
-                            <p>Zařazení balíčku</p>
-                        </div>
-                        <div class="col-9">
-                            <% if (!section.isPremium) { %>
-                                <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toPremium" class="btn btn-sm btn-danger">Změnit na premium</a>
-                                <span class="text-muted">(aktuálně zdarma)</span>
-                            <% } %>
-                            <% if (section.isPremium) { %>
-                                <a href="/category/<%= category.name %>/sectionStatus/<%= section._id %>/toZdarma" class="btn btn-sm btn-danger">Změnit na zdarma</a>
-                                <span class="text-muted">(aktuálně premium)</span>
-                            <% } %>
-                        </div>
-                    </div>
-                    <div class="row mb-2">
-                        <div class="col-3">
-                            <p>Export</p>
-                        </div>
-                        <div class="col-9">
-                            <a href="/category/<%= category.name %>/generateJSON/<%= section._id %>" class="btn btn-sm btn-danger">Vygenerovat JSON</a>
-                        </div>
-                    </div>
-                    <% if (currentUser.admin) { %>
-                        <div class="row mb-2 mt-4">
-                            <div class="col-3">
-                                <p>Odstranit balíček</p>
-                            </div>
-                            <div class="col-9">
-                                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>">Odstranit</a>
-                            </div>
+                    <% } %>
+
+                    <% if (!currentUser && !currentUser.admin) { %>
+                        <div class="row mb-2 d-flex mx-3">
+                            <a href="/category/<%= category.name %>/generateJSON/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1">Vygenerovat JSON</a>
                         </div>
                     <% } %>
                 </div>
