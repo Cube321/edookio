@@ -22,7 +22,7 @@ router.get(
     if (!foundSection) {
       throw Error("Sekce s tímto ID neexistuje");
     }
-    res.status(200).render("cards/new", {
+    res.status(200).render("cards/new_editor", {
       category,
       sectionId,
       sectionName: foundSection.name,
@@ -37,9 +37,14 @@ router.post(
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res, next) => {
-    const { pageA, pageB } = req.body;
+    let { pageA, pageB } = req.body;
     const author = req.user.email;
     const { category, sectionId } = req.params;
+
+    //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
+    pageA = pageA.replace(/<p><br><\/p>/g, "");
+    pageB = pageB.replace(/<p><br><\/p>/g, "");
+
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findOne({ name: req.params.category });
     if (!foundSection) {
@@ -86,7 +91,7 @@ router.get(
     }
     res
       .status(200)
-      .render("cards/edit", { card, sectionName: foundSection.name });
+      .render("cards/edit_editor", { card, sectionName: foundSection.name });
   })
 );
 
@@ -98,7 +103,12 @@ router.put(
   isEditor,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
-    const { pageA, pageB } = req.body;
+    let { pageA, pageB } = req.body;
+
+    //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
+    pageA = pageA.replace(/<p><br><\/p>/g, "");
+    pageB = pageB.replace(/<p><br><\/p>/g, "");
+
     let author = req.user.email;
     const foundCard = await Card.findByIdAndUpdate(id, {
       pageA,

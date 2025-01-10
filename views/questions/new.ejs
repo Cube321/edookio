@@ -1,90 +1,47 @@
-<% layout ('layouts/boilerplate.ejs') %>
-<div class="col-lg-6 offset-lg-3">
-  <h4 class="text-center">Vložit novou testovou otázku</h4>
-  <p class="text-center">
-    do balíčku <%= section.name %>
-    <span class="text-muted">(<%= category.text %>)</span>
-  </p>
-  <form
-    class="row g-3 mt-3 needs-validation"
-    novalidate
-    action="/category/<%= category._id %>/section/<%= section._id %>/question"
-    method="POST"
-  >
-    <div class="mt-2">
-      <div class="form-group row">
-        <label for="question" class="col-lg-3 col-form-label text-bold"
-          >Otázka</label
-        >
-        <div class="col-lg-9">
-          <input
-            type="text"
-            class="form-control form-borders"
-            id="question"
-            name="question"
-            required
-          />
+<% layout('layouts/boilerplate.ejs') %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="text-center">Vložit novou testovou otázku</h2>
+            <p class="text-center">do balíčku <%= section.name %></p>
         </div>
-      </div>
-      <div class="form-group row my-4">
-        <label for="correctAnswer" class="col-lg-3 col-form-label text-bold"
-          >Správná odpověď</label
-        >
-        <div class="col-lg-9">
-          <input
-            type="text"
-            class="form-control form-borders"
-            id="correctAnswer"
-            name="correctAnswer"
-            required
-          />
-        </div>
-      </div>
-      <div class="form-group row mb-2">
-        <label for="wrongAnswer1" class="col-lg-3 col-form-label text-bold"
-          >Špatná odp. (1)</label
-        >
-        <div class="col-lg-9">
-          <input
-            type="text"
-            class="form-control form-borders"
-            id="wrongAnswer1"
-            name="wrongAnswer1"
-            required
-          />
-        </div>
-      </div>
-      <div class="form-group row mb-2">
-        <label for="wrongAnswer2" class="col-lg-3 col-form-label text-bold"
-          >Špatná odp. (2)</label
-        >
-        <div class="col-lg-9">
-          <input
-            type="text"
-            class="form-control form-borders"
-            id="wrongAnswer2"
-            name="wrongAnswer2"
-            required
-          />
-        </div>
-      </div>
-      <div class="mt-4">
-        <button class="btn btn-danger btn-sm" type="submit">
-          Vložit otázku
-        </button>
-        <a
-          href="/review/<%= section._id %>/showAll"
-          class="btn btn-sm btn-outline-danger"
-          >Všechny otázky k balíčku</a
-        >
-        <a
-          href="/category/<%= category.name %>"
-          class="btn btn-sm btn-outline-danger"
-          >Zpět na předmět</a
-        >
-      </div>
     </div>
-  </form>
+    <div class="row">
+        <div class="offset-lg-3 col-lg-6">
+            <form class="row g-3 mt-3 needs-validation" novalidate action="/category/<%= category._id %>/section/<%= section._id %>/question" method="POST" id="new-question-form">
+                <div class="mt-2">
+                    <div class="form-group row">
+                        <div>
+                            <textarea class="form-control form-borders border-darkgrey no-resize question-textarea" id="question" placeholder="Zadejte otázku..." name="question" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row my-4">
+                        <div>
+                            <textarea class="form-control form-borders border-darkgrey no-resize answer-textarea" id="correctAnswer" placeholder="Správná odpověď..." name="correctAnswer" rows="2" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <div>
+                            <textarea class="form-control form-borders border-darkgrey no-resize answer-textarea" id="wrongAnswer1" placeholder="Chybná odpověď (první)" name="wrongAnswer1" rows="2" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-2">
+                        <div>
+                            <textarea class="form-control form-borders border-darkgrey no-resize answer-textarea" id="wrongAnswer2" placeholder="Chybná odpověď (druhá)" name="wrongAnswer2" rows="2" required></textarea>
+                        </div>
+                    </div>
+                    <!--add select element below-->
+                    <div class="form-group" style="margin-top: 20px;">
+                        <div class="col-12 d-flex justify-content-center align-items-center mt-4 mb-3">
+                            <button class="btn btn-danger btn-lg mt-1" style="width: 200px" type="submit" id="save-question-btn">Vložit otázku</button>
+                        </div>
+                        <div class="col-12 d-flex justify-content-center align-items-center">
+                            <a href="/review/<%= section._id %>/showAll">zpět</a>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script src="/js/validateForms.js"></script>

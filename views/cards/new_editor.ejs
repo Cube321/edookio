@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate.ejs') %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="text-center">Vložit novou kartičku</h2>
+            <p class="text-center">do balíčku <%= sectionName %></p>
+            <form class="row g-3" novalidate action="/category/<%= category %>/section/<%= sectionId %>/newCard" method="POST" onsubmit="return submitForm()">
+                <div class="col-lg-6">
+                    <label for="pageA" class="new-card-label">Přední strana</label>
+                    <!-- Quill Editor Container for Page A -->
+                    <div id="editorPageA" class="form-control form-borders" style="height: 300px;"></div>
+                    <!-- Hidden Input to Store Quill HTML Content -->
+                    <input type="hidden" name="pageA" id="hiddenPageA" required>
+                </div>
+                <div class="col-lg-6">
+                    <label for="pageB" class="new-card-label">Zadní strana</label>
+                    <!-- Quill Editor Container for Page B -->
+                    <div id="editorPageB" class="form-control form-borders" style="height: 300px;"></div>
+                    <!-- Hidden Input to Store Quill HTML Content -->
+                    <input type="hidden" name="pageB" id="hiddenPageB" required>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <p class="error-warning mb-0 red text-smaller hidden" id="error-warning">Obě strany kartičky musí být vyplněny.</p>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <button class="btn btn-danger btn-lg mt-1" style="width: 200px" type="submit" id="save-card-btn">Vložit kartičku</button>
+                </div>
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <a href="/review/<%= sectionId %>/showAll">zpět</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include Quill JS and CSS -->
+<link href="/css/quill.css" rel="stylesheet">
+<script src="/js/quill.js"></script>
+<script src="/js/quillCardSetup.js"></script>
