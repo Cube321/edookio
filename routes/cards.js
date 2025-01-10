@@ -54,7 +54,7 @@ router.post(
       throw Error("Kategorie s tímto ID neexistuje");
     }
     const newCard = new Card({
-      category,
+      categoryId,
       section: sectionId,
       categoryId: foundCategory._id,
       pageA,
@@ -69,7 +69,7 @@ router.post(
     req.flash("successOverlay", "Kartička byla přidána do databáze.");
     res
       .status(201)
-      .redirect(`/category/${category}/section/${sectionId}/newCard`);
+      .redirect(`/category/${categoryId}/section/${sectionId}/newCard`);
   })
 );
 

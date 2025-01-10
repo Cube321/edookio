@@ -374,7 +374,7 @@ router.get(
     }
     foundSection.testIsPublic = true;
     await foundSection.save();
-    res.status(200).redirect(`/category/${foundSection.category}`);
+    res.status(200).redirect(`/category/${foundSection.categoryId}`);
   })
 );
 

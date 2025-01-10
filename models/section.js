@@ -11,17 +11,21 @@ const SectionSchema = new Schema({
     type: String,
     default: "",
   },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",
   },
   isPublic: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   testIsPublic: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
   questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],

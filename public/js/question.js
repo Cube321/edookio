@@ -15,8 +15,8 @@ $(document).ready(function () {
   let getQuestionsUrl = `/api/getQuestions/section/${sectionId}`;
 
   if (sectionId === "random_test") {
-    let category = $("#sectionId").attr("cat");
-    getQuestionsUrl = `/api/getQuestions/section/${sectionId}?category=${category}`;
+    let categoryId = $("#sectionId").attr("cat");
+    getQuestionsUrl = `/api/getQuestions/section/${sectionId}?category=${categoryId}`;
   }
 
   if ($("#free-questions-left")) {

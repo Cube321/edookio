@@ -68,46 +68,6 @@ router.get(
   })
 );
 
-//publish section for students
-router.get(
-  "/review/:sectionId/publish",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const { sectionId } = req.params;
-    const { redirectNext } = req.query;
-
-    const foundSection = await Section.findById(sectionId);
-
-    if (!foundSection) {
-      req.flash("error", "Sekce nebyla nalezena");
-      return res.redirect("/");
-    }
-
-    foundSection.isPublic = true;
-    foundSection.testIsPublic = true;
-    await foundSection.save();
-
-    //remove the section from the user.sectionsForReview
-    const user = req.user;
-    const sectionIndex = user.sectionsForReview.findIndex(
-      (s) => s.toString() === sectionId
-    );
-    if (sectionIndex !== -1) {
-      user.sectionsForReview.splice(sectionIndex, 1);
-      await user.save();
-    }
-
-    req.flash("successOverlay", "Sekce byla publikována");
-
-    if (redirectNext) {
-      return res.redirect(`/review/${redirectNext}/showAll`);
-    }
-
-    res.redirect(`/category/${foundSection.category}`);
-  })
-);
-
 //delete question api
 router.post(
   "/review/:sectionId/deleteQuestion/:questionId",

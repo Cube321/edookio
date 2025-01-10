@@ -12,21 +12,19 @@ const {
   isLoggedIn,
   isAdmin,
   validateSection,
-  isPremiumUser,
   isEditor,
 } = require("../utils/middleware");
 
 //SHOW SECTIONS OF CATEGORY
 router.get(
   "/category/:categoryId",
-  isPremiumUser,
   catchAsync(async (req, res, next) => {
     const { categoryId } = req.params;
     const category = await Category.findById(categoryId)
       .populate({
         path: "sections",
         populate: {
-          path: "cards", // <-- populate the cards array in each section
+          path: "cards author", // <-- populate the cards array in each section
         },
       })
       .exec();
@@ -247,7 +245,7 @@ router.get(
     });
 
     req.flash("successOverlay", "Tvé kartičky byly smazány.");
-    res.status(200).redirect(`/category/${req.params.category}`);
+    res.status(200).redirect(`/category/${req.params.categoryId}`);
   })
 );
 
@@ -256,6 +254,7 @@ router.get(
   isLoggedIn,
   async (req, res) => {
     const { categoryId } = req.params;
+    console.log(categoryId);
     const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
       req.flash("error", "Předmět neexistuje.");
@@ -276,7 +275,7 @@ router.get(
     await req.user.save();
 
     req.flash("successOverlay", "Tvé výsledky byly smazány.");
-    res.status(200).redirect(`/category/${req.params.category}`);
+    res.status(200).redirect(`/category/${req.params.categoryId}`);
   }
 );
 
@@ -308,6 +307,7 @@ router.post(
       questions: [],
       isPremium: isPremiumBoolean,
       shortDescription: desc,
+      author: req.user._id,
     });
     const savedSection = await newSection.save();
     foundCategory.sections.push(savedSection._id);
@@ -360,7 +360,7 @@ router.post(
     }
 
     req.flash("successOverlay", `Balíček ${savedSection.name} byl vytvořen.`);
-    res.status(200).redirect(`/category/${savedSection.category}`);
+    res.status(200).redirect(`/category/${savedSection.categoryId}`);
   })
 );
 
@@ -399,7 +399,7 @@ router.delete(
 
     //flash a redirect
     req.flash("successOverlay", "Balíček byl odstraněn.");
-    res.status(200).redirect(`/category/${category}`);
+    res.status(200).redirect(`/category/${categoryId}`);
   })
 );
 
@@ -471,7 +471,7 @@ router.get(
         await foundCategory.save();
       }
     }
-    res.status(200).redirect(`/category/${category}`);
+    res.status(200).redirect(`/category/${categoryId}`);
   })
 );
 //DOWN
@@ -494,7 +494,7 @@ router.get(
         await foundCategory.save();
       }
     }
-    res.status(200).redirect(`/category/${category}`);
+    res.status(200).redirect(`/category/${categoryId}`);
   })
 );
 

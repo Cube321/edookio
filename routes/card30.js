@@ -136,7 +136,7 @@ router.get(
       }
 
       res.render("sections/finishedLive", {
-        category: foundSection.category,
+        category: foundSection.categoryId,
         categoryId: foundCategory._id,
         section: foundSection,
         knownCards,
@@ -145,8 +145,9 @@ router.get(
       });
     } else {
       return res.status(200).render("sections/finishedDemo", {
-        category: foundSection.category,
+        category: foundSection.categoryId,
         sectionName: foundSection.name,
+        categoryId: foundCategory._id,
       });
     }
   })
