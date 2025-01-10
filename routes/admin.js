@@ -9,6 +9,7 @@ const Feedback = require("../models/feedback");
 const { isLoggedIn, isAdmin } = require("../utils/middleware");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");
+const icons = require("../utils/icons");
 
 //ADMIN - SHOW ADMIN
 router.get(
@@ -861,64 +862,11 @@ router.get(
   isAdmin,
   catchAsync(async (req, res) => {
     //get all categories
-    let categories = await Category.find({}).populate("sections");
-    //get all sections
-    let sections = await Section.find({});
-    //sort all categories by OrderNum
-    sortByOrderNum(categories);
-    //count S/D ratio for each section
-    countSDratio(sections);
-    //sort all sections by countStarted
-    sortByCountStarted(sections);
-    //count how many times where all sections in the category started
-    countStartedAbsoluteAndAverage(categories);
+    let categories = await Category.find({});
     //render view
-    res.render("admin/categories", { categories, sections });
+    res.render("admin/categories", { categories, icons });
   })
 );
-
-//helper - order categories by OrderNum function
-function sortByOrderNum(array) {
-  // Use the Array.prototype.sort() method to sort the array
-  array.sort((a, b) => a.orderNum - b.orderNum);
-  // Return the sorted array
-  return array;
-}
-
-//helper - order sections by countStarted function
-function sortByCountStarted(array) {
-  // Use the Array.prototype.sort() method to sort the array
-  array.sort((a, b) => b.countStarted - a.countStarted);
-  // Return the sorted array
-  return array;
-}
-function countSDratio(array) {
-  array.forEach((sec) => {
-    sec.SDratio = Math.round((sec.countFinished / sec.countStarted) * 100);
-  });
-  return array;
-}
-
-//count how many times were sections started in category and average for each section
-function countStartedAbsoluteAndAverage(categories) {
-  let countCards = 0;
-  let countQuestions = 0;
-  categories.forEach((cat) => {
-    countCards = 0;
-    countQuestions = 0;
-    cat.sections.forEach((sec) => {
-      countCards = countCards + sec.countStarted;
-      countQuestions = countQuestions + sec.countStartedTest;
-    });
-    cat.countStartedAll = countCards;
-    cat.countStartedAllQuestions = countQuestions;
-    cat.countAverage = Math.round(countCards / cat.sections.length);
-    cat.countAverageQuestions = Math.round(
-      countQuestions / cat.sections.length
-    );
-  });
-  return categories;
-}
 
 //reset counters on section
 router.get(
