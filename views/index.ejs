@@ -1,200 +1,339 @@
 <!DOCTYPE html>
 <html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= texts.header.title %>XXX</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap_customised.css">
-    <link rel="stylesheet" href="/css/custom.css">
-    <link rel="stylesheet" href="/css/landing.css">
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap_customised.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <link rel="stylesheet" href="/css/landing.css" />
     <!-- META TAGS -->
-    <meta name="description"               content="<%= texts.header.description %>">
-    <meta name="author"                    content="<%= texts.header.author %>">
-    <meta name="keywords"                  content="<%= texts.header.keywords %>">
-    <meta name="twitter:title"             content="<%= texts.header.title %>">
-    <meta name="twitter:description"       content="<%= texts.header.description %>">
-    <meta name="twitter:image"             content="<%= texts.header.sharingImgUrl %>">
-    <meta property="og:url"                content="<%= texts.header.homepageUrl %>" />
-    <meta property="og:title"              content="<%= texts.header.title %>" />
-    <meta property="og:description"        content="<%= texts.header.description %>>" />
-    <meta property="og:image"              content="<%= texts.header.sharingImgUrl %>" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Roboto&display=swap" rel="stylesheet">
-</head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNQ2L4K9C9"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta name="description" content="<%= texts.header.description %>" />
+    <meta name="author" content="<%= texts.header.author %>" />
+    <meta name="keywords" content="<%= texts.header.keywords %>" />
+    <meta name="twitter:title" content="<%= texts.header.title %>" />
+    <meta
+      name="twitter:description"
+      content="<%= texts.header.description %>"
+    />
+    <meta name="twitter:image" content="<%= texts.header.sharingImgUrl %>" />
+    <meta property="og:url" content="<%= texts.header.homepageUrl %>" />
+    <meta property="og:title" content="<%= texts.header.title %>" />
+    <meta
+      property="og:description"
+      content="<%= texts.header.description %>>"
+    />
+    <meta property="og:image" content="<%= texts.header.sharingImgUrl %>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-NNQ2L4K9C9"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
 
-  gtag('config', 'G-NNQ2L4K9C9');
-  gtag('config', 'AW-990983899');
-</script>
-<body class="d-flex flex-column vh-100">
-    <%- include('./partials/navbar') %> 
+    gtag("config", "G-NNQ2L4K9C9");
+    gtag("config", "AW-990983899");
+  </script>
+  <body class="d-flex flex-column vh-100">
+    <%- include('./partials/navbar') %>
 
-    <main role="main"> 
-        <%- include('./partials/alert') %>
-        <section class="jumbotron main-header">
-          <div class="container">
-              <div class="row">
-                  <div class="col-md-5 offset-md-1 my-5 p-4">
-                    <h1 class="jumbotron-heading mb-3"><%= texts.landingPage.mainTitleStart %> <span class="color-1"><%= texts.general.projectName %></span>!</h1>
-                    <p class="lead"><%= texts.landingPage.headerStatement %></p>        
-                    <div class="mt-5 text-center-on-mobile">
-                        <% if(!currentUser){ %> 
-                            <a href="/auth/user/new" class="btn btn-lg btn-danger call-to-action"><%= texts.landingPage.studyFree %></a>
-                        <% } %> 
-                    </div>
-                </div>
-                <% if (currentUser) { %>
-                    <div class="col-md-6">
-                        <div style="display: flex; justify-content: center; align-items: center; height:100%;width:100%">
-                            <div class="streak-box">
-                                <p class="header mb-0 d-flex justify-content-between">
-                                    <span style="color:white">x</span>
-                                    <span>Denní cíl</span>
-                                    <a href="#" class="info-icon" data-bs-toggle="modal" data-bs-target="#streakInfoModal">?</a>
-                                </p>
-                                    <div class="streak-card">
-                                        <div class="percent">
-                                        <svg>
-                                            <circle cx="80" cy="80" r="60"></circle>
-                                            <circle cx="80" cy="80" r="60" style="--percent: <%= percent %>"></circle>
-                                        </svg>
-                                        <div class="number">
-                                            <h3><%= percent %><span> %</span></h3>
-                                        </div>
-                                        </div>
-                                    </div>
-                                <p class="header">
-                                    Studuješ již <span class="color-primary"><%= currentUser.streakLength %></span>
-                                    <% if (currentUser.streakLength === 1) { %>
-                                        den
-                                    <% } else if (currentUser.streakLength > 0 && currentUser.streakLength < 5){ %>
-                                        dny
-                                    <% } else { %>
-                                        dní
-                                    <% } %>
-                                    v řadě
-                                </p>
-                                
-                                <hr style="color:#E80F88">
-                                <p class="header mb-2">Tvůj přehled</p>
-                                <ul class="stats-list text-smaller">
-                                    <li class="stats-item "><span>Kartiček celkem</span><span class="text-bold"><%= currentUser.cardsSeen %></span></li>
-                                    <li class="stats-item text-muted mb-2"><span>Kartiček tento měsíc</span><span class="text-bold"><%= currentUser.cardsSeenThisMonth %></span></li>
-                                    <li class="stats-item "><span>Otázek celkem</span><span class="text-bold"><%= currentUser.questionsSeenTotal %></span></li>
-                                    <li class="stats-item text-muted"><span>Otázek tento měsíc</span><span class="text-bold"><%= currentUser.questionsSeenThisMonth %></span></li>
-                                </ul>
-                                
-                            </div>
-                        </div>
-                    </div>
+    <main role="main">
+      <%- include('./partials/alert') %>
+      <section class="jumbotron main-header">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-5 offset-md-1 my-5 p-4">
+              <h1 class="jumbotron-heading mb-3">
+                <%= texts.landingPage.mainTitleStart %>
+                <span class="color-1"><%= texts.general.projectName %></span>!
+              </h1>
+              <p class="lead"><%= texts.landingPage.headerStatement %></p>
+              <div class="mt-5 text-center-on-mobile">
+                <% if(!currentUser){ %>
+                <a
+                  href="/auth/user/new"
+                  class="btn btn-lg btn-danger call-to-action"
+                  ><%= texts.landingPage.studyFree %></a
+                >
                 <% } %>
               </div>
-          </div>
-        </section>
-
-  
-        <div class="album pt-5 pb-3 mb-5">
-          <div class="container">
-            <div class="mb-5 landing-info-wrapper d-none-992-up">
-                    <div class="landing-info d-flex flex-row justify-content-evenly align-items-center">
-                        <div class="info-icon">
-                            <img src="/img/icon_cards.png" class="img-fit-100" alt="cards">
-                        </div>
-                        <div>
-                            <p class="info-main"><%= numOfCards %> <%= texts.landingPage.pointOneMain %></p>
-                            <p class="info-secondary text-muted">a <%= numOfQuestions %> testových otázek</p>
-                        </div>
-                    </div>
-                    <div class="landing-info d-flex flex-row justify-content-evenly align-items-center">
-                        <div class="info-icon">
-                            <img src="/img/icon_mobileandpc.png" class="img-fit-100" alt="cards">
-                        </div>
-                        <div>
-                            <p class="info-main"><%= texts.landingPage.pointTwoMain %></p>
-                            <p class="info-secondary text-muted"><%= texts.landingPage.pointTwoSecondary %></p>
-                        </div>
-                    </div>
-                    <div class="landing-info d-flex flex-row justify-content-evenly align-items-center">
-                        <div class="info-icon">
-                            <img src="/img/icon_knowledge.png" class="img-fit-100" alt="cards">
-                        </div>
-                        <div>
-                            <p class="info-main"><%= numOfCategories %> <%= texts.landingPage.pointThreeMain1 %> <%= numOfSections  %> <%= texts.landingPage.pointThreeMain2 %></p>
-                            <p class="info-secondary text-muted"><%= texts.landingPage.pointThreeSecondary %></p>
-                        </div>
-                    </div>
             </div>
-
-                <div class="mb-5 row d-none-992-down">
-                    <div class="col-12">
-                        
-                        <div class="landing-info col-12">
-                            <div class="col-md-6 offset-md-3">
-                                <div class="row my-2">
-                                    <div class="info-icon col-3 d-flex justify-content-center align-items-center">
-                                        <img src="/img/icon_cards.png" class="img-fit-small" alt="cards">
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="info-main"><%= numOfCards %> <%= texts.landingPage.pointOneMain %></p>
-                                        <p class="info-secondary text-muted">a <%= numOfQuestions %> testových otázek</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="landing-info">
-                            <div class="col-md-6 offset-md-3">
-                                <div class="row my-2">
-                                    <div class="info-icon col-3 d-flex justify-content-center align-items-center">
-                                        <img src="/img/icon_mobileandpc.png" class="img-fit-small" alt="cards">
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="info-main"><%= texts.landingPage.pointTwoMain %></p>
-                                        <p class="info-secondary text-muted"><%= texts.landingPage.pointTwoSecondary %></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="landing-info">
-                            <div class="col-md-6 offset-md-3">
-                                <div class="row my-2">
-                                    <div class="info-icon col-3 d-flex justify-content-center align-items-center">
-                                        <img src="/img/icon_knowledge.png" class="img-fit-small" alt="cards">
-                                    </div>
-                                    <div class="col-9">
-                                        <p class="info-main"><%= numOfCategories %> <%= texts.landingPage.pointThreeMain1 %> <%= numOfSections  %> <%= texts.landingPage.pointThreeMain2 %></p>
-                                        <p class="info-secondary text-muted"><%= texts.landingPage.pointThreeSecondary %></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <% if (currentUser) { %>
+            <div class="col-md-6">
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100%;
+                  width: 100%;
+                "
+              >
+                <div class="streak-box">
+                  <p class="header mb-0 d-flex justify-content-between">
+                    <span style="color: white">x</span>
+                    <span>Denní cíl</span>
+                    <a
+                      href="#"
+                      class="info-icon"
+                      data-bs-toggle="modal"
+                      data-bs-target="#streakInfoModal"
+                      >?</a
+                    >
+                  </p>
+                  <div class="streak-card">
+                    <div class="percent">
+                      <svg>
+                        <circle cx="80" cy="80" r="60"></circle>
+                        <circle
+                          cx="80"
+                          cy="80"
+                          r="60"
+                          style="--percent: <%= percent %>"
+                        ></circle>
+                      </svg>
+                      <div class="number">
+                        <h3><%= percent %><span> %</span></h3>
+                      </div>
                     </div>
+                  </div>
+                  <p class="header">
+                    Studuješ již
+                    <span class="color-primary"
+                      ><%= currentUser.streakLength %></span
+                    >
+                    <% if (currentUser.streakLength === 1) { %> den <% } else if
+                    (currentUser.streakLength > 0 && currentUser.streakLength <
+                    5){ %> dny <% } else { %> dní <% } %> v řadě
+                  </p>
+
+                  <hr style="color: #e80f88" />
+                  <p class="header mb-2">Tvůj přehled</p>
+                  <ul class="stats-list text-smaller">
+                    <li class="stats-item">
+                      <span>Kartiček celkem</span
+                      ><span class="text-bold"
+                        ><%= currentUser.cardsSeen %></span
+                      >
+                    </li>
+                    <li class="stats-item text-muted mb-2">
+                      <span>Kartiček tento měsíc</span
+                      ><span class="text-bold"
+                        ><%= currentUser.cardsSeenThisMonth %></span
+                      >
+                    </li>
+                    <li class="stats-item">
+                      <span>Otázek celkem</span
+                      ><span class="text-bold"
+                        ><%= currentUser.questionsSeenTotal %></span
+                      >
+                    </li>
+                    <li class="stats-item text-muted">
+                      <span>Otázek tento měsíc</span
+                      ><span class="text-bold"
+                        ><%= currentUser.questionsSeenThisMonth %></span
+                      >
+                    </li>
+                  </ul>
                 </div>
-            <div class="row" id="categories-row">
-                <div class="offset-lg-2 col-lg-8">
-                    <% if(currentUser && !currentUser.isEmailVerified){ %>
-                        <div class="row">
-                            <div class="col-12 mb-4">
-                                <div class="card border-grey">
-                                    <div class="card-body card-info d-flex flex-row align-items-center justify-content-around">
-                                        <h5 class="text-center mb-0">Ověř prosím svou <b>e-mailovou adresu</b></h5>
-                                        <a href="/auth/user/requestEmailVerification" class="btn btn-danger mx-2">Zaslat ověřovací e-mail</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <% } %>
-                    <!--
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </section>
+
+      <div class="album pt-5 pb-3 mb-5">
+        <div class="container">
+          <div class="mb-5 landing-info-wrapper d-none-992-up">
+            <div
+              class="landing-info d-flex flex-row justify-content-evenly align-items-center"
+            >
+              <div class="info-icon">
+                <img
+                  src="/img/icon_cards.png"
+                  class="img-fit-100"
+                  alt="cards"
+                />
+              </div>
+              <div>
+                <p class="info-main">
+                  <%= numOfCards %> <%= texts.landingPage.pointOneMain %>
+                </p>
+                <p class="info-secondary text-muted">
+                  a <%= numOfQuestions %> testových otázek
+                </p>
+              </div>
+            </div>
+            <div
+              class="landing-info d-flex flex-row justify-content-evenly align-items-center"
+            >
+              <div class="info-icon">
+                <img
+                  src="/img/icon_mobileandpc.png"
+                  class="img-fit-100"
+                  alt="cards"
+                />
+              </div>
+              <div>
+                <p class="info-main"><%= texts.landingPage.pointTwoMain %></p>
+                <p class="info-secondary text-muted">
+                  <%= texts.landingPage.pointTwoSecondary %>
+                </p>
+              </div>
+            </div>
+            <div
+              class="landing-info d-flex flex-row justify-content-evenly align-items-center"
+            >
+              <div class="info-icon">
+                <img
+                  src="/img/icon_knowledge.png"
+                  class="img-fit-100"
+                  alt="cards"
+                />
+              </div>
+              <div>
+                <p class="info-main">
+                  <%= numOfCategories %> <%= texts.landingPage.pointThreeMain1
+                  %> <%= numOfSections %> <%= texts.landingPage.pointThreeMain2
+                  %>
+                </p>
+                <p class="info-secondary text-muted">
+                  <%= texts.landingPage.pointThreeSecondary %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-5 row d-none-992-down">
+            <div class="col-12">
+              <div class="landing-info col-12">
+                <div class="col-md-6 offset-md-3">
+                  <div class="row my-2">
+                    <div
+                      class="info-icon col-3 d-flex justify-content-center align-items-center"
+                    >
+                      <img
+                        src="/img/icon_cards.png"
+                        class="img-fit-small"
+                        alt="cards"
+                      />
+                    </div>
+                    <div class="col-9">
+                      <p class="info-main">
+                        <%= numOfCards %> <%= texts.landingPage.pointOneMain %>
+                      </p>
+                      <p class="info-secondary text-muted">
+                        a <%= numOfQuestions %> testových otázek
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="landing-info">
+                <div class="col-md-6 offset-md-3">
+                  <div class="row my-2">
+                    <div
+                      class="info-icon col-3 d-flex justify-content-center align-items-center"
+                    >
+                      <img
+                        src="/img/icon_mobileandpc.png"
+                        class="img-fit-small"
+                        alt="cards"
+                      />
+                    </div>
+                    <div class="col-9">
+                      <p class="info-main">
+                        <%= texts.landingPage.pointTwoMain %>
+                      </p>
+                      <p class="info-secondary text-muted">
+                        <%= texts.landingPage.pointTwoSecondary %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="landing-info">
+                <div class="col-md-6 offset-md-3">
+                  <div class="row my-2">
+                    <div
+                      class="info-icon col-3 d-flex justify-content-center align-items-center"
+                    >
+                      <img
+                        src="/img/icon_knowledge.png"
+                        class="img-fit-small"
+                        alt="cards"
+                      />
+                    </div>
+                    <div class="col-9">
+                      <p class="info-main">
+                        <%= numOfCategories %> <%=
+                        texts.landingPage.pointThreeMain1 %> <%= numOfSections
+                        %> <%= texts.landingPage.pointThreeMain2 %>
+                      </p>
+                      <p class="info-secondary text-muted">
+                        <%= texts.landingPage.pointThreeSecondary %>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" id="categories-row">
+            <div class="offset-lg-2 col-lg-8">
+              <% if(currentUser && !currentUser.isEmailVerified){ %>
+              <div class="row">
+                <div class="col-12 mb-4">
+                  <div class="card border-grey">
+                    <div
+                      class="card-body card-info d-flex flex-row align-items-center justify-content-around"
+                    >
+                      <h5 class="text-center mb-0">
+                        Ověř prosím svou <b>e-mailovou adresu</b>
+                      </h5>
+                      <a
+                        href="/auth/user/requestEmailVerification"
+                        class="btn btn-danger mx-2"
+                        >Zaslat ověřovací e-mail</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+              <!--
                     <div class="row">
                         <div class="col-12 mb-4">
                             <div class="card border-grey">
@@ -211,57 +350,90 @@
                     </div>
                     -->
 
-                    <% if(!currentUser || (currentUser && !currentUser.usedMobileApp)) {%>
-                    <div class="row">
-                        <div class="col-12 mb-4">
-                            <div class="card border-grey">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-evenly align-items-center">
-                                        <h5 class="text-center mb-0">Právě jsme spustili také <b>mobilní aplikaci</b> <b class="color-primary">InLege</b>!</h5>
-                                        <div class="d-flex justify-content-evenly align-items-center">
-                                          <a href="https://apps.apple.com/us/app/inlege/id6670204630" target="_blank" class="btn btn-outline-danger mx-2"><i class="fab fa-apple"></i> <span class="hide-under-1200">iOS</span></a>
-                                          <a href="https://play.google.com/store/apps/details?id=cz.inlege.InLege" target="_blank" class="btn btn-outline-danger mx-2"><i class="fab fa-android"></i> <span class="hide-under-1200">Android</span></a>
-                                        </div>
-                                      </div>
-                                </div>
-                            </div>
+              <% if(!currentUser || (currentUser && !currentUser.usedMobileApp))
+              {%>
+              <div class="row">
+                <div class="col-12 mb-4">
+                  <div class="card border-grey">
+                    <div class="card-body">
+                      <div
+                        class="d-flex justify-content-evenly align-items-center"
+                      >
+                        <h5 class="text-center mb-0">
+                          Právě jsme spustili také <b>mobilní aplikaci</b>
+                          <b class="color-primary">InLege</b>!
+                        </h5>
+                        <div
+                          class="d-flex justify-content-evenly align-items-center"
+                        >
+                          <a
+                            href="https://apps.apple.com/us/app/inlege/id6670204630"
+                            target="_blank"
+                            class="btn btn-outline-danger mx-2"
+                            ><i class="fab fa-apple"></i>
+                            <span class="hide-under-1200">iOS</span></a
+                          >
+                          <a
+                            href="https://play.google.com/store/apps/details?id=cz.inlege.InLege"
+                            target="_blank"
+                            class="btn btn-outline-danger mx-2"
+                            ><i class="fab fa-android"></i>
+                            <span class="hide-under-1200">Android</span></a
+                          >
                         </div>
+                      </div>
                     </div>
-                    <% } %>
-
-                    <div class="row">
-                        <% categories.forEach(cat => { %>
-                        <% if (cat.orderNum > -1) { %>
-                        <div class="col-lg-3 col-md-4 col-6 mb-4">
-                                <a href="/category/<%= cat.name %>" class="landing-link">
-                                    <div class="card">
-                                        <div class="d-flex justify-content-center">
-                                            <div class="m-3 rounded-circle icon-background-landing d-flex justify-content-center align-items-center">
-                                                <img src="/img/<%= cat.icon %>" class="img-fit" alt="" />
-                                            </div>
-                                        </div>
-                                        <div class="card-body cat-text d-flex flex-column justify-content-between">
-                                            <h5 class="card-title"><%= cat.text %></h5>
-                                            <div>
-                                                <p class="text-muted">
-                                                    <%= cat.numOfCards %>  <%= texts.landingPage.cards %> <br>
-                                                    <span class="text-small"><%= cat.numOfQuestions %> otázek</span>
-                                                </p>
-                                                <a href="/category/<%= cat.name %>" class="btn btn-sm btn-danger"><%= texts.landingPage.study %></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                        </div>
-                        <% } %>
-                        <% }) %>
-                    </div>
+                  </div>
                 </div>
+              </div>
+              <% } %>
+
+              <div class="row">
+                <% categories.forEach(cat => { %>
+                <div class="col-lg-3 col-md-4 col-6 mb-4">
+                  <a href="/category/<%= cat.name %>" class="landing-link">
+                    <div class="card">
+                      <div class="d-flex justify-content-center">
+                        <div
+                          class="m-3 rounded-circle icon-background-landing d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/<%= cat.icon %>"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class="card-body cat-text d-flex flex-column justify-content-between"
+                      >
+                        <h5 class="card-title"><%= cat.text %></h5>
+                        <div>
+                          <p class="text-muted">
+                            <%= cat.numOfCards %> <%= texts.landingPage.cards %>
+                            <br />
+                            <span class="text-small"
+                              ><%= cat.numOfQuestions %> otázek</span
+                            >
+                          </p>
+                          <a
+                            href="/category/<%= cat.name %>"
+                            class="btn btn-sm btn-danger"
+                            ><%= texts.landingPage.study %></a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <% }) %>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    
-    <!--
+      </div>
+
+      <!--
     <section class="partners">
         <div class="container">
             <div class="row">
@@ -299,128 +471,188 @@
     </section>
     -->
 
-    <section class="vision-statement">
+      <section class="vision-statement">
         <div class="container">
-            <div class="row">
-                <div class="col-md-8 offset-md-2 text-center my-5">
-                    <h1 class="mb-4"><%= texts.landingPage.ourVision %></h1>
-                    <p class="fs-5"><%= texts.landingPage.visionStatementStart %> <strong class="color-1"><%= texts.general.projectName %></strong><%= texts.landingPage.visionStatementEnd %></p>
-                </div>
+          <div class="row">
+            <div class="col-md-8 offset-md-2 text-center my-5">
+              <h1 class="mb-4"><%= texts.landingPage.ourVision %></h1>
+              <p class="fs-5">
+                <%= texts.landingPage.visionStatementStart %>
+                <strong class="color-1"><%= texts.general.projectName %></strong
+                ><%= texts.landingPage.visionStatementEnd %>
+              </p>
             </div>
+          </div>
         </div>
-    </section>
-    <section class="proc-inlege">
+      </section>
+      <section class="proc-inlege">
         <div class="container">
-            <div class="row">
-                <div class="col-md-10 offset-md-1 my-5">
-                    <h1 class="mb-5 text-center"><%= texts.landingPage.whyUse %> <%= texts.general.projectName %>?</h1>
+          <div class="row">
+            <div class="col-md-10 offset-md-1 my-5">
+              <h1 class="mb-5 text-center">
+                <%= texts.landingPage.whyUse %> <%= texts.general.projectName
+                %>?
+              </h1>
+              <div class="row">
+                <div class="col-lg-6 mb-3">
+                  <div class="reason">
                     <div class="row">
-                        <div class="col-lg-6 mb-3">
-                            <div class="reason">
-                                <div class="row">
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
-                                            <img src="/img/<%= texts.landingPage.reasonOneIcon %>" class="img-fit" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="ml-3">
-                                            <h5 class="reason-title"><%= texts.landingPage.reasonOneHeader %></h5>
-                                            <p class="reason-content"><%= texts.landingPage.reasonOneContent %></p>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
+                      <div
+                        class="col-4 d-flex justify-content-center align-items-center"
+                      >
+                        <div
+                          class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/<%= texts.landingPage.reasonOneIcon %>"
+                            class="img-fit"
+                            alt=""
+                          />
                         </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="reason">
-                                <div class="row">
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
-                                            <img src="/img/<%= texts.landingPage.reasonTwoIcon %>" class="img-fit" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="ml-3">
-                                            <h5 class="reason-title"><%= texts.landingPage.reasonTwoHeader %></h5>
-                                            <p class="reason-content"><%= texts.landingPage.reasonTwoContent %></p>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="ml-3">
+                          <h5 class="reason-title">
+                            <%= texts.landingPage.reasonOneHeader %>
+                          </h5>
+                          <p class="reason-content">
+                            <%= texts.landingPage.reasonOneContent %>
+                          </p>
                         </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="reason">
-                                <div class="row">
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
-                                            <img src="/img/<%= texts.landingPage.reasonThreeIcon %>" class="img-fit" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="ml-3">
-                                            <h5 class="reason-title"><%= texts.landingPage.reasonThreeHeader %></h5>
-                                            <p class="reason-content"><%= texts.landingPage.reasonThreeContent %></p>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mb-3">
-                            <div class="reason">
-                                <div class="row">
-                                    <div class="col-4 d-flex justify-content-center align-items-center">
-                                        <div class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center">
-                                            <img src="/img/<%= texts.landingPage.reasonFourIcon %>" class="img-fit" alt="" />
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="ml-3">
-                                            <h5 class="reason-title"><%= texts.landingPage.reasonFourHeader %></h5>
-                                            <p class="reason-content"><%= texts.landingPage.reasonFourContent %></p>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
+                <div class="col-lg-6 mb-3">
+                  <div class="reason">
+                    <div class="row">
+                      <div
+                        class="col-4 d-flex justify-content-center align-items-center"
+                      >
+                        <div
+                          class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/<%= texts.landingPage.reasonTwoIcon %>"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="ml-3">
+                          <h5 class="reason-title">
+                            <%= texts.landingPage.reasonTwoHeader %>
+                          </h5>
+                          <p class="reason-content">
+                            <%= texts.landingPage.reasonTwoContent %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <div class="reason">
+                    <div class="row">
+                      <div
+                        class="col-4 d-flex justify-content-center align-items-center"
+                      >
+                        <div
+                          class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/<%= texts.landingPage.reasonThreeIcon %>"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="ml-3">
+                          <h5 class="reason-title">
+                            <%= texts.landingPage.reasonThreeHeader %>
+                          </h5>
+                          <p class="reason-content">
+                            <%= texts.landingPage.reasonThreeContent %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <div class="reason">
+                    <div class="row">
+                      <div
+                        class="col-4 d-flex justify-content-center align-items-center"
+                      >
+                        <div
+                          class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/<%= texts.landingPage.reasonFourIcon %>"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-8">
+                        <div class="ml-3">
+                          <h5 class="reason-title">
+                            <%= texts.landingPage.reasonFourHeader %>
+                          </h5>
+                          <p class="reason-content">
+                            <%= texts.landingPage.reasonFourContent %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </section>
-</main>
+      </section>
+    </main>
 
-<% if (currentUser) { %>
+    <% if (currentUser) { %>
     <!-- STREAK INFO MODAL-->
     <div class="modal fade" id="streakInfoModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered edit-modal">
+      <div class="modal-dialog modal-dialog-centered edit-modal">
         <div class="modal-content">
-            <div class="modal-body d-flex justify-content-center align-items-center">
-                <p class="text-center">Tvůj aktuální denní cíl je <b class="color-1"><%= currentUser.dailyGoal %> bodů</b>. Změnit jej můžeš ve svém profilu.</p>
-            </div>
+          <div
+            class="modal-body d-flex justify-content-center align-items-center"
+          >
+            <p class="text-center">
+              Tvůj aktuální denní cíl je
+              <b class="color-1"><%= currentUser.dailyGoal %> bodů</b>. Změnit
+              jej můžeš ve svém profilu.
+            </p>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
-<% } %>
-
-
-    <%- include('./partials/footer') %>
-    <%- include('./partials/cookiesBar')%> 
+    <% } %> <%- include('./partials/footer') %> <%-
+    include('./partials/cookiesBar')%>
     <!-- JS for Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script> 
-    <script src="https://kit.fontawesome.com/c9f8e59b45.js" crossorigin="anonymous"></script>
-    <script src="/js/jquery.min.js" ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/c9f8e59b45.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/cookies.js"></script>
     <script type="text/javascript" src="/js/landing.js"></script>
-</body>
+  </body>
 </html>
-
-
-    
-
-    

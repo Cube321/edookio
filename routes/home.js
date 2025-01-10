@@ -29,8 +29,6 @@ router.get(
         percent = 100;
       }
     }
-
-    sortByOrderNum(categories);
     res.status(200).render("index", {
       categories,
       numOfCards,
@@ -41,13 +39,6 @@ router.get(
     });
   })
 );
-
-function sortByOrderNum(array) {
-  // Use the Array.prototype.sort() method to sort the array
-  array.sort((a, b) => a.orderNum - b.orderNum);
-  // Return the sorted array
-  return array;
-}
 
 //SHOW PREMIUM PAGE
 //premium explanation page

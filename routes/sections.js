@@ -165,7 +165,7 @@ router.post(
   isLoggedIn,
   isAdmin,
   catchAsync(async (req, res, next) => {
-    let { text, value, icon, orderNum } = req.body;
+    let { text, value, icon } = req.body;
     const foundCategory = await Category.find({ name: value });
     if (foundCategory.length > 0) {
       req.flash("error", "Předmět již existuje.");
@@ -176,7 +176,6 @@ router.post(
       sections: [],
       text,
       icon,
-      orderNum,
     });
     let savedCategory = await newCategory.save();
     console.log(savedCategory);
@@ -192,13 +191,13 @@ router.put(
   isAdmin,
   catchAsync(async (req, res) => {
     let { categoryId } = req.params;
-    let { text, icon, orderNum } = req.body;
+    let { text, icon } = req.body;
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       req.flash("error", "Kategorie nebyla nalezena.");
       return res.redirect("/admin/categories");
     }
-    await Category.findByIdAndUpdate(categoryId, { text, icon, orderNum });
+    await Category.findByIdAndUpdate(categoryId, { text, icon });
     req.flash("successOverlay", "Změny byly uloženy.");
     res.status(201).redirect(`/admin/categories`);
   })

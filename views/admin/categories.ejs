@@ -38,7 +38,7 @@
             <!-- Dynamic Content Rows -->
             <% categories.forEach((cat, i) => { %>
                 <div class="row align-items-center mb-2 border-grey radius-10 bg-grey">
-                    <div class="col-1 text-center "><%= cat.orderNum %></div>
+                    <div class="col-1 text-center "><%= i + 1 %></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu">
                         <div class="img-thumbnail-list my-2">
                             <img src="/img/<%= cat.icon %>" class="img-fluid">

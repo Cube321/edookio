@@ -1,85 +1,125 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-    <div class="container">
-      <a class="navbar-brand fs-4 p-0" href="/"><img src="/favicon.ico" alt="" width="30" height="30"> <%= texts.general.projectName %></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <% if (currentUser && currentUser.admin) { %>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Administrace
-              </a>
-              <ul class="dropdown-menu vybrat-predmet">
-                <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
-                <li><a class="dropdown-item" href="/admin/admin">Admin</a></li>
-                <li><a class="dropdown-item" href="/admin/stats">Statistiky</a></li>
-                <li><a class="dropdown-item" href="/admin/users">Uživatelé</a></li>
-                <li><a class="dropdown-item" href="/invoices/open">Fakturace</a></li>
-                <li><a class="dropdown-item" href="/admin/ratings?order=cards">Hodnocení</a></li>
-                <li><a class="dropdown-item" href="/admin/feedbacks">Feedback</a></li>
-                <li><a class="dropdown-item" href="/admin/email">Email</a></li>
-                <li><a class="dropdown-item" href="/admin/notifications">Notifikace</a></li>
-                <li><a class="dropdown-item" href="/admin/categories">Předměty</a></li>
-              </ul>
+  <div class="container">
+    <a class="navbar-brand fs-4 p-0" href="/"
+      ><img src="/favicon.ico" alt="" width="30" height="30" /> <%=
+      texts.general.projectName %></a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <% if (currentUser && currentUser.admin) { %>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDarkDropdownMenuLink"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Administrace
+          </a>
+          <ul class="dropdown-menu vybrat-predmet">
+            <li>
+              <a class="dropdown-item" href="/admin/dashboard">Dashboard</a>
             </li>
-          <% } %>
-          <% if (currentUser && currentUser.isEditor) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/mistakes">Nahlášené chyby</a>
+            <li><a class="dropdown-item" href="/admin/admin">Admin</a></li>
+            <li><a class="dropdown-item" href="/admin/stats">Statistiky</a></li>
+            <li><a class="dropdown-item" href="/admin/users">Uživatelé</a></li>
+            <li>
+              <a class="dropdown-item" href="/invoices/open">Fakturace</a>
             </li>
-          <% } %>
-        </ul>
-        <ul class="navbar-nav ms-auto">
-              
-                <li class="nav-item">
-                  <a class="nav-link premium" href="/premium">Premium</a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Vybrat předmět
-                  </a>
-                  <ul class="dropdown-menu vybrat-predmet">
-                    <% categories.forEach(cat => { %>
-                      <% if (cat.orderNum > -1){ %>
-                        <li><a class="dropdown-item" href="/category/<%= cat.name %>"><%= cat.text %></a></li>
-                      <% } %>
-                   <% }); %>
-                  </ul>
-                </li>
-                <!--<li class="nav-item">
+            <li>
+              <a class="dropdown-item" href="/admin/ratings?order=cards"
+                >Hodnocení</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="/admin/feedbacks">Feedback</a>
+            </li>
+            <li><a class="dropdown-item" href="/admin/email">Email</a></li>
+            <li>
+              <a class="dropdown-item" href="/admin/notifications"
+                >Notifikace</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="/admin/categories">Předměty</a>
+            </li>
+          </ul>
+        </li>
+        <% } %> <% if (currentUser && currentUser.isEditor) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/mistakes">Nahlášené chyby</a>
+        </li>
+        <% } %>
+      </ul>
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link premium" href="/premium">Premium</a>
+        </li>
+        <!--<li class="nav-item">
                   <a class="nav-link" href="/about">O projektu</a>
                 </li>-->
-                <li class="nav-item">
-                  <a class="nav-link" href="/clash/soubojfakult">Souboj fakult <!--<span class="badge rounded-pill bg-danger">New</span>--></a>
-                </li>
-                <% if (currentUser) { %>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/leaderboard">Žebříček <!--<span class="badge rounded-pill bg-danger">New</span>--></a>
-                  </li>
-                <% } %>
-                <% if (!currentUser) { %>
-                <li class="nav-item">
-                  <a class="nav-link" href="/auth/user/login">Přihlásit se</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/auth/user/new">Registrace</a>
-                </li>
-              <% } else { %>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Můj účet
-                  </a>
-                  <ul class="dropdown-menu vybrat-predmet">
-                      <li><a class="dropdown-item" href="/auth/user/profile">Profil</a></li>
-                      <li><a class="dropdown-item" href="/auth/user/activity">Aktivita</a></li>
-                      <li><a class="dropdown-item" href="/cards/saved">Uložené kartičky</a></li>
-                      <li><a class="dropdown-item" href="/auth/user/logout">Odhlásit se</a></li>
-                  </ul>
-                </li>
-              <% } %>
+        <li class="nav-item">
+          <a class="nav-link" href="/clash/soubojfakult"
+            >Souboj fakult
+            <!--<span class="badge rounded-pill bg-danger">New</span>--></a
+          >
+        </li>
+        <% if (currentUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/leaderboard"
+            >Žebříček
+            <!--<span class="badge rounded-pill bg-danger">New</span>--></a
+          >
+        </li>
+        <% } %> <% if (!currentUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/auth/user/login">Přihlásit se</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/auth/user/new">Registrace</a>
+        </li>
+        <% } else { %>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDarkDropdownMenuLink"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Můj účet
+          </a>
+          <ul class="dropdown-menu vybrat-predmet">
+            <li>
+              <a class="dropdown-item" href="/auth/user/profile">Profil</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/auth/user/activity">Aktivita</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/cards/saved">Uložené kartičky</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/auth/user/logout">Odhlásit se</a>
+            </li>
           </ul>
-      </div>
+        </li>
+        <% } %>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
