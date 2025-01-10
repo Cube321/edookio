@@ -1,120 +1,200 @@
-<% layout ('layouts/boilerplate.ejs')  %> 
+<% layout ('layouts/boilerplate.ejs') %>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6 col-12 offset-lg-3">
-            <div class="card text-center p-4">
-                <div class="row">
-                    <div class="col-12 mt-4">
-                        <i class="fas fa-check-circle green-check"></i>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mt-4 mb-2">
-                        <h3>Hotovo! </h3>
-                        <hr />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p class="mb-0">Jaká byla kvalita otázek v tomto balíčku?</p>
-                        <div id="rating-type" name="questions"></div>
-                        <form class="d-flex justify-content-center" id="rating-form" name="<%= section._id %>">
-                            <div class="rate">
-                                <input class="radio-btn-rating" type="radio" id="star5" name="rate" value="5" />
-                                <label for="star5" title="text">5 stars</label>
-                                <input class="radio-btn-rating" type="radio" id="star4" name="rate" value="4" />
-                                <label for="star4" title="text">4 stars</label>
-                                <input class="radio-btn-rating" type="radio" id="star3" name="rate" value="3" />
-                                <label for="star3" title="text">3 stars</label>
-                                <input class="radio-btn-rating" type="radio" id="star2" name="rate" value="2" />
-                                <label for="star2" title="text">2 stars</label>
-                                <input class="radio-btn-rating" type="radio" id="star1" name="rate" value="1" />
-                                <label for="star1" title="text">1 star</label>
-                            </div>
-                        </form>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#text-feedback-modal" class="text-smaller hidden" id="text-feedback-link">Přidat slovní hodnocení</a>
-                    </div>
-                </div>
-                <div class="row finished-test mb-2">
-                    <div class="col-12">
-                        <h5 class="mb-0 mt-3">Vyhodnocení testu</h5>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="finished-item correct">
-                            <i class="far fa-check-circle fa-2x mx-2"></i>
-                            <div>
-                                <p><%= counters.correct %> správně</p>
-                                <p class="text-small" style="color: white">(<%= Math.round(counters.correct * step) %> %)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="finished-item wrong">
-                            <i class="far fa-times-circle fa-2x mx-2"></i>
-                            <div>
-                                <p><%= counters.wrong %> nesprávně</p>
-                                <p class="text-small text-muted">(<%= Math.round(counters.wrong * step) %> %)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="finished-item skipped">
-                            <i class="fas fa-circle-notch fa-2x mx-2"></i>
-                            <div>
-                                <p><%= counters.skipped %> vynecháno</p>
-                                <p class="text-small text-muted">(<%= Math.round(counters.skipped * step) %> %)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-                <% if (!currentUser.isPremium && currentUser.questionsSeenThisMonth > 50) { %>
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <h5 class="mb-3">Získej neomezený přístup k testovým otázkám</h5>
-                            <p>Pro tento měsíc jsi vyčerpal/a svých 50 testových otázek dostupných zdarma.</p>
-                            <p>Aktivuj si předplatné Premium <b>s neomezeným počtem otázek</b> nebo počkej do prvního dne následujícího měsíce na dalších 50 otázek zdarma.</p>
-                        </div>
-                    </div>
-                    <div class="row mb-3 mt-3">
-                        <div class="col-12">
-                            <a href="/premium" class="btn btn-danger">Chci studovat bez omezení</a>
-                        </div>
-                    </div>
-                <% } else { %>
-                    <div class="row mb-3 mt-2">
-                        <div class="col-12">
-                            <h5 class="mb-0">Aktuální balíček</h5>
-                            <p class="mb-3"><%= section.name %></p>
-                        </div>
-                        <div class="col-12">
-                            <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1" class="btn btn-danger">Zobrazit kartičky</a>
-                            <a href="/category/<%= category._id%>/section/<%= section._id%>/test" class="btn btn-danger">Opakovat test</a>
-                        </div>
-                    </div>
-                <% } %>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <a href="/category/<%= section.category %>">zpět na předmět</a>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-6 col-12 offset-lg-3">
+      <div class="card text-center p-4">
+        <div class="row">
+          <div class="col-12 mt-4">
+            <i class="fas fa-check-circle green-check"></i>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-12 mt-4 mb-2">
+            <h3>Hotovo!</h3>
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <p class="mb-0">Jaká byla kvalita otázek v tomto balíčku?</p>
+            <div id="rating-type" name="questions"></div>
+            <form
+              class="d-flex justify-content-center"
+              id="rating-form"
+              name="<%= section._id %>"
+            >
+              <div class="rate">
+                <input
+                  class="radio-btn-rating"
+                  type="radio"
+                  id="star5"
+                  name="rate"
+                  value="5"
+                />
+                <label for="star5" title="text">5 stars</label>
+                <input
+                  class="radio-btn-rating"
+                  type="radio"
+                  id="star4"
+                  name="rate"
+                  value="4"
+                />
+                <label for="star4" title="text">4 stars</label>
+                <input
+                  class="radio-btn-rating"
+                  type="radio"
+                  id="star3"
+                  name="rate"
+                  value="3"
+                />
+                <label for="star3" title="text">3 stars</label>
+                <input
+                  class="radio-btn-rating"
+                  type="radio"
+                  id="star2"
+                  name="rate"
+                  value="2"
+                />
+                <label for="star2" title="text">2 stars</label>
+                <input
+                  class="radio-btn-rating"
+                  type="radio"
+                  id="star1"
+                  name="rate"
+                  value="1"
+                />
+                <label for="star1" title="text">1 star</label>
+              </div>
+            </form>
+            <a
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#text-feedback-modal"
+              class="text-smaller hidden"
+              id="text-feedback-link"
+              >Přidat slovní hodnocení</a
+            >
+          </div>
+        </div>
+        <div class="row finished-test mb-2">
+          <div class="col-12">
+            <h5 class="mb-0 mt-3">Vyhodnocení testu</h5>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="finished-item correct">
+              <i class="far fa-check-circle fa-2x mx-2"></i>
+              <div>
+                <p><%= counters.correct %> správně</p>
+                <p class="text-small" style="color: white">
+                  (<%= Math.round(counters.correct * step) %> %)
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="finished-item wrong">
+              <i class="far fa-times-circle fa-2x mx-2"></i>
+              <div>
+                <p><%= counters.wrong %> nesprávně</p>
+                <p class="text-small text-muted">
+                  (<%= Math.round(counters.wrong * step) %> %)
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="finished-item skipped">
+              <i class="fas fa-circle-notch fa-2x mx-2"></i>
+              <div>
+                <p><%= counters.skipped %> vynecháno</p>
+                <p class="text-small text-muted">
+                  (<%= Math.round(counters.skipped * step) %> %)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <% if (!currentUser.isPremium && currentUser.questionsSeenThisMonth >
+        50) { %>
+        <div class="row mt-3">
+          <div class="col-12">
+            <h5 class="mb-3">Získej neomezený přístup k testovým otázkám</h5>
+            <p>
+              Pro tento měsíc jsi vyčerpal/a svých 50 testových otázek
+              dostupných zdarma.
+            </p>
+            <p>
+              Aktivuj si předplatné Premium
+              <b>s neomezeným počtem otázek</b> nebo počkej do prvního dne
+              následujícího měsíce na dalších 50 otázek zdarma.
+            </p>
+          </div>
+        </div>
+        <div class="row mb-3 mt-3">
+          <div class="col-12">
+            <a href="/premium" class="btn btn-danger"
+              >Chci studovat bez omezení</a
+            >
+          </div>
+        </div>
+        <% } else { %>
+        <div class="row mb-3 mt-2">
+          <div class="col-12">
+            <h5 class="mb-0">Aktuální balíček</h5>
+            <p class="mb-3"><%= section.name %></p>
+          </div>
+          <div class="col-12">
+            <a
+              href="/category/<%= category._id %>/section/<%= section._id %>/card30/1"
+              class="btn btn-danger"
+              >Zobrazit kartičky</a
+            >
+            <a
+              href="/category/<%= category._id%>/section/<%= section._id%>/test"
+              class="btn btn-danger"
+              >Opakovat test</a
+            >
+          </div>
+        </div>
+        <% } %>
+        <div class="row mt-3">
+          <div class="col-12">
+            <a href="/category/<%= section.category %>">zpět na předmět</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- MODAL - Feedback -->
 <div class="modal fade" id="text-feedback-modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered edit-modal">
+  <div class="modal-dialog modal-dialog-centered edit-modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Zpětná vazba k balíčku</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-            <textarea class="form-control border rounded-corners" id="feedback-textarea" name="feedback-textarea" cols="30" rows="5" placeholder="Má tento balíček nějaké slabiny? Dej nám vědět a mi na tom zapracujeme..."></textarea>
-            <button class="btn btn-sm btn-danger" id="submit-text-feedback">Odeslat</button>
-        </div>
+      <div class="modal-header">
+        <h5 class="modal-title">Zpětná vazba k balíčku</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div
+        class="modal-body d-flex flex-column justify-content-center align-items-center"
+      >
+        <textarea
+          class="form-control border rounded-corners"
+          id="feedback-textarea"
+          name="feedback-textarea"
+          cols="30"
+          rows="5"
+          placeholder="Má tento balíček nějaké slabiny? Dej nám vědět a mi na tom zapracujeme..."
+        ></textarea>
+        <button class="btn btn-sm btn-danger" id="submit-text-feedback">
+          Odeslat
+        </button>
+      </div>
     </div>
-    </div>
+  </div>
 </div>

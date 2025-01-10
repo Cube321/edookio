@@ -28,6 +28,8 @@ const UserSchema = new Schema({
     type: String,
     default: "Neuvedeno",
   },
+  createdCategories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
+  sharedCategories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   source: {
     type: String,
     default: "neuvedeno",

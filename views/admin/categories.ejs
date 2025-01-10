@@ -44,7 +44,7 @@
                             <img src="/img/<%= cat.icon %>" class="img-fluid">
                         </div>
                     </div>
-                    <div class="col-4"><a href="/category/<%= cat.name %>"><%= cat.text %></a></div>
+                    <div class="col-4"><a href="/category/<%= cat._id %>"><%= cat.text %></a></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.sections.length %></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.numOfCards %></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.numOfQuestions %></div>
@@ -63,17 +63,7 @@
                         <form action="/category/move-down/<%= cat._id %>?_method=PUT" method="POST">
                             <button class="move-down-btn btn btn-sm btn-outline-danger"><i class="fas fa-arrow-down"></i></button>
                         </form>
-                        <div class="col-1">
-                            <% if(!cat.isPublished){ %>
-                                <form action="/category/publish/<%= cat._id %>?_method=PUT" method="POST">
-                                    <button class="publish-btn btn btn-sm btn-success">Zveřejnit</button>
-                                </form>
-                            <% } else { %>
-                                <form action="/category/unpublish/<%= cat._id %>?_method=PUT" method="POST">
-                                    <button class="publish-btn btn btn-sm btn-danger">Skrýt</button>
-                                </form>
-                            <% } %>
-                        </div>
+
                     </div>
                 </div>
             <% }) %>

@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const CardSchema = new Schema({
-  category: {
-    type: String,
-    required: true,
-    default: "notset",
-  },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",

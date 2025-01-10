@@ -862,7 +862,7 @@ router.get(
   isAdmin,
   catchAsync(async (req, res) => {
     //get all categories
-    let categories = await Category.find({});
+    let categories = await Category.find({ author: req.user._id });
     //render view
     res.render("admin/categories", { categories, icons });
   })

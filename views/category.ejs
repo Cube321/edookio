@@ -22,7 +22,7 @@
                     <div class="mb-2 mt-3 px-3 py-2 category-info d-flex align-items-center justify-content-between">
                         <p class="mb-0"><b><%= category.numOfCards  %></b> <%= texts.categoryPage.cardsToStudy %></p>
                         <% if (currentUser) { %>
-                            <a href="/category/<%= category.name %>/randomCards" class="btn btn-sm btn-danger mx-2">Shuffle</a>
+                            <a href="/category/<%= category._id %>/randomCards" class="btn btn-sm btn-danger mx-2">Shuffle</a>
                         <% } %>
                     </div>
                     <% if (category.numOfQuestions > 0) { %>
@@ -122,7 +122,7 @@
                                             <% if (section.isPremium && (!currentUser || !currentUser.isPremium)) { %> 
                                                 <a href="/premium" class="btn btn-sm btn-warning btn-spustit w-100 mt-2"><i class="fas fa-crown text-small"></i> Premium</a>
                                             <% } else if (section.cards.length > 0) { %>
-                                                <a href="/category/<%= category.name %>/section/<%= section._id %>/card30/1?mode=unknown" class="btn btn-sm btn-danger btn-spustit w-100 mt-2">Spustit</a>
+                                                <a href="/category/<%= category._id %>/section/<%= section._id %>/card30/1?mode=unknown" class="btn btn-sm btn-danger btn-spustit w-100 mt-2">Spustit</a>
                                             <% } %>
                                         </div>
                                     </div> 
@@ -192,7 +192,7 @@
               <p class="me-3 flex-grow-1 text-smaller">
                 Resetování kartiček znamená, informace o tom, které kartičky umíš a které ne budou odstraněny a začneš studovat tento předmět od začátku.
               </p>
-              <a href="/category/<%= category.name %>/resetCards" class="btn btn-danger btn-sm">Resetovat</a>
+              <a href="/category/<%= category._id %>/resetCards" class="btn btn-danger btn-sm">Resetovat</a>
             </div>
           </div>
           <hr />
@@ -203,7 +203,7 @@
               <p class="me-3 flex-grow-1 text-smaller">
                 Resetování otázek znamená, že tvé výsledky testů v tomto předmětu budou odstraněny.
               </p>
-              <a href="/category/<%= category.name %>/resetQuestions" class="btn btn-danger btn-sm">Resetovat</a>
+              <a href="/category/<%= category._id %>/resetQuestions" class="btn btn-danger btn-sm">Resetovat</a>
             </div>
           </div>
         </div>
@@ -219,7 +219,7 @@
             <div class="card add-section">
                 <div class="card-body pb-0">
                     <h4>Přidat nový balíček</h4>
-                    <form action="/category/<%= category.name  %>/newSection" method="POST">
+                    <form action="/category/<%= category._id  %>/newSection" method="POST">
                         <div class="form-group row">
                             <label for="name" class="col-lg-3 col-form-label">Nadpis</label>
                             <div class="col-lg-6">
@@ -405,7 +405,7 @@
                     <div class="row mx-2">
                         <div class="col-12 d-flex justify-content-between">
                             <h5>Základní informace</h5>
-                            <a href="/category/<%= category.name %>/editSection/<%= section._id %>" class="text-smaller">změnit</a>
+                            <a href="/category/<%= category._id %>/editSection/<%= section._id %>" class="text-smaller">změnit</a>
                         </div>
                     </div>
                     <div class="row mx-2">
@@ -428,27 +428,27 @@
                     <div class="row mb-2 mt-2 d-flex mx-3">
                         <a href="/review/<%= section._id %>/showAll" class="btn btn-sm btn-danger my-1"><i class="far fa-edit"></i> Editovat obsah</a>
                         <div class="d-flex justify-content-between align-items-center p-0">
-                            <a href="/category/<%= category.name %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-right: 4px"><i class="far fa-plus-square"></i> Přidat kartičku</a>
+                            <a href="/category/<%= category._id %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-right: 4px"><i class="far fa-plus-square"></i> Přidat kartičku</a>
                             <a href="/category/<%= category._id %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-left: 4px"><i class="far fa-plus-square"></i> Přidat otázku</a>
                         </div>   
                     </div>
                     <div class="row my-3 mx-3 d-flex">
                         <div class="d-flex justify-content-between align-items-center p-0">
-                            <a href="/category/<%= category.name %>/sectionUp/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-right: 4px"><i class="far fa-caret-square-up"></i> Posunout nahoru</a>
-                            <a href="/category/<%= category.name %>/sectionDown/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-left: 4px"><i class="far fa-caret-square-down"></i> Posunout dolů</a>
+                            <a href="/category/<%= category._id %>/sectionUp/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-right: 4px"><i class="far fa-caret-square-up"></i> Posunout nahoru</a>
+                            <a href="/category/<%= category._id %>/sectionDown/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1 w-100" style="margin-left: 4px"><i class="far fa-caret-square-down"></i> Posunout dolů</a>
                         </div>
                     </div>
 
                     <% if (currentUser && currentUser.isEditor) { %>
                         <div class="row mb-2 mt2 mx-3 d-flex">
-                            <a href="/category/<%= category.name %>/section/<%= section._id %>/unpublish" class="btn btn-sm btn-outline-danger my-1"><i class="fas fa-eye-slash"></i> Skrýt balíček</a>
+                            <a href="/category/<%= category._id %>/section/<%= section._id %>/unpublish" class="btn btn-sm btn-outline-danger my-1"><i class="fas fa-eye-slash"></i> Skrýt balíček</a>
                             <a href="#" class="btn btn-sm btn-danger btn-red my-1" data-bs-toggle="modal" data-bs-target="#deleteSectionModal<%=section._id%>"><i class="far fa-trash-alt"></i> Odstranit balíček</a>
                         </div>
                     <% } %>
 
                     <% if (!currentUser && !currentUser.admin) { %>
                         <div class="row mb-2 d-flex mx-3">
-                            <a href="/category/<%= category.name %>/generateJSON/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1">Vygenerovat JSON</a>
+                            <a href="/category/<%= category._id %>/generateJSON/<%= section._id %>" class="btn btn-sm btn-outline-danger my-1">Vygenerovat JSON</a>
                         </div>
                     <% } %>
                 </div>
@@ -465,7 +465,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body d-flex justify-content-center align-items-center">
-                    <form action="/category/<%= category.name %>/removeSection/<%= section._id %>?_method=DELETE" method="POST">
+                    <form action="/category/<%= category._id %>/removeSection/<%= section._id %>?_method=DELETE" method="POST">
                         <button class="btn btn-sm btn-danger">Ano, odstranit</button>
                     </form>
                 </div>

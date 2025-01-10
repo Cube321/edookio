@@ -6,8 +6,6 @@ const CategorySchema = new Schema({
     type: String,
     required: true,
   },
-  basicSections: [{ type: Schema.Types.ObjectId, ref: "Section" }],
-  premiumSections: [{ type: Schema.Types.ObjectId, ref: "Section" }],
   sections: [{ type: Schema.Types.ObjectId, ref: "Section" }],
   numOfCards: {
     type: Number,
@@ -24,6 +22,10 @@ const CategorySchema = new Schema({
   icon: {
     type: String,
     default: "",
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 

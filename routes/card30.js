@@ -13,9 +13,8 @@ const { incrementEventCount } = require("../utils/helpers");
 
 //render empty show card page
 router.get(
-  "/category/:category/section/:sectionId/card30/:cardNum",
+  "/category/:categoryId/section/:sectionId/card30/:cardNum",
   catchAsync(async (req, res) => {
-    let { cardNum } = req.params;
     let { mode } = req.query;
     if (!mode) {
       mode = "all";
@@ -28,9 +27,7 @@ router.get(
       req.flash("error", "Balíček se zadaným ID neexistuje.");
       return res.status(404).redirect("back");
     }
-    const foundCategory = await Category.findOne({
-      name: foundSection.category,
-    });
+    const foundCategory = await Category.findById(foundSection.categoryId);
     if (!foundCategory) {
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
       return res.status(404).redirect("back");
@@ -65,12 +62,12 @@ router.get(
 
 //render empty show card page for SHUFFLE
 router.get(
-  "/category/:category/randomCards",
+  "/category/:categoryId/randomCards",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const { category } = req.params;
+    const { categoryId } = req.params;
     //icon for category
-    let foundCategory = await Category.findOne({ name: category });
+    let foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
       return res.status(404).redirect("back");
@@ -95,7 +92,7 @@ router.get(
     if (!foundSection) {
       throw Error("Balíček s tímto ID neexistuje.");
     }
-    let foundCategory = await Category.findOne({ name: foundSection.category });
+    let foundCategory = await Category.findById(foundSection.categoryId);
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje.");
     }
@@ -157,10 +154,11 @@ router.get(
 
 //render finished page for SHUFFLE
 router.get(
-  "/category/:category/finishedRandomCards",
+  "/category/:categoryId/finishedRandomCards",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    let foundCategory = await Category.findOne({ name: req.params.category });
+    const { categoryId } = req.params;
+    let foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
       return res.status(404).redirect("back");

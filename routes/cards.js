@@ -13,17 +13,17 @@ const { incrementEventCount } = require("../utils/helpers");
 //CARDS (add, edit, remove)
 //render new card page (GET)
 router.get(
-  "/category/:category/section/:sectionId/newCard",
+  "/category/:categoryId/section/:sectionId/newCard",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res, next) => {
-    const { category, sectionId } = req.params;
+    const { categoryId, sectionId } = req.params;
     const foundSection = await Section.findById(sectionId);
     if (!foundSection) {
       throw Error("Sekce s tímto ID neexistuje");
     }
     res.status(200).render("cards/new_editor", {
-      category,
+      categoryId,
       sectionId,
       sectionName: foundSection.name,
     });
@@ -32,21 +32,21 @@ router.get(
 
 //add new card - save (POST)
 router.post(
-  "/category/:category/section/:sectionId/newCard",
+  "/category/:categoryId/section/:sectionId/newCard",
   validateCard,
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res, next) => {
     let { pageA, pageB } = req.body;
     const author = req.user.email;
-    const { category, sectionId } = req.params;
+    const { categoryId, sectionId } = req.params;
 
     //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
     pageA = pageA.replace(/<p><br><\/p>/g, "");
     pageB = pageB.replace(/<p><br><\/p>/g, "");
 
     const foundSection = await Section.findById(sectionId);
-    const foundCategory = await Category.findOne({ name: req.params.category });
+    const foundCategory = await Category.findById(categoryId);
     if (!foundSection) {
       throw Error("Sekce s tímto ID neexistuje");
     }
@@ -138,7 +138,7 @@ router.get(
       $pull: { cards: id },
     });
     await Card.findByIdAndDelete(id);
-    const foundCategory = await Category.findOne({ name: foundCard.category });
+    const foundCategory = await Category.findById(foundCard.categoryId);
     foundCategory.numOfCards--;
     await foundCategory.save();
 
@@ -258,7 +258,7 @@ router.get(
     let foundUser = await User.findById(req.user._id)
       .populate("savedCards")
       .select("savedCards");
-    let categories = await Category.find({});
+    let categories = await Category.find({ author: req.user._id });
     res.render("cards/savedCards", {
       savedCards: foundUser.savedCards,
       categories: categories,

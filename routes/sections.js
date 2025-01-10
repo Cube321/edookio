@@ -18,10 +18,11 @@ const {
 
 //SHOW SECTIONS OF CATEGORY
 router.get(
-  "/category/:category",
+  "/category/:categoryId",
   isPremiumUser,
   catchAsync(async (req, res, next) => {
-    const category = await Category.findOne({ name: req.params.category })
+    const { categoryId } = req.params;
+    const category = await Category.findById(categoryId)
       .populate({
         path: "sections",
         populate: {
@@ -80,12 +81,9 @@ router.get(
 
     //asign name of category
     let title = "";
-    let categories = await Category.find({});
-    categories.forEach((c) => {
-      if (c.name === req.params.category) {
-        title = c.text;
-      }
-    });
+    if (category) {
+      title = category.text;
+    }
 
     let testResultsMap = {};
 
@@ -166,18 +164,17 @@ router.post(
   isAdmin,
   catchAsync(async (req, res, next) => {
     let { text, value, icon } = req.body;
-    const foundCategory = await Category.find({ name: value });
-    if (foundCategory.length > 0) {
-      req.flash("error", "Předmět již existuje.");
-      return res.redirect("/admin/categories");
-    }
+    let user = req.user;
     const newCategory = new Category({
       name: value,
       sections: [],
       text,
       icon,
+      author: req.user._id,
     });
     let savedCategory = await newCategory.save();
+    user.createdCategories.push(savedCategory._id);
+    await user.save();
     console.log(savedCategory);
     req.flash("successOverlay", "Předmět byl vytvořen.");
     res.status(201).redirect(`/admin/categories`);
@@ -230,12 +227,11 @@ router.delete(
 
 //RESETING USER`S STATS (GET)
 router.get(
-  "/category/:category/resetCards",
+  "/category/:categoryId/resetCards",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const category = await Category.findOne({
-      name: req.params.category,
-    }).populate("sections");
+    const { categoryId } = req.params;
+    const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
       req.flash("error", "Předmět neexistuje.");
       return res.status(404).redirect("/");
@@ -256,12 +252,11 @@ router.get(
 );
 
 router.get(
-  "/category/:category/resetQuestions",
+  "/category/:categoryId/resetQuestions",
   isLoggedIn,
   async (req, res) => {
-    const category = await Category.findOne({
-      name: req.params.category,
-    }).populate("sections");
+    const { categoryId } = req.params;
+    const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
       req.flash("error", "Předmět neexistuje.");
       return res.status(404).redirect("/");
@@ -288,19 +283,17 @@ router.get(
 //SECTIONS IN CATEGORY
 //create new Section in Category
 router.post(
-  "/category/:category/newSection",
+  "/category/:categoryId/newSection",
   validateSection,
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res, next) => {
-    //check if category exists
-    const foundCategory = await Category.findOne({ name: req.params.category });
+    const { categoryId } = req.params;
+    const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
-      req.flash("error", "Kategorie neexistuje.");
-      return res.status(404).redirect("back");
+      throw Error("Kategorie s tímto ID neexistuje");
     }
     //create new Section and add it to Category
-    const categoryName = foundCategory.name;
     let { name, isPremium, desc, jsonData } = req.body;
     //isPremium logic
     let isPremiumBoolean = false;
@@ -310,7 +303,6 @@ router.post(
     //create new section
     const newSection = new Section({
       name,
-      category: categoryName,
       categoryId: foundCategory._id,
       cards: [],
       questions: [],
@@ -330,7 +322,6 @@ router.post(
           section: savedSection._id,
           pageA: card.pageA,
           pageB: card.pageB,
-          category: categoryName,
           categoryId: foundCategory._id,
           author: card.author,
           importedCardId: card._id,
@@ -375,11 +366,11 @@ router.post(
 
 //remove Section from Category and delete its Cards
 router.delete(
-  "/category/:category/removeSection/:sectionId",
+  "/category/:categoryId/removeSection/:sectionId",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res, next) => {
-    const { category, sectionId } = req.params;
+    const { categoryId, sectionId } = req.params;
     //delete Section ID from Category
     const foundSection = await Section.findById(sectionId);
     if (!foundSection) {
@@ -387,7 +378,7 @@ router.delete(
     }
     //remove sections from category array
     let updatedCategory = await Category.findOneAndUpdate(
-      { name: category },
+      { _id: categoryId },
       { $pull: { sections: sectionId } }
     );
     if (!updatedCategory) {
@@ -399,7 +390,7 @@ router.delete(
     await Question.deleteMany({ section: sectionId });
     //delete Section
     const deletedSection = await Section.findByIdAndDelete(sectionId);
-    const foundCategory = await Category.findOne({ name: req.params.category });
+    const foundCategory = await Category.findById(categoryId);
     foundCategory.numOfCards =
       foundCategory.numOfCards - deletedSection.cards.length;
     foundCategory.numOfQuestions =
@@ -414,14 +405,15 @@ router.delete(
 
 //edit section RENDER
 router.get(
-  "/category/:category/editSection/:sectionId",
+  "/category/:categoryId/editSection/:sectionId",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res) => {
+    const { categoryId } = req.params;
     const foundSection = await Section.findById(req.params.sectionId);
-    const foundCategory = await Category.findOne({
-      name: req.params.category,
-    }).populate("sections");
+    const foundCategory = await Category.findById(categoryId).populate(
+      "sections"
+    );
     if (!foundSection) {
       throw Error("Balíček s tímto ID neexistuje");
     }
@@ -437,7 +429,7 @@ router.get(
 
 //edit section UPDATE
 router.put(
-  "/category/:category/editSection/:sectionId",
+  "/category/:categoryId/editSection/:sectionId",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res) => {
@@ -461,12 +453,12 @@ router.put(
 //changing order of the sections
 //UP
 router.get(
-  "/category/:category/sectionUp/:sectionId",
+  "/category/:categoryId/sectionUp/:sectionId",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res) => {
-    const { sectionId, category } = req.params;
-    const foundCategory = await Category.findOne({ name: category });
+    const { sectionId, categoryId } = req.params;
+    const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       throw Error("Kategorie s tímto ID neexistuje");
     }
@@ -484,12 +476,12 @@ router.get(
 );
 //DOWN
 router.get(
-  "/category/:category/sectionDown/:sectionId",
+  "/category/:categoryId/sectionDown/:sectionId",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res) => {
-    const { sectionId, category } = req.params;
-    const foundCategory = await Category.findOne({ name: category });
+    const { sectionId, categoryId } = req.params;
+    const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       throw Error("Kategorie s tímto názvem neexistuje");
     }
@@ -506,51 +498,9 @@ router.get(
   })
 );
 
-//changing status of the section from FREE to PREMIUM and back
-router.get(
-  "/category/:category/sectionStatus/:sectionId/:changeDirection",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    let { category, sectionId, changeDirection } = req.params;
-    let foundSection = await Section.findById(sectionId);
-    if (!foundSection) {
-      throw Error("Balíček s tímto ID neexistuje");
-    }
-    if (changeDirection === "toZdarma") {
-      foundSection.isPremium = false;
-    }
-    if (changeDirection === "toPremium") {
-      foundSection.isPremium = true;
-    }
-    await foundSection.save();
-    res.status(200).redirect(`/category/${category}`);
-  })
-);
-
-//publish section
-router.get(
-  "/category/:category/section/:sectionId/publish",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const foundSection = await Section.findById(req.params.sectionId);
-    if (!foundSection) {
-      throw Error("Balíček s tímto ID neexistuje");
-    }
-    foundSection.isPublic = true;
-    if (foundSection.questions.length > 0) {
-      foundSection.testIsPublic = true;
-    }
-    await foundSection.save();
-    req.flash("successOverlay", "Balíček byl zveřejněn");
-    res.status(200).redirect(`/category/${req.params.category}`);
-  })
-);
-
 //generate section data in JSON format based on sectionId
 router.get(
-  "/category/:category/generateJSON/:sectionId",
+  "/category/:categoryId/generateJSON/:sectionId",
   isLoggedIn,
   isEditor,
   catchAsync(async (req, res) => {

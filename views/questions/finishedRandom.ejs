@@ -1,78 +1,96 @@
-<% layout ('layouts/boilerplate.ejs')  %> 
+<% layout ('layouts/boilerplate.ejs') %>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-6 col-12 offset-lg-3">
-            <div class="card text-center p-4">
-                <div class="row">
-                    <div class="col-12 mt-4">
-                        <i class="fas fa-check-circle green-check"></i>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 mt-4 mb-2">
-                        <h3>Hotovo! </h3>
-                        <hr />
-                    </div>
-                </div>
-                <div class="row finished-test mb-2">
-                    <div class="col-12">
-                        <h5 class="mb-0">Vyhodnocení testu</h5>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="finished-item correct">
-                            <i class="far fa-check-circle fa-2x mx-2"></i>
-                            <div>
-                                <p><%= counters.correct %> správně</p>
-                                <p class="text-small" style="color: white">(<%= Math.round(counters.correct * step) %> %)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <div class="finished-item wrong">
-                            <i class="far fa-times-circle fa-2x mx-2"></i>
-                            <div>
-                                <p><%= counters.wrong %> nesprávně</p>
-                                <p class="text-small text-muted">(<%= Math.round(counters.wrong * step) %> %)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-12 mb-3">
-                        <div class="finished-item skipped">
-                            <i class="fas fa-circle-notch fa-2x mx-2"></i>
-                            <div>
-                                <p><%= counters.skipped %> vynecháno</p>
-                                <p class="text-small text-muted">(<%= Math.round(counters.skipped * step) %> %)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% if (!currentUser.isPremium && currentUser.questionsSeenThisMonth > 50) { %>
-                    <hr />
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <h5 class="mb-3">Otázky zdarma byly vyčerpány</h5>
-                            <p>Pro tento měsíc jsi vyčerpal/a svých 50 testových otázek dostupných zdarma.</p>
-                            <p>Aktivuj si předplatné Premium <b>s neomezeným počtem otázek</b> nebo počkej do prvního dne následujícího měsíce na dalších 50 otázek zdarma.</p>
-                        </div>
-                    </div>
-                    <div class="row mb-3 mt-3">
-                        <div class="col-12">
-                            <a href="/premium" class="btn btn-danger">Zjistit více</a>
-                        </div>
-                    </div>
-                <% } else { %>
-                    <div class="row mb-3 mt-3">
-                        <div class="col-12">
-                            <a href="/category/<%= category._id%>/testRandom" class="btn btn-danger">Generovat nový test</a>
-                        </div>
-                    </div>
-                <% } %>
-                <div class="row mt-1">
-                    <div class="col-12">
-                        <a href="/category/<%= category.name %>">zpět na předmět</a>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-6 col-12 offset-lg-3">
+      <div class="card text-center p-4">
+        <div class="row">
+          <div class="col-12 mt-4">
+            <i class="fas fa-check-circle green-check"></i>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-12 mt-4 mb-2">
+            <h3>Hotovo!</h3>
+            <hr />
+          </div>
+        </div>
+        <div class="row finished-test mb-2">
+          <div class="col-12">
+            <h5 class="mb-0">Vyhodnocení testu</h5>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="finished-item correct">
+              <i class="far fa-check-circle fa-2x mx-2"></i>
+              <div>
+                <p><%= counters.correct %> správně</p>
+                <p class="text-small" style="color: white">
+                  (<%= Math.round(counters.correct * step) %> %)
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-12">
+            <div class="finished-item wrong">
+              <i class="far fa-times-circle fa-2x mx-2"></i>
+              <div>
+                <p><%= counters.wrong %> nesprávně</p>
+                <p class="text-small text-muted">
+                  (<%= Math.round(counters.wrong * step) %> %)
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-12 mb-3">
+            <div class="finished-item skipped">
+              <i class="fas fa-circle-notch fa-2x mx-2"></i>
+              <div>
+                <p><%= counters.skipped %> vynecháno</p>
+                <p class="text-small text-muted">
+                  (<%= Math.round(counters.skipped * step) %> %)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% if (!currentUser.isPremium && currentUser.questionsSeenThisMonth >
+        50) { %>
+        <hr />
+        <div class="row mt-3">
+          <div class="col-12">
+            <h5 class="mb-3">Otázky zdarma byly vyčerpány</h5>
+            <p>
+              Pro tento měsíc jsi vyčerpal/a svých 50 testových otázek
+              dostupných zdarma.
+            </p>
+            <p>
+              Aktivuj si předplatné Premium
+              <b>s neomezeným počtem otázek</b> nebo počkej do prvního dne
+              následujícího měsíce na dalších 50 otázek zdarma.
+            </p>
+          </div>
+        </div>
+        <div class="row mb-3 mt-3">
+          <div class="col-12">
+            <a href="/premium" class="btn btn-danger">Zjistit více</a>
+          </div>
+        </div>
+        <% } else { %>
+        <div class="row mb-3 mt-3">
+          <div class="col-12">
+            <a
+              href="/category/<%= category._id%>/testRandom"
+              class="btn btn-danger"
+              >Generovat nový test</a
+            >
+          </div>
+        </div>
+        <% } %>
+        <div class="row mt-1">
+          <div class="col-12">
+            <a href="/category/<%= category._id %>">zpět na předmět</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

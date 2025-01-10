@@ -147,7 +147,7 @@ router.get(
       user,
       startAt: 0,
       demoCardsSeen,
-      knowsAllCards
+      knowsAllCards,
     });
     res.status(200).send(resData);
   })
@@ -191,7 +191,7 @@ router.get(
 
 async function getRandomCards(categoryId, isUserPremium) {
   let foundCategory = await Category.findById(categoryId);
-  let sections = await Section.find({ category: foundCategory.name }).populate(
+  let sections = await Section.find({ categoryId: foundCategory._id }).populate(
     "cards"
   );
   let publishedCards = [];
@@ -299,9 +299,11 @@ router.get(
 
       res.status(200).send(resData);
     } else {
-      let { category } = req.query;
       let isUserPremium = req.user.isPremium;
-      let randomQuestions = await getRandomQuestions(category, isUserPremium);
+      let randomQuestions = await getRandomQuestions(
+        foundSection.categoryId,
+        isUserPremium
+      );
       const resData = JSON.stringify({
         questions: randomQuestions,
       });
@@ -311,9 +313,8 @@ router.get(
   })
 );
 
-async function getRandomQuestions(cat, isUserPremium) {
-  let foundCategory = await Category.findOne({ name: cat });
-  let sections = await Section.find({ category: foundCategory.name }).populate({
+async function getRandomQuestions(categoryId, isUserPremium) {
+  let sections = await Section.find({ categoryId: categoryId }).populate({
     path: "questions",
     populate: {
       path: "sourceCard",

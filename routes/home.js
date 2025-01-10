@@ -13,7 +13,7 @@ router.get(
   "/",
   isPremiumUser,
   catchAsync(async (req, res) => {
-    const categories = await Category.find({});
+    const categories = await Category.find({ author: req.user._id });
     let numOfCategories = categories.length;
     const numOfCards = await Card.count();
     const numOfQuestions = await Question.count();

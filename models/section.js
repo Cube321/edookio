@@ -11,10 +11,6 @@ const SectionSchema = new Schema({
     type: String,
     default: "",
   },
-  category: {
-    type: String,
-    required: true,
-  },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",

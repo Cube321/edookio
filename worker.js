@@ -158,7 +158,6 @@ async function processDocumentJob(job) {
       section = new Section({
         name: `${name} ${sectionIndex}`,
         shortDescription: desc,
-        category: foundCategory.name,
         categoryId: categoryId,
         author: user._id,
         cards: [],
@@ -170,7 +169,7 @@ async function processDocumentJob(job) {
 
     const cardData = allFlashcards[i];
     const card = new Card({
-      category: categoryId,
+      categoryId: categoryId,
       pageA: cardData.flashcardQuestion,
       pageB: cardData.flashcardAnswer,
       author: user._id,
@@ -182,6 +181,7 @@ async function processDocumentJob(job) {
 
     const question = new Question({
       category: categoryId,
+      categoryId: categoryId,
       section: section._id,
       author: user.email,
       question: cardData.testQuestion,

@@ -12,12 +12,13 @@ const Feedback = require("../models/feedback");
 const passport = require("passport");
 const moment = require("moment");
 const { PARTNERS } = require("../utils/partners");
+const category = require("../models/category");
 
 router.get(
   "/mobileApi/getCategories",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    const categories = await Category.find();
+    const categories = await Category.find({ author: req.user._id });
     res.status(200).json(categories);
   })
 );
@@ -27,12 +28,12 @@ router.get(
   "/mobileApi/getSections",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    const { categoryName } = req.query;
+    const { categoryId } = req.query;
     const { user } = req;
 
     // 1) Find category & populate sections (and their cards)
     //    so we can know how many cards each section has
-    const category = await Category.findOne({ name: categoryName })
+    const category = await Category.findById(categoryId)
       .populate({
         path: "sections",
         populate: {
@@ -317,7 +318,7 @@ router.post(
       return res.status(404).json({ error: "Section not found" });
     }
 
-    const foundCategory = await Category.findOne({ name: section.category });
+    const foundCategory = await Category.findById(section.categoryId);
     if (!foundCategory) {
       console.log("Category not found");
       return res.status(404).json({ error: "Category not found" });
@@ -360,9 +361,8 @@ router.post(
   "/mobileApi/resetCards",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    const category = await Category.findOne({
-      name: req.body.categoryName,
-    }).populate("sections");
+    let { categoryId } = req.body;
+    const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
@@ -383,9 +383,8 @@ router.post(
   "/mobileApi/resetQuestions",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const category = await Category.findOne({
-      name: req.body.categoryName,
-    }).populate("sections");
+    let { categoryId } = req.body;
+    const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
@@ -419,9 +418,7 @@ router.post(
       console.log("Section not found");
       return res.status(404).json({ error: "Section not found" });
     }
-    const foundCategory = await Category.findOne({
-      name: foundSection.category,
-    });
+    const foundCategory = await Category.findById(foundSection.categoryId);
     if (!foundCategory) {
       console.log("Category not found");
       return res.status(404).json({ error: "Category not found" });
