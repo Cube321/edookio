@@ -830,16 +830,17 @@ router.get(
   catchAsync(async (req, res) => {
     const { platform } = req.query;
     const minimumVersion = {
-      ios: "1.0.15",
-      android: "1.0.15",
+      ios: "1.0.0",
+      android: "1.0.0",
     };
     const latestVersions = {
-      ios: "1.0.15",
-      android: "1.0.15",
+      ios: "1.0.0",
+      android: "1.0.0",
     };
     const updateUrl = {
-      ios: "https://apps.apple.com/us/app/inlege/id6670204630",
-      android: "https://play.google.com/store/apps/details?id=cz.inlege.InLege",
+      ios: "https://apps.apple.com/us/app/inlege/idXXXXXX",
+      android:
+        "https://play.google.com/store/apps/details?id=com.edookio.edookio",
     };
     const response = {
       minimumVersion: minimumVersion[platform],

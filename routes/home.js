@@ -23,7 +23,7 @@ router.get(
       const numOfQuestions = 0;
       const numOfSections = 0;
       let percent = 0;
-      res.status(200).render("index", {
+      return res.status(200).render("index", {
         categories,
         numOfCards,
         numOfQuestions,
