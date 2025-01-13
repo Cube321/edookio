@@ -13,6 +13,27 @@ router.get(
   "/",
   isPremiumUser,
   catchAsync(async (req, res) => {
+    const { user } = req;
+
+    //temporary logic to handle missing user
+    if (!user) {
+      const categories = [];
+      let numOfCategories = 0;
+      const numOfCards = 0;
+      const numOfQuestions = 0;
+      const numOfSections = 0;
+      let percent = 0;
+      res.status(200).render("index", {
+        categories,
+        numOfCards,
+        numOfQuestions,
+        numOfSections,
+        numOfCategories,
+        percent,
+      });
+    }
+
+    //original logic for logged in user
     const categories = await Category.find({ author: req.user._id });
     let numOfCategories = categories.length;
     const numOfCards = await Card.count();
