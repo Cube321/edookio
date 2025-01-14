@@ -159,50 +159,6 @@ router.get(
   })
 );
 
-//NAHLÁSTI CHYBU NA KARTĚ
-//render report form
-router.get(
-  "/cards/report/:cardId",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    const foundCard = await Card.findById(req.params.cardId);
-    if (!foundCard) {
-      throw Error("Kartička s tímto ID neexistuje");
-    }
-    res.status(200).render("cards/report", { card: foundCard });
-  })
-);
-
-//save the report
-router.post(
-  "/cards/report/:cardId",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    const foundCard = await Card.findById(req.params.cardId);
-    if (!foundCard) {
-      throw Error("Kartička s tímto ID neexistuje");
-    }
-    const newMistake = {
-      content: req.body.reportMsg,
-      card: foundCard._id,
-      author: req.user.email,
-    };
-    await Mistake.create(newMistake);
-    res.status(201).render("cards/reportSubmited");
-  })
-);
-
-//show all mistakes
-router.get(
-  "/admin/mistakes",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const mistakes = await Mistake.find().populate("question card");
-    res.status(200).render("admin/reports", { mistakes });
-  })
-);
-
 //FAVOURITE CARDS LOGIC
 //save card to favourites
 router.post(

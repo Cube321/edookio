@@ -500,32 +500,6 @@ router.get(
   })
 );
 
-//route to post a mistake on a question or a card (POST)
-router.post(
-  "/mobileApi/reportMistake",
-  passport.authenticate("jwt", { session: false }),
-  catchAsync(async (req, res) => {
-    let { questionId, cardId, content } = req.body;
-    let user = req.user;
-
-    if (!questionId && !cardId) {
-      return res.status(400).json({
-        error: "QuestionId or cardId is required",
-      });
-    }
-
-    let newMistake = {
-      content: content,
-      card: cardId,
-      question: questionId,
-      author: user.email,
-    };
-
-    const savedMistake = await Mistake.create(newMistake);
-    res.status(201).json({ message: "Mistake reported" });
-  })
-);
-
 //route to post a feedback on the app (POST)
 router.post(
   "/mobileApi/sendFeedback",

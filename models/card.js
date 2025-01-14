@@ -20,10 +20,6 @@ const CardSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Section",
   },
-  factualMistakeReports: {
-    type: Array,
-    default: [],
-  },
   importedCardId: {
     type: String,
     default: null,

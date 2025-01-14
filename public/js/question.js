@@ -135,10 +135,6 @@ $(document).ready(function () {
       "href",
       `/category/${questionData.category}/section/${questionData.section}/questions/${questionData._id}/edit`
     );
-    $("#btn-nahlasit").attr(
-      "href",
-      `/category/${questionData.category}/section/${questionData.section}/questions/${questionData._id}/reportMistake`
-    );
 
     //update sourceCard
     if (questionData.sourceCard) {

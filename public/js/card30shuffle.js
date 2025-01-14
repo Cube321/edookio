@@ -109,7 +109,6 @@ $(document).ready(function () {
     //update service btns
     $("#btn-upravit").attr("href", `/cards/edit/${cards[index]._id}`);
     $("#btn-odstranit").attr("href", `/cards/remove/${cards[index]._id}`);
-    $("#btn-nahlasit").attr("href", `/cards/report/${cards[index]._id}`);
 
     //update progress bars
     $("#progressNumMac").text(currentCard + 1);
