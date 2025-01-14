@@ -5,7 +5,6 @@ const Card = require("../models/card");
 const Section = require("../models/section");
 const User = require("../models/user");
 const Category = require("../models/category");
-const Mistake = require("../models/mistake");
 const mail = require("../mail/mail_inlege");
 const { validateCard, isLoggedIn, isEditor } = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");

@@ -4,7 +4,6 @@ const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
 const Question = require("../models/question");
-const Mistake = require("../models/mistake");
 const TestResult = require("../models/testResult");
 const mail = require("../mail/mail_inlege");
 const {

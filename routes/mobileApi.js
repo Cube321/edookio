@@ -7,7 +7,6 @@ const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
 const CardInfo = require("../models/cardInfo");
 const User = require("../models/user");
-const Mistake = require("../models/mistake");
 const Feedback = require("../models/feedback");
 const passport = require("passport");
 const moment = require("moment");
