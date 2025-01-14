@@ -43,7 +43,7 @@ router.get(
       .lean();
 
     if (!category) {
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     if (!category.sections || category.sections.length === 0) {
@@ -321,7 +321,7 @@ router.post(
     const foundCategory = await Category.findById(section.categoryId);
     if (!foundCategory) {
       console.log("Category not found");
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     const { correct, wrong, skipped, totalQuestions } = stats;
@@ -364,7 +364,7 @@ router.post(
     let { categoryId } = req.body;
     const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ message: "Category not found" });
     }
     const cardIds = category.sections
       .map((section) => section.cards)
@@ -386,7 +386,7 @@ router.post(
     let { categoryId } = req.body;
     const category = await Category.findById(categoryId).populate("sections");
     if (!category) {
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     req.user.finishedQuestions = req.user.finishedQuestions.filter(
@@ -421,7 +421,7 @@ router.post(
     const foundCategory = await Category.findById(foundSection.categoryId);
     if (!foundCategory) {
       console.log("Category not found");
-      return res.status(404).json({ error: "Category not found" });
+      return res.status(404).json({ message: "Category not found" });
     }
 
     //create new CardsResult
@@ -838,7 +838,7 @@ router.get(
       android: "1.0.0",
     };
     const updateUrl = {
-      ios: "https://apps.apple.com/us/app/inlege/idXXXXXX",
+      ios: "https://apps.apple.com/us/app/inlege/id6740498818",
       android:
         "https://play.google.com/store/apps/details?id=com.edookio.edookio",
     };

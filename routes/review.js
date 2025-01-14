@@ -23,7 +23,8 @@ router.get(
       .populate({
         path: "questions",
         populate: { path: "sourceCard" },
-      });
+      })
+      .populate("author");
 
     if (!foundSection) {
       req.flash("error", "Balíček nebyl nalezen");

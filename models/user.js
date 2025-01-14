@@ -64,7 +64,7 @@ const UserSchema = new Schema({
   },
   isEditor: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   finishedQuestions: Array,
   dateOfRegistration: {

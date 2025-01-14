@@ -12,7 +12,7 @@ module.exports.header = {
 };
 
 module.exports.landingPage = {
-  mainTitleStart: "Studuj práva efektivně s",
+  mainTitleStart: "Studuj efektivně s",
   headerStatement:
     "Pusť se do studia práv s tisíci opakovacích kartiček a testových otázek. Skvělá interaktivní příprava na zkoušky.",
   studyFree: "Studuj zdarma",

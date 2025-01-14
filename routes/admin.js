@@ -885,45 +885,6 @@ router.get(
   })
 );
 
-//EDITOR PERMISIONS LOGIC (grant and remove)
-//give editor permisions to a user
-router.post(
-  "/admin/:userId/makeEditor",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    let { userId } = req.params;
-    let user = await User.findById(userId);
-    if (!user) {
-      req.flash("error", "Uživatel neexistuje");
-      return res.redirect("/admin/users");
-    }
-    user.isEditor = true;
-    await user.save();
-    req.flash("successOverlay", "Editorská oprávnění byla udělena.");
-    res.redirect("/admin/users");
-  })
-);
-
-//remove editor permisions from a user
-router.post(
-  "/admin/:userId/removeEditor",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    let { userId } = req.params;
-    let user = await User.findById(userId);
-    if (!user) {
-      req.flash("error", "Uživatel neexistuje");
-      return res.redirect("/admin/users");
-    }
-    user.isEditor = false;
-    await user.save();
-    req.flash("successOverlay", "Editorská oprávnění byle odebrána.");
-    res.redirect("/admin/users");
-  })
-);
-
 //ADMIN PERMISIONS LOGIC (grant and remove)
 //give admin permisions to a user
 router.post(

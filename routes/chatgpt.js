@@ -204,7 +204,9 @@ async function generateEnQuizQuestion(card, sectionId, categoryId, user) {
   });
 
   try {
-    const parsedResponse = JSON.parse(completion.choices[0].message.content);
+    const content = completion.choices[0].message.content;
+    const cleanedContent = content.replace(/```json|```/g, "").trim();
+    const parsedResponse = JSON.parse(cleanedContent);
     let newQuestion = new Question({
       category: categoryId,
       section: sectionId,
