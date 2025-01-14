@@ -14,6 +14,7 @@
             <hr />
           </div>
         </div>
+        <!--
         <div class="row">
           <div class="col-12">
             <p class="mb-0">Jaká byla kvalita otázek v tomto balíčku?</p>
@@ -66,16 +67,9 @@
                 <label for="star1" title="text">1 star</label>
               </div>
             </form>
-            <a
-              href="#"
-              data-bs-toggle="modal"
-              data-bs-target="#text-feedback-modal"
-              class="text-smaller hidden"
-              id="text-feedback-link"
-              >Přidat slovní hodnocení</a
-            >
           </div>
         </div>
+        -->
         <div class="row finished-test mb-2">
           <div class="col-12">
             <h5 class="mb-0 mt-3">Vyhodnocení testu</h5>
@@ -163,37 +157,6 @@
             <a href="/category/<%= section.categoryId %>">zpět na předmět</a>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL - Feedback -->
-<div class="modal fade" id="text-feedback-modal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered edit-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Zpětná vazba k balíčku</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-      <div
-        class="modal-body d-flex flex-column justify-content-center align-items-center"
-      >
-        <textarea
-          class="form-control border rounded-corners"
-          id="feedback-textarea"
-          name="feedback-textarea"
-          cols="30"
-          rows="5"
-          placeholder="Má tento balíček nějaké slabiny? Dej nám vědět a mi na tom zapracujeme..."
-        ></textarea>
-        <button class="btn btn-sm btn-danger" id="submit-text-feedback">
-          Odeslat
-        </button>
       </div>
     </div>
   </div>
