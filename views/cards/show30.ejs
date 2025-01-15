@@ -203,7 +203,7 @@
         <div class="col-lg-6 offset-lg-2" id="mini-menu">
           <div class="text-muted text-center text-small d-flex justify-content-center align-items-center mt-4">
             <span class="knows-all-badge hide" id="knows-all-badge">Umíš všechny kartičky v tomto balíčku</span>
-            <% if(currentUser && currentUser._id.toString() === category.author.toString()){ %>
+            <% if(currentUser && currentUser._id.toString() === section.author.toString()){ %>
               <a href="#" target="_blank" class="text-muted mx-2" id="btn-upravit">Upravit kartu</a>
               <a href="#" class="text-muted mx-2" id="btn-odstranit">Odstranit kartu</a>
             <% } %>

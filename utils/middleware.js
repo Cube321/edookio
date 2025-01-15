@@ -3,6 +3,7 @@ const { userSchema } = require("../schemas.js");
 const { sectionSchema } = require("../schemas.js");
 const { questionSchema } = require("../schemas.js");
 const User = require("../models/user");
+const Section = require("../models/section");
 const ExpressError = require("../utils/ExpressError");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");

@@ -18,12 +18,18 @@
         <div class="col-md-12">
             <!-- Header Row -->
             <div class="row font-weight-bold">
-                <div class="col-1 text-center nezobrazovat-na-mobilu"><p>Ikona</p></div>
-                <div class="col-4"><p>Název předmětu</p></div>
+                <div class="col-1 text-center nezobrazovat-na-mobilu"><p></p></div>
+                <div class="col-4"><p></p></div>
                 <div class="col-1 text-center nezobrazovat-na-mobilu"><p>Balíčky</p></div>
                 <div class="col-1 text-center nezobrazovat-na-mobilu"><p>Kartičky</p></div>
                 <div class="col-1 text-center nezobrazovat-na-mobilu"><p>Otázky</p></div>
-                <div class="col-3 text-center"><p>Akce</p></div>
+                <div class="col-3 text-center"><p></p></div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <h5>Mé předměty</h5>
+                </div>
             </div>
 
             <% if(categories.length < 1){ %>
@@ -55,6 +61,31 @@
                         <% } else { %>
                             <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-category-delete<%= cat._id %>"><i class="far fa-trash-alt"></i></a>
                         <% } %>
+                    </div>
+                </div>
+            <% }) %>
+
+            <div class="row">
+                <div class="col-12">
+                    <h5>Sdílené předměty</h5>
+                </div>
+            </div>
+
+            <% sharedCategories.forEach((cat, i) => { %>
+                <div class="row align-items-center mb-2 border-grey radius-10 bg-grey">
+                    <div class="col-1 text-center nezobrazovat-na-mobilu">
+                        <div class="img-thumbnail-list my-2">
+                            <img src="/img/<%= cat.icon %>" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-4"><a href="/category/<%= cat._id %>"><%= cat.text %></a></div>
+                    <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.sections.length %></div>
+                    <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.numOfCards %></div>
+                    <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.numOfQuestions %></div>
+                    <div class="col-3 d-flex justify-content-center">
+                        <div>
+                            <a href="/share/remove?categoryId=<%= cat._id %>" class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></a>
+                        </div>
                     </div>
                 </div>
             <% }) %>

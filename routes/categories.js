@@ -17,10 +17,15 @@ router.get(
   catchAsync(async (req, res) => {
     //get all categories
     let { user } = req;
-    await user.populate("createdCategories");
+    await user.populate("createdCategories sharedCategories");
     let categories = user.createdCategories;
+    let sharedCategories = user.sharedCategories;
     //render view
-    res.render("categories/categories", { categories, icons });
+    res.render("categories/categories", {
+      categories,
+      sharedCategories,
+      icons,
+    });
   })
 );
 
@@ -314,11 +319,11 @@ router.get(
 );
 
 //add shared category to user
-router.get(
-  "/share/:shareId",
+router.post(
+  "/share/add",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const { shareId } = req.params;
+    const { shareId } = req.body;
 
     const category = await Category.findOne({ shareId });
     if (!category) {
@@ -340,12 +345,31 @@ router.get(
   })
 );
 
-//add shared category to user
-router.post(
-  "/share/add",
+// route /share/remove - remove shared category from user
+router.get(
+  "/share/remove",
   isLoggedIn,
   catchAsync(async (req, res) => {
-    const { shareId } = req.body;
+    const { categoryId } = req.query;
+    req.user.sharedCategories = req.user.sharedCategories.filter(
+      (category) => category.toString() !== categoryId
+    );
+    await req.user.save();
+    req.flash("successOverlay", "Předmět byl odebrán.");
+    res.status(200).redirect(`/`);
+  })
+);
+
+//add shared category to user
+router.get(
+  "/share/:shareId",
+  catchAsync(async (req, res) => {
+    const { shareId } = req.params;
+
+    if (!req.user) {
+      req.flash("error", "Pro přidání předmětu se musíš přihlásit.");
+      return res.status(404).redirect("/");
+    }
 
     const category = await Category.findOne({ shareId });
     if (!category) {
