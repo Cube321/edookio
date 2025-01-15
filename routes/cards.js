@@ -6,7 +6,11 @@ const Section = require("../models/section");
 const User = require("../models/user");
 const Category = require("../models/category");
 const mail = require("../mail/mail_inlege");
-const { validateCard, isLoggedIn, isEditor } = require("../utils/middleware");
+const {
+  validateCard,
+  isLoggedIn,
+  isCategoryAuthor,
+} = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");
 
 //CARDS (add, edit, remove)
@@ -14,7 +18,7 @@ const { incrementEventCount } = require("../utils/helpers");
 router.get(
   "/category/:categoryId/section/:sectionId/newCard",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res, next) => {
     const { categoryId, sectionId } = req.params;
     const foundSection = await Section.findById(sectionId);
@@ -34,7 +38,7 @@ router.post(
   "/category/:categoryId/section/:sectionId/newCard",
   validateCard,
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res, next) => {
     let { pageA, pageB } = req.body;
     const author = req.user.email;
@@ -76,12 +80,16 @@ router.post(
 router.get(
   "/cards/edit/:id",
   isLoggedIn,
-  isEditor,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const card = await Card.findById(id);
     if (!card) {
       req.flash("error", "Kartička nebyla nalezena.");
+      return res.redirect("/");
+    }
+    //check if card author is the same as the logged in user (based on _id)
+    if (!card.author.equals(req.user._id)) {
+      req.flash("error", "Tuto kartičku může upravit jen její autor.");
       return res.redirect("/");
     }
     const foundSection = await Section.findById(card.section);
@@ -99,7 +107,6 @@ router.put(
   "/cards/edit/:id",
   validateCard,
   isLoggedIn,
-  isEditor,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     let { pageA, pageB } = req.body;
@@ -126,13 +133,19 @@ router.put(
 router.get(
   "/cards/remove/:id",
   isLoggedIn,
-  isEditor,
   catchAsync(async (req, res, next) => {
     const { id } = req.params;
     const foundCard = await Card.findById(id);
     if (!foundCard) {
       throw Error("Kartička s tímto ID neexistuje");
     }
+
+    //check if card author is the same as the logged in user (based on _id)
+    if (!foundCard.author.equals(req.user._id)) {
+      req.flash("error", "Kartičku může odstranit jen její autor.");
+      return res.redirect("/");
+    }
+
     await Section.findByIdAndUpdate(foundCard.section, {
       $pull: { cards: id },
     });

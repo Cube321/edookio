@@ -101,12 +101,9 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
   let counter = 0;
   users.forEach((user) => {
     //reset credit counters
-    if (user.isEditor) {
-      user.generatedCardsCounterMonth = 0;
-      user.generatedQuestionsCounterMonth = 0;
-      user.usedCreditsMonth = 0;
-      user.save();
-    }
+    user.generatedCardsCounterMonth = 0;
+    user.generatedQuestionsCounterMonth = 0;
+    user.usedCreditsMonth = 0;
 
     //reset monthly counters
     if (user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0) {
@@ -120,9 +117,10 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
       user.questionsSeenThisMonth = 0;
       user.cardsSeenThisMonth = 0;
       user.reachedQuestionsLimitDate = null;
-      user.save();
       counter++;
     }
+
+    user.save();
   });
   mail.sendCronReport("resetMonthlyCounters", counter);
 });
