@@ -295,11 +295,9 @@ router.get(
 
       res.status(200).send(resData);
     } else {
+      let { category } = req.query;
       let isUserPremium = req.user.isPremium;
-      let randomQuestions = await getRandomQuestions(
-        foundSection.categoryId,
-        isUserPremium
-      );
+      let randomQuestions = await getRandomQuestions(category, isUserPremium);
       const resData = JSON.stringify({
         questions: randomQuestions,
       });

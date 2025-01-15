@@ -68,23 +68,7 @@ router.get(
 //premium explanation page
 router.get("/premium", (req, res) => {
   let stripeEnv = process.env.STRIPE_ENV;
-  if (process.env.XMAS === "on") {
-    res.status(200).redirect("/vanoce");
-  } else {
-    res.status(200).render("premium", { stripeEnv });
-  }
-});
-
-router.get("/vanoce", (req, res) => {
-  let stripeEnv = process.env.STRIPE_ENV;
-  if (process.env.XMAS === "on" || (req.user && req.user.admin)) {
-    //render Xmas Premium if Xmas = on or user is admin
-    res.status(200).render("premiumXmas", { stripeEnv });
-  } else {
-    //else redirect to classic Premium
-    req.flash("error", "Vánoční nabídka není v této chvíli dostupná.");
-    res.redirect("/premium");
-  }
+  res.status(200).render("premium", { stripeEnv });
 });
 
 //SHOW ABOUT page

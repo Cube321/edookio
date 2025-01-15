@@ -584,7 +584,6 @@ router.get(
         result.countTotal = result.totalCards;
       }
     });
-
     res.status(200).render("auth/activity", { allResults });
   })
 );

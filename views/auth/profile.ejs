@@ -94,10 +94,6 @@
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-warning">
                                         Správa předplatného
                                     </button>
-                                <% } else if (user.xmasDiscount){ %>
-                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-xmas">
-                                        Správa předplatného
-                                    </button>
                                 <% } else if (user.subscriptionSource === "revenuecat"){ %>
                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-revenuecat">
                                         Správa předplatného
@@ -142,16 +138,6 @@
                         </div> 
                         <hr />
                     <% } %> 
-                    <% if (user.xmasDiscount) { %>
-                        
-                        <div class="col-4 fw-bold d-flex align-items-center">
-                            <p>Vánoční sleva</p>
-                        </div>
-                        <div class="col-8 d-flex align-items-center">
-                            Aktivní (- 50 %)
-                        </div>
-                        <hr />
-                    <% } %>
                     <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Heslo</p>
                     </div>
@@ -249,10 +235,6 @@
             <div class="modal-body">
             <p>Chcete-li předplatné změnit na jiné platební obdobní, bude Vám při změně na kratší období nevyčerpaná hodnota předplatného přímo úměrná zůstatku období převedena na kredit, který bude poté možné použít k nákupu dalšího předplatného.</p>
             <p>Chcete-li předplatné <b>zrušit</b>, zůstane Vám aktivní do konce předplaceného období.</p>
-            <% if (currentUser && currentUser.xmasDiscount) { %>
-                <p><b>Na vašem účtu je aktivní předplatné s vánoční slevou 50 %.</b></p>
-                <p>Účtujeme vám proto pravidelně <b>poloviční ceny</b> než ostatním uživatelům. Zrušením předplatného nebo přechodem na jiné období tuto slevu ztratíte.</p>    
-            <% } %>
             <p>Chcete opravdu pokračovat?</p>
             </div>
             <div class="modal-footer">
@@ -265,32 +247,7 @@
         </div>
     </div>
 
-
-
-    <!-- Modal Warning XMAS DISCOUNT -->
-    <div class="modal fade" id="modal-xmas" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title">Vánoční sleva 50 % je aktivní</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <p>Na tvém účtu je aktivní předplatné s vánoční slevou 50 %.</p>
-            <p>Účtujeme ti proto pravidelně <b>poloviční ceny</b> než ostatním uživatelům. Zrušením předplatného nebo přechodem na jiné období tuto slevu ztratíš.</p>
-            <p>Chceš opravdu pokračovat?</p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-            <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
-                Pokračovat
-            </button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Modal Warning XMAS DISCOUNT -->
+    <!-- Modal REVENUECAT -->
     <div class="modal fade" id="modal-revenuecat" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

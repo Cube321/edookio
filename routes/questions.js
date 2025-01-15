@@ -56,7 +56,7 @@ router.get(
       throw Error("Předmět s tímto ID neexistuje");
     }
     let constructedSection = {
-      category: foundCategory._id,
+      categoryId: foundCategory._id,
       _id: "random_test",
       name: `Sada náhodných otázek z předmětu ${foundCategory.text}`,
       questions: {

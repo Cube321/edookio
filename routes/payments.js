@@ -15,15 +15,6 @@ let productToPriceMap = {
   MONTHLY_229: process.env.PRODUCT_MONTHLY_229,
 };
 
-if (process.env.XMAS === "on") {
-  productToPriceMap = {
-    YEARLY: process.env.PRODUCT_YEARLY_XMAS,
-    HALFYEAR: process.env.PRODUCT_HALFYEAR_XMAS,
-    MONTHLY: process.env.PRODUCT_MONTHLY_XMAS,
-    DAILY: process.env.PRODUCT_DAILY_XMAS,
-  };
-}
-
 //Stripe checkout
 router.post(
   "/payment/checkout",
@@ -80,17 +71,6 @@ router.post(
     }
 
     const data = event.data.object;
-    let xmasDiscount = false;
-    if (data && data.plan) {
-      if (
-        data.plan.id == process.env.PRODUCT_YEARLY_XMAS ||
-        data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS ||
-        data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
-        data.plan.id == process.env.PRODUCT_DAILY_XMAS
-      ) {
-        xmasDiscount = true;
-      }
-    }
 
     switch (event.type) {
       //manage subscription (new/update/cancel)
@@ -123,11 +103,7 @@ router.post(
         }
 
         //handle subscription
-        if (
-          !data.canceled_at &&
-          (data.plan.id == process.env.PRODUCT_YEARLY ||
-            data.plan.id == process.env.PRODUCT_YEARLY_XMAS)
-        ) {
+        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_YEARLY) {
           user.plan = "yearly";
           user.endDate = moment(today).add("1", "year").format();
           //format endDate
@@ -154,14 +130,12 @@ router.post(
             user.premiumDateOfActivation = moment();
           }
           user.subscriptionSource = "stripe";
-          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
         }
 
         if (
           !data.canceled_at &&
           (data.plan.id == process.env.PRODUCT_MONTHLY ||
-            data.plan.id == process.env.PRODUCT_MONTHLY_XMAS ||
             data.plan.id == process.env.PRODUCT_MONTHLY_229)
         ) {
           user.plan = "monthly";
@@ -190,16 +164,11 @@ router.post(
             user.premiumDateOfActivation = moment();
           }
           user.subscriptionSource = "stripe";
-          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
           //if on yearly and changes to monhtly, will loose the prepaid period
         }
 
-        if (
-          !data.canceled_at &&
-          (data.plan.id == process.env.PRODUCT_HALFYEAR ||
-            data.plan.id == process.env.PRODUCT_HALFYEAR_XMAS)
-        ) {
+        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_HALFYEAR) {
           user.plan = "halfyear";
           user.endDate = moment(today).add("6", "month").format();
           //format endDate
@@ -226,16 +195,11 @@ router.post(
             user.premiumDateOfActivation = moment();
           }
           user.subscriptionSource = "stripe";
-          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
           //if on halfyear changes to monhtly, will loose the prepaid period
         }
 
-        if (
-          !data.canceled_at &&
-          (data.plan.id == process.env.PRODUCT_DAILY ||
-            data.plan.id == process.env.PRODUCT_DAILY_XMAS)
-        ) {
+        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_DAILY) {
           user.plan = "daily";
           //user = createOpenInvoice(user, data, "daily");
           user.endDate = moment(today).add("1", "day").format();
@@ -263,7 +227,6 @@ router.post(
             user.premiumDateOfActivation = moment();
           }
           user.subscriptionSource = "stripe";
-          user.xmasDiscount = xmasDiscount;
           user.isPremium = true;
         }
 
@@ -279,7 +242,6 @@ router.post(
           } catch (err) {
             console.log("Failed sending e-mail subscriptionCanceled: ", err);
           }
-          user.xmasDiscount = false;
           user.monthlySubscriptionPrice = 0;
           user.subscriptionPrice = 0;
           user.subscriptionSource = "none";

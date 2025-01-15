@@ -16,6 +16,7 @@ $(document).ready(function () {
 
   if (sectionId === "random_test") {
     let categoryId = $("#sectionId").attr("cat");
+    console.log(categoryId);
     getQuestionsUrl = `/api/getQuestions/section/${sectionId}?category=${categoryId}`;
   }
 

@@ -143,7 +143,7 @@ $(document).ready(function () {
         );
       $("#btn-know").addClass("disabled");
       return window.location.replace(
-        `/category/${cards[0].category}/finishedRandomCards`
+        `/category/${categoryId}/finishedRandomCards`
       );
     } else {
       //render next card
@@ -173,7 +173,7 @@ $(document).ready(function () {
         );
       $("#btn-dont-know").addClass("disabled");
       return window.location.replace(
-        `/category/${cards[0].category}/finishedRandomCards`
+        `/category/${categoryId}/finishedRandomCards`
       );
     } else {
       //render next card
@@ -315,7 +315,7 @@ $(document).ready(function () {
               `<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>`
             );
           return window.location.replace(
-            `/category/${cards[0].category}/finishedRandomCards`
+            `/category/${categoryId}/finishedRandomCards`
           );
         } else {
           $("#m-key").addClass("vibrate");
@@ -355,7 +355,7 @@ $(document).ready(function () {
               `<div class='spinner-border' role='status'><span class='visually-hidden'>Loading...</span></div>`
             );
           return window.location.replace(
-            `/category/${cards[0].category}/finishedRandomCards`
+            `/category/${categoryId}/finishedRandomCards`
           );
         } else {
           $("#n-key").addClass("vibrate");

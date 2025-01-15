@@ -37,15 +37,8 @@ router.get(
       foundSection.countStarted++;
       await foundSection.save();
     }
-
-    //xmas
-    let xmas = false;
-    if (process.env.xmas === "on") {
-      xmas = true;
-    }
     res.render("cards/show30", {
       section: foundSection,
-      xmas,
       categoryIcon: foundCategory.icon,
       mode,
     });
@@ -151,6 +144,7 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { categoryId } = req.params;
+    console.log("categoryId", categoryId);
     let foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
