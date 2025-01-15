@@ -78,7 +78,12 @@
             </div>
         </div>
         <% if (category.sections.length < 1) { %>
-            <p><%= texts.categoryPage.noPackages %></p>
+            <div class="card mb-3">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <h5 class="text-center">Tento předmět zatím neobsahuje žádné balíčky.</h5>
+                    <a href="" class="btn btn-danger mt-3" data-bs-toggle="modal" data-bs-target="#createWithAIModal">Vytvořit pomocí AI</a>
+                </div>  
+            </div>
         <% } else { category.sections.forEach(section => { %>
             <% if (section.isPublic || (currentUser && (currentUser.admin || currentUser.isEditor))) { %>
                 <div class="card mb-3">
@@ -213,7 +218,7 @@
   
 
 <!-- Pouze editor - formular pro pridani sekce -->
-<% if (currentUser && currentUser.isEditor) { %>
+<% if (currentUser) { %>
     <div class="row" id="add-section-container">
         <div class="col-md-7 offset-md-4 mb-3 mt-4">
             <div class="card add-section">
@@ -351,11 +356,9 @@
         </div>
         </div>
     </div>
-
-
 <% } %>
 
-<% if (category.sections.length > 0 && currentUser && currentUser.isEditor) { %>
+<% if (category.sections.length > 0 && currentUser) { %>
     <% category.sections.forEach(section => { %>
         <!-- MODAL - Edit section -->
         <div class="modal fade" id="editSectionModal<%=section._id%>" tabindex="-1">
@@ -474,7 +477,7 @@
     <% }) %>
 <% } %>
 
-<% if (currentUser && (currentUser.admin || currentUser.isEditor)) { %>
+<% if (currentUser) { %>
     <script src="/js/document.js"></script>
 <% } %>
 

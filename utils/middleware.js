@@ -57,6 +57,31 @@ middleware.isEditor = (req, res, next) => {
   }
 };
 
+//check if the user created the category
+middleware.isCategoryAuthor = async (req, res, next) => {
+  const { categoryId } = req.params;
+  //is categoryId in createdCategories of user?
+  if (req.user.createdCategories.includes(categoryId)) {
+    next();
+  } else {
+    req.flash("error", "Tuto operaci může provést pouze autor.");
+    res.redirect("back");
+  }
+};
+
+//check if the user created the section
+middleware.isSectionAuthor = async (req, res, next) => {
+  const { sectionId } = req.params;
+  //check author of the section
+  const foundSection = await Section.findById(sectionId);
+  if (foundSection.author.equals(req.user._id)) {
+    next();
+  } else {
+    req.flash("error", "Tuto operaci může provést pouze autor.");
+    res.redirect("back");
+  }
+};
+
 middleware.isPremiumUser = async (req, res, next) => {
   if (req.user && req.user.isPremium) {
     await checkAndUpdatePremiumEndDate(req.user);

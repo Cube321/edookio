@@ -53,6 +53,7 @@ router.get(
     }
     res.status(200).render("home", {
       categories,
+      sharedCategories: user.sharedCategories,
       numOfCards,
       numOfQuestions,
       numOfSections,

@@ -10,9 +10,8 @@ const TestResult = require("../models/testResult");
 const mongoose = require("mongoose");
 const {
   isLoggedIn,
-  isAdmin,
   validateSection,
-  isEditor,
+  isCategoryAuthor,
 } = require("../utils/middleware");
 
 //SECTIONS IN CATEGORY
@@ -21,7 +20,7 @@ router.post(
   "/category/:categoryId/newSection",
   validateSection,
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res, next) => {
     const { categoryId } = req.params;
     const foundCategory = await Category.findById(categoryId);
@@ -104,7 +103,7 @@ router.post(
 router.delete(
   "/category/:categoryId/removeSection/:sectionId",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res, next) => {
     const { categoryId, sectionId } = req.params;
     //delete Section ID from Category
@@ -143,7 +142,7 @@ router.delete(
 router.get(
   "/category/:categoryId/editSection/:sectionId",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId } = req.params;
     const foundSection = await Section.findById(req.params.sectionId);
@@ -167,7 +166,7 @@ router.get(
 router.put(
   "/category/:categoryId/editSection/:sectionId",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const foundSection = await Section.findById(req.params.sectionId);
     if (!foundSection) {
@@ -186,59 +185,11 @@ router.put(
   })
 );
 
-//changing order of the sections
-//UP
-router.get(
-  "/category/:categoryId/sectionUp/:sectionId",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const { sectionId, categoryId } = req.params;
-    const foundCategory = await Category.findById(categoryId);
-    if (!foundCategory) {
-      throw Error("Kategorie s tímto ID neexistuje");
-    }
-    if (foundCategory.sections.includes(sectionId)) {
-      let fromIndex = foundCategory.sections.indexOf(sectionId);
-      if (fromIndex !== 0) {
-        let toIndex = fromIndex--;
-        let section = foundCategory.sections.splice(fromIndex, 1)[0];
-        foundCategory.sections.splice(toIndex, 0, section);
-        await foundCategory.save();
-      }
-    }
-    res.status(200).redirect(`/category/${categoryId}`);
-  })
-);
-//DOWN
-router.get(
-  "/category/:categoryId/sectionDown/:sectionId",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const { sectionId, categoryId } = req.params;
-    const foundCategory = await Category.findById(categoryId);
-    if (!foundCategory) {
-      throw Error("Kategorie s tímto názvem neexistuje");
-    }
-    if (foundCategory.sections.includes(sectionId)) {
-      let fromIndex = foundCategory.sections.indexOf(sectionId);
-      if (fromIndex < foundCategory.sections.length) {
-        let toIndex = fromIndex++;
-        let section = foundCategory.sections.splice(fromIndex, 1)[0];
-        foundCategory.sections.splice(toIndex, 0, section);
-        await foundCategory.save();
-      }
-    }
-    res.status(200).redirect(`/category/${categoryId}`);
-  })
-);
-
 //generate section data in JSON format based on sectionId
 router.get(
   "/category/:categoryId/generateJSON/:sectionId",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const foundSection = await Section.findById(req.params.sectionId).populate(
       "cards questions"

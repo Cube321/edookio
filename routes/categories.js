@@ -6,7 +6,7 @@ const CardInfo = require("../models/cardInfo");
 const TestResult = require("../models/testResult");
 const icons = require("../utils/icons");
 const mongoose = require("mongoose");
-const { isLoggedIn } = require("../utils/middleware");
+const { isLoggedIn, isCategoryAuthor } = require("../utils/middleware");
 
 //CATEGORIES ADMIN VIEW
 //list all categorie ADMIN + helper
@@ -187,6 +187,7 @@ router.post(
 router.put(
   "/category/edit/:categoryId",
   isLoggedIn,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     let { categoryId } = req.params;
     let { text, icon } = req.body;
@@ -205,6 +206,7 @@ router.put(
 router.delete(
   "/category/remove/:categoryId",
   isLoggedIn,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     let { categoryId } = req.params;
     const foundCategory = await Category.findById(categoryId);
