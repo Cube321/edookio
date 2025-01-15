@@ -50,7 +50,7 @@ router.get(
         percent = 100;
       }
     }
-    res.status(200).render("index", {
+    res.status(200).render("home", {
       categories,
       numOfCards,
       numOfQuestions,
