@@ -196,11 +196,7 @@ async function getRandomCards(categoryId, isUserPremium) {
   );
   let publishedCards = [];
   sections.forEach((section) => {
-    if (section.isPublic) {
-      if (!section.isPremium || (section.isPremium && isUserPremium)) {
-        publishedCards.push(...section.cards);
-      }
-    }
+    publishedCards.push(...section.cards);
   });
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -322,11 +318,7 @@ async function getRandomQuestions(categoryId, isUserPremium) {
   });
   let publishedQuestions = [];
   sections.forEach((section) => {
-    if (section.testIsPublic) {
-      if (!section.isPremium || (section.isPremium && isUserPremium)) {
-        publishedQuestions.push(...section.questions);
-      }
-    }
+    publishedQuestions.push(...section.questions);
   });
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {

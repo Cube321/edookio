@@ -32,14 +32,6 @@ router.get(
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
       return res.status(404).redirect("back");
     }
-    //check if Premium access required and allowed
-    if (foundSection.isPremium && !req.user.isPremium) {
-      req.flash(
-        "error",
-        "Je nám líto, tato sekce je přístupná pouze uživatelům Premium."
-      );
-      return res.status(403).redirect("back");
-    }
     //handle lastSeenCard
     if (req.user) {
       foundSection.countStarted++;

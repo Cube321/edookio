@@ -39,32 +39,16 @@ router.get(
     if (!startRandomCardsStats) {
       startRandomCardsStats = { eventCount: 0 };
     }
-    //count free and premium sections and cards separately
-    const sectionsPremium = await Section.find({ isPremium: true }).select(
-      "cards"
-    );
-    const sectionsFree = await Section.find({ isPremium: false }).select(
-      "cards"
-    );
-    let cardsPremiumCount = 0;
+    //count cards and sections
+    const sectionsFree = await Section.find().select("cards");
     let cardsFreeCount = 0;
     let sectionsFreeCount = sectionsFree.length;
-    let sectionsPremiumCount = sectionsPremium.length;
-    sectionsPremium.forEach((section) => {
-      cardsPremiumCount = cardsPremiumCount + section.cards.length;
-    });
     sectionsFree.forEach((section) => {
       cardsFreeCount = cardsFreeCount + section.cards.length;
     });
-    //count ratios - cards
-    let cardsTotal = cardsFreeCount + cardsPremiumCount;
-    let freeCardRatio = Math.round((100 / cardsTotal) * cardsFreeCount);
 
     //count ratios
-    let sectionsTotal = sectionsFreeCount + sectionsPremiumCount;
-    let freeSectionRatio = Math.round(
-      (100 / sectionsTotal) * sectionsFreeCount
-    );
+    let sectionsTotal = sectionsFreeCount;
     let demoLimitRegistrationRatio = Math.round(
       (100 / demoLimitReachedStats.eventCount) *
         registeredAfterDemoLimitStats.eventCount

@@ -28,19 +28,13 @@ router.post(
       throw Error("Kategorie s tímto ID neexistuje");
     }
     //create new Section and add it to Category
-    let { name, isPremium, jsonData } = req.body;
-    //isPremium logic
-    let isPremiumBoolean = false;
-    if (isPremium === "premium") {
-      isPremiumBoolean = true;
-    }
+    let { name, jsonData } = req.body;
     //create new section
     const newSection = new Section({
       name,
       categoryId: foundCategory._id,
       cards: [],
       questions: [],
-      isPremium: isPremiumBoolean,
       author: req.user._id,
     });
     const savedSection = await newSection.save();

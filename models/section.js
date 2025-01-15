@@ -24,10 +24,6 @@ const SectionSchema = new Schema({
   },
   cards: [{ type: Schema.Types.ObjectId, ref: "Card" }],
   questions: [{ type: Schema.Types.ObjectId, ref: "Question" }],
-  isPremium: {
-    type: Boolean,
-    default: false,
-  },
   isAccesible: {
     type: Boolean,
     default: undefined,

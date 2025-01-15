@@ -215,7 +215,6 @@ mail.adminInfoNewUser = function (newUser, callback) {
           <p>Datum registrace: ${moment(newUser.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
-          <p>Premium: ${newUser.isPremium}</p>
           <p>Stripe ID: ${newUser.billingId}</p>
           <p>Plán předplatného: ${newUser.plan}</p>
       `,
