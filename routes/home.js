@@ -35,7 +35,10 @@ router.get(
     }
 
     //user - render home page
-    const categories = await Category.find({ author: req.user._id });
+    const userWithPopulatedCreatedCategories = await user.populate(
+      "createdCategories sharedCategories"
+    );
+    const categories = userWithPopulatedCreatedCategories.createdCategories;
     let numOfCategories = categories.length;
     const numOfCards = await Card.count();
     const numOfQuestions = await Question.count();

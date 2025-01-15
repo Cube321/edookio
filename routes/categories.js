@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const Category = require("../models/category");
 const CardInfo = require("../models/cardInfo");
 const TestResult = require("../models/testResult");
+const uuid = require("uuid");
 const icons = require("../utils/icons");
 const mongoose = require("mongoose");
 const { isLoggedIn, isCategoryAuthor } = require("../utils/middleware");
@@ -15,7 +16,9 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     //get all categories
-    let categories = await Category.find({ author: req.user._id });
+    let { user } = req;
+    await user.populate("createdCategories");
+    let categories = user.createdCategories;
     //render view
     res.render("categories/categories", { categories, icons });
   })
@@ -159,12 +162,17 @@ router.get(
     let proficiencyPercetage = Math.floor(
       (averageTestPercentage + knownPercentageOfCategory) / 2
     );
+
+    //create a shareLink
+    let shareLink = `${process.env.DOMAIN}/share/${category.shareId}`;
+
     //render category page
     res.status(200).render("category", {
       category,
       title,
       knownPercentageOfCategory: proficiencyPercetage,
       isAuthor,
+      shareLink,
     });
   })
 );
@@ -175,6 +183,14 @@ router.post(
   "/category/new",
   isLoggedIn,
   catchAsync(async (req, res, next) => {
+    //generate a new shareId
+    let shareId = uuid.v4().slice(0, 6);
+    //check if the shareId is unique
+    let categoryWithShareId = await Category.findOne({ share: shareId });
+    while (categoryWithShareId) {
+      shareId = uuid.v4().slice(0, 6);
+      categoryWithShareId = await Category.findOne({ share: shareId });
+    }
     let { text, icon } = req.body;
     let user = req.user;
     const newCategory = new Category({
@@ -182,6 +198,7 @@ router.post(
       text,
       icon,
       author: req.user._id,
+      shareId,
     });
     let savedCategory = await newCategory.save();
     user.createdCategories.push(savedCategory._id);
@@ -223,12 +240,18 @@ router.delete(
       req.flash("error", "Kategorie nebyla nalezena.");
       return res.redirect("/category/dashboard");
     }
-    //delete all sections in the category
-    for (let section of foundCategory.sections) {
-      await Section.findByIdAndDelete(section);
-    }
-    //delete the category
-    await Category.findByIdAndDelete(categoryId);
+
+    //mark category as removed
+    foundCategory.removedByAuthor = true;
+    foundCategory.author = null;
+    await foundCategory.save();
+
+    //remove the category from the user
+    req.user.createdCategories = req.user.createdCategories.filter(
+      (category) => category.toString() !== categoryId
+    );
+    await req.user.save();
+
     req.flash("successOverlay", "Předmět byl odstraněn.");
     res.status(200).redirect("/category/dashboard");
   })
@@ -288,6 +311,60 @@ router.get(
     req.flash("successOverlay", "Tvé výsledky byly smazány.");
     res.status(200).redirect(`/category/${req.params.categoryId}`);
   }
+);
+
+//add shared category to user
+router.get(
+  "/share/:shareId",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    const { shareId } = req.params;
+
+    const category = await Category.findOne({ shareId });
+    if (!category) {
+      req.flash("error", "Předmět nenalezen.");
+      return res.status(404).redirect("/");
+    }
+    if (req.user.createdCategories.includes(category._id)) {
+      req.flash("error", "Tento předmět jsi vytvořil.");
+      return res.status(404).redirect("/");
+    }
+    if (req.user.sharedCategories.includes(category._id)) {
+      req.flash("error", "Tento předmět již máš.");
+      return res.status(404).redirect("/");
+    }
+    req.user.sharedCategories.push(category._id);
+    await req.user.save();
+    req.flash("successOverlay", "Předmět byl přidán.");
+    res.status(200).redirect(`/`);
+  })
+);
+
+//add shared category to user
+router.post(
+  "/share/add",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    const { shareId } = req.body;
+
+    const category = await Category.findOne({ shareId });
+    if (!category) {
+      req.flash("error", "Předmět nenalezen.");
+      return res.status(404).redirect("/");
+    }
+    if (req.user.createdCategories.includes(category._id)) {
+      req.flash("error", "Tento předmět jsi vytvořil.");
+      return res.status(404).redirect("/");
+    }
+    if (req.user.sharedCategories.includes(category._id)) {
+      req.flash("error", "Tento předmět již máš.");
+      return res.status(404).redirect("/");
+    }
+    req.user.sharedCategories.push(category._id);
+    await req.user.save();
+    req.flash("successOverlay", "Předmět byl přidán.");
+    res.status(200).redirect(`/`);
+  })
 );
 
 module.exports = router;

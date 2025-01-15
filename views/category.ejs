@@ -46,8 +46,8 @@
             <% if (currentUser) { %>
             <a
               href="/category/<%= category._id %>/randomCards"
-              class="btn btn-sm btn-danger mx-2"
-              >Shuffle</a
+              class="btn btn-sm btn-outline-danger mx-2"
+              ><i class="fas fa-random"></i></a
             >
             <% } %>
           </div>
@@ -61,8 +61,8 @@
             <% if (currentUser) { %>
             <a
               href="/category/<%= category._id %>/testRandom"
-              class="btn btn-sm btn-danger mx-2"
-              >Shuffle</a
+              class="btn btn-sm btn-outline-danger mx-2"
+              ><i class="fas fa-random"></i></a
             >
             <% } %>
           </div>
@@ -114,6 +114,11 @@
         </div>
       </div>
       <% } %>
+      <div class="row mb-3 mt-2">
+        <div class="col-12 d-flex justify-content-center">
+          <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#shareModal">Sdílet předmět <i class="fas fa-share-alt"></i></a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -399,6 +404,40 @@
               >Resetovat</a
             >
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL - Share section -->
+<div class="modal fade" id="shareModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered edit-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"></h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h3 class="text-center">Sdílej předmět s přáteli!</h3>
+        <div>
+          <div class="d-flex justify-content-center align-items-center">
+            <span class="card border-grey m-3 px-5 py-3 shareIdSpan"><%= category.shareId %></span>  
+          </div>  
+        </div>
+        <div>
+          <p class="text-center mb-3">nebo</p>  
+        </div>
+        <div class="d-flex justify-content-center align-items-center">
+          <input type="text" class="form-control" value="<%= shareLink %>" id="shareLink" />
+          <button class="btn btn-danger mx-2" id="shareLinkButton"><i class="far fa-copy"></i></button>
+        </div>
+        <div class="mt-3">
+          <p class="text-primary text-center hidden" id="copy-confirmation-text">Zkopírováno do schránky</p>
         </div>
       </div>
     </div>

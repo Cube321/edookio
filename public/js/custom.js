@@ -34,6 +34,24 @@ $(document).ready(function () {
     );
   });
 
+  $("#shareLinkButton").on("click", function () {
+    // 1. Add the disabled class
+    $(this).addClass("disabled");
+
+    // 2. Get the value of the input
+    const shareText = $("#shareLink").val();
+
+    // 3. Use the Clipboard API to copy the text
+    navigator.clipboard
+      .writeText(shareText)
+      .then(() => {
+        $("#copy-confirmation-text").removeClass("hidden");
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  });
+
   $(".delete-question-btn").click(function (e) {
     e.preventDefault();
     let wrapperCard = $(this).closest(".card");

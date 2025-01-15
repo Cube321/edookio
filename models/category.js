@@ -23,6 +23,14 @@ const CategorySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  shareId: {
+    type: String,
+    default: "",
+  },
+  removedByAuthor: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Category", CategorySchema);

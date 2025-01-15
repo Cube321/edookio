@@ -271,12 +271,8 @@
                 </div>
                 <% }) %>
                 <div class="col-lg-3 col-md-4 col-6 mb-4">
-                    <div class="card">
-                      <div
-                        class="card-body cat-text d-flex flex-column justify-content-center align-items-center"
-                      >
+                    <div class="card d-flex justify-content-center align-items-center" style="min-height: 300px;">
                         <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-category" style="border-radius: 50px;"><i class="fas fa-plus fa-2x"></i></button>
-                      </div>
                     </div>
                 </div>
               </div>
@@ -298,7 +294,7 @@
                 <% if(!sharedCategories || sharedCategories.length === 0) { %>
                 <div class="col-12 mb-4 text-center">
                   <h5 class="text-center mb-0 text-muted">
-                        Zatím nemáš žádné sdílené předměty
+                        Přidej sdílené předměty od svých přátel
                       </h5>
                 </div>
                 <% } else { %>
@@ -341,6 +337,11 @@
                   </div>
                   <% }) %>
                 <% } %>
+                <div class="col-lg-3 col-md-4 col-6 mb-4">
+                    <div class="card d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                      <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#shareModal" style="border-radius: 50px;"><i class="fas fa-plus fa-2x"></i></button>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
@@ -400,6 +401,32 @@
             </div>
         </div>
         </div>
+    </div>
+
+    <!-- MODAL - Add shared section -->
+    <div class="modal fade" id="shareModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered edit-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h3 class="text-center">Kód předmětu</h3>
+            <form action="/share/add" method="POST">
+              <input type="text" class="form-control text-center" style="font-size: 3rem; border: none" placeholder="_ _ _ _ _ _" id="shareId" name="shareId" required>  
+              <div class="d-flex justify-content-center my-3">
+                <button type="submit" class="btn btn-danger">Přidat předmět</button>
+              </div>
+            </form>
+            <p class="text-center text-muter text-smaller mt-2">Ostatní studenti ti mohou dát kód, prostřednictvím kterého si můžeš přidat jejich předměty</p>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- JS for Bootstrap -->
