@@ -28,7 +28,7 @@ router.post(
       throw Error("Kategorie s tímto ID neexistuje");
     }
     //create new Section and add it to Category
-    let { name, jsonData } = req.body;
+    let { name } = req.body;
     //create new section
     const newSection = new Section({
       name,
@@ -40,52 +40,6 @@ router.post(
     const savedSection = await newSection.save();
     foundCategory.sections.push(savedSection._id);
     await foundCategory.save();
-
-    //import cards and questions from JSON if JSON is provided
-    if (jsonData) {
-      let sectionData = JSON.parse(jsonData);
-      //create cards
-      for (let card of sectionData.cards) {
-        let newCard = new Card({
-          section: savedSection._id,
-          pageA: card.pageA,
-          pageB: card.pageB,
-          categoryId: foundCategory._id,
-          author: card.author,
-          importedCardId: card._id,
-        });
-        let savedCard = await newCard.save();
-        foundCategory.numOfCards++;
-        savedSection.cards.push(savedCard._id);
-      }
-      //create questions
-      for (let question of sectionData.questions) {
-        let newQuestion = new Question({
-          section: savedSection._id,
-          category: foundCategory._id,
-          categoryId: foundCategory._id,
-          question: question.question,
-          correctAnswers: [...question.correctAnswers],
-          wrongAnswers: [...question.wrongAnswers],
-          sourceCardForImport: question.sourceCard,
-          author: question.author,
-        });
-
-        //find card with importedCardId equal to sourceCardForImport and save that card ID to question as sourceCard
-        let foundCard = await Card.findOne({
-          importedCardId: question.sourceCard,
-        });
-        if (foundCard) {
-          newQuestion.sourceCard = foundCard._id;
-        }
-
-        let savedQuestion = await newQuestion.save();
-        foundCategory.numOfQuestions++;
-        savedSection.questions.push(savedQuestion._id);
-      }
-      await foundCategory.save();
-      await savedSection.save();
-    }
 
     req.flash("successOverlay", `Balíček ${savedSection.name} byl vytvořen.`);
     res.status(200).redirect(`/category/${savedSection.categoryId}`);

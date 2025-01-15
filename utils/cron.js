@@ -97,7 +97,6 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
   console.log("RUNNING CRON: resetMonthlyCounters");
   let users = await User.find({});
   //save last month clast results
-  saveClash(users);
   saveLeaderboard(users);
   let counter = 0;
   users.forEach((user) => {
@@ -161,79 +160,6 @@ cronHelpers.sendInfoEmail = catchAsync(async () => {
 
   // 6) Send a summary to the admin (optional)
   mail.sendCronReport("sendInfoEmail", counter);
-});
-
-//HELPERS
-let saveClash = catchAsync(async (users) => {
-  console.log("RUNNING CRON: saveClash");
-
-  let faculties = {
-    prfUp: 0,
-    prfUk: 0,
-    prfMuni: 0,
-    prfZcu: 0,
-    prfJina: 0,
-    prfNestuduji: 0,
-    prfUchazec: 0,
-  };
-
-  users.forEach((user) => {
-    //count points
-    if (user.faculty === "PrF UP") {
-      faculties.prfUp =
-        faculties.prfUp + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
-    }
-    if (user.faculty === "PrF UK") {
-      faculties.prfUk =
-        faculties.prfUk + user.cardsSeenThisMonth + user.questionsSeenThisMonth;
-    }
-    if (user.faculty === "PrF MUNI") {
-      faculties.prfMuni =
-        faculties.prfMuni +
-        user.cardsSeenThisMonth +
-        user.questionsSeenThisMonth;
-    }
-    if (user.faculty === "PrF ZČU") {
-      faculties.prfZcu =
-        faculties.prfZcu +
-        user.cardsSeenThisMonth +
-        user.questionsSeenThisMonth;
-    }
-    if (user.faculty === "Jiná") {
-      faculties.prfJina =
-        faculties.prfJina +
-        user.cardsSeenThisMonth +
-        user.questionsSeenThisMonth;
-    }
-    if (user.faculty === "Nestuduji") {
-      faculties.prfNestuduji =
-        faculties.prfNestuduji +
-        user.cardsSeenThisMonth +
-        user.questionsSeenThisMonth;
-    }
-    if (user.faculty === "Uchazeč") {
-      faculties.prfUchazec =
-        faculties.prfUchazec +
-        user.cardsSeenThisMonth +
-        user.questionsSeenThisMonth;
-    }
-  });
-  //order faculties by points top to bottom
-  let facultiesOrdered = Object.entries(faculties);
-  facultiesOrdered.sort((a, b) => b[1] - a[1]);
-  //create object with date
-  let date = new Date();
-  let updatedDate = moment(date).subtract(1, "days");
-  var key = moment(updatedDate).format("MM/YYYY");
-  let lastMonthData = { key: key, data: facultiesOrdered };
-  //save faculties to DB
-  await Stats.findOneAndUpdate(
-    { eventName: "clashSavedStats" },
-    { $push: { payload: lastMonthData } },
-    { upsert: true, new: true }
-  );
-  //send confirmation e-mail to admin
-  mail.sendCronReport("saveClash", facultiesOrdered);
 });
 
 let saveLeaderboard = catchAsync(async (users) => {
