@@ -40,6 +40,14 @@ router.get(
       return res.status(404).redirect("/");
     }
 
+    //is the user the author of the category?
+    let isAuthor = false;
+    if (req.user) {
+      if (category.author.equals(req.user._id)) {
+        isAuthor = true;
+      }
+    }
+
     let knownCardsOfCategory = 0;
 
     if (req.user) {
@@ -156,6 +164,7 @@ router.get(
       category,
       title,
       knownPercentageOfCategory: proficiencyPercetage,
+      isAuthor,
     });
   })
 );

@@ -4,7 +4,7 @@ const Category = require("../models/category");
 const Section = require("../models/section");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
-const { isEditor, isLoggedIn } = require("../utils/middleware");
+const { isLoggedIn, isCategoryAuthor } = require("../utils/middleware");
 const { OpenAI } = require("openai");
 const question = require("../models/question");
 
@@ -14,7 +14,7 @@ const openai = new OpenAI({ apiKey: process.env.CHATGPT_SECRET });
 router.get(
   "/category/:categoryId/section/:sectionId/question/generate",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
     const { user } = req;
@@ -90,7 +90,7 @@ router.get(
 router.get(
   "/category/:categoryId/section/:sectionId/question/generateEN",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
     const { user } = req;

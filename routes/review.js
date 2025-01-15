@@ -5,13 +5,13 @@ const Section = require("../models/section");
 const Question = require("../models/question");
 const Card = require("../models/card");
 const Category = require("../models/category");
-const { isLoggedIn, isEditor } = require("../utils/middleware");
+const { isLoggedIn, isSectionAuthor } = require("../utils/middleware");
 
 //show content of the section
 router.get(
   "/review/:sectionId/showAll",
   isLoggedIn,
-  isEditor,
+  isSectionAuthor,
   catchAsync(async (req, res) => {
     const { sectionId } = req.params;
 
@@ -73,7 +73,7 @@ router.get(
 router.post(
   "/review/:sectionId/deleteQuestion/:questionId",
   isLoggedIn,
-  isEditor,
+  isSectionAuthor,
   catchAsync(async (req, res) => {
     const { sectionId, questionId } = req.params;
 
@@ -118,7 +118,7 @@ router.post(
 router.post(
   "/review/:sectionId/deleteCard/:cardId",
   isLoggedIn,
-  isEditor,
+  isSectionAuthor,
   catchAsync(async (req, res) => {
     const { sectionId, cardId } = req.params;
 

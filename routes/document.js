@@ -2,7 +2,7 @@
 const express = require("express");
 const multer = require("multer");
 const fs = require("fs");
-const { isEditor, isLoggedIn } = require("../utils/middleware");
+const { isLoggedIn, isCategoryAuthor } = require("../utils/middleware");
 const Category = require("../models/category");
 const flashcardQueue = require("../jobs/flashcardQueue");
 const router = express.Router();
@@ -17,7 +17,7 @@ const upload = multer({ dest: "uploads/" });
 router.post(
   "/category/:categoryId/newSectionFromDocument",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   upload.single("document"),
   catchAsync(async (req, res) => {
     const { name } = req.body;
@@ -135,7 +135,7 @@ router.post(
   })
 );
 
-router.get("/job/:id/progress", isLoggedIn, isEditor, async (req, res) => {
+router.get("/job/:id/progress", isLoggedIn, async (req, res) => {
   const jobId = req.params.id;
   const { lastJobCredits, credits } = req.user;
 

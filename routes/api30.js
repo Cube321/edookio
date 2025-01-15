@@ -160,8 +160,7 @@ router.get(
   catchAsync(async (req, res) => {
     let { categoryId } = req.params;
     let { user } = req;
-    let isPremiumUser = req.user.isPremium;
-    let cards = await getRandomCards(categoryId, isPremiumUser);
+    let cards = await getRandomCards(categoryId);
 
     //mark saved cards
     let markedCards = [];
@@ -189,14 +188,14 @@ router.get(
   })
 );
 
-async function getRandomCards(categoryId, isUserPremium) {
+async function getRandomCards(categoryId) {
   let foundCategory = await Category.findById(categoryId);
   let sections = await Section.find({ categoryId: foundCategory._id }).populate(
     "cards"
   );
-  let publishedCards = [];
+  let allCards = [];
   sections.forEach((section) => {
-    publishedCards.push(...section.cards);
+    allCards.push(...section.cards);
   });
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -205,8 +204,8 @@ async function getRandomCards(categoryId, isUserPremium) {
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
-  shuffleArray(publishedCards);
-  let final20cards = publishedCards.slice(0, 20);
+  shuffleArray(allCards);
+  let final20cards = allCards.slice(0, 20);
   return final20cards;
 }
 
@@ -296,8 +295,7 @@ router.get(
       res.status(200).send(resData);
     } else {
       let { category } = req.query;
-      let isUserPremium = req.user.isPremium;
-      let randomQuestions = await getRandomQuestions(category, isUserPremium);
+      let randomQuestions = await getRandomQuestions(category);
       const resData = JSON.stringify({
         questions: randomQuestions,
       });
@@ -307,16 +305,16 @@ router.get(
   })
 );
 
-async function getRandomQuestions(categoryId, isUserPremium) {
+async function getRandomQuestions(categoryId) {
   let sections = await Section.find({ categoryId: categoryId }).populate({
     path: "questions",
     populate: {
       path: "sourceCard",
     },
   });
-  let publishedQuestions = [];
+  let allQuestions = [];
   sections.forEach((section) => {
-    publishedQuestions.push(...section.questions);
+    allQuestions.push(...section.questions);
   });
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -325,8 +323,8 @@ async function getRandomQuestions(categoryId, isUserPremium) {
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
-  shuffleArray(publishedQuestions);
-  let final20questions = publishedQuestions.slice(0, 20);
+  shuffleArray(allQuestions);
+  let final20questions = allQuestions.slice(0, 20);
   return final20questions;
 }
 

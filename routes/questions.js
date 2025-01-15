@@ -5,11 +5,10 @@ const Section = require("../models/section");
 const Category = require("../models/category");
 const Question = require("../models/question");
 const TestResult = require("../models/testResult");
-const mail = require("../mail/mail_inlege");
 const {
   isLoggedIn,
-  isEditor,
   validateQuestion,
+  isCategoryAuthor,
 } = require("../utils/middleware");
 const { incrementEventCount } = require("../utils/helpers");
 
@@ -184,7 +183,7 @@ router.get(
 router.get(
   "/category/:categoryId/section/:sectionId/question/new",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
     const category = await Category.findById(categoryId);
@@ -201,7 +200,7 @@ router.get(
 router.post(
   "/category/:categoryId/section/:sectionId/question",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   validateQuestion,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
@@ -243,7 +242,7 @@ router.post(
 router.get(
   "/category/:categoryId/section/:sectionId/questions/:questionId/edit",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId, questionId } = req.params;
     const foundCategory = await Category.findById(categoryId);
@@ -274,7 +273,7 @@ router.get(
 router.patch(
   "/category/:categoryId/section/:sectionId/questions/:questionId",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId, questionId } = req.params;
     const { question, correctAnswer, wrongAnswer1, wrongAnswer2 } = req.body;
@@ -293,7 +292,7 @@ router.patch(
 router.delete(
   "/category/:categoryId/section/:sectionId/questions/:questionId",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId, questionId } = req.params;
     const { api } = req.query;
@@ -327,7 +326,7 @@ router.delete(
 router.get(
   "/category/:categoryId/section/:sectionId/removeAll",
   isLoggedIn,
-  isEditor,
+  isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
     const foundSection = await Section.findById(sectionId);
@@ -357,23 +356,6 @@ router.get(
 
     req.flash("successOverlay", "Všechny otázky z balíčku byly odstraněny");
     res.status(201).redirect(`/review/${sectionId}/showAll`);
-  })
-);
-
-//publish Questions of Section
-router.get(
-  "/category/:categoryId/section/:sectionId/publishTest",
-  isLoggedIn,
-  isEditor,
-  catchAsync(async (req, res) => {
-    const { sectionId } = req.params;
-    const foundSection = await Section.findById(sectionId);
-    if (!foundSection) {
-      throw Error("Balíček s tímto ID neexistuje");
-    }
-    foundSection.testIsPublic = true;
-    await foundSection.save();
-    res.status(200).redirect(`/category/${foundSection.categoryId}`);
   })
 );
 

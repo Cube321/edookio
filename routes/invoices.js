@@ -4,7 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const Invoice = require("../models/invoice");
 const Settings = require("../models/settings");
-const { isLoggedIn, isAdmin, isEditor } = require("../utils/middleware");
+const { isLoggedIn, isAdmin } = require("../utils/middleware");
 const moment = require("moment");
 
 //add new invoice

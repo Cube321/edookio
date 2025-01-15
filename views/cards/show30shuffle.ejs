@@ -186,7 +186,7 @@
       <div class="row">
         <div class="col-lg-6 offset-lg-2" id="mini-menu">
           <div class="text-muted text-center text-small d-flex justify-content-center align-items-center mt-4">
-            <% if(currentUser && currentUser.isEditor){ %>
+            <% if(currentUser && currentUser._id.toString() === category.author.toString()){ %>
               <a href="#" target="_blank" class="text-muted mx-2" id="btn-upravit">Upravit kartu</a>
               <a href="#" class="text-muted mx-2" id="btn-odstranit">Odstranit kartu</a>
             <% } %>

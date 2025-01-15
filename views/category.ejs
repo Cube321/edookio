@@ -127,20 +127,22 @@
             <h5 class="m-0 mb-1 mt-1">Balíčky</h5>
           </div>
           <div class="col-8 d-flex justify-content-end align-items-center">
-            <a
+            <% if (isAuthor) { %>
+              <a
               href=""
               class="btn btn-sm btn-danger mx-2"
               data-bs-toggle="modal"
               data-bs-target="#createWithAIModal"
               >Generovat pomocí AI</a
-            >
-            <a
-              href=""
-              class="btn btn-sm btn-outline-danger mx-2"
-              data-bs-toggle="modal"
-              data-bs-target="#createWithoutAIModal"
-              >Vytvořit bez AI</a
-            >
+              >
+              <a
+                href=""
+                class="btn btn-sm btn-outline-danger mx-2"
+                data-bs-toggle="modal"
+                data-bs-target="#createWithoutAIModal"
+                >Vytvořit bez AI</a
+              >
+            <% } %>
           </div>
           <div class="col-1 d-flex justify-content-end align-items-center">
             <% if (currentUser) { %>
@@ -165,22 +167,24 @@
         <h5 class="text-center">
           Tento předmět zatím neobsahuje žádné balíčky.
         </h5>
-        <div class="d-flex justify-content-center align-items-center">
-          <a
-            href=""
-            class="btn btn-danger mt-3 mx-2"
-            data-bs-toggle="modal"
-            data-bs-target="#createWithAIModal"
-            >Generovat pomocí AI</a
-          >
-          <a
-            href=""
-            class="btn btn-outline-danger mt-3 mx-2"
-            data-bs-toggle="modal"
-            data-bs-target="#createWithoutAIModal"
-            >Vytvořit bez AI</a
-          >
-        </div>
+        <% if (isAuthor) { %>
+          <div class="d-flex justify-content-center align-items-center">
+            <a
+              href=""
+              class="btn btn-danger mt-3 mx-2"
+              data-bs-toggle="modal"
+              data-bs-target="#createWithAIModal"
+              >Generovat pomocí AI</a
+            >
+            <a
+              href=""
+              class="btn btn-outline-danger mt-3 mx-2"
+              data-bs-toggle="modal"
+              data-bs-target="#createWithoutAIModal"
+              >Vytvořit bez AI</a
+            >
+          </div>
+        <% } %>
       </div>
     </div>
     <% } else { category.sections.forEach(section => { %>
@@ -198,7 +202,7 @@
               </p>
             </div>
             <div>
-              <% if (currentUser && currentUser.isEditor) { %>
+              <% if (isAuthor) { %>
               <a
                 href="#"
                 class="text-small"
@@ -401,8 +405,8 @@
   </div>
 </div>
 
-<!-- Pouze editor - formular pro pridani sekce -->
-<% if (currentUser) { %>
+<!-- Pouze owner - formular pro pridani sekce -->
+<% if (isAuthor) { %>
 <!-- MODAL - Create section with AI -->
 <div class="modal fade" id="createWithAIModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered edit-modal">
@@ -601,7 +605,7 @@
     </div>
   </div>
 </div>
-<% } %> <% if (category.sections.length > 0 && currentUser) { %> <%
+<% } %> <% if (category.sections.length > 0 && isAuthor) { %> <%
 category.sections.forEach(section => { %>
 <!-- MODAL - Edit section -->
 <div class="modal fade" id="editSectionModal<%=section._id%>" tabindex="-1">
@@ -685,7 +689,7 @@ category.sections.forEach(section => { %>
     </div>
   </div>
 </div>
-<% }) %> <% } %> <% if (currentUser) { %>
+<% }) %> <% } %> <% if (isAuthor) { %>
 <script src="/js/document.js"></script>
 <% } %> <% if(currentUser && !currentUser.appAnnouncementModalShown){ %>
 <!-- MODAL - App Anouncement with script -->
