@@ -28,7 +28,7 @@ router.post(
       throw Error("Kategorie s tímto ID neexistuje");
     }
     //create new Section and add it to Category
-    let { name, isPremium, desc, jsonData } = req.body;
+    let { name, isPremium, jsonData } = req.body;
     //isPremium logic
     let isPremiumBoolean = false;
     if (isPremium === "premium") {
@@ -41,7 +41,6 @@ router.post(
       cards: [],
       questions: [],
       isPremium: isPremiumBoolean,
-      shortDescription: desc,
       author: req.user._id,
     });
     const savedSection = await newSection.save();
@@ -172,9 +171,8 @@ router.put(
     if (!foundSection) {
       throw Error("Balíček s tímto ID neexistuje");
     }
-    let { name, desc } = req.body;
+    let { name } = req.body;
     foundSection.name = name;
-    foundSection.shortDescription = desc;
     await foundSection.save();
     req.flash("successOverlay", "Informace byly aktualizovány.");
     res

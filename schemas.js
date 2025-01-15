@@ -58,9 +58,6 @@ module.exports.userSchema = Joi.object({
 
 module.exports.sectionSchema = Joi.object({
   name: Joi.string().required().escapeHTML(),
-  isPremium: Joi.string().required().escapeHTML(),
-  desc: Joi.string().escapeHTML(),
-  jsonData: Joi.string().allow(""),
 });
 
 module.exports.questionSchema = Joi.object({

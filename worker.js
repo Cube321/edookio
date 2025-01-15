@@ -28,15 +28,8 @@ mongoose
 const openai = new OpenAI({ apiKey: process.env.CHATGPT_SECRET });
 
 async function processDocumentJob(job) {
-  const {
-    extractedText,
-    name,
-    desc,
-    categoryId,
-    user,
-    sectionSize,
-    cardsPerPage,
-  } = job.data;
+  const { extractedText, name, categoryId, user, sectionSize, cardsPerPage } =
+    job.data;
   console.log("Job data received. Text length:", extractedText.length);
 
   const foundCategory = await Category.findById(categoryId);
@@ -157,7 +150,6 @@ async function processDocumentJob(job) {
       sectionIndex++;
       section = new Section({
         name: `${name} ${sectionIndex}`,
-        shortDescription: desc,
         categoryId: categoryId,
         author: user._id,
         cards: [],

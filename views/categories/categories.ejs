@@ -46,8 +46,8 @@
                     <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.sections.length %></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.numOfCards %></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu"><%= cat.numOfQuestions %></div>
-                    <div class="col-2 d-flex justify-content-around">
-                        <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-category-edit<%= i %>"><i class="far fa-edit"></i></a>
+                    <div class="col-3 d-flex justify-content-center">
+                        <a href="#" class="btn btn-sm btn-outline-danger mx-2" data-bs-toggle="modal" data-bs-target="#modal-category-edit<%= i %>"><i class="far fa-edit"></i></a>
                         <% if (cat.sections.length === 0) { %>
                             <form action="/category/remove/<%= cat._id %>?_method=DELETE" method="POST">
                                 <button class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></button>

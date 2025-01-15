@@ -1,15 +1,10 @@
 const mongoose = require("mongoose");
-const { isAdmin } = require("../utils/middleware");
 const Schema = mongoose.Schema;
 
 const SectionSchema = new Schema({
   name: {
     type: String,
     required: true,
-  },
-  shortDescription: {
-    type: String,
-    default: "",
   },
   author: {
     type: Schema.Types.ObjectId,

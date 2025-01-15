@@ -20,7 +20,7 @@ router.post(
   isEditor,
   upload.single("document"),
   catchAsync(async (req, res) => {
-    const { name, desc } = req.body;
+    const { name } = req.body;
     const { file } = req;
     const { categoryId } = req.params;
     const { user } = req;
@@ -123,7 +123,6 @@ router.post(
     const job = await flashcardQueue.add({
       extractedText, // pass the extracted text directly
       name,
-      desc,
       categoryId,
       user,
       sectionSize,
