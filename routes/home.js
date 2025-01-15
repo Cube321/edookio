@@ -6,6 +6,7 @@ const User = require("../models/user");
 const Section = require("../models/section");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
+const icons = require("../utils/icons");
 const { isPremiumUser } = require("../utils/middleware");
 
 //SHOW HOMEPAGE + helper
@@ -15,7 +16,7 @@ router.get(
   catchAsync(async (req, res) => {
     const { user } = req;
 
-    //temporary logic to handle missing user
+    //no user - render index (landing page)
     if (!user) {
       const categories = [];
       let numOfCategories = 0;
@@ -33,7 +34,7 @@ router.get(
       });
     }
 
-    //original logic for logged in user
+    //user - render home page
     const categories = await Category.find({ author: req.user._id });
     let numOfCategories = categories.length;
     const numOfCards = await Card.count();
@@ -57,6 +58,7 @@ router.get(
       numOfSections,
       numOfCategories,
       percent,
+      icons,
     });
   })
 );

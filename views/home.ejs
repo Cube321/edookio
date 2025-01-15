@@ -167,6 +167,11 @@
 
       <div class="album pt-5 pb-3 mb-5">
         <div class="container">
+          <div class="col-md-10 offset-md-1">
+              <h1 class="mb-5 text-center">
+                Mé předměty
+              </h1>
+          </div>
           <div class="row" id="categories-row">
             <div class="offset-lg-2 col-lg-8">
               <% if(currentUser && !currentUser.isEmailVerified){ %>
@@ -265,6 +270,15 @@
                   </a>
                 </div>
                 <% }) %>
+                <div class="col-lg-3 col-md-4 col-6 mb-4">
+                    <div class="card">
+                      <div
+                        class="card-body cat-text d-flex flex-column justify-content-center align-items-center"
+                      >
+                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-category" style="border-radius: 50px;"><i class="fas fa-plus fa-2x"></i></button>
+                      </div>
+                    </div>
+                </div>
               </div>
             </div>
           </div>
@@ -291,6 +305,41 @@
     </div>
     <% } %> <%- include('./partials/footer') %> <%-
     include('./partials/cookiesBar')%>
+
+    <!-- Add category modal -->
+    <div class="modal fade" id="modal-category" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-3">Vytvořit nový předmět</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-3">
+                <form action="/category/new" method="POST">
+                    <div class="form-group mb-4">
+                        <label for="text">Název předmětu</label>
+                        <input class="form-control form-borders" id="text" name="text" rows="1" placeholder="" required></input>
+                    </div>
+                    <label for="text">Ikona předmětu</label>
+                    <div class="form-group mb-4 border-grey">
+                        <div class="row p-2 icon-select-container">
+                        <% icons.forEach(function(icon, index) { %>
+                            <div class="col-md-3 icon-container">
+                              <label>
+                                <input type="radio" name="icon" value="<%= icon %>">
+                                <img src="/img/<%= icon %>" alt="Icon <%= index + 1 %>" class="img-thumbnail">
+                              </label>
+                            </div>
+                          <% }); %>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger mt-4">Vytvořit předmět</button>
+                </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
     <!-- JS for Bootstrap -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"

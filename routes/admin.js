@@ -854,37 +854,6 @@ router.delete(
   })
 );
 
-//CATEGORIES ADMIN VIEW
-//list all categorie ADMIN + helper
-router.get(
-  "/admin/categories",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    //get all categories
-    let categories = await Category.find({ author: req.user._id });
-    //render view
-    res.render("admin/categories", { categories, icons });
-  })
-);
-
-//reset counters on section
-router.get(
-  "/admin/:sectionId/resetCounters",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    //reset counters on section
-    await Section.findByIdAndUpdate(req.params.sectionId, {
-      countStarted: 0,
-      countFinished: 0,
-    });
-    //redirect back
-    req.flash("successOverlay", "Statistiky sekce byly vynulovány.");
-    res.status(201).redirect("/admin/categories");
-  })
-);
-
 //ADMIN PERMISIONS LOGIC (grant and remove)
 //give admin permisions to a user
 router.post(

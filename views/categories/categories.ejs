@@ -18,7 +18,6 @@
         <div class="col-md-12">
             <!-- Header Row -->
             <div class="row font-weight-bold">
-                <div class="col-1 text-center"><p>Poř.</p></div>
                 <div class="col-1 text-center nezobrazovat-na-mobilu"><p>Ikona</p></div>
                 <div class="col-4"><p>Název předmětu</p></div>
                 <div class="col-1 text-center nezobrazovat-na-mobilu"><p>Balíčky</p></div>
@@ -38,7 +37,6 @@
             <!-- Dynamic Content Rows -->
             <% categories.forEach((cat, i) => { %>
                 <div class="row align-items-center mb-2 border-grey radius-10 bg-grey">
-                    <div class="col-1 text-center "><%= i + 1 %></div>
                     <div class="col-1 text-center nezobrazovat-na-mobilu">
                         <div class="img-thumbnail-list my-2">
                             <img src="/img/<%= cat.icon %>" class="img-fluid">
@@ -55,15 +53,8 @@
                                 <button class="btn btn-sm btn-outline-danger"><i class="far fa-trash-alt"></i></button>
                             </form>
                         <% } else { %>
-                            <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-category-delete"><i class="far fa-trash-alt"></i></a>
+                            <a href="#" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modal-category-delete<%= cat._id %>"><i class="far fa-trash-alt"></i></a>
                         <% } %>
-                        <form action="/category/move-up/<%= cat._id %>?_method=PUT" method="POST">
-                            <button class="move-up-btn btn btn-sm btn-outline-danger"><i class="fas fa-arrow-up"></i></button>
-                        </form>
-                        <form action="/category/move-down/<%= cat._id %>?_method=PUT" method="POST">
-                            <button class="move-down-btn btn btn-sm btn-outline-danger"><i class="fas fa-arrow-down"></i></button>
-                        </form>
-
                     </div>
                 </div>
             <% }) %>
@@ -147,16 +138,21 @@
 <% }) %>
 
 <!-- Delete category modal - not allowed info -->
-<div class="modal fade" id="modal-category-delete" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title mx-3">Předmět nelze odstranit</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<% categories.forEach((cat, i) => { %>
+    <div class="modal fade" id="modal-category-delete<%= cat._id %>" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mx-3">Předmět obsahuje balíčky</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mx-3 text-center">
+                <p class="">Opravdu chcete tento předmět odstranit? Předmět obsahuje balíčky, které budou také odstraněny.</p>
+                <form action="/category/remove/<%= cat._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger mt-3">Ano, odstranit předmět</button>
+                </form>
+            </div>
         </div>
-        <div class="modal-body mx-3">
-            <p class="text-muted">Předmět nelze odstranit, protože obsahuje balíčky.</p>
         </div>
     </div>
-    </div>
-</div>
+<% }) %>
