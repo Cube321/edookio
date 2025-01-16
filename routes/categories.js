@@ -50,7 +50,7 @@ router.get(
 
     //is the user the author of the category?
     let isAuthor = false;
-    if (req.user) {
+    if (req.user && category.author) {
       if (category.author.equals(req.user._id)) {
         isAuthor = true;
       }

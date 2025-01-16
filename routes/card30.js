@@ -159,7 +159,7 @@ router.get(
       totalCards: 20,
     });
     console.log("Cards result created");
-    res.render("cards/finishedRandom", { category: req.params.category });
+    res.render("cards/finishedRandom", { categoryId });
   })
 );
 
