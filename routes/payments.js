@@ -9,10 +9,7 @@ const mail = require("../mail/mail_inlege");
 
 let productToPriceMap = {
   YEARLY: process.env.PRODUCT_YEARLY,
-  HALFYEAR: process.env.PRODUCT_HALFYEAR,
   MONTHLY: process.env.PRODUCT_MONTHLY,
-  DAILY: process.env.PRODUCT_DAILY,
-  MONTHLY_229: process.env.PRODUCT_MONTHLY_229,
 };
 
 //Stripe checkout
@@ -24,25 +21,13 @@ router.post(
     if (req.body.product === "monthly") {
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
-        productToPriceMap.MONTHLY_229
-      );
-    }
-    if (req.body.product === "halfyear") {
-      session = await Stripe.createCheckoutSession(
-        req.user.billingId,
-        productToPriceMap.HALFYEAR
+        productToPriceMap.MONTHLY
       );
     }
     if (req.body.product === "yearly") {
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
         productToPriceMap.YEARLY
-      );
-    }
-    if (req.body.product === "daily") {
-      session = await Stripe.createCheckoutSession(
-        req.user.billingId,
-        productToPriceMap.DAILY
       );
     }
     res.status(200).send({ sessionId: session.id });
@@ -133,11 +118,7 @@ router.post(
           user.isPremium = true;
         }
 
-        if (
-          !data.canceled_at &&
-          (data.plan.id == process.env.PRODUCT_MONTHLY ||
-            data.plan.id == process.env.PRODUCT_MONTHLY_229)
-        ) {
+        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_MONTHLY) {
           user.plan = "monthly";
           user.endDate = moment(today).add("1", "month").format();
           //format endDate
@@ -166,68 +147,6 @@ router.post(
           user.subscriptionSource = "stripe";
           user.isPremium = true;
           //if on yearly and changes to monhtly, will loose the prepaid period
-        }
-
-        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_HALFYEAR) {
-          user.plan = "halfyear";
-          user.endDate = moment(today).add("6", "month").format();
-          //format endDate
-          const endDate = moment(user.endDate).locale("cs").format("LL");
-          //info emails
-          if (user.isPremium) {
-            try {
-              await mail.adminInfoSubscriptionUpdated(user, endDate);
-            } catch (err) {
-              console.log(
-                "Failed sending e-mail adminInfoSubscriptionUpdated: ",
-                err
-              );
-            }
-            //update date on user
-            user.premiumDateOfUpdate = moment();
-          } else {
-            try {
-              await mail.subscriptionCreated(user.email);
-              await mail.adminInfoNewSubscription(user);
-            } catch (err) {
-              console.log("Failed sending e-mail subscriptionCreated: ", err);
-            }
-            user.premiumDateOfActivation = moment();
-          }
-          user.subscriptionSource = "stripe";
-          user.isPremium = true;
-          //if on halfyear changes to monhtly, will loose the prepaid period
-        }
-
-        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_DAILY) {
-          user.plan = "daily";
-          //user = createOpenInvoice(user, data, "daily");
-          user.endDate = moment(today).add("1", "day").format();
-          //format endDate
-          const endDate = moment(user.endDate).locale("cs").format("LL");
-          //info emails
-          if (user.isPremium) {
-            try {
-              await mail.adminInfoSubscriptionUpdated(user, endDate);
-            } catch (err) {
-              console.log(
-                "Failed sending e-mail adminInfoSubscriptionUpdated: ",
-                err
-              );
-            }
-            //update date on user
-            user.premiumDateOfUpdate = moment();
-          } else {
-            try {
-              await mail.subscriptionCreated(user.email);
-              await mail.adminInfoNewSubscription(user);
-            } catch (err) {
-              console.log("Failed sending e-mail subscriptionCreated: ", err);
-            }
-            user.premiumDateOfActivation = moment();
-          }
-          user.subscriptionSource = "stripe";
-          user.isPremium = true;
         }
 
         //cancelation
@@ -264,15 +183,9 @@ router.post(
 
         let plan = "none";
 
-        if (
-          originalPrice === 229 ||
-          originalPrice === 199 ||
-          originalPrice === 99
-        ) {
+        if (originalPrice === 229) {
           plan = "monthly";
-        } else if (originalPrice === 445 || originalPrice === 890) {
-          plan = "halfyear";
-        } else if (originalPrice === 745 || originalPrice === 1490) {
+        } else if (originalPrice === 1490) {
           plan = "yearly";
         }
 
@@ -285,8 +198,6 @@ router.post(
         //count monthly subscription price
         if (plan === "monthly") {
           updatedUser.monthlySubscriptionPrice = amountPaid;
-        } else if (plan === "halfyear") {
-          updatedUser.monthlySubscriptionPrice = amountPaid / 6;
         } else if (plan === "yearly") {
           updatedUser.monthlySubscriptionPrice = amountPaid / 12;
         }
