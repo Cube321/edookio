@@ -27,8 +27,8 @@ const createCheckoutSession = async (customer, price) => {
       },
     ],
 
-    success_url: `https://www.edookio.com/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `https://www.edookio.com/payment/failed`,
+    success_url: `${process.env.DOMAIN}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.DOMAIN}/payment/failed`,
   });
 
   return session;
@@ -46,7 +46,7 @@ const createWebhook = (rawBody, sig) => {
 const createBillingSession = async (customer) => {
   const session = await Stripe.billingPortal.sessions.create({
     customer,
-    return_url: "https://www.edookio.com",
+    return_url: `${process.env.DOMAIN}`,
   });
   return session;
 };
