@@ -105,6 +105,10 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
     user.generatedQuestionsCounterMonth = 0;
     user.usedCreditsMonth = 0;
 
+    if (!user.isPremium) {
+      user.credits = 100;
+    }
+
     //reset monthly counters
     if (user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0) {
       if (
@@ -158,6 +162,34 @@ cronHelpers.sendInfoEmail = catchAsync(async () => {
 
   // 6) Send a summary to the admin (optional)
   mail.sendCronReport("sendInfoEmail", counter);
+});
+
+//cronHelper to add credits to users have active premium and it has been a month or more since the last recharge
+cronHelpers.addCreditsToPremiumUsers = catchAsync(async () => {
+  console.log("RUNNING CRON: addCreditsToPremiumUsers");
+  let premiumUsers = await User.find({ isPremium: true });
+  let counter = 0;
+  for (const user of premiumUsers) {
+    const today = Date.now();
+    const { creditsLastRecharge } = user;
+    if (
+      moment(today).format() >
+        moment(creditsLastRecharge).add(1, "month").format() &&
+      !user.hasUnsubscribed &&
+      user.credits < user.creditsMonthlyLimit
+    ) {
+      user.credits = user.creditsMonthlyLimit;
+      user.creditsLastRecharge = today;
+      user.save();
+      try {
+        await mail.creditsRecharged(user.email);
+      } catch (err) {
+        console.log("Failed sending e-mail creditsRecharged: ", err);
+      }
+      counter++;
+    }
+  }
+  mail.sendCronReport("addCreditsToPremiumUsers", counter);
 });
 
 let saveLeaderboard = catchAsync(async (users) => {

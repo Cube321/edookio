@@ -207,10 +207,24 @@ async function processDocumentJob(job) {
   foundUser.usedCreditsTotal += cardsCreated + questionsCreated;
   foundUser.lastJobCredits = cardsCreated + questionsCreated;
 
-  if (foundUser.credits < cardsCreated + questionsCreated) {
+  let creditsUsed = cardsCreated;
+  let creditsToReduce = creditsUsed;
+
+  if (foundUser.extraCredits > 0 && foundUser.extraCredits >= creditsUsed) {
+    foundUser.extraCredits -= creditsUsed;
+    creditsToReduce = 0;
+  } else if (
+    foundUser.extraCredits > 0 &&
+    foundUser.extraCredits < creditsUsed
+  ) {
+    creditsToReduce = creditsUsed - foundUser.extraCredits;
+    foundUser.extraCredits = 0;
+  }
+
+  if (foundUser.credits < creditsToReduce) {
     foundUser.credits = 0;
   } else {
-    foundUser.credits -= cardsCreated + questionsCreated;
+    foundUser.credits -= creditsToReduce;
   }
 
   try {

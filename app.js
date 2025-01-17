@@ -56,6 +56,12 @@ cron.schedule(
   cronHelpers.cronExpressionDaily9PM,
   cronHelpers.streakReminderEmail
 );
+//add credits to premium users daily at 1AM
+cron.schedule(
+  cronHelpers.cronExpressionDaily3AM,
+  cronHelpers.addCreditsToPremiumUsers
+);
+
 //send infoEmail to users registered 3 days ago
 cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);
 //notify users about daily activity

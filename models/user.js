@@ -128,9 +128,21 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
+  creditsLastRecharge: {
+    type: Date,
+    default: null,
+  },
+  creditsMonthlyLimit: {
+    type: Number,
+    default: 100,
+  },
   credits: {
     type: Number,
-    default: 0,
+    default: 100,
+  },
+  extraCredits: {
+    type: Number,
+    default: 1000,
   },
   usedCreditsMonth: {
     type: Number,

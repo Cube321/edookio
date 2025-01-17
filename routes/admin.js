@@ -959,8 +959,11 @@ router.get(
 router.get("/admin/:userId/addCredits", async (req, res) => {
   let { userId } = req.params;
   let { amount } = req.query;
-  await User.findByIdAndUpdate(userId, { $inc: { credits: amount } });
-  req.flash("successOverlay", `Uživateli bylo přidáno ${amount} kreditů.`);
+  await User.findByIdAndUpdate(userId, { $inc: { extraCredits: amount } });
+  req.flash(
+    "successOverlay",
+    `Uživateli bylo přidáno ${amount} extra kreditů.`
+  );
   res.redirect(`/admin/${userId}/showDetail`);
 });
 

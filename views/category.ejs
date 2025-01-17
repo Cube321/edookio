@@ -466,7 +466,7 @@
             Nahrajte soubor ve formátu .docx, .pdf nebo .pptx.
           </p>
           <p class="text-muted text-smaller mb-3">
-            Zbývá vám ještě <b><%= currentUser.credits %></b> kreditů.
+            Máte k dispozici <b><%= currentUser.credits + currentUser.extraCredits %></b> kreditů.
           </p>
         </div>
         <form

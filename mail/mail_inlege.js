@@ -1099,6 +1099,99 @@ mail.testQuestionsLimitReset = function (email, callback) {
   });
 };
 
+mail.creditsRecharged = function (email, callback) {
+  const msg = {
+    from: { email: "info@inlege.cz", name: "InLege" },
+    to: email,
+    subject: "Kredity byly doplněny (+1000)",
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px">
+                  <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0">
+                      <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%">
+                      <tbody>
+                          <tr>
+                          <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;padding:30px" valign="top">
+                              <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%">
+                              <tbody>
+                                  <tr>
+                                  <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top">
+                                      <div style="box-sizing:border-box">
+                                      <!-- Obsah emailu -->
+                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
+                                          Ahoj,
+                                      </p>
+                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
+                                          v rámci předplatného Premium jsme tvůj účet právě dobyli na 1 000 kreditů, které můžeš využít k tvorbě kartiček a otázek.
+                                      </p>
+                                      <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
+                                          Tým InLege<br>
+                                      </p>
+                                      </div>
+                                  </td>
+                                  </tr>
+                                  <tr>
+                                  <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top">
+                                      <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border-spacing:0;width:100%;border-collapse:separate!important" width="100%">
+                                      <tbody>
+                                          <tr>
+                                          <td align="center" style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;padding-bottom:15px" valign="top">
+                                              <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border-spacing:0;width:auto;border-collapse:separate!important">
+                                              <tbody>
+                                                  <tr>
+                                                  <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center">
+                                                      <div style="box-sizing:border-box">
+                                                      <div>
+                                                          <a href="https://www.inlege.cz/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
+                                                          Pustit se do studia
+                                                          </a>
+                                                      </div>
+                                                      </div>
+                                                  </td>
+                                                  </tr>
+                                              </tbody>
+                                              </table>
+                                          </td>
+                                          </tr>
+                                      </tbody>
+                                      </table>
+                                  </td>
+                                  </tr>
+                              </tbody>
+                              </table>
+                          </td>
+                          </tr>
+                      </tbody>
+                      </table>
+                  </div>
+                  <div style="box-sizing:border-box;clear:both;width:100%">
+                      <table style="box-sizing:border-box;width:100%;border-spacing:0;font-size:12px;border-collapse:separate!important" width="100%">
+                      <tbody>
+                          <tr style="font-size:12px">
+                          <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;vertical-align:top;font-size:12px;text-align:center;padding:20px 0" valign="top" align="center">
+                              <a href="https://www.inlege.cz" style="box-sizing:border-box;" target="_blank"></a>
+                              <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">
+                              Provozovatel InLege: Chilero s.r.o., IČ: 089 00 230 se sídlem Kaštanová 3, 779 00 Olomouc, zapsaná v obchodním rejstříku vedeném Krajským soudem v Ostravě, sp. zn. C 81220
+                              </p>
+                              <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">
+                              <a href="https://www.instagram.com/inlege" style="box-sizing:border-box;color:#E80F88;font-weight:400;text-decoration:none;font-size:12px;padding:0 5px" target="_blank">Instagram</a>
+                              </p>
+                                                      <p style="font-size:10px; text-align: center;color:#484848;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.inlege.cz/admin/email/unsubscribe?email=${email}">zde</a>.</p>
+  
+                          </td>
+                          </tr>
+                      </tbody>
+                      </table>
+                  </div>
+                  </div>
+                  `,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
 //send feedback
 mail.sendFeedback = function (email, name, text, callback) {
   const msg = {

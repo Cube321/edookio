@@ -90,6 +90,9 @@ router.post(
         //handle subscription
         if (!data.canceled_at && data.plan.id == process.env.PRODUCT_YEARLY) {
           user.plan = "yearly";
+          user.creditsMonthlyLimit = 1000;
+          user.credits = 1000;
+          user.creditsLastRecharge = today;
           user.endDate = moment(today).add("1", "year").format();
           //format endDate
           const endDate = moment(user.endDate).locale("cs").format("LL");
@@ -120,6 +123,9 @@ router.post(
 
         if (!data.canceled_at && data.plan.id == process.env.PRODUCT_MONTHLY) {
           user.plan = "monthly";
+          user.creditsMonthlyLimit = 1000;
+          user.credits = 1000;
+          user.creditsLastRecharge = today;
           user.endDate = moment(today).add("1", "month").format();
           //format endDate
           const endDate = moment(user.endDate).locale("cs").format("LL");
@@ -146,13 +152,13 @@ router.post(
           }
           user.subscriptionSource = "stripe";
           user.isPremium = true;
-          //if on yearly and changes to monhtly, will loose the prepaid period
         }
 
         //cancelation
         if (data.canceled_at) {
           // cancelled
           user.premiumDateOfCancelation = moment();
+          user.creditsMonthlyLimit = 100;
           user.plan = "none";
           const endDate = moment(user.endDate).locale("cs").format("LL");
           try {
