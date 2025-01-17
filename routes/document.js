@@ -111,7 +111,7 @@ router.post(
     let expectedCredits =
       Math.floor(extractedText.length / 2000) * cardsPerPage * 2; // 2 credits per card (change for Edookio to 1)
     console.log("Expected credits:", expectedCredits);
-    if (!user.admin && expectedCredits > user.credits) {
+    if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
       return res.json({
         creditsRequired: expectedCredits,
         creditsLeft: user.credits,
@@ -137,7 +137,9 @@ router.post(
 
 router.get("/job/:id/progress", isLoggedIn, async (req, res) => {
   const jobId = req.params.id;
-  const { lastJobCredits, credits } = req.user;
+  const { lastJobCredits, credits, extraCredits } = req.user;
+
+  let totalCredits = credits + extraCredits;
 
   try {
     const job = await flashcardQueue.getJob(jobId);
@@ -152,7 +154,7 @@ router.get("/job/:id/progress", isLoggedIn, async (req, res) => {
       progress,
       state,
       lastJobCredits,
-      credits,
+      credits: totalCredits,
     });
   } catch (error) {
     console.error("Error fetching job progress:", error);
