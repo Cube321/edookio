@@ -1,103 +1,57 @@
-$(document).ready(function() {
-  const PUBLISHABLE_KEY_DEV = 'pk_test_51M7LRDAaRhuCsgZoSmUjyXiHbiKnXBc3g4YgwigzTCTfFpUMAB6NizhS3tL8WzxE9ICPRJl5Rzz6KiCJaxCVczwc00ZEs1F1zJ'
+$(document).ready(function () {
+  const PUBLISHABLE_KEY_DEV =
+    "pk_test_51QdH1cGDjqk7CLaPRsUMwncOPMKXlWp1ymO2sacIU1AyQJQWXA9haJkDa05tpBq1YnPbEaeOUgSNMy5Yt2BBmrkv00Uf6Suluo";
 
-    const stripe = Stripe(
-      PUBLISHABLE_KEY_DEV)
+  const stripe = Stripe(PUBLISHABLE_KEY_DEV);
 
-	//Stripe payment
-  //TEST DAILY
-  
-  const checkoutButtonDaily = $('#checkout-button-daily')
-  
-  checkoutButtonDaily.click(function (e) {
+  //Stripe payment
+  //Monthly Subscription
+  const checkoutButtonMonthly = $("#checkout-button-monthly");
+
+  checkoutButtonMonthly.click(function (e) {
     e.preventDefault();
     $(this).addClass("disabled");
     $(this).empty();
-    $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-    
-    const product = "daily";
+    $(this).append(
+      "<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>"
+    );
+    const product = "monthly";
 
-    fetch('/payment/checkout', {
-      method: 'POST',
+    fetch("/payment/checkout", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        product
-      })
+        product,
+      }),
     })
       .then((result) => result.json())
-      .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
-  })
-  
-  
+      .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }));
+  });
 
-  //Monthly Subscription
-	const checkoutButtonMonthly = $('#checkout-button-monthly')
-  
-    checkoutButtonMonthly.click(function (e) {
-      e.preventDefault();
-      $(this).addClass("disabled");
-      $(this).empty();
-      $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-      const product = "monthly";
-  
-      fetch('/payment/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product
-        })
-      })
-        .then((result) => result.json())
-        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
+  //Yearly Subscription
+  const checkoutButtonYearly = $("#checkout-button-yearly");
+
+  checkoutButtonYearly.click(function (e) {
+    e.preventDefault();
+    $(this).addClass("disabled");
+    $(this).empty();
+    $(this).append(
+      "<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>"
+    );
+    const product = "yearly";
+
+    fetch("/payment/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        product,
+      }),
     })
-
-    //Halfyear Subscription
-    const checkoutButtonHalfyear = $('#checkout-button-halfyear')
-    
-    checkoutButtonHalfyear.click(function (e) {
-      e.preventDefault();
-      $(this).addClass("disabled");
-      $(this).empty();
-      $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-      const product = "halfyear";
-
-      fetch('/payment/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product
-        })
-      })
-        .then((result) => result.json())
-        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
-    })
-
-    //Yearly Subscription
-    const checkoutButtonYearly = $('#checkout-button-yearly')
-  
-    checkoutButtonYearly.click(function (e) {
-      e.preventDefault();
-      $(this).addClass("disabled");
-      $(this).empty();
-      $(this).append("<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>");
-      const product = "yearly";
-  
-      fetch('/payment/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product
-        })
-      })
-        .then((result) => result.json())
-        .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }))
-    })
+      .then((result) => result.json())
+      .then(({ sessionId }) => stripe.redirectToCheckout({ sessionId }));
+  });
 });
