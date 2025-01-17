@@ -20,16 +20,20 @@
     </div>  
     <div class="col-sm-5 d-flex flex-column justify-content-center align-items-center">
       <h4 class="mb-2">Otázky</h4>
+      
       <div>
-          <% if (section.questions && !containesCardWithoutQuestion) { %>  
-              <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#questionsExistModal">Vygenerovat otázky z kartiček</a>
-          <% } else if (section.cards && section.cards.length === 0){ %>
-              <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#noCardsModal">Vygenerovat otázky z kartiček</a>
-          <% } else { %>
-              <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/generate" class="btn btn-sm btn-outline-danger" style='min-width:124px' id="generate-ai">Vygenerovat otázky z kartiček</a>
-          <% } %>
+          <!--
+            <% if (section.questions && !containesCardWithoutQuestion) { %>  
+                <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#questionsExistModal">Vygenerovat otázky z kartiček</a>
+            <% } else if (section.cards && section.cards.length === 0){ %>
+                <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#noCardsModal">Vygenerovat otázky z kartiček</a>
+            <% } else { %>
+                <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/generate" class="btn btn-sm btn-outline-danger" style='min-width:124px' id="generate-ai">Vygenerovat otázky z kartiček</a>
+            <% } %>
+          -->
           <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-outline-danger">Přidat otázku</a>
       </div>
+      
     </div>
   </div>
 

@@ -109,7 +109,7 @@ router.post(
     }
 
     let expectedCredits =
-      Math.floor(extractedText.length / 2000) * cardsPerPage * 2; // 2 credits per card (change for Edookio to 1)
+      Math.floor(extractedText.length / 2000) * cardsPerPage;
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
       return res.json({

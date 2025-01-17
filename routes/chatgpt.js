@@ -10,6 +10,10 @@ const question = require("../models/question");
 
 const openai = new OpenAI({ apiKey: process.env.CHATGPT_SECRET });
 
+// **********************************
+// NOT UPDATED FROM INLEGE FOR EDOOKIO
+// **********************************
+
 //generate test questions via OpenAI
 router.get(
   "/category/:categoryId/section/:sectionId/question/generate",

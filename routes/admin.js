@@ -922,7 +922,13 @@ router.post(
 router.post(
   "/legal/contactForm",
   catchAsync(async (req, res) => {
-    const { email, name, text } = req.body;
+    const { email, name, text, school } = req.body;
+
+    if (school) {
+      req.flash("error", "Detekován bot. Zpráva byla odmítnuta.");
+      return res.redirect("back");
+    }
+
     mail.sendMessageFromContactForm(email, name, text);
     req.flash("successOverlay", "Zpráva byla odeslána.");
     res.status(201).redirect(`/legal/contact`);
