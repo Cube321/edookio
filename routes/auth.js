@@ -114,10 +114,15 @@ router.post(
       lastname,
       faculty,
       source,
+      school,
     } = req.body;
     //check password
     if (password !== password_confirmation) {
       req.flash("error", "Obě zadaná hesla se musí shodovat.");
+      return res.redirect("back");
+    }
+    if (school) {
+      req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
       return res.redirect("back");
     }
     try {

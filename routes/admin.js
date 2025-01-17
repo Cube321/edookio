@@ -904,7 +904,13 @@ router.get(
 router.post(
   "/legal/feedback",
   catchAsync(async (req, res) => {
-    const { email, name, text } = req.body;
+    const { email, name, text, school } = req.body;
+
+    if (school) {
+      req.flash("error", "Detekován bot. Zpráva byla odmítnuta.");
+      return res.redirect("back");
+    }
+
     mail.sendFeedback(email, name, text);
     req.flash("successOverlay", "Feedback byl odeslán. Díky!");
     res.status(201).redirect(`/legal/feedback`);

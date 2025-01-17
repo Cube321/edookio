@@ -54,6 +54,7 @@ module.exports.userSchema = Joi.object({
   billingId: Joi.string(),
   faculty: Joi.string().escapeHTML(),
   source: Joi.string().escapeHTML(),
+  school: Joi.string().allow("").escapeHTML(),
 });
 
 module.exports.sectionSchema = Joi.object({

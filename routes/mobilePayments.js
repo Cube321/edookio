@@ -55,6 +55,9 @@ router.post(
       case "INITIAL_PURCHASE":
         user.isPremium = true;
         user.plan = plan;
+        user.creditsMonthlyLimit = 1000;
+        user.credits = 1000;
+        user.creditsLastRecharge = new Date();
         user.premiumDateOfActivation = new Date();
         user.endDate = expiration_at_ms
           ? new Date(Number(expiration_at_ms))
@@ -80,6 +83,9 @@ router.post(
         user.premiumDateOfUpdate = new Date();
         user.endDate = moment(user.endDate).add(1, "months");
         user.subscriptionSource = "revenuecat";
+        user.creditsMonthlyLimit = 1000;
+        user.credits = 1000;
+        user.creditsLastRecharge = new Date();
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
         createOpenInvoice(user, user.plan);
@@ -101,6 +107,7 @@ router.post(
         user.plan = "none";
         const endDate = moment(user.endDate).locale("cs").format("LL");
         user.premiumDateOfCancelation = new Date();
+        user.creditsMonthlyLimit = 100;
         user.subscriptionPrice = 0;
         user.monthlySubscriptionPrice = 0;
         try {
@@ -122,6 +129,8 @@ router.post(
       case "UNCANCELLATION":
         user.plan = plan;
         user.subscriptionSource = "revenuecat";
+        user.creditsMonthlyLimit = 1000;
+        user.creditsLastRecharge = new Date();
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
         user.premiumDateOfCancelation = undefined;

@@ -461,6 +461,10 @@ form .form-borders.border-darkgrey {
   width: 100%;
 }
 
+.bg-grey {
+  background-color: #f6f5f5;
+}
+
 form .form-control,
 .form-select {
   border: none;
