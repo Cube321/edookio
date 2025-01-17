@@ -1,6 +1,6 @@
 $(document).ready(function () {
   const PUBLISHABLE_KEY =
-    "pk_test_51QdH1cGDjqk7CLaPRsUMwncOPMKXlWp1ymO2sacIU1AyQJQWXA9haJkDa05tpBq1YnPbEaeOUgSNMy5Yt2BBmrkv00Uf6Suluo";
+    "pk_live_51QdH1cGDjqk7CLaPEtcN4Gu9FCm693bAoGQP6ozyNlZVOlDNVgQBtSMKiivenzOTkYByHAE3Nh91d5c4GyYjfpsZ00vDD5yrHF";
 
   const stripe = Stripe(PUBLISHABLE_KEY);
 
