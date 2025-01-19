@@ -220,7 +220,7 @@ function getMonthlyRevenueBrutto(users) {
       }
     }
   });
-  return revenue;
+  return Math.floor(revenue);
 }
 
 //function to get monthly revenue (netto)
@@ -243,7 +243,7 @@ function getMonthlyRevenueNetto(users) {
       }
     }
   });
-  return revenue;
+  return Math.floor(revenue);
 }
 
 //function to get number of users active today and lastActive is not undefined

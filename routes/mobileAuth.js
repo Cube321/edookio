@@ -10,9 +10,7 @@ const moment = require("moment");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const jwt_decode = require("jwt-decode");
-const fs = require("fs");
-const axios = require("axios");
+const seedContent = require("../utils/seed");
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -68,6 +66,11 @@ router.post(
       newUser.passwordJWT = hash;
 
       const createdUser = await User.register(newUser, password);
+
+      //seed content
+      let createdCategoryId = await seedContent(createdUser._id);
+      createdUser.createdCategories.push(createdCategoryId);
+      await createdUser.save();
 
       //send info e-mails
       mail.welcome(createdUser.email);
@@ -360,6 +363,10 @@ router.post(
           endDate: null,
           isGdprApproved: true,
         });
+        //seed content
+        let createdCategoryId = await seedContent(user._id);
+        user.createdCategories.push(createdCategoryId);
+
         await user.save();
         mail.welcome(user.email);
         mail.adminInfoNewUser(user);

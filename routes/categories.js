@@ -20,6 +20,25 @@ router.get(
     await user.populate("createdCategories sharedCategories");
     let categories = user.createdCategories;
     let sharedCategories = user.sharedCategories;
+
+    //order categories by name alphabetically
+    categories.sort((a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    //order shared categories by name alphabetically
+    user.sharedCategories.sort((a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
     //render view
     res.render("categories/categories", {
       categories,
@@ -198,6 +217,11 @@ router.post(
     }
     let { text, icon } = req.body;
     let user = req.user;
+
+    if (!icon) {
+      icon = "icon_knowledge.png";
+    }
+
     const newCategory = new Category({
       sections: [],
       text,

@@ -8,6 +8,7 @@ const CardsResult = require("../models/cardsResult");
 const passport = require("passport");
 const { isLoggedIn } = require("../utils/middleware");
 const { validateUser } = require("../utils/middleware");
+const seedContent = require("../utils/seed");
 const uuid = require("uuid");
 const mail = require("../mail/mail_inlege");
 const Stripe = require("../utils/stripe");
@@ -167,7 +168,12 @@ router.post(
       mail.welcome(newUser.email);
       mail.emailVerification(newUser.email, newUser._id);
       mail.adminInfoNewUser(newUser);
-      //
+
+      //seed content
+      let createdCategoryId = await seedContent(newUser._id);
+      newUser.createdCategories.push(createdCategoryId);
+      await newUser.save();
+
       if (req.session.demoCardsSeen && req.session.demoCardsSeen > 5) {
         incrementEventCount("registeredAfterDemoLimit");
       }

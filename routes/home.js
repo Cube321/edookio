@@ -54,6 +54,25 @@ router.get(
         percent = 100;
       }
     }
+
+    //order categories by name alphabetically
+    categories.sort((a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    //order shared categories by name alphabetically
+    user.sharedCategories.sort((a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
     res.status(200).render("home", {
       categories,
       sharedCategories: user.sharedCategories,

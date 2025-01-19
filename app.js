@@ -26,6 +26,7 @@ const texts = require(`./utils/texts.${process.env.PROJECT}.js`);
 const cron = require("node-cron");
 const cronHelpers = require(`./utils/cron`);
 const mail = require("./mail/mail_inlege");
+const seedContent = require("./utils/seed");
 
 const Stripe = require("./utils/stripe");
 const uuid = require("uuid");
@@ -263,6 +264,9 @@ passport.use(
             endDate: null,
             isGdprApproved: true,
           });
+          //seed content
+          let createdCategoryId = await seedContent(user._id);
+          newUser.createdCategories.push(createdCategoryId);
           await user.save();
           mail.welcome(user.email);
           mail.adminInfoNewUser(user);
