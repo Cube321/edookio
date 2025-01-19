@@ -131,7 +131,7 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
 
 cronHelpers.saveDailyStats = catchAsync(async () => {
   console.log("RUNNING CRON: saveDailyStats");
-  let simplifiedUsers = await User.find({}, "faculty source");
+  let simplifiedUsers = await User.find({}, "source");
   countDailyStats(simplifiedUsers);
   mail.sendCronReport("saveDailyStats", "success");
 });
@@ -222,7 +222,7 @@ let saveLeaderboard = catchAsync(async (users) => {
   let updatedDate = moment(date).subtract(1, "days");
   var key = moment(updatedDate).format("MM/YYYY");
   let lastMonthData = { key: key, data: simplifiedTopUsers };
-  //save faculties to DB
+
   console.log("About to save last month to DB");
   await Stats.findOneAndUpdate(
     { eventName: "leaderboardSavedStats" },
@@ -234,19 +234,10 @@ let saveLeaderboard = catchAsync(async (users) => {
 });
 
 async function countDailyStats(users) {
-  let facultyCounts = {};
   let sourceCounts = {};
 
   users.forEach((user) => {
-    const faculty = user.faculty;
     const source = user.source;
-
-    // Count faculties
-    if (facultyCounts[faculty]) {
-      facultyCounts[faculty] += 1;
-    } else {
-      facultyCounts[faculty] = 1;
-    }
 
     // Count sources
     if (sourceCounts[source]) {
@@ -255,11 +246,6 @@ async function countDailyStats(users) {
       sourceCounts[source] = 1;
     }
   });
-  await Stats.findOneAndUpdate(
-    { eventName: "saveDailyStatsFaculties" },
-    { $push: { payload: facultyCounts } },
-    { upsert: true, new: true }
-  );
   await Stats.findOneAndUpdate(
     { eventName: "saveDailyStatsSource" },
     { $push: { payload: sourceCounts } },

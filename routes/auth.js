@@ -451,25 +451,7 @@ router.get(
   })
 );
 
-//CHANGE FACULTY
-//route to change faculty from profile page
-router.post(
-  "/auth/user/changeFaculty",
-  isLoggedIn,
-  catchAsync(async (req, res) => {
-    let foundUser = await User.findById(req.user._id);
-    if (!foundUser) {
-      req.flash("error", "Uživatel s tímto ID nebyl nenalezen.");
-      return res.redirect("/auth/user/profile");
-    }
-    foundUser.faculty = req.body.faculty;
-    await foundUser.save();
-    res.status(200).redirect("/auth/user/profile");
-  })
-);
-
 //CHANGE NICKNAME (LEADERBOARD)
-//route to change faculty from profile page
 router.post(
   "/auth/user/changeNickname",
   isLoggedIn,

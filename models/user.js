@@ -24,10 +24,6 @@ const UserSchema = new Schema({
     type: String,
     default: undefined,
   },
-  faculty: {
-    type: String,
-    default: "Neuvedeno",
-  },
   createdCategories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   sharedCategories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
   source: {

@@ -56,11 +56,10 @@ router.get(
 
     let updatedUsers = [];
 
-    //count all users and premium users and count faculties
+    //count all users and premium users
     let premiumUsersCount = 0;
     let activePremiumSubscriptions = 0;
     let PUCMonth = 0;
-    let PUCHalfyear = 0;
     let PUCYear = 0;
     let registeredUsersCount = 0;
     let usersActiveInLastWeek = 0;
@@ -74,36 +73,6 @@ router.get(
     let monthQuestionsSeen = 0;
     let reachedQuestionsLimit = 0;
     let hasUnsubscribedFromStreak = 0;
-    let faculties = {
-      prfUp: 0,
-      prfUk: 0,
-      prfMuni: 0,
-      prfZcu: 0,
-      prfJina: 0,
-      prfNestuduji: 0,
-      prfUchazec: 0,
-      prfNeuvedeno: 0,
-    };
-    let activeSubscriptionsByFaculties = {
-      prfUp: 0,
-      prfUk: 0,
-      prfMuni: 0,
-      prfZcu: 0,
-      prfJina: 0,
-      prfNestuduji: 0,
-      prfUchazec: 0,
-      prfNeuvedeno: 0,
-    };
-    let activeLastWeekByFaculty = {
-      prfUp: 0,
-      prfUk: 0,
-      prfMuni: 0,
-      prfZcu: 0,
-      prfJina: 0,
-      prfNestuduji: 0,
-      prfUchazec: 0,
-      prfNeuvedeno: 0,
-    };
     let sources = {
       pratele: 0,
       ucitele: 0,
@@ -116,9 +85,6 @@ router.get(
 
     users.forEach((user) => {
       let newUser = user;
-      if (newUser.faculty === "-") {
-        newUser.faculty = "Neuvedeno";
-      }
       if (newUser.source === "-") {
         newUser.source = "neuvedeno";
       }
@@ -152,9 +118,6 @@ router.get(
         activePremiumSubscriptions++;
         if (user.plan === "monthly") {
           PUCMonth++;
-        }
-        if (user.plan === "halfyear") {
-          PUCHalfyear++;
         }
         if (user.plan === "yearly") {
           PUCYear++;
@@ -204,135 +167,7 @@ router.get(
       if (user.hasUnsubscribedFromStreak) {
         hasUnsubscribedFromStreak++;
       }
-      //count faculties
-      if (user.faculty === "PrF UP") {
-        faculties.prfUp++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfUp++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfUp++;
-        }
-      }
-      if (user.faculty === "PrF UK") {
-        faculties.prfUk++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfUk++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfUk++;
-        }
-      }
-      if (user.faculty === "PrF MUNI") {
-        faculties.prfMuni++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfMuni++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfMuni++;
-        }
-      }
-      if (user.faculty === "PrF ZČU") {
-        faculties.prfZcu++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfZcu++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfZcu++;
-        }
-      }
-      if (user.faculty === "Jiná") {
-        faculties.prfJina++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfJina++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfJina++;
-        }
-      }
-      if (user.faculty === "Uchazeč") {
-        faculties.prfUchazec++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfUchazec++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfUchazec++;
-        }
-      }
-      if (user.faculty === "Nestuduji") {
-        faculties.prfNestuduji++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfNestuduji++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfNestuduji++;
-        }
-      }
-      if (user.faculty === "Neuvedeno") {
-        faculties.prfNeuvedeno++;
-        if (
-          user.isPremium &&
-          user.plan !== "none" &&
-          !user.premiumGrantedByAdmin
-        ) {
-          activeSubscriptionsByFaculties.prfNeuvedeno++;
-        }
-        if (
-          user.lastActive &&
-          moment(user.lastActive).isAfter(moment().subtract(1, "week"))
-        ) {
-          activeLastWeekByFaculty.prfNeuvedeno++;
-        }
-      }
+
       //count sources
       if (user.source === "pratele") {
         sources.pratele++;
@@ -355,6 +190,7 @@ router.get(
       if (user.source === "neuvedeno") {
         sources.neuvedeno++;
       }
+
       //totalCardsCount
       totalCardsSeen = totalCardsSeen + user.cardsSeen;
       totalQuestionsSeen = totalQuestionsSeen + user.questionsSeenTotal;
@@ -370,7 +206,6 @@ router.get(
       premiumActivationsInLastWeek,
       premiumUpdatesInLastWeek,
       premiumDeactivationsInLastWeek,
-      faculties,
       cardsPremiumCount,
       cardsFreeCount,
       sectionsFreeCount,
@@ -391,10 +226,7 @@ router.get(
       sources,
       reachedQuestionsLimit,
       hasUnsubscribedFromStreak,
-      activeSubscriptionsByFaculties,
-      activeLastWeekByFaculty,
       PUCMonth,
-      PUCHalfyear,
       PUCYear,
     });
   })
@@ -755,13 +587,6 @@ router.post(
           !user.premiumGrantedByAdmin &&
           user.plan !== "none"
         ) {
-          mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
-        }
-      });
-    } else if (groupChoice === "radioUchazec") {
-      //send email to Uchazeči
-      allUsers.forEach((user) => {
-        if (user.hasUnsubscribed === false && user.faculty === "Uchazeč") {
           mail.sendEmailToSubscribedUsers(user.email, subjectAll, textAll);
         }
       });

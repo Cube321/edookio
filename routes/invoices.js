@@ -40,7 +40,7 @@ router.post(
     foundUser.hasOpenInvoice = false;
     foundUser.openInvoiceData = {};
     await foundUser.save();
-    //save faculties to DB
+
     await Settings.findOneAndUpdate(
       { settingName: "lastInvoiceNumber" },
       { settingValue: invoiceNum },

@@ -155,7 +155,7 @@ router.post(
         }
 
         //cancelation
-        if (data.canceled_at) {
+        if (data.canceled_at && user.plan !== "none") {
           // cancelled
           user.premiumDateOfCancelation = moment();
           user.creditsMonthlyLimit = 100;

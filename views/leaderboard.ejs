@@ -93,13 +93,6 @@
                                 <% if (order !== "day" && order !== "month") { %>
                                     <p class="points"><%= user.pointsTotal %></p>
                                 <% } %>
-                                <% if (user.faculty === "Neuvedeno" || user.faculty === "neuvedeno") { %>
-                                    <p class="faculty text-muted">-</p>
-                                <% } else if(user.faculty === "Nestuduji") { %>
-                                    <p class="faculty text-muted">Nestuduje</p>
-                                <% } else { %>
-                                    <p class="faculty text-muted"><%= user.faculty %></p>
-                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -121,14 +114,6 @@
                                 <% } %>
                                 <% if (order !== "day" && order !== "month") { %>
                                     <p class="points"><%= currentUser.cardsSeen + currentUser.questionsSeenTotal %></p>
-                                <% } %>
-                                
-                                <% if (currentUser.faculty === "Neuvedeno" || currentUser.faculty === "neuvedeno") { %>
-                                    <p class="faculty text-muted">-</p>
-                                <% } else if(currentUser.faculty === "Nestuduji") { %>
-                                    <p class="faculty text-muted">Nestuduje</p>
-                                <% } else { %>
-                                    <p class="faculty text-muted"><%= currentUser.faculty %></p>
                                 <% } %>
                             </div>
                         </div>
@@ -210,13 +195,6 @@
                                         <div class="d-flex align-items-center content" style="width:100%">
                                             <p class="nickname"><%= user.nickname %></p>
                                             <p class="points"><%= user.pointsMonth %></p>
-                                            <% if (user.faculty === "Neuvedeno" || user.faculty === "neuvedeno") { %>
-                                                <p class="faculty text-muted">-</p>
-                                            <% } else if(user.faculty === "Nestuduji") { %>
-                                                <p class="faculty text-muted">Nestuduje</p>
-                                            <% } else { %>
-                                                <p class="faculty text-muted"><%= user.faculty %></p>
-                                            <% } %>
                                         </div>
                                     </div>
                                 </div>

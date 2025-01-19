@@ -1,165 +1,165 @@
 /* PALETTE #E80F88 #AF0171 #790252 #4C0033 */
 main {
-    background: linear-gradient(to bottom, rgba(232, 15, 136, 1), rgba(175, 1, 113, 1));
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-bottom: 2rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(232, 15, 136, 1),
+    rgba(175, 1, 113, 1)
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 2rem;
 }
 
 #modal-share .modal-content {
-    background: linear-gradient(to bottom, rgba(232, 15, 136, 1), rgba(175, 1, 113, 1));
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding-bottom: 2rem;
-    width: 650px;
-    height: 800px;
-    padding-top: 100px;
+  background: linear-gradient(
+    to bottom,
+    rgba(232, 15, 136, 1),
+    rgba(175, 1, 113, 1)
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 2rem;
+  width: 650px;
+  height: 800px;
+  padding-top: 100px;
 }
 
 #modal-share {
-    zoom: 180%
+  zoom: 180%;
 }
 
 .headline {
-    color: white;
-    font-weight: 800;
+  color: white;
+  font-weight: 800;
 }
 
 .lead {
-    color: white;
+  color: white;
 }
 
 .lead-clash {
-    color: white;
-    font-size: 1.5rem;
+  color: white;
+  font-size: 1.5rem;
 }
 
 .period-links {
-    color: white;
-    margin: 2.5rem 0;
+  color: white;
+  margin: 2.5rem 0;
 }
 
 .period-links a {
-    color: white;
-    border: 1px solid white;
-    border-radius: 30px;
-    padding: 0 1rem;
-    margin: 0 0.5rem;
-    transition: 300ms;
+  color: white;
+  border: 1px solid white;
+  border-radius: 30px;
+  padding: 0 1rem;
+  margin: 0 0.5rem;
+  transition: 300ms;
 }
 
 .period-links a:hover {
-    background-color: white;
-    color:rgba(232, 15, 136, 1);
+  background-color: white;
+  color: rgba(232, 15, 136, 1);
 }
 
 .period-links .active {
-    background-color: white;
-    color:rgba(232, 15, 136, 1);
+  background-color: white;
+  color: rgba(232, 15, 136, 1);
 }
 
 .leaderboard-item {
-    background-color: #fff;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    max-width: 540px;
-    margin-left: 1rem;
-    margin-right: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  max-width: 540px;
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 .active-user {
-    background: yellow;
+  background: yellow;
 }
 
 .leaderboard-item .icon {
-    max-height: 50px;
-    width:auto;
-    margin: 0.5rem;
+  max-height: 50px;
+  width: auto;
+  margin: 0.5rem;
 }
 
 .leaderboard-item .ranking {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .leaderboard-item .content {
-    width: 100%;
-    margin: 0 1rem;
+  width: 100%;
+  margin: 0 1rem;
 }
 
 .leaderboard-item p {
-    text-align: center;
-    margin-bottom: 0;
+  text-align: center;
+  margin-bottom: 0;
 }
 
 .leaderboard-item .nickname {
-    text-align: left;
-    font-weight: 600;
-    font-size: larger;
-    width: 50%;
+  text-align: left;
+  font-weight: 600;
+  font-size: larger;
+  width: 50%;
 }
 
 .leaderboard-item .points {
-    width: 20%;
-}
-
-.leaderboard-item .faculty {
-    width: 30%;
+  width: 20%;
 }
 
 .set-nickname-cta a {
-    color: white;
-    border: 1px solid white;
-    border-radius: 30px;
-    padding: 0 1rem;
-    margin: 0 0.5rem;
-    transition: 300ms;
-    font-size: larger;
-    margin-top: 1rem;
-    padding-top: 0.2rem;
-    padding-bottom: 0.2rem;
+  color: white;
+  border: 1px solid white;
+  border-radius: 30px;
+  padding: 0 1rem;
+  margin: 0 0.5rem;
+  transition: 300ms;
+  font-size: larger;
+  margin-top: 1rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
 }
 
 .bottom-info {
-    color: white;
-    text-align: center;
-    margin-top: 2rem;
+  color: white;
+  text-align: center;
+  margin-top: 2rem;
 }
 
 .bottom-info .profile-link {
-    color: white;
-    border: 1px solid white;
-    border-radius: 30px;
-    padding: 0 0.5rem;
-    transition: 300ms;
+  color: white;
+  border: 1px solid white;
+  border-radius: 30px;
+  padding: 0 0.5rem;
+  transition: 300ms;
 }
 .text-larger {
-    font-size: larger;
+  font-size: larger;
 }
 
 .table-headline {
-    color: white;
-    padding-left: 2rem;
+  color: white;
+  padding-left: 2rem;
 }
 
 @media only screen and (max-width: 992px) {
-    .period-links {
-        zoom: 90%
-    }
-
-    .leaderboard-item {
-        width: 90%;
-    }
-
-    .leaderboard-item .nickname {
-        width: 80%;
-        font-size: medium;
-    }
-    
-    .leaderboard-item .points {
-        width: 20%;
-    }
-    
-    .leaderboard-item .faculty {
-        display: none;
-    }
+  .period-links {
+    zoom: 90%;
   }
+
+  .leaderboard-item {
+    width: 90%;
+  }
+
+  .leaderboard-item .nickname {
+    width: 80%;
+    font-size: medium;
+  }
+
+  .leaderboard-item .points {
+    width: 20%;
+  }
+}
