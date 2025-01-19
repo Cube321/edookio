@@ -18,8 +18,38 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     const categories = await Category.find({ author: req.user._id });
+    ///order categories by name alphabetically
+    categories.sort((a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
     res.status(200).json(categories);
   })
+);
+
+router.get(
+  "/mobileApi/getSharedCategories",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    await req.user.populate("sharedCategories");
+
+    let categories = req.user.sharedCategories;
+
+    //order categories by name alphabetically
+    categories.sort((a, b) => {
+      if (a.text.toLowerCase() < b.text.toLowerCase()) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    res.status(200).json(categories);
+  }
 );
 
 // GET SECTIONS FOR MOBILE (SHOW HOW MANY CARDS LEFT TO STUDY)
@@ -710,6 +740,31 @@ router.get(
         "Máte starší verzi aplikace. Doporučujeme aktualizovat na nejnovější verzi.",
     };
     res.status(200).json(response);
+  })
+);
+
+//add shared category to user
+router.post(
+  "/mobileApi/addSharedSubject",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    const { shareId } = req.body;
+
+    const category = await Category.findOne({ shareId });
+
+    if (!category) {
+      return res.status(404).json({ message: "Předmět nenalezen." });
+    }
+    if (req.user.createdCategories.includes(category._id)) {
+      return res.status(404).json({ message: "Tento předmět jsi vytvořil." });
+    }
+    if (req.user.sharedCategories.includes(category._id)) {
+      return res.status(404).json({ message: "Tento předmět již máš." });
+    }
+    req.user.sharedCategories.push(category._id);
+    await req.user.save();
+    console.log("Předmět byl přidán.");
+    res.status(200).json({ message: "Předmět byl přidán." });
   })
 );
 
