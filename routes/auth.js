@@ -105,22 +105,7 @@ router.post(
   "/auth/user/new",
   validateUser,
   catchAsync(async (req, res, next) => {
-    let {
-      email,
-      password,
-      password_confirmation,
-      key,
-      firstname,
-      lastname,
-      faculty,
-      source,
-      school,
-    } = req.body;
-    //check password
-    if (password !== password_confirmation) {
-      req.flash("error", "Obě zadaná hesla se musí shodovat.");
-      return res.redirect("back");
-    }
+    let { email, password, key, source, school } = req.body;
     if (school) {
       req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
       return res.redirect("back");
@@ -130,7 +115,6 @@ router.post(
       let admin = false;
       if (key === process.env.adminRegKey) {
         admin = true;
-        faculty = "neuvedeno";
       }
       //create cookies object
       let cookies = {
@@ -146,6 +130,10 @@ router.post(
         };
       }
 
+      //create nickname
+      let randomNumber = Math.floor(Math.random() * 9000) + 1000;
+      let nickname = `${email.substring(0, 5)}${randomNumber}`;
+
       //create hashed password for the JWT used with mobile app
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
@@ -158,17 +146,15 @@ router.post(
       const user = new User({
         email: email.toLowerCase(),
         username: email.toLowerCase(),
+        nickname,
         passwordJWT,
         admin,
         dateOfRegistration,
-        firstname,
-        lastname,
         passChangeId,
         billingId: customer.id,
         plan: "none",
         endDate: null,
         isGdprApproved: true,
-        faculty,
         source,
         cookies,
         isEmailVerified: false,

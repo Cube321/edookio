@@ -207,16 +207,12 @@ mail.adminInfoNewUser = function (newUser, callback) {
     html: `
           <h3>Registrace nového uživatele</h3>
           <p>Zaregistroval se nový uživatel:<p>
-          <p>Jméno: ${newUser.firstname}</p>
-          <p>Příjmení: ${newUser.lastname}</p>
           <p>Email: ${newUser.email}</p>
-          <p>Fakulta: ${newUser.faculty}</p>
           <p>Zdroj: ${newUser.source}</p>
           <p>Datum registrace: ${moment(newUser.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
           <p>Stripe ID: ${newUser.billingId}</p>
-          <p>Plán předplatného: ${newUser.plan}</p>
       `,
   };
   //send the mail
@@ -519,7 +515,7 @@ mail.adminInfoNewSubscription = function (
     subject: `(CZ) AKTIVACE | ${user.plan}: ${user.email}`,
     html: `
           <p>(${paymentSource} - ${store})<p>
-          <p>${user.firstname} ${user.lastname} | ${user.email}</p>
+          <p>${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
@@ -557,7 +553,7 @@ mail.adminInfoSubscriptionUpdated = function (
     subject: `(CZ) PRODLOUŽENÍ | ${user.plan}: ${user.email}`,
     html: `
           <p>(${paymentSource} - ${store})<p>
-          <p>${user.firstname} ${user.lastname} | ${user.email}</p>
+          <p>${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>
@@ -593,8 +589,6 @@ mail.adminInfoSubscriptionUncancelled = function (
           <p>(${paymentSource} - ${store})<p>
           <h3>Uživatel OBNOVIL PŘED ZRUŠENÍM Premium</h3>
           <p>Tento uživatel zrušil a poté znovu obnovil balíček Premium:<p>
-          <p>Jméno: ${user.firstname}</p>
-          <p>Příjmení: ${user.lastname}</p>
           <p>Email: ${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
@@ -797,7 +791,7 @@ mail.adminInfoSubscriptionCanceled = function (
     subject: `(CZ) UKONČENÍ | ${user.plan}: ${user.email}`,
     html: `
           <p>(${paymentSource} - ${store})<p>
-          <p>${user.firstname} ${user.lastname} | ${user.email}</p>
+          <p>${user.email}</p>
           <p>Datum registrace: ${moment(user.dateOfRegistration)
             .locale("cs")
             .format("LLLL")}</p>

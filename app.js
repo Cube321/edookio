@@ -22,7 +22,6 @@ const mongoSanitize = require("express-mongo-sanitize");
 const helmet = require("helmet");
 const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
-const Category = require("./models/category");
 const texts = require(`./utils/texts.${process.env.PROJECT}.js`);
 const cron = require("node-cron");
 const cronHelpers = require(`./utils/cron`);
@@ -251,8 +250,8 @@ passport.use(
             googleId: profile.id,
             username: profile.emails[0].value.toLowerCase(),
             email: profile.emails[0].value.toLowerCase(),
-            firstname: profile.name.givenName,
-            lastname: profile.name.familyName,
+            firstname: profile.name?.givenName || "neuvedeno",
+            lastname: profile.name?.familyName || "neuvedeno",
             isEmailVerified: true, // Google ensures verified email
             dateOfRegistration: Date.now(),
             registrationMethod: "google",

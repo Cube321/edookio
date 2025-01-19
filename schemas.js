@@ -45,14 +45,10 @@ module.exports.cardSchema = Joi.object({
 });
 
 module.exports.userSchema = Joi.object({
-  firstname: Joi.string().required().escapeHTML(),
-  lastname: Joi.string().required().escapeHTML(),
   email: Joi.string().required().escapeHTML(),
   password: Joi.string().required().min(6).escapeHTML(),
-  password_confirmation: Joi.string().required().min(6).escapeHTML(),
   key: Joi.string().escapeHTML(),
   billingId: Joi.string(),
-  faculty: Joi.string().escapeHTML(),
   source: Joi.string().escapeHTML(),
   school: Joi.string().allow("").escapeHTML(),
 });

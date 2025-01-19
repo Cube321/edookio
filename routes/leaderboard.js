@@ -93,49 +93,22 @@ router.get(
       topUsers = users.slice(0, 25);
     }
 
-    //give nickname to each user that does not have any yet
-    users.forEach((user) => {
-      if (!user.nickname && user.firstname && user.lastname) {
-        if (user.lastname.charAt(user.lastname.length - 1) === "á") {
-          let firstPart = user.firstname.substring(0, 3);
-          let lastPart = user.lastname.substring(0, 3);
-          user.nickname = `${firstPart}${lastPart}${Math.round(
-            user.email.length / 2
-          )}`;
-        } else {
-          let firstPart = user.firstname.substring(0, 3);
-          let lastPart = user.lastname.substring(0, 3);
-          user.nickname = `${firstPart}${lastPart}${Math.round(
-            user.email.length / 2
-          )}`;
-        }
-      }
-    });
     let hasSavedNickname = true;
-    if (!user.nickname) {
-      let firstPart = user.firstname.substring(0, 3);
-      let lastPart = user.lastname.substring(0, 3);
-      user.nickname = `${firstPart}${lastPart}${Math.round(
-        user.email.length / 2
-      )}`;
-      hasSavedNickname = false;
-    }
+
     //name of the last month in Czech
     moment.locale("cs");
     const lastMonthNum = moment().subtract(1, "month").month();
     const lastMonthName = monthsInCzech[lastMonthNum];
 
-    res
-      .status(200)
-      .render("leaderboard", {
-        topUsers,
-        positionInArray,
-        isInTop,
-        order,
-        hasSavedNickname,
-        lastMonthLeaderboard,
-        lastMonthName,
-      });
+    res.status(200).render("leaderboard", {
+      topUsers,
+      positionInArray,
+      isInTop,
+      order,
+      hasSavedNickname,
+      lastMonthLeaderboard,
+      lastMonthName,
+    });
   })
 );
 

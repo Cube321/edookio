@@ -2,14 +2,6 @@
     <div class="col-sm-4 offset-sm-4">
         <h1>Registrace administrátora</h1>
         <form class="row g-3 needs-validation mt-3" novalidate action="/auth/user/new" method="POST">
-            <div class="mt-1">
-                <label for="firstname" class="form-label">Jméno</label>
-                    <input type="text" class="form-control form-control-sm" id="firstname" name="firstname" required>
-            </div>
-            <div class="mt-1">
-                <label for="lastname" class="form-label">Příjmení</label>
-                    <input type="text" class="form-control form-control-sm" id="lastname" name="lastname" required>
-            </div>
             <div class="mt-2">
             <label for="email" class="form-label">E-mail</label>
                 <input type="email" class="form-control" id="email" name="email" required>
@@ -18,14 +10,7 @@
                 <label for="password" class="form-label">Heslo</label>
                 <input type="password" class="form-control" id="password" name="password" minlength=6 required>
                 <div class="invalid-feedback">
-                    Heslo musí obsahovat nejméně 6 znaků.
-                </div>
-            </div>
-            <div class="mt-2">
-                <label for="password_confirmation" class="form-label">Heslo znovu</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" minlength=6 required>
-                <div class="invalid-feedback">
-                    Heslo musí obsahovat nejméně 6 znaků.
+                    Heslo musí obsahovat nejméně 8 znaků.
                 </div>
             </div>
             <div class="mt-2">

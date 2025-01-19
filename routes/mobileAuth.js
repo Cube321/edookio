@@ -10,6 +10,9 @@ const moment = require("moment");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const jwt_decode = require("jwt-decode");
+const fs = require("fs");
+const axios = require("axios");
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
@@ -18,23 +21,11 @@ router.post(
   "/mobileAuth/createUser",
   catchAsync(async (req, res) => {
     try {
-      let {
-        email,
-        password,
-        passwordconfirmation,
-        firstname,
-        lastname,
-        //facultySelectedValue,
-        //sourceSelectedValue,
-      } = req.body;
+      let { email, password } = req.body;
       const foundUser = await User.findOne({ email: email.toLowerCase() });
 
       if (foundUser) {
         return res.status(400).json({ message: "Uživatel již existuje." });
-      }
-
-      if (password !== passwordconfirmation) {
-        return res.status(400).json({ message: "Hesla se musí shodovat." });
       }
 
       //create cookies object
@@ -44,30 +35,28 @@ router.post(
         marketing: true,
       };
 
-      /*if (sourceSelectedValue === "neuvedeno") {
-        sourceSelectedValue = "Neuvedeno";
-      }*/
       let sourceSelectedValue = "Neuvedeno";
 
       const passChangeId = uuid.v1();
       const dateOfRegistration = Date.now();
       const customer = await Stripe.addNewCustomer(email);
 
+      //create nickname
+      let randomNumber = Math.floor(Math.random() * 9000) + 1000;
+      let nickname = `${email.substring(0, 5)}${randomNumber}`;
+
       const newUser = new User({
         email: email.toLowerCase(),
+        nickname,
         passwordJWT: password,
         username: email.toLowerCase(),
         admin: false,
         dateOfRegistration,
-        firstname,
-        lastname,
         passChangeId,
         billingId: customer.id,
         plan: "none",
         endDate: null,
         isGdprApproved: true,
-        //faculty: facultySelectedValue,
-        faculty: "Neuvedeno",
         source: sourceSelectedValue,
         cookies,
         registrationPlatform: "mobile",

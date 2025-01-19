@@ -208,28 +208,11 @@ let saveLeaderboard = catchAsync(async (users) => {
 
   //give nickname to each user that does not have any yet
   topUsers.forEach((user) => {
-    if (!user.nickname) {
-      if (user.lastname.charAt(user.lastname.length - 1) === "á") {
-        let firstPart = user.firstname.substring(0, 3);
-        let lastPart = user.lastname.substring(0, 3);
-        user.nickname = `${firstPart}${lastPart}${Math.round(
-          user.email.length / 2
-        )}`;
-      } else {
-        let firstPart = user.firstname.substring(0, 3);
-        let lastPart = user.lastname.substring(0, 3);
-        user.nickname = `${firstPart}${lastPart}${Math.round(
-          user.email.length / 2
-        )}`;
-      }
-    }
-    console.log("About to push to simplifiedTopUsers");
     simplifiedTopUsers.push({
       nickname: user.nickname,
       email: user.email,
       _id: user._id,
       pointsMonth: user.pointsMonth,
-      faculty: user.faculty,
     });
   });
 

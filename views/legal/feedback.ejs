@@ -16,12 +16,8 @@
                             <form action="/legal/feedback" method="POST">
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control mt-2" id="name" name="name" 
-                                    <% if (user.firstname) { %>
-                                        value="<%= user.firstname %> <%= user.lastname %>"
-                                    <% } else { %>
-                                        placeholder="Jméno" 
-                                     <% } %>
-                                        required>
+                                    placeholder="Jméno" 
+                                    required>
                                 </div>
                                 <div class="form-group">
                                     <input type="email" class="form-control mt-2" id="email" name="email" value="<%= user.email %>" placeholder="E-mail" required>
