@@ -14,6 +14,9 @@ router.get(
   "/",
   isPremiumUser,
   catchAsync(async (req, res) => {
+    // Disable caching for this route:
+    res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+
     const { user } = req;
 
     //no user - render index (landing page)

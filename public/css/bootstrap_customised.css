@@ -1,120 +1,121 @@
 /* PALETTE #E80F88 #AF0171 #790252 #4C0033 */
 
-
 .btn-danger {
-    background-color: #E80F88;
-    border-color: #E80F88;
-    outline-color: #AF0171;
+  background-color: #e80f88;
+  border-color: #e80f88;
+  outline-color: #af0171;
 }
 
 .btn-danger:hover {
-    background-color: #AF0171;
-    border-color: #AF0171;
-    outline-color: #AF0171;
+  background-color: #af0171;
+  border-color: #af0171;
+  outline-color: #af0171;
 }
 
 .btn-danger.disabled {
-    background-color: #AF0171;
-    border-color: #AF0171;
+  background-color: #af0171;
+  border-color: #af0171;
 }
 
 .btn-warning.disabled {
-    border-color: rgb(221, 195, 127);
+  border-color: rgb(221, 195, 127);
 }
 
 .btn-outline-danger {
-    border-color: #E80F88;
-    color: #E80F88;
+  border-color: #e80f88;
+  color: #e80f88;
 }
 
 .btn-outline-danger:hover {
-    border-color: #AF0171;
-    background-color: #AF0171;
+  border-color: #af0171;
+  background-color: #af0171;
 }
 
-.btn-danger:active, .btn-danger:focus {
-    outline-color: #AF0171;
-    background-color: #AF0171;
+.btn-danger:active,
+.btn-danger:focus {
+  outline-color: #af0171;
+  background-color: #af0171;
 }
 
 .btn-warning {
-    background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
-    /* Optional: To ensure backward compatibility */
-    background-color: rgb(221, 195, 127); /* Fallback for older browsers */
-    border-color: rgb(221, 195, 127);
-    transition: 0.3s;
+  background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
+  /* Optional: To ensure backward compatibility */
+  background-color: rgb(221, 195, 127); /* Fallback for older browsers */
+  border-color: rgb(221, 195, 127);
+  transition: 0.3s;
 }
 
 .btn-warning:hover {
-    opacity: 0.85;
-    border-color: rgb(221, 195, 127);
+  opacity: 0.85;
+  border-color: rgb(221, 195, 127);
 }
 
 .bg-warning {
-    background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
+  background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
 }
 
-.btn-warning:active, .btn-warning:focus {
-    background: linear-gradient(135deg, rgb(245, 235, 200), rgb(221, 195, 127));
-    /* Optional: To ensure backward compatibility */
-    background-color: rgb(245, 235, 200); /* Fallback for older browsers */
-    border-color: rgb(245, 235, 200);
+.btn-warning:active,
+.btn-warning:focus {
+  background: linear-gradient(135deg, rgb(245, 235, 200), rgb(221, 195, 127));
+  /* Optional: To ensure backward compatibility */
+  background-color: rgb(245, 235, 200); /* Fallback for older browsers */
+  border-color: rgb(245, 235, 200);
 }
 
 .btn-info {
-    color: white;
+  color: white;
 }
 
 .bg-danger {
-    background-color: #E80F88!important;
+  background-color: #e80f88 !important;
 }
 
 .btn-success {
-    background-color: #7ac705;
-    border-color: #7ac705;
+  background-color: #7ac705;
+  border-color: #7ac705;
 }
 
 .form-control:focus,
 .btn-danger:focus,
 .btn-danger:active,
 .btn-danger:hover {
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
 }
 
 .text-primary {
-    color: #E80F88!important;
+  color: #e80f88 !important;
 }
 
 .form-check-input:checked {
-    background-color: #E80F88;
-    border-color: #E80F88;
+  background-color: #e80f88;
+  border-color: #e80f88;
 }
 
 .card {
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
-
 a {
-    color: #E80F88;
-    text-decoration: none;
+  color: #e80f88;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #AF0171;
+  color: #af0171;
 }
 
 .navbar .nav-item .nav-link:hover {
-    color: #AF0171;
+  color: #af0171;
 }
 
-.btn-check:checked+.btn-outline-danger {
-    background-color: #E80F88!important;
+.btn-check:checked + .btn-outline-danger {
+  background-color: #e80f88 !important;
 }
 
-.dropdown-item.active, .dropdown-item:active {
-    color: #fff;
-    text-decoration: none;
-    background-color: #AF0171;
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #af0171;
 }

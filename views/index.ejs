@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= texts.header.title %>XXX</title>
+    <title><%= texts.header.title %></title>
     <link
       rel="apple-touch-icon"
       sizes="180x180"
@@ -80,119 +80,30 @@
               </h1>
               <p class="lead"><%= texts.landingPage.headerStatement %></p>
               <div class="mt-5 text-center-on-mobile">
-                <% if(!currentUser){ %>
                 <a
                   href="/auth/user/new"
                   class="btn btn-lg btn-danger call-to-action"
                   ><%= texts.landingPage.studyFree %></a
                 >
-                <% } %>
               </div>
             </div>
-            <% if (currentUser) { %>
-            <div class="col-md-6">
-              <div
-                style="
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  height: 100%;
-                  width: 100%;
-                "
-              >
-                <div class="streak-box">
-                  <p class="header mb-0 d-flex justify-content-between">
-                    <span style="color: white">x</span>
-                    <span>Denní cíl</span>
-                    <a
-                      href="#"
-                      class="info-icon"
-                      data-bs-toggle="modal"
-                      data-bs-target="#streakInfoModal"
-                      >?</a
-                    >
-                  </p>
-                  <div class="streak-card">
-                    <div class="percent">
-                      <svg>
-                        <circle cx="80" cy="80" r="60"></circle>
-                        <circle
-                          cx="80"
-                          cy="80"
-                          r="60"
-                          style="--percent: <%= percent %>"
-                        ></circle>
-                      </svg>
-                      <div class="number">
-                        <h3><%= percent %><span> %</span></h3>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="header">
-                    Studuješ již
-                    <span class="color-primary"
-                      ><%= currentUser.streakLength %></span
-                    >
-                    <% if (currentUser.streakLength === 1) { %> den <% } else if
-                    (currentUser.streakLength > 0 && currentUser.streakLength <
-                    5){ %> dny <% } else { %> dní <% } %> v řadě
-                  </p>
-
-                  <hr style="color: #e80f88" />
-                  <p class="header mb-2">Tvůj přehled</p>
-                  <ul class="stats-list text-smaller">
-                    <li class="stats-item">
-                      <span>Kartiček celkem</span
-                      ><span class="text-bold"
-                        ><%= currentUser.cardsSeen %></span
-                      >
-                    </li>
-                    <li class="stats-item text-muted mb-2">
-                      <span>Kartiček tento měsíc</span
-                      ><span class="text-bold"
-                        ><%= currentUser.cardsSeenThisMonth %></span
-                      >
-                    </li>
-                    <li class="stats-item">
-                      <span>Otázek celkem</span
-                      ><span class="text-bold"
-                        ><%= currentUser.questionsSeenTotal %></span
-                      >
-                    </li>
-                    <li class="stats-item text-muted">
-                      <span>Otázek tento měsíc</span
-                      ><span class="text-bold"
-                        ><%= currentUser.questionsSeenThisMonth %></span
-                      >
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <% } %>
           </div>
         </div>
       </section>
 
-      <div class="album pt-5 pb-3 mb-5">
+      <div class="album pt-5 pb-3">
         <div class="container">
-          <div class="mb-5 landing-info-wrapper d-none-992-up">
+          <div class="mb-3 landing-info-wrapper d-none-992-up">
             <div
               class="landing-info d-flex flex-row justify-content-evenly align-items-center"
             >
               <div class="info-icon">
-                <img
-                  src="/img/icon_cards.png"
-                  class="img-fit-100"
-                  alt="cards"
-                />
+                <img src="/img/icon_ai.png" class="img-fit-100" alt="cards" />
               </div>
               <div>
-                <p class="info-main">
-                  <%= numOfCards %> <%= texts.landingPage.pointOneMain %>
-                </p>
+                <p class="info-main"><%= texts.landingPage.pointOneMain %></p>
                 <p class="info-secondary text-muted">
-                  a <%= numOfQuestions %> testových otázek
+                  <%= texts.landingPage.pointOneSecondary %>
                 </p>
               </div>
             </div>
@@ -218,16 +129,14 @@
             >
               <div class="info-icon">
                 <img
-                  src="/img/icon_knowledge.png"
+                  src="/img/icon_share.png"
                   class="img-fit-100"
                   alt="cards"
                 />
               </div>
               <div>
                 <p class="info-main">
-                  <%= numOfCategories %> <%= texts.landingPage.pointThreeMain1
-                  %> <%= numOfSections %> <%= texts.landingPage.pointThreeMain2
-                  %>
+                  <%= texts.landingPage.pointThreeMain1 %>
                 </p>
                 <p class="info-secondary text-muted">
                   <%= texts.landingPage.pointThreeSecondary %>
@@ -245,17 +154,17 @@
                       class="info-icon col-3 d-flex justify-content-center align-items-center"
                     >
                       <img
-                        src="/img/icon_cards.png"
+                        src="/img/icon_ai.png"
                         class="img-fit-small"
                         alt="cards"
                       />
                     </div>
                     <div class="col-9">
                       <p class="info-main">
-                        <%= numOfCards %> <%= texts.landingPage.pointOneMain %>
+                        <%= texts.landingPage.pointOneMain %>
                       </p>
                       <p class="info-secondary text-muted">
-                        a <%= numOfQuestions %> testových otázek
+                        <%= texts.landingPage.pointOneSecondary %>
                       </p>
                     </div>
                   </div>
@@ -298,9 +207,7 @@
                     </div>
                     <div class="col-9">
                       <p class="info-main">
-                        <%= numOfCategories %> <%=
-                        texts.landingPage.pointThreeMain1 %> <%= numOfSections
-                        %> <%= texts.landingPage.pointThreeMain2 %>
+                        <%= texts.landingPage.pointThreeMain1 %>
                       </p>
                       <p class="info-secondary text-muted">
                         <%= texts.landingPage.pointThreeSecondary %>
@@ -349,83 +256,212 @@
                         </div>
                     </div>
                     -->
+            </div>
+          </div>
+        </div>
+      </div>
 
-              <% if(!currentUser || (currentUser && !currentUser.usedMobileApp))
-              {%>
+      <section class="proc-inlege" style="background-color: rgb(254, 240, 255)">
+        <div class="container">
+          <div class="row pb-3">
+            <div class="col-md-10 offset-md-1">
+              <h1 class="mb-2 mt-4 text-center">Jak to funguje?</h1>
+              <h5 class="text-muted text-center mb-4">
+                Přeměň své poznámky na kartičky a otázky pomocí AI
+              </h5>
               <div class="row">
-                <div class="col-12 mb-4">
-                  <div class="card border-grey">
-                    <div class="card-body">
+                <div class="col-lg-4 mb-3">
+                  <div class="explaination-card white-background">
+                    <div class="row">
                       <div
-                        class="d-flex justify-content-evenly align-items-center"
+                        class="col-12 d-flex justify-content-center align-items-center mb-3"
                       >
-                        <h5 class="text-center mb-0">
-                          Vyzkoušej také <b>mobilní aplikaci</b>
-                          <b class="color-primary">Edookio</b>!
-                        </h5>
                         <div
-                          class="d-flex justify-content-evenly align-items-center"
+                          class="rounded-circle explaination-card-icon-background d-flex justify-content-center align-items-center"
                         >
-                          <a
-                            href="https://apps.apple.com/us/app/inlege/id6670204630"
-                            target="_blank"
-                            class="btn btn-outline-danger mx-2"
-                            ><i class="fab fa-apple"></i>
-                            <span class="hide-under-1200">iOS</span></a
-                          >
-                          <a
-                            href="https://play.google.com/store/apps/details?id=cz.inlege.InLege"
-                            target="_blank"
-                            class="btn btn-outline-danger mx-2"
-                            ><i class="fab fa-android"></i>
-                            <span class="hide-under-1200">Android</span></a
-                          >
+                          <img
+                            src="/img/icon_upload.png"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-12 text-center">
+                        <div class="">
+                          <h5 class="explaination-card-title">
+                            Krok 1: Nahraj poznámky
+                          </h5>
+                          <p class="explaination-card-content mb-1">
+                            Nahraj poznámky, prezentace nebo jiné dokumenty v
+                            pdf, doc nebo pptx.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-3">
+                  <div class="explaination-card white-background">
+                    <div class="row">
+                      <div
+                        class="col-12 d-flex justify-content-center align-items-center mb-3"
+                      >
+                        <div
+                          class="rounded-circle explaination-card-icon-background d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/icon_generate.png"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-12 text-center">
+                        <div class="">
+                          <h5 class="explaination-card-title">
+                            Krok 2: Vygeneruj obsah
+                          </h5>
+                          <p class="explaination-card-content mb-1">
+                            Nech umělou inteligenci během několika vteřin
+                            vygenerovat kartičky a otázky.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 mb-3">
+                  <div class="explaination-card white-background">
+                    <div class="row">
+                      <div
+                        class="col-12 d-flex justify-content-center align-items-center mb-3"
+                      >
+                        <div
+                          class="rounded-circle explaination-card-icon-background d-flex justify-content-center align-items-center"
+                        >
+                          <img
+                            src="/img/icon_study.png"
+                            class="img-fit"
+                            alt=""
+                          />
+                        </div>
+                      </div>
+                      <div class="col-12 text-center">
+                        <div class="">
+                          <h5 class="explaination-card-title">
+                            Krok 3: Studuj
+                          </h5>
+                          <p class="explaination-card-content mb-1">
+                            Pusť se do studia vzájemně propojených opakovacích
+                            kartiček a testových otázek.
+                          </p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <% } %>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-12 d-flex justify-content-center align-items-center"
+            >
+              <a href="/auth/user/new" class="btn btn-lg btn-danger mb-4"
+                >Vyzkoušet generování</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div class="row">
-                <div class="col-12">
-                  <p>
-                    Zde bude popis flow nahraj - generuj - studuj s grafikou
-                  </p>
-                  <p>A button na demo balíček kartiček a otázek</p>
+      <section class="proc-inlege">
+        <div class="container">
+          <div class="row pb-3">
+            <h1 class="mb-2 mt-5 text-center">Studuj efektivně</h1>
+            <h5 class="text-muted text-center mb-4">
+              Studuj prostřednictvím propojených kartiček a otázek
+            </h5>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 mb-3">
+              <div>
+                <img src="/img/mock_cards.png" alt="" class="img-fit-100" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div class="function-box p-5">
+                <h3 class="my-3">Opakovací kartičky</h3>
+                <p class="text-muted mb-4">
+                  Opakovací kartičky jsou jednou z nejefektivnějších studijních
+                  pomůcek. Palcem můžeš označit kartičky, které již umíš, a poté
+                  se vrátit jen k těm, které ještě potřebuješ procvičit.
+                </p>
+                <a href="#" class="btn btn-lg btn-danger">Vyzkoušet kartičky</a>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div class="function-box p-5">
+                <h3 class="my-3">Testové otázky</h3>
+                <p class="text-muted mb-4">
+                  Testové otázky vycházejí z kartiček a jsou s nimi propojené.
+                  Naučené znalosti si tak rovnou můžeš ověřit pomocí navazující
+                  testové sady.
+                </p>
+                <a href="#" class="btn btn-lg btn-danger">Vyzkoušet otázky</a>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div>
+                <img src="/img/mock_questions.png" alt="" class="img-fit-100" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div>
+                <img src="/img/mock_app.png" alt="" class="img-fit-100" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+              <div class="function-box p-5">
+                <h3 class="my-3">Mobilní aplikace</h3>
+                <p class="text-muted mb-4">
+                  Díky mobilní aplikace Edookio můžeš studovat kdykoliv a
+                  kdekoliv. Vše je propojeno a synchronizováno.
+                </p>
+                <div class="d-flex justify-content-start">
+                  <a
+                    href="https://apps.apple.com/us/app/inlege/id6740498818"
+                    target="_blank"
+                    class="btn btn-lg btn-danger"
+                    ><i class="fab fa-apple"></i> iOS</a
+                  >
+                  <a
+                    href="https://play.google.com/store/apps/details?id=com.edookio.edookio"
+                    target="_blank"
+                    class="btn btn-lg btn-danger mx-2"
+                  >
+                    <i class="fab fa-android"></i> Android</a
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <section class="vision-statement">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-8 offset-md-2 text-center my-5">
-              <h1 class="mb-4"><%= texts.landingPage.ourVision %></h1>
-              <p class="fs-5">
-                <%= texts.landingPage.visionStatementStart %>
-                <strong class="color-1"><%= texts.general.projectName %></strong
-                ><%= texts.landingPage.visionStatementEnd %>
-              </p>
-            </div>
-          </div>
-        </div>
       </section>
-      <section class="proc-inlege">
+
+      <section class="proc-inlege" style="background-color: rgb(254, 240, 255)">
         <div class="container">
           <div class="row">
             <div class="col-md-10 offset-md-1 my-5">
               <h1 class="mb-5 text-center">
-                <%= texts.landingPage.whyUse %> <%= texts.general.projectName
-                %>?
+                <%= texts.landingPage.whyUse %>
+                <span class="text-primary"
+                  ><%= texts.general.projectName %></span
+                >?
               </h1>
               <div class="row">
                 <div class="col-lg-6 mb-3">
-                  <div class="reason">
+                  <div class="reason white-background">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -454,7 +490,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-3">
-                  <div class="reason">
+                  <div class="reason white-background">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -483,7 +519,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-3">
-                  <div class="reason">
+                  <div class="reason white-background">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -512,7 +548,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-3">
-                  <div class="reason">
+                  <div class="reason white-background">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -543,29 +579,19 @@
               </div>
             </div>
           </div>
+          <div class="row pb-5">
+            <div class="d-flex justify-content-center align-items-center">
+              <a
+                href="/auth/user/new"
+                class="btn btn-lg btn-danger call-to-action-visible"
+                >Chci vyzkoušet Edookio AI</a
+              >
+            </div>
+          </div>
         </div>
       </section>
     </main>
-
-    <% if (currentUser) { %>
-    <!-- STREAK INFO MODAL-->
-    <div class="modal fade" id="streakInfoModal" tabindex="-1">
-      <div class="modal-dialog modal-dialog-centered edit-modal">
-        <div class="modal-content">
-          <div
-            class="modal-body d-flex justify-content-center align-items-center"
-          >
-            <p class="text-center">
-              Tvůj aktuální denní cíl je
-              <b class="color-1"><%= currentUser.dailyGoal %> bodů</b>. Změnit
-              jej můžeš ve svém profilu.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% } %> <%- include('./partials/footer') %> <%-
-    include('./partials/cookiesBar')%>
+    <%- include('./partials/footer') %> <%- include('./partials/cookiesBar')%>
     <!-- JS for Bootstrap -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"

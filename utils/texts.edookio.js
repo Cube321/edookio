@@ -1,5 +1,5 @@
 module.exports.general = {
-  projectName: "Edookio",
+  projectName: "Edookio AI",
 };
 
 module.exports.header = {
@@ -16,39 +16,33 @@ module.exports.header = {
 module.exports.landingPage = {
   mainTitleStart: "Studuj efektivně s",
   headerStatement:
-    "Pusť se do studia s tisíci opakovacích kartiček a testových otázek, které ti umělá inteligence vygeneruje přímo z tvých materiálů. Skvělá interaktivní příprava na zkoušky pro jakýkoliv předmět.",
+    "Proměň své poznámky v interaktivní kartičky a testové otázky pomocí umělé inteligence.",
   studyFree: "Studuj zdarma",
-  pointOneMain: "AI kartiček",
-  pointOneSecondary: "které vznikají z tvých vlastních poznámek",
+  pointOneMain: "Vytvářej kartičky a testy",
+  pointOneSecondary: "pomocí AI i bez ní",
   pointTwoMain: "Opakuj kdykoliv a kdekoliv",
   pointTwoSecondary: "na mobilu i u počítače",
-  pointThreeMain1: "předmětů,",
-  pointThreeMain2: "balíčků",
-  pointThreeSecondary: "komplexní pokrytí jakéhokoliv studijního materiálu",
-  ourVision: "Naše vize",
-  visionStatementStart:
-    "Studenti se neustále potýkají s novými tématy, seminárními pracemi a zkouškami. Věříme, že chytré technologie mohou zásadně zjednodušit a zefektivnit jejich přípravu. Proto jsme vyvinuli",
-  visionStatementEnd:
-    ", inovativní webovou a mobilní aplikaci, která umožňuje každému generovat kartičky a testové otázky z vlastních poznámek.",
-  reasonOneHeader: "Automatizované zpracování",
+  pointThreeMain1: "Sdílej materiály s přáteli",
+  pointThreeSecondary: "a studujte společně",
+  reasonOneHeader: "Tvorba obsahu i bez AI",
   reasonOneContent:
-    "Převedeme tvé nahrané materiály do podoby přehledných kartiček a testových otázek, díky nimž se učíš snadněji a rychleji.",
-  reasonOneIcon: "icon-reason-1.png",
-  reasonTwoHeader: "Efektivní příprava",
+    "Vytvářej kartičky i testové otázky nejen s pomocí umělé inteligence, ale i ručně. Všechny materiály můžeš sdílet s ostatními.",
+  reasonOneIcon: "icon_work.png",
+  reasonTwoHeader: "Sleduj svůj pokrok",
   reasonTwoContent:
-    "Ušetři čas a soustřeď se na to podstatné. Edookio ti pomůže osvojit si znalosti a zapamatovat si důležité informace.",
-  reasonTwoIcon: "icon-reason-2.png",
-  reasonThreeHeader: "Komunita studentů",
+    "Dosáhni 100% zvládnutí předmětu díky statistikám a sledování pokroku.",
+  reasonTwoIcon: "icon_progress.png",
+  reasonThreeHeader: "Rozdělení do předmětů a balíčků",
   reasonThreeContent:
-    "Edookio není jen o kartičkách. Sdílej své materiály, pomáhej ostatním a uč se z toho, co vytvořili druzí.",
-  reasonThreeIcon: "icon-reason-3.png",
-  reasonFourHeader: "Dostupné pro všechny",
+    "Vytvářej předměty a v nich menší balíčky. Rozdělení na menší části ti pomůže lépe zvládnout objem učiva.",
+  reasonThreeIcon: "icon_structure.png",
+  reasonFourHeader: "Propojení kartiček a otázek",
   reasonFourContent:
-    "Věříme, že kvalitní studijní materiály by měly být dostupné každému. Proto si můžeš spoustu obsahu v Edookio vyzkoušet zdarma.",
-  reasonFourIcon: "icon-reason-4.png",
+    "Propojení kartiček a testových otázek ti pomůže zaměřit se na ty části učiva, které ti dělají problémy.",
+  reasonFourIcon: "icon_connection.png",
   cards: "kartiček",
   study: "Studovat",
-  whyUse: "Proč používat",
+  whyUse: "Další výhody",
 };
 
 module.exports.categoryPage = {

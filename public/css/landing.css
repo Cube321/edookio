@@ -4,7 +4,7 @@ body {
 
 .main-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(../img/bg_cover5.jpeg) no-repeat center center;
+    url(../img/bg_cover1.jpg) no-repeat center center;
   background-size: cover;
   min-height: 450px;
   color: white;
@@ -13,7 +13,7 @@ body {
 
 .about-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url(../img/bg_cover5.jpeg) no-repeat center center;
+    url(../img/bg_cover1.jpg) no-repeat center center;
   background-size: cover;
   min-height: 350px;
   color: white;
@@ -23,6 +23,19 @@ body {
 .call-to-action {
   zoom: 130%;
   opacity: 0;
+}
+
+.call-to-action-visible {
+  zoom: 130%;
+  opacity: 1;
+}
+
+.white-background {
+  background-color: white;
+}
+
+.text-primary {
+  color: #e80f88;
 }
 
 .width-20 {
@@ -276,6 +289,29 @@ body {
 
 .reason-content {
   padding-top: 0.5rem;
+}
+
+.explaination-card {
+  border: 1px solid #eeeeee;
+  border-radius: 10px;
+  padding: 1rem;
+  height: 100%;
+}
+
+.explaination-card-icon-background {
+  background-color: #eeeeee;
+  width: 6.5rem;
+  height: 6.5rem;
+}
+
+.explaination-card-title {
+  border-bottom: 2px solid #e80f88;
+  display: inline;
+  padding-bottom: 3px;
+}
+
+.explaination-card-content {
+  padding-top: 1rem;
 }
 
 @media only screen and (max-width: 992px) {

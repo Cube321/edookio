@@ -43,29 +43,29 @@
               </p>
             </div>
           </div>
-        </div>
-        <% if (section.questions.length > 0 && section.testIsPublic) { %>
         <div class="row">
           <div class="col-12">
             <div class="d-flex justify-content-center align-items-center">
               <a
+              href="/category/<%= category%>/section/<%= section._id%>/card30/1?mode=unknown"
+              class="btn btn-danger mx-1"
+              ><i class="fas fa-redo" style="margin-right: 8px"></i
+                >Opakovat</a>
+              
+              <% if (section.questions.length > 0) { %>
+              <a
                 href="/category/<%= categoryId%>/section/<%= section._id%>/test"
-                class="btn btn-danger my-3"
+                class="btn btn-danger my-3 mx-1"
                 >Spustit test</a
               >
+              <% } %>
+            </div>
             </div>
           </div>
         </div>
-        <hr />
-        <% } %>
         <div class="row mt-3">
           <div class="col-12">
-            <a
-              href="/category/<%= category%>/section/<%= section._id%>/card30/1?mode=unknown"
-              class="btn btn-danger mb-4"
-              ><i class="fas fa-redo"></i
-            ></a>
-            <a href="/category/<%= category%>/" class="btn btn-danger mb-4"
+            <a href="/category/<%= category%>/"
               >Zpět na předmět</a
             >
           </div>
