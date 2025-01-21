@@ -43,7 +43,8 @@ router.post(
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
         productToPriceMap.CREDITS_1000,
-        "payment"
+        "payment",
+        { product: "credits_1000" }
       );
     }
 
@@ -52,7 +53,8 @@ router.post(
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
         productToPriceMap.CREDITS_5000,
-        "payment"
+        "payment",
+        { product: "credits_5000" }
       );
     }
 
@@ -61,7 +63,8 @@ router.post(
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
         productToPriceMap.CREDITS_10000,
-        "payment"
+        "payment",
+        { product: "credits_10000" }
       );
     }
 
@@ -70,7 +73,8 @@ router.post(
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
         productToPriceMap.CREDITS_25000,
-        "payment"
+        "payment",
+        { product: "credits_25000" }
       );
     }
 
@@ -100,7 +104,6 @@ router.post(
     }
 
     const data = event.data.object;
-    console.log("DATA: ", data);
 
     switch (event.type) {
       //manage subscription (new/update/cancel)
@@ -276,9 +279,7 @@ router.post(
                 );
                 return res.sendStatus(404);
               }
-
-              // For example: add 1,000 credits
-              user.credits = (user.credits || 0) + 1000;
+              user.credits = user.credits + 1000;
 
               //createOneTimeInvoice(user, 1000 /* # of credits */);
 

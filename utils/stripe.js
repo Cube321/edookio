@@ -14,7 +14,7 @@ const getCustomerByID = async (id) => {
   return customer;
 };
 
-const createCheckoutSession = async (customer, price, mode) => {
+const createCheckoutSession = async (customer, price, mode, metadata) => {
   const session = await Stripe.checkout.sessions.create({
     mode: mode,
     payment_method_types: ["card"],
@@ -29,6 +29,7 @@ const createCheckoutSession = async (customer, price, mode) => {
 
     success_url: `${process.env.DOMAIN}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.DOMAIN}/payment/failed`,
+    metadata,
   });
 
   return session;
