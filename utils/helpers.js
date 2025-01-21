@@ -27,7 +27,8 @@ helpers.createInvoice = async function (
     return;
   }
 
-  let invoiceNum = await Settings.findOne({ settingName: "lastInvoiceNumber" });
+  let invoiceNum =
+    (await Settings.findOne({ settingName: "lastInvoiceNumber" })) + 1;
 
   let invoiceAmount = parseFloat(amount);
 
@@ -44,6 +45,12 @@ helpers.createInvoice = async function (
 
   //save invoice to DB
   let createdInvoice = await Invoice.create(newInvoice);
+
+  await Settings.findOneAndUpdate(
+    { settingName: "lastInvoiceNumber" },
+    { settingValue: invoiceNum },
+    { upsert: true, new: true }
+  );
 
   //save new invoice ID reference on user
   foundUser.invoicesDbObjects.unshift(createdInvoice._id);
