@@ -102,45 +102,6 @@ router.get(
   })
 );
 
-//show open invoices
-router.get(
-  "/invoices/open",
-  isLoggedIn,
-  isAdmin,
-  catchAsync(async (req, res) => {
-    let users = await User.find({ hasOpenInvoice: true });
-    let lastInvoiceNumber = await Settings.findOne({
-      settingName: "lastInvoiceNumber",
-    });
-    if (!lastInvoiceNumber) {
-      lastInvoiceNumber = "empty";
-    } else {
-      lastInvoiceNumber = Number(lastInvoiceNumber.settingValue);
-    }
-    let updatedUsers = [];
-    users.forEach((user) => {
-      let updatedUser = {
-        _id: user._id,
-        email: user.email,
-        amount: user.openInvoiceData.amount,
-        date: moment(user.openInvoiceData.date).format("YYYY-MM-DD"),
-        exactDate: user.openInvoiceData.date,
-        plan: user.openInvoiceData.plan,
-        endDate: moment(user.endDate).format("DD.MM.YYYY"),
-        subscriptionSource: user.subscriptionSource,
-      };
-      updatedUsers.push(updatedUser);
-    });
-    //order users according to the moment of payment
-    updatedUsers.sort(function (a, b) {
-      return a.exactDate - b.exactDate;
-    });
-    res
-      .status(200)
-      .render("invoices/open", { users: updatedUsers, lastInvoiceNumber });
-  })
-);
-
 //logic to remove invoices created after 01/05/2024
 router.get(
   "/invoice/removeInvoice/:userId/:invoiceId",
@@ -234,6 +195,11 @@ router.get(
         inv.subscriptionPeriod = "InLege Premium - půlroční";
       } else if (inv.subscriptionPeriod === "yearly") {
         inv.subscriptionPeriod = "InLege Premium - roční";
+      }
+
+      if (inv.amountOfCredits !== 0 && inv.amountOfCredits !== undefined) {
+        inv.subscriptionPeriod =
+          "Edookio AI kredity - " + inv.amountOfCredits + " kreditů";
       }
 
       const row = [
