@@ -6,11 +6,11 @@ module.exports.header = {
   description:
     "Tisíce interaktivních kartiček a testových otázek z AI generátoru zdarma. Připrav se na zkoušky zábavnou formou!",
   author: "Chilero s. r. o.",
-  keywords: "karticky, edookio, studium, testy, ai, pripravase, vzdelavani",
-  twitterTitle: "Studuj efektivně s Edookio",
-  title: "Studuj efektivně s Edookio",
-  sharingImgUrl: "https://www.edookio.cz/img/fb_sharing.png",
-  homepageUrl: "https://www.edookio.cz/",
+  keywords: "karticky, edookio, studium, testy, ai, priprava, vzdelavani",
+  twitterTitle: "Edookio AI - studuj efektivně",
+  title: "Edookio AI - studuj efektivně",
+  sharingImgUrl: "https://www.edookio.com/img/fb_sharing.png",
+  homepageUrl: "https://www.edookio.com/",
 };
 
 module.exports.landingPage = {

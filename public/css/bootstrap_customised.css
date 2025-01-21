@@ -119,3 +119,7 @@ a:hover {
   text-decoration: none;
   background-color: #af0171;
 }
+
+.table-bordered > :not(caption) > * > * {
+  border-width: 0 0px;
+}
