@@ -319,13 +319,13 @@ mail.requestInvoice = function (email, invoiceNum) {
 };
 
 //credits added
-mail.adminInfoCreditsPurchased = function (user, credits) {
+mail.adminInfoCreditsPurchased = function (userEmail, credits) {
   const msg = {
     from: "info@inlege.cz",
     to: process.env.ADMIN_MAIL,
-    subject: `KREDITY PŘIPSÁNY - ${credits} - ${user.email}`,
+    subject: `KREDITY PŘIPSÁNY - ${credits} - ${userEmail}`,
     html: `
-          Uživatel ${user.email} si zakoupil ${credits} kreditů.
+          Uživatel ${userEmail} si zakoupil ${credits} kreditů.
       `,
   };
   //send the mail

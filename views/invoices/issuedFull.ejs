@@ -1,45 +1,61 @@
-<% layout ('layouts/boilerplate.ejs')  %> 
+<% layout ('layouts/boilerplate.ejs') %>
 <div class="container">
-    <div class="row">
-        <div class="col-12 mb-3">
-            <h5><a href="/invoices/open">Faktury k vystavení</a> | Vystavené faktury </h5>
-            <span>(<a href="/invoices/issued?show=list">seznam</a> | <a href="/invoices/issued?show=full">kompletní</a> | <a href="/invoices/issued?show=lastMonth">minulý měsíc</a> - <a href="/invoices/exportLastMonth">csv</a>)</span>
-
-        </div>
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h5>
+        <a href="/invoices/open">Faktury k vystavení</a> | Vystavené faktury
+      </h5>
+      <span
+        >(<a href="/invoices/issued?show=list">seznam</a> |
+        <a href="/invoices/issued?show=full">kompletní</a> |
+        <a href="/invoices/issued?show=lastMonth">minulý měsíc</a> -
+        <a href="/invoices/exportLastMonth">csv</a>)</span
+      >
     </div>
-    <% invoices.forEach((invoice) => { %> 
-        <div class="row">
-            <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-              <div class="invoice-box border mt-3">
-                <div class="header">
-                  <div>
-                    <img src="/favicon/favicon-32x32.png" alt="">
-                    <span class="mx-2 text-muted">Chilero</span>
-                  </div>
-                  <p class="text-bold">Účtenka</p>
-                  <div class="text-smaller text-muted">
-                    <p class="mb-0 d-flex justify-content-between"><span>Číslo dokladu:</span> <span>CZ<%= invoice.identificationNumber %></span></p>
-                    <p>Datum vystavení: <%= invoice.dateIssued %></p>
-                  </div>
-                </div>
-                <div class="titles">
-                  <span>Položka</span>
-                  <span class="mx-3">Cena</span>
-                </div>
-                <div class="body">
-                  <span> InLege Premium - 
-                  <% if (invoice.subscriptionPeriod === "yearly") { %>Roční<% } %>
-                  <% if (invoice.subscriptionPeriod === "monthly") { %>Měsíční<% } %>
-                  <% if (invoice.subscriptionPeriod === "halfyear") { %>Půlroční<% } %>
-                  <% if (invoice.subscriptionPeriod === "daily") { %>Denní<% } %>
-                  </span>
-                  <span><%= invoice.amount %> Kč</span>
-                </div>
-                <div class="footer text-small text-muted">
-                  Chilero s.r.o., IČ: 089 00 230 se sídlem Kaštanová 3, 779 00 Olomouc, zapsaná v obchodním rejstříku vedeném Krajským soudem v Ostravě, sp. zn. C 81220
-                </div>
-              </div>
-            </div>
+  </div>
+  <% invoices.forEach((invoice) => { %>
+  <div class="row">
+    <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+      <div class="invoice-box border mt-3">
+        <div class="header">
+          <div>
+            <img src="/favicon/favicon-32x32.png" alt="" />
+            <span class="mx-2 text-muted">Chilero</span>
+          </div>
+          <p class="text-bold">Účtenka</p>
+          <div class="text-smaller text-muted">
+            <p class="mb-0 d-flex justify-content-between">
+              <span>Číslo dokladu:</span>
+              <span>CZ<%= invoice.identificationNumber %></span>
+            </p>
+            <p>Datum vystavení: <%= invoice.dateIssued %></p>
+          </div>
         </div>
-    <% }) %> 
+        <div class="titles">
+          <span>Položka</span>
+          <span class="mx-3">Cena</span>
+        </div>
+        <div class="body">
+          <% if (invoice.subscriptionPeriod) { %>
+          <span>
+            Edookio Premium - <% if (invoice.subscriptionPeriod === "yearly") {
+            %>Roční<% } %> <% if (invoice.subscriptionPeriod === "monthly") {
+            %>Měsíční<% } %> <% if (invoice.subscriptionPeriod === "halfyear") {
+            %>Půlroční<% } %> <% if (invoice.subscriptionPeriod === "daily") {
+            %>Denní<% } %>
+          </span>
+          <% } else { %>
+          <span> Edookio AI kredity - <%= invoice.amountOfCredits %></span>
+          <% } %>
+          <span><%= invoice.amount %> Kč</span>
+        </div>
+        <div class="footer text-small text-muted">
+          Chilero s.r.o., IČ: 089 00 230 se sídlem Kaštanová 3, 779 00 Olomouc,
+          zapsaná v obchodním rejstříku vedeném Krajským soudem v Ostravě, sp.
+          zn. C 81220
+        </div>
+      </div>
+    </div>
+  </div>
+  <% }) %>
 </div>

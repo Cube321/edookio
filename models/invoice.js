@@ -10,6 +10,7 @@ const InvoiceSchema = new Schema({
   dateIssued: String,
   identificationNumber: Number,
   subscriptionPeriod: String,
+  amountOfCredits: Number,
   currency: {
     type: String,
     default: "CZK",

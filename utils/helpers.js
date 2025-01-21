@@ -23,7 +23,8 @@ helpers.createInvoice = async function (
   amount,
   type,
   currency,
-  subscriptionPeriod
+  subscriptionPeriod,
+  amountOfCredits
 ) {
   let foundUser = await User.findById(userId);
   if (!foundUser) {
@@ -61,6 +62,7 @@ helpers.createInvoice = async function (
     type,
     currency,
     subscriptionPeriod,
+    amountOfCredits,
   };
 
   console.log("newInvoice", newInvoice);
