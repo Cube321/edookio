@@ -318,6 +318,24 @@ mail.requestInvoice = function (email, invoiceNum) {
   });
 };
 
+//credits added
+mail.adminInfoCreditsPurchased = function (user, credits) {
+  const msg = {
+    from: "info@inlege.cz",
+    to: process.env.ADMIN_MAIL,
+    subject: `KREDITY PŘIPSÁNY - ${credits} - ${user.email}`,
+    html: `
+          Uživatel ${user.email} si zakoupil ${credits} kreditů.
+      `,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
 //payment failed
 mail.adminInfoSubscriptionPaymentFailed = function (user, paymentStatus, data) {
   const msg = {

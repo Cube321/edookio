@@ -6,6 +6,7 @@ const { isLoggedIn } = require("../utils/middleware");
 const User = require("../models/user");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");
+const helpers = require("../utils/helpers");
 
 let productToPriceMap = {
   YEARLY: process.env.PRODUCT_YEARLY,
@@ -265,7 +266,6 @@ router.post(
       case "checkout.session.completed": {
         try {
           const session = data;
-          console.log("checkout.session.completed: ", session);
           // Safety check: only proceed if session.mode === 'payment'
           if (session.mode === "payment") {
             const { product } = session.metadata;
@@ -281,9 +281,9 @@ router.post(
               }
               user.credits = user.credits + 1000;
 
-              //createOneTimeInvoice(user, 1000 /* # of credits */);
-
               await user.save();
+              await helpers.createInvoice(user._id, 290, "credits", null);
+              await mail.adminInfoCreditsPurchased(user.email, 1000);
               console.log(`Added 1000 credits to ${user.email}`);
             }
           }
