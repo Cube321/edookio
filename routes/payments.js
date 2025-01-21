@@ -10,6 +10,10 @@ const mail = require("../mail/mail_inlege");
 let productToPriceMap = {
   YEARLY: process.env.PRODUCT_YEARLY,
   MONTHLY: process.env.PRODUCT_MONTHLY,
+  CREDITS_1000: process.env.PRODUCT_CREDITS_1000,
+  CREDITS_5000: process.env.PRODUCT_CREDITS_5000,
+  CREDITS_10000: process.env.PRODUCT_CREDITS_10000,
+  CREDITS_25000: process.env.PRODUCT_CREDITS_25000,
 };
 
 //Stripe checkout
@@ -21,15 +25,55 @@ router.post(
     if (req.body.product === "monthly") {
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
-        productToPriceMap.MONTHLY
+        productToPriceMap.MONTHLY,
+        "subscription"
       );
     }
+
     if (req.body.product === "yearly") {
       session = await Stripe.createCheckoutSession(
         req.user.billingId,
-        productToPriceMap.YEARLY
+        productToPriceMap.YEARLY,
+        "subscription"
       );
     }
+
+    // credits_1000 (ONE-TIME!)
+    if (req.body.product === "credits_1000") {
+      session = await Stripe.createCheckoutSession(
+        req.user.billingId,
+        productToPriceMap.CREDITS_1000,
+        "payment"
+      );
+    }
+
+    // credits_5000 (ONE-TIME!)
+    if (req.body.product === "credits_5000") {
+      session = await Stripe.createCheckoutSession(
+        req.user.billingId,
+        productToPriceMap.CREDITS_5000,
+        "payment"
+      );
+    }
+
+    // credits_10000 (ONE-TIME!)
+    if (req.body.product === "credits_10000") {
+      session = await Stripe.createCheckoutSession(
+        req.user.billingId,
+        productToPriceMap.CREDITS_10000,
+        "payment"
+      );
+    }
+
+    // credits_25000 (ONE-TIME!)
+    if (req.body.product === "credits_25000") {
+      session = await Stripe.createCheckoutSession(
+        req.user.billingId,
+        productToPriceMap.CREDITS_25000,
+        "payment"
+      );
+    }
+
     res.status(200).send({ sessionId: session.id });
   })
 );
@@ -56,6 +100,7 @@ router.post(
     }
 
     const data = event.data.object;
+    console.log("DATA: ", data);
 
     switch (event.type) {
       //manage subscription (new/update/cancel)
@@ -209,6 +254,43 @@ router.post(
         }
 
         await updatedUser.save();
+        break;
+      }
+
+      // ONE-TIME PURCHASES:
+      // -------------------------------------------------
+      case "checkout.session.completed": {
+        try {
+          const session = data;
+          console.log("checkout.session.completed: ", session);
+          // Safety check: only proceed if session.mode === 'payment'
+          if (session.mode === "payment") {
+            const { product } = session.metadata;
+
+            if (product === "credits_1000") {
+              const user = await User.findOne({ billingId: session.customer });
+              if (!user) {
+                console.log(
+                  "No user found for this customer ID: ",
+                  session.customer
+                );
+                return res.sendStatus(404);
+              }
+
+              // For example: add 1,000 credits
+              user.credits = (user.credits || 0) + 1000;
+
+              //createOneTimeInvoice(user, 1000 /* # of credits */);
+
+              await user.save();
+              console.log(`Added 1000 credits to ${user.email}`);
+            }
+          }
+        } catch (err) {
+          console.log("Error in checkout.session.completed block:", err);
+          return res.sendStatus(400);
+        }
+
         break;
       }
     }

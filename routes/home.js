@@ -96,6 +96,12 @@ router.get("/premium", (req, res) => {
   res.status(200).render("premium", { stripeEnv });
 });
 
+//SHOW CREDITS SHOP PAGE
+router.get("/credits", (req, res) => {
+  let stripeEnv = process.env.STRIPE_ENV;
+  res.status(200).render("credits", { stripeEnv });
+});
+
 //SHOW ABOUT page
 /*router.get('/about', catchAsync(async(req, res) => {
   res.status(200).render('about');

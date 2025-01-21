@@ -1,301 +1,425 @@
-<% layout ('layouts/boilerplate.ejs')  %> 
+<% layout ('layouts/boilerplate.ejs') %>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <div class="card profile-card">
-                <div class="row p-3 pb-3">
-                    <div class="col-12 d-flex align-items-center">
-                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
-                            <img src="/img/icon_student.png" class="img-fit" alt="">
-                        </div>
-                        <h3 class="px-3">Můj účet</h3>
-                    </div>
-                </div>
-                <div class="row p-3">
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Jméno</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <%= user.firstname %> <%= user.lastname %> 
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>E-mail</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <%= user.email %> 
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Přezdívka (do žebříčku)</p>
-                    </div>
-                    <div class="col-8 d-flex justify-content-between align-items-center">
-                        <% if (user.nickname) { %>
-                            <p class=""><%= user.nickname %></p>
-                        <% } else { %>
-                            <p class="">není nastavena</p>
-                        <% } %>
-                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-nickname" style="margin-bottom: 5px">Změnit</button>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Denní cíl</p>
-                    </div>
-                    <div class="col-8 d-flex justify-content-between align-items-center">
-                        <%= user.dailyGoal %> bodů
-                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-dailyGoal" style="margin-bottom: 5px">Změnit</button>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Dostupné kredity (běžné)</p>
-                    </div>
-                    <div class="col-8 d-flex justify-content-between align-items-center">
-                        <%= user.credits %>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Dostupné kredity (extra)</p>
-                    </div>
-                    <div class="col-8 d-flex justify-content-between align-items-center">
-                        <%= user.extraCredits %>
-                        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="" style="margin-bottom: 5px">Navýšit</button>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Počet nastudovaných kartiček</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <span>celkem: <%= user.cardsSeen %></span>
-                        <span class="mx-2">|</span>
-                        <span>
-                            tento měsíc: <%= user.cardsSeenThisMonth %>
-                        </span>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Počet nastudovaných otázek</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <span>celkem: <%= user.questionsSeenTotal %></span>
-                        <span class="mx-2">|</span>
-                        <span>
-                            tento měsíc: <%= user.questionsSeenThisMonth %>
-                        </span>
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Datum registrace</p>
-                    </div>
-                    <div class="col-8 d-flex align-items-center">
-                        <%= dateOfRegistration %> 
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Předplatné</p>
-                    </div>
-                    <% if(user.isPremium){ %>
-                        <div class="col-8">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="mb-0">aktivní do <%= endDate %> </p>
-                                <% if (user.subscriptionSource === "revenuecat"){ %>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal-revenuecat">
-                                        Správa předplatného
-                                    </button>
-                                <% } else if (!user.premiumGrantedByAdmin === true){ %>
-                                    <button class="manage-billing-button btn btn-sm btn-danger" type="submit">
-                                        Správa předplatného
-                                    </button>
-                                <% } %>
-                            </div>
-                        </div>
-                    <% } else { %>
-                        <div class="col-8 d-flex justify-content-between align-items-center">
-                            <p class="">žádné</p>
-                            <a href="/premium" class="btn btn-danger btn-sm mb-2">Aktivovat</a>
-                        </div>
-                    <% } %>
-                    <hr />
-                    <% if(user.isPremium){ %> 
-                        <div class="col-4 fw-bold d-flex align-items-center">
-                            <p>Typ předplatného</p>
-                        </div>
-                        <div class="col-8 d-flex align-items-center">
-                            <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">zrušeno (aktivní do konce období)</p>
-                            <% }%>  
-                            <% if(user.plan === "monthly" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">měsíční (další platba <%= endDate %>)</p>
-                            <% }%> 
-                            <% if(user.plan === "halfyear" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">půlroční (další platba <%= endDate %>)</p>
-                            <% }%> 
-                            <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">roční (další platba <%= endDate %>)</p>
-                            <% }%> 
-                            <% if(user.plan === "daily" && !user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">denní (další platba <%= endDate %>)</p>
-                            <% }%> 
-                            <% if(user.premiumGrantedByAdmin){ %>
-                                <p class="mb-0">zdarma do konce období</p>
-                            <% }%> 
-                        </div> 
-                        <hr />
-                    <% } %> 
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Heslo</p>
-                    </div>
-                    <div class="col-8 d-flex justify-content-end align-items-center">
-                        <% if (user.registrationMethod === "google" && !user.passwordJWT) { %>
-                            <a href="/auth/user/setUpPassword" class="btn btn-danger btn-sm" style="margin-bottom: 5px">Nastavit heslo</a>
-                        <% } else { %>
-                            <a href="/auth/user/changePassword" class="btn btn-danger btn-sm" style="margin-bottom: 5px">Změnit heslo</a>
-                        <% } %>
-                        <!--the following input transfers customer billing ID to Javascript -->
-                        <input type="text" id="customerID" name="customerID" value="<%= user.billingId %>" style="display:none" />
-                    </div>
-                    <hr />
-                    <div class="col-4 fw-bold d-flex align-items-center">
-                        <p>Odstranit účet</p>
-                    </div>
-                    <% if(user.isPremium && user.plan !== "none"){ %> 
-                        <div class="col-8 d-flex align-items-center">
-                            před odstraněním účtu je nutné zrušit předplatné
-                        </div>
-                    <% } else { %>
-                        <div class="col-8 d-flex justify-content-end align-items-start">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#deleteUserModal" class="btn btn-outline-danger btn-sm">Odstranit účet</a>
-                            
-                        </div>
-                    <% } %>
-                </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card profile-card">
+        <div class="row p-3 pb-3">
+          <div class="col-12 d-flex align-items-center">
+            <div
+              class="rounded-circle icon-background d-flex justify-content-center align-items-center"
+            >
+              <img src="/img/icon_student.png" class="img-fit" alt="" />
             </div>
+            <h3 class="px-3">Můj účet</h3>
+          </div>
         </div>
+        <div class="row p-3">
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Jméno</p>
+          </div>
+          <div class="col-8 d-flex align-items-center">
+            <%= user.firstname %> <%= user.lastname %>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>E-mail</p>
+          </div>
+          <div class="col-8 d-flex align-items-center"><%= user.email %></div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Přezdívka (do žebříčku)</p>
+          </div>
+          <div class="col-8 d-flex justify-content-between align-items-center">
+            <% if (user.nickname) { %>
+            <p class=""><%= user.nickname %></p>
+            <% } else { %>
+            <p class="">není nastavena</p>
+            <% } %>
+            <button
+              type="button"
+              class="btn btn-sm btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#modal-nickname"
+              style="margin-bottom: 5px"
+            >
+              Změnit
+            </button>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Denní cíl</p>
+          </div>
+          <div class="col-8 d-flex justify-content-between align-items-center">
+            <%= user.dailyGoal %> bodů
+            <button
+              type="button"
+              class="btn btn-sm btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#modal-dailyGoal"
+              style="margin-bottom: 5px"
+            >
+              Změnit
+            </button>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Dostupné AI kredity (běžné)</p>
+          </div>
+          <div class="col-8 d-flex justify-content-between align-items-center">
+            <%= user.credits %>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Dostupné AI kredity (extra)</p>
+          </div>
+          <div class="col-8 d-flex justify-content-between align-items-center">
+            <%= user.extraCredits %>
+            <a
+              href="/credits"
+              class="btn btn-sm btn-danger"
+              style="margin-bottom: 5px"
+              >Navýšit</a
+            >
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Počet nastudovaných kartiček</p>
+          </div>
+          <div class="col-8 d-flex align-items-center">
+            <span>celkem: <%= user.cardsSeen %></span>
+            <span class="mx-2">|</span>
+            <span> tento měsíc: <%= user.cardsSeenThisMonth %> </span>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Počet nastudovaných otázek</p>
+          </div>
+          <div class="col-8 d-flex align-items-center">
+            <span>celkem: <%= user.questionsSeenTotal %></span>
+            <span class="mx-2">|</span>
+            <span> tento měsíc: <%= user.questionsSeenThisMonth %> </span>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Datum registrace</p>
+          </div>
+          <div class="col-8 d-flex align-items-center">
+            <%= dateOfRegistration %>
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Předplatné</p>
+          </div>
+          <% if(user.isPremium){ %>
+          <div class="col-8">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="mb-0">aktivní do <%= endDate %></p>
+              <% if (user.subscriptionSource === "revenuecat"){ %>
+              <button
+                class="btn btn-sm btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#modal-revenuecat"
+              >
+                Správa předplatného
+              </button>
+              <% } else if (!user.premiumGrantedByAdmin === true){ %>
+              <button
+                class="manage-billing-button btn btn-sm btn-danger"
+                type="submit"
+              >
+                Správa předplatného
+              </button>
+              <% } %>
+            </div>
+          </div>
+          <% } else { %>
+          <div class="col-8 d-flex justify-content-between align-items-center">
+            <p class="">žádné</p>
+            <a href="/premium" class="btn btn-danger btn-sm mb-2">Aktivovat</a>
+          </div>
+          <% } %>
+          <hr />
+          <% if(user.isPremium){ %>
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Typ předplatného</p>
+          </div>
+          <div class="col-8 d-flex align-items-center">
+            <% if(user.plan === "none" && !user.premiumGrantedByAdmin){ %>
+            <p class="mb-0">zrušeno (aktivní do konce období)</p>
+            <% }%> <% if(user.plan === "monthly" &&
+            !user.premiumGrantedByAdmin){ %>
+            <p class="mb-0">měsíční (další platba <%= endDate %>)</p>
+            <% }%> <% if(user.plan === "halfyear" &&
+            !user.premiumGrantedByAdmin){ %>
+            <p class="mb-0">půlroční (další platba <%= endDate %>)</p>
+            <% }%> <% if(user.plan === "yearly" && !user.premiumGrantedByAdmin){
+            %>
+            <p class="mb-0">roční (další platba <%= endDate %>)</p>
+            <% }%> <% if(user.plan === "daily" && !user.premiumGrantedByAdmin){
+            %>
+            <p class="mb-0">denní (další platba <%= endDate %>)</p>
+            <% }%> <% if(user.premiumGrantedByAdmin){ %>
+            <p class="mb-0">zdarma do konce období</p>
+            <% }%>
+          </div>
+          <hr />
+          <% } %>
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Heslo</p>
+          </div>
+          <div class="col-8 d-flex justify-content-end align-items-center">
+            <% if (user.registrationMethod === "google" && !user.passwordJWT) {
+            %>
+            <a
+              href="/auth/user/setUpPassword"
+              class="btn btn-danger btn-sm"
+              style="margin-bottom: 5px"
+              >Nastavit heslo</a
+            >
+            <% } else { %>
+            <a
+              href="/auth/user/changePassword"
+              class="btn btn-danger btn-sm"
+              style="margin-bottom: 5px"
+              >Změnit heslo</a
+            >
+            <% } %>
+            <!--the following input transfers customer billing ID to Javascript -->
+            <input
+              type="text"
+              id="customerID"
+              name="customerID"
+              value="<%= user.billingId %>"
+              style="display: none"
+            />
+          </div>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Odstranit účet</p>
+          </div>
+          <% if(user.isPremium && user.plan !== "none"){ %>
+          <div class="col-8 d-flex align-items-center">
+            před odstraněním účtu je nutné zrušit předplatné
+          </div>
+          <% } else { %>
+          <div class="col-8 d-flex justify-content-end align-items-start">
+            <a
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteUserModal"
+              class="btn btn-outline-danger btn-sm"
+              >Odstranit účet</a
+            >
+          </div>
+          <% } %>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <div class="card profile-card">
-                <div class="row p-3 pb-3">
-                    <div class="col-12 d-flex align-items-center">
-                        <div class="rounded-circle icon-background d-flex justify-content-center align-items-center">
-                            <img src="/img/icon_invoice.png" class="img-fit" alt="">
-                        </div>
-                        <div>
-                            <h3 class="px-3">Platby</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row p-3 pt-1">
-                    <% if(user.invoices.length === 0  && user.invoicesDbObjects.length === 0){ %>
-                        <p class="text-center text-muted">Zatím nemáš žádné potvrzení o platbách.</p>
-                    <% } else { %>
-                        <table class="mx-3">
-                            <tr>
-                            <th>Číslo dokladu</th>
-                            <th class="text-center">Částka</th>
-                            <th class="text-center">Vystavena</th>
-                            </tr>
-                                <% user.invoicesDbObjects.forEach((invoice, index) => { %>
-                                    <tr>
-                                        <td><a href="/invoice/show/<%= invoice._id %>" target="_blank"><%= invoice.identificationNumber %></a></td>
-                                        <td class="text-center"><%= invoice.amount %> Kč</td>
-                                        <td class="text-center"><%= invoice.dateIssued %></td>
-                                    </tr>
-                                <% }) %>
-                        </table>
-                    <% } %>
-                </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="card profile-card">
+        <div class="row p-3 pb-3">
+          <div class="col-12 d-flex align-items-center">
+            <div
+              class="rounded-circle icon-background d-flex justify-content-center align-items-center"
+            >
+              <img src="/img/icon_invoice.png" class="img-fit" alt="" />
             </div>
+            <div>
+              <h3 class="px-3">Platby</h3>
+            </div>
+          </div>
         </div>
+        <div class="row p-3 pt-1">
+          <% if(user.invoices.length === 0 && user.invoicesDbObjects.length ===
+          0){ %>
+          <p class="text-center text-muted">
+            Zatím nemáš žádné potvrzení o platbách.
+          </p>
+          <% } else { %>
+          <table class="mx-3">
+            <tr>
+              <th>Číslo dokladu</th>
+              <th class="text-center">Částka</th>
+              <th class="text-center">Vystavena</th>
+            </tr>
+            <% user.invoicesDbObjects.forEach((invoice, index) => { %>
+            <tr>
+              <td>
+                <a href="/invoice/show/<%= invoice._id %>" target="_blank"
+                  ><%= invoice.identificationNumber %></a
+                >
+              </td>
+              <td class="text-center"><%= invoice.amount %> Kč</td>
+              <td class="text-center"><%= invoice.dateIssued %></td>
+            </tr>
+            <% }) %>
+          </table>
+          <% } %>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-    <!-- Modal REVENUECAT -->
-    <div class="modal fade" id="modal-revenuecat" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title">Předplatné aktivováno přes mobilní aplikaci</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <p>Tvé předplatné Premium bylo aktivováno přes mobilní aplikaci. Zrušení předplatného je proto nutné provést prostřednictvím příslušné služby.</p>
-            <p>iOS: Zrušení předplatného je možné provést v Nastavení pod položkou Předplatná.</p>
-            <p>Android: Zrušení předplatného je možné provést v Google Play Store pod položkou Předplatná.</p>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-
-  <!-- MODAL - Delete user confirmation -->
-  <div class="modal fade" id="deleteUserModal" tabindex="-1">
-    <div class="modal-dialog">
+<!-- Modal REVENUECAT -->
+<div
+  class="modal fade"
+  id="modal-revenuecat"
+  tabindex="-1"
+  aria-labelledby="modalWarning"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-        <div class="modal-header">
+      <div class="modal-header">
+        <h5 class="modal-title">Předplatné aktivováno přes mobilní aplikaci</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Tvé předplatné Premium bylo aktivováno přes mobilní aplikaci. Zrušení
+          předplatného je proto nutné provést prostřednictvím příslušné služby.
+        </p>
+        <p>
+          iOS: Zrušení předplatného je možné provést v Nastavení pod položkou
+          Předplatná.
+        </p>
+        <p>
+          Android: Zrušení předplatného je možné provést v Google Play Store pod
+          položkou Předplatná.
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-sm btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Zavřít
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL - Delete user confirmation -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
         <h5 class="modal-title">Opravdu chcete odstranit svůj účet?</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body d-flex justify-content-center align-items-center">
-            <a href="/auth/user/deleteMyAccount" class="btn btn-danger">Ano, odstranit</a>
-        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body d-flex justify-content-center align-items-center">
+        <a href="/auth/user/deleteMyAccount" class="btn btn-danger"
+          >Ano, odstranit</a
+        >
+      </div>
     </div>
-    </div>
+  </div>
 </div>
 
 <!-- Set nickname modal -->
-<div class="modal fade" id="modal-nickname" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div
+  class="modal fade"
+  id="modal-nickname"
+  tabindex="-1"
+  aria-labelledby="modalWarning"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Nastavit přezdívku pro žebříček</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header">
+        <h5 class="modal-title">Nastavit přezdívku pro žebříček</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/auth/user/changeNickname" method="POST" class="m-lg-3 m-2">
+        <div class="modal-body">
+          <input
+            type="text"
+            class="form-control bordered"
+            id="nickname"
+            name="nickname"
+            value="<%= currentUser.nickname %>"
+            maxlength="16"
+            required
+          />
+          <p class="text-small text-muted p-2 mb-0">maximálně 16 znaků</p>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-danger" type="submit">Uložit</button>
+          </div>
         </div>
-        <form action="/auth/user/changeNickname" method="POST" class="m-lg-3 m-2">
-            <div class="modal-body">
-                <input type="text" class="form-control bordered" id="nickname" name="nickname" value="<%= currentUser.nickname %>" maxlength="16" required>
-                <p class="text-small text-muted p-2 mb-0">maximálně 16 znaků</p>
-                <div class="d-flex justify-content-center">
-                    <button class="btn btn-danger" type="submit">
-                        Uložit
-                    </button>
-                </div>
-            </div>
-            
-        </form>
+      </form>
     </div>
-    </div>
+  </div>
 </div>
 
 <!-- Set dailyGoal modal -->
-<div class="modal fade" id="modal-dailyGoal" tabindex="-1" aria-labelledby="modalWarning" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<div
+  class="modal fade"
+  id="modal-dailyGoal"
+  tabindex="-1"
+  aria-labelledby="modalWarning"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title">Nastavit denní cíl</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header">
+        <h5 class="modal-title">Nastavit denní cíl</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        action="/auth/user/changeDailyGoal"
+        method="POST"
+        class="m-lg-3 m-2"
+      >
+        <div class="modal-body">
+          <p class="text-center">
+            Každá zodpovězená otázka nebo nastudovaná kartička se počítá za
+            jeden bod. Tvůj denní cíl musí být <b>nejméně 10 bodů</b>.
+          </p>
+          <input
+            type="number"
+            class="form-control bordered"
+            id="dailyGoal"
+            name="dailyGoal"
+            min="10"
+            value="<%= currentUser.dailyGoal %>"
+            required
+          />
+          <div class="d-flex justify-content-center mt-3">
+            <button class="btn btn-danger" type="submit">Uložit</button>
+          </div>
         </div>
-        <form action="/auth/user/changeDailyGoal" method="POST" class="m-lg-3 m-2">
-            <div class="modal-body">
-                <p class="text-center">Každá zodpovězená otázka nebo nastudovaná kartička se počítá za jeden bod. Tvůj denní cíl musí být <b>nejméně 10 bodů</b>.</p>
-                <input type="number" class="form-control bordered" id="dailyGoal" name="dailyGoal" min="10" value="<%= currentUser.dailyGoal %>" required>
-                <div class="d-flex justify-content-center mt-3">
-                    <button class="btn btn-danger" type="submit">
-                        Uložit
-                    </button>
-                </div>
-            </div>
-            
-        </form>
+      </form>
     </div>
-    </div>
+  </div>
 </div>
 
-<script src="/js/jquery.min.js" ></script>
+<script src="/js/jquery.min.js"></script>
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript" src="/js/profile.js"></script>

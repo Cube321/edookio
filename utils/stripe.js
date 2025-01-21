@@ -14,9 +14,9 @@ const getCustomerByID = async (id) => {
   return customer;
 };
 
-const createCheckoutSession = async (customer, price) => {
+const createCheckoutSession = async (customer, price, mode) => {
   const session = await Stripe.checkout.sessions.create({
-    mode: "subscription",
+    mode: mode,
     payment_method_types: ["card"],
     customer,
     allow_promotion_codes: true,

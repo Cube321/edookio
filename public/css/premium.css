@@ -10,6 +10,14 @@ body {
   background-color: rgba(230, 15, 133, 0.08);
 }
 
+.text-smaller {
+  font-size: 0.9rem;
+}
+
+.text-small {
+  font-size: 0.8rem;
+}
+
 .main-header-premium {
   background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)),
     url(../img/bg_cover5.jpeg) no-repeat center center;
