@@ -279,12 +279,63 @@ router.post(
                 );
                 return res.sendStatus(404);
               }
-              user.credits = user.credits + 1000;
+              user.extraCredits = user.extraCredits + 1000;
 
               await user.save();
               await helpers.createInvoice(user._id, 290, "credits", null);
               await mail.adminInfoCreditsPurchased(user.email, 1000);
               console.log(`Added 1000 credits to ${user.email}`);
+            }
+
+            if (product === "credits_5000") {
+              const user = await User.findOne({ billingId: session.customer });
+              if (!user) {
+                console.log(
+                  "No user found for this customer ID: ",
+                  session.customer
+                );
+                return res.sendStatus(404);
+              }
+              user.extraCredits = user.extraCredits + 5000;
+
+              await user.save();
+              await helpers.createInvoice(user._id, 1190, "credits", null);
+              await mail.adminInfoCreditsPurchased(user.email, 5000);
+              console.log(`Added 5000 credits to ${user.email}`);
+            }
+
+            if (product === "credits_10000") {
+              const user = await User.findOne({ billingId: session.customer });
+              if (!user) {
+                console.log(
+                  "No user found for this customer ID: ",
+                  session.customer
+                );
+                return res.sendStatus(404);
+              }
+              user.extraCredits = user.extraCredits + 10000;
+
+              await user.save();
+              await helpers.createInvoice(user._id, 1990, "credits", null);
+              await mail.adminInfoCreditsPurchased(user.email, 10000);
+              console.log(`Added 10000 credits to ${user.email}`);
+            }
+
+            if (product === "credits_25000") {
+              const user = await User.findOne({ billingId: session.customer });
+              if (!user) {
+                console.log(
+                  "No user found for this customer ID: ",
+                  session.customer
+                );
+                return res.sendStatus(404);
+              }
+              user.extraCredits = user.extraCredits + 25000;
+
+              await user.save();
+              await helpers.createInvoice(user._id, 3990, "credits", null);
+              await mail.adminInfoCreditsPurchased(user.email, 25000);
+              console.log(`Added 25000 credits to ${user.email}`);
             }
           }
         } catch (err) {
