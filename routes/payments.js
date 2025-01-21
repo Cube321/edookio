@@ -296,7 +296,12 @@ router.post(
                 null,
                 1000
               );
-              await mail.adminInfoCreditsPurchased(user.email, 1000);
+              await mail.adminInfoCreditsPurchased(
+                user.email,
+                1000,
+                290,
+                "CZK"
+              );
               console.log(`Added 1000 credits to ${user.email}`);
             }
 
@@ -320,7 +325,12 @@ router.post(
                 null,
                 5000
               );
-              await mail.adminInfoCreditsPurchased(user.email, 5000);
+              await mail.adminInfoCreditsPurchased(
+                user.email,
+                5000,
+                1190,
+                "CZK"
+              );
               console.log(`Added 5000 credits to ${user.email}`);
             }
 
@@ -344,7 +354,12 @@ router.post(
                 null,
                 10000
               );
-              await mail.adminInfoCreditsPurchased(user.email, 10000);
+              await mail.adminInfoCreditsPurchased(
+                user.email,
+                10000,
+                1990,
+                "CZK"
+              );
               console.log(`Added 10000 credits to ${user.email}`);
             }
 
@@ -368,7 +383,12 @@ router.post(
                 null,
                 25000
               );
-              await mail.adminInfoCreditsPurchased(user.email, 25000);
+              await mail.adminInfoCreditsPurchased(
+                user.email,
+                25000,
+                3990,
+                "CZK"
+              );
               console.log(`Added 25000 credits to ${user.email}`);
             }
           }
