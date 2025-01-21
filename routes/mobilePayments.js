@@ -63,7 +63,16 @@ router.post(
           ? new Date(Number(expiration_at_ms))
           : null;
         user.subscriptionSource = "revenuecat";
-        createOpenInvoice(user, user.plan);
+
+        //create invoice
+        await helpers.createInvoice(
+          user._id,
+          249,
+          "subscription",
+          "CZK",
+          user.plan
+        );
+
         try {
           await mail.subscriptionCreated(user.email, formattedEndDate);
           await mail.adminInfoNewSubscription(user, paymentSource, store);
@@ -88,7 +97,16 @@ router.post(
         user.creditsLastRecharge = new Date();
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
-        createOpenInvoice(user, user.plan);
+
+        //create invoice
+        await helpers.createInvoice(
+          user._id,
+          249,
+          "subscription",
+          "CZK",
+          user.plan
+        );
+
         formattedEndDate = "-";
         try {
           await mail.adminInfoSubscriptionUpdated(
@@ -167,17 +185,5 @@ router.post(
     res.status(200).send("RevenueCat webhook processed");
   })
 );
-
-// HELPERS
-const createOpenInvoice = (user, plan) => {
-  // Create open invoice
-  user.hasOpenInvoice = true;
-  user.openInvoiceData = {
-    amount: 249,
-    date: Date.now(),
-    plan: plan,
-  };
-  return user;
-};
 
 module.exports = router;

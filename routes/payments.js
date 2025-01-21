@@ -246,18 +246,24 @@ router.post(
 
         console.log(`User ${user.email} paid ${amountPaid} CZK`);
 
-        updatedUser = createOpenInvoice(user, amountPaid, plan);
+        await helpers.createInvoice(
+          user._id,
+          amountPaid,
+          "subscription",
+          "CZK",
+          plan
+        );
 
-        updatedUser.subscriptionPrice = amountPaid;
+        user.subscriptionPrice = amountPaid;
 
         //count monthly subscription price
         if (plan === "monthly") {
-          updatedUser.monthlySubscriptionPrice = amountPaid;
+          user.monthlySubscriptionPrice = amountPaid;
         } else if (plan === "yearly") {
-          updatedUser.monthlySubscriptionPrice = amountPaid / 12;
+          user.monthlySubscriptionPrice = amountPaid / 12;
         }
 
-        await updatedUser.save();
+        await user.save();
         break;
       }
 
@@ -282,7 +288,13 @@ router.post(
               user.extraCredits = user.extraCredits + 1000;
 
               await user.save();
-              await helpers.createInvoice(user._id, 290, "credits", null);
+              await helpers.createInvoice(
+                user._id,
+                290,
+                "credits",
+                "CZK",
+                null
+              );
               await mail.adminInfoCreditsPurchased(user.email, 1000);
               console.log(`Added 1000 credits to ${user.email}`);
             }
@@ -299,7 +311,13 @@ router.post(
               user.extraCredits = user.extraCredits + 5000;
 
               await user.save();
-              await helpers.createInvoice(user._id, 1190, "credits", null);
+              await helpers.createInvoice(
+                user._id,
+                1190,
+                "credits",
+                "CZK",
+                null
+              );
               await mail.adminInfoCreditsPurchased(user.email, 5000);
               console.log(`Added 5000 credits to ${user.email}`);
             }
@@ -316,7 +334,13 @@ router.post(
               user.extraCredits = user.extraCredits + 10000;
 
               await user.save();
-              await helpers.createInvoice(user._id, 1990, "credits", null);
+              await helpers.createInvoice(
+                user._id,
+                1990,
+                "credits",
+                "CZK",
+                null
+              );
               await mail.adminInfoCreditsPurchased(user.email, 10000);
               console.log(`Added 10000 credits to ${user.email}`);
             }
@@ -333,7 +357,13 @@ router.post(
               user.extraCredits = user.extraCredits + 25000;
 
               await user.save();
-              await helpers.createInvoice(user._id, 3990, "credits", null);
+              await helpers.createInvoice(
+                user._id,
+                3990,
+                "credits",
+                "CZK",
+                null
+              );
               await mail.adminInfoCreditsPurchased(user.email, 25000);
               console.log(`Added 25000 credits to ${user.email}`);
             }
@@ -356,17 +386,5 @@ router.post("/billing", async (req, res) => {
   const session = await Stripe.createBillingSession(customer);
   res.status(200).json({ url: session.url });
 });
-
-//HELPERS
-const createOpenInvoice = (user, amountPaid, plan) => {
-  //create open invoice
-  user.hasOpenInvoice = true;
-  user.openInvoiceData = {
-    amount: amountPaid,
-    date: Date.now(),
-    plan: plan,
-  };
-  return user;
-};
 
 module.exports = router;

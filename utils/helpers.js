@@ -22,6 +22,7 @@ helpers.createInvoice = async function (
   userId,
   amount,
   type,
+  currency,
   subscriptionPeriod
 ) {
   let foundUser = await User.findById(userId);
@@ -33,6 +34,18 @@ helpers.createInvoice = async function (
   let invoiceNum =
     (await Settings.findOne({ settingName: "lastInvoiceNumber" })) + 1;
 
+  //check if the last invoice number is not in the db
+  invoiceNumberExists = await Invoice.findOne({
+    identificationNumber: invoiceNum,
+  });
+
+  while (invoiceNumberExists) {
+    invoiceNum++;
+    invoiceNumberExists = await Invoice.findOne({
+      identificationNumber: invoiceNum,
+    });
+  }
+
   let invoiceAmount = parseFloat(amount);
 
   let today = new Date();
@@ -43,8 +56,11 @@ helpers.createInvoice = async function (
     amount: invoiceAmount,
     user: userId,
     type,
+    currency,
     subscriptionPeriod,
   };
+
+  console.log("newInvoice", newInvoice);
 
   //save invoice to DB
   let createdInvoice = await Invoice.create(newInvoice);
