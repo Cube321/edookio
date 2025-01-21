@@ -31,8 +31,11 @@ helpers.createInvoice = async function (
     return;
   }
 
-  let invoiceNum =
-    (await Settings.findOne({ settingName: "lastInvoiceNumber" })) + 1;
+  let invoiceNumObject = await Settings.findOne({
+    settingName: "lastInvoiceNumber",
+  });
+
+  let invoiceNum = invoiceNumObject.settingValue + 1;
 
   //check if the last invoice number is not in the db
   invoiceNumberExists = await Invoice.findOne({
