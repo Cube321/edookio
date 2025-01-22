@@ -56,10 +56,12 @@
                 <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= card._id %>">
                   <div class="question"><%- card.pageA %></div>
                     <div><%- card.pageB %></div>
-                    <div class="d-flex justify-content-end">
-                        <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
-                        <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn">Odstranit</a>
-                    </div>
+                    <% if (!demo) { %>
+                      <div class="d-flex justify-content-end">
+                          <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
+                          <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn">Odstranit</a>
+                      </div>
+                    <% } %>
                   </div>  
               <% } else { %>
                 <div class="card list-all-card d-flex justify-content-between flex-column">
@@ -80,11 +82,12 @@
                   <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[0] %></span> <i class="far fa-times-circle icon-md"></i></p>
                   <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[1] %></span> <i class="far fa-times-circle icon-md"></i></p>
               </div>
-              
-              <div class="d-flex justify-content-end">
-                <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
-                <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
-              </div>
+              <% if (!demo) { %>
+                <div class="d-flex justify-content-end">
+                  <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
+                  <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
+                </div>
+              <% } %>
             </div>
           <% } else { %>
             <div class="card list-all-card d-flex justify-content-between flex-column">
