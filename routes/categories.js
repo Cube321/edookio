@@ -51,6 +51,7 @@ router.get(
 //SHOW SECTIONS OF CATEGORY
 router.get(
   "/category/:categoryId",
+  isLoggedIn,
   catchAsync(async (req, res, next) => {
     const { categoryId } = req.params;
     const category = await Category.findById(categoryId)
