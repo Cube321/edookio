@@ -234,15 +234,6 @@ router.get(
   })
 );
 
-//STATS - demo limit reached count
-router.get(
-  "/stats/demoLimitReached",
-  catchAsync(async (req, res) => {
-    incrementEventCount("demoLimitReached");
-    res.sendStatus(200);
-  })
-);
-
 //HELPERS
 function isCardInArray(arrayOfIds, cardIdString) {
   let arrayOfStrings = arrayOfIds.map((item) => item.toString());

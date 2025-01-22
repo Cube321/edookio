@@ -173,10 +173,6 @@ router.post(
       let createdCategoryId = await seedContent(newUser._id);
       newUser.createdCategories.push(createdCategoryId);
       await newUser.save();
-
-      if (req.session.demoCardsSeen && req.session.demoCardsSeen > 5) {
-        incrementEventCount("registeredAfterDemoLimit");
-      }
       req.flash("successOverlay", "Skvělé! Účet byl vytvořen.");
       if (req.query.requiresPremium) {
         res.status(201).redirect("/premium");

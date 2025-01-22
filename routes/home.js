@@ -21,7 +21,7 @@ router.get(
 
     //no user - render index (landing page)
     if (!user) {
-      const { generatedSectionId } = req.session;
+      const { generatedSectionId, generatedCategoryId } = req.session;
       const categories = [];
       let numOfCategories = 0;
       const numOfCards = 0;
@@ -36,6 +36,7 @@ router.get(
         numOfCategories,
         percent,
         generatedSectionId,
+        generatedCategoryId,
       });
     }
 

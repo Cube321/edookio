@@ -50,11 +50,6 @@ $(document).ready(function () {
     let cardBack = cards[index].pageB;
     let progressStatus = Math.round((index * 100) / cards.length);
 
-    //check demo limit
-    if (receivedData.user === "none") {
-      console.log("neni user");
-    }
-
     //update card content
     $("#flip-card").empty();
     $("#flip-card").append(`
@@ -393,31 +388,6 @@ $(document).ready(function () {
     push = 3;
   }
 });
-
-function showDemoFinishedPage() {
-  $(".flip-card-inner").empty();
-  $(".flip-card-inner").append(`
-        <div class="card-body flip-card-front pb-0 px-0">
-            <div class="row height-100 demo-finished-card">
-            <div class="col-12 d-flex flex-column justify-content-center align-items-center ">
-                <p class="demo-finished-main text-center mb-4">Super! Tohle bylo tvých 5 ukázkových kartiček.</p>
-                <p class="demo-finished-text text-center text-smaller text-muted mt-3 mb-4">Teď už víš, jak InLege funguje. Vytvoř si účet a získej přístup k dalším <b>více než 5 000 kartičkám</b>. Je to zdarma!</p>
-                <a href="/auth/user/new" class="btn btn-lg btn-danger my-3">Vytvořit účet zdarma</a>
-            </div>
-            </div>
-        </div>
-        `);
-  $("#front-menu-row").remove();
-  $("#back-menu-row").remove();
-  $("#mini-menu").remove();
-  $.ajax({
-    method: "GET",
-    url: `/stats/demoLimitReached`,
-  }).then((res) => {
-    console.log(res);
-  });
-  push = 3;
-}
 
 function updateUsersCardsCounters() {
   $.ajax({

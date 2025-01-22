@@ -18,21 +18,12 @@ router.get(
   isAdmin,
   catchAsync(async (req, res) => {
     const users = await User.find({});
-    const demoLimitReachedStats = await Stats.findOne({
-      eventName: "demoLimitReached",
-    });
-    let registeredAfterDemoLimitStats = await Stats.findOne({
-      eventName: "registeredAfterDemoLimit",
-    });
     let startRandomTestStats = await Stats.findOne({
       eventName: "startRandomTest",
     });
     let startRandomCardsStats = await Stats.findOne({
       eventName: "startRandomCards",
     });
-    if (!registeredAfterDemoLimitStats) {
-      registeredAfterDemoLimitStats = { eventCount: 0 };
-    }
     if (!startRandomTestStats) {
       startRandomTestStats = { eventCount: 0 };
     }
@@ -49,10 +40,6 @@ router.get(
 
     //count ratios
     let sectionsTotal = sectionsFreeCount;
-    let demoLimitRegistrationRatio = Math.round(
-      (100 / demoLimitReachedStats.eventCount) *
-        registeredAfterDemoLimitStats.eventCount
-    );
 
     let updatedUsers = [];
 
@@ -212,11 +199,8 @@ router.get(
       sectionsPremiumCount,
       freeCardRatio,
       freeSectionRatio,
-      demoLimitReachedStats,
       startRandomTestStats,
       startRandomCardsStats,
-      registeredAfterDemoLimitStats,
-      demoLimitRegistrationRatio,
       unsubscribedUsersCount,
       totalCardsSeen,
       totalQuestionsSeen,

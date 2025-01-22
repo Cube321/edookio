@@ -412,11 +412,19 @@
                   pomůcek. Palcem můžeš označit kartičky, které již umíš, a poté
                   se vrátit jen k těm, které ještě potřebuješ procvičit.
                 </p>
+                <% if (!generatedSectionId || !generatedCategoryId) { %>
                 <a
                   href="/category/678ff4b549b78234672fe406/section/679125738da45fa30cf718a2/card30/1?mode=unknown"
                   class="btn btn-lg btn-danger"
                   >Vyzkoušet kartičky</a
                 >
+                <% } else { %>
+                <a
+                  href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown"
+                  class="btn btn-lg btn-danger"
+                  >Vyzkoušet kartičky</a
+                >
+                <% } %>
               </div>
             </div>
             <div class="col-lg-6 mb-3">

@@ -19,15 +19,6 @@ router.get(
     }
     let cards = foundSection.cards;
 
-    //DEMO MODE
-    let demoCardsSeen = 0;
-    if (!res.user && !req.session.demoCardsSeen) {
-      req.session.demoCardsSeen = 1;
-      demoCardsSeen = 1;
-    } else if (!req.user) {
-      req.session.demoCardsSeen++;
-      demoCardsSeen = req.session.demoCardsSeen;
-    }
     //is user and is premium
     let user = "none";
     if (req.user) {
@@ -57,7 +48,6 @@ router.get(
       cards,
       user,
       startAt: 0,
-      demoCardsSeen,
     });
     res.status(200).send(resData);
   })
@@ -108,15 +98,6 @@ router.get(
       knowsAllCards = true;
     }
 
-    //DEMO MODE
-    let demoCardsSeen = 0;
-    if (!res.user && !req.session.demoCardsSeen) {
-      req.session.demoCardsSeen = 1;
-      demoCardsSeen = 1;
-    } else if (!req.user) {
-      req.session.demoCardsSeen++;
-      demoCardsSeen = req.session.demoCardsSeen;
-    }
     //is user and is premium
     let user = "none";
     if (req.user) {
@@ -146,7 +127,6 @@ router.get(
       cards,
       user,
       startAt: 0,
-      demoCardsSeen,
       knowsAllCards,
     });
     res.status(200).send(resData);
@@ -213,14 +193,6 @@ async function getRandomCards(categoryId) {
 router.post(
   "/api/updateLastSeenCard/section/:sectionId/:cardNum",
   catchAsync(async (req, res) => {
-    let { sectionId, cardNum } = req.params;
-    //DEMO MODE
-    let demoCardsSeen = 0;
-    if (!req.user) {
-      req.session.demoCardsSeen++;
-      demoCardsSeen = req.session.demoCardsSeen;
-    }
-
     if (req.user) {
       let user = req.user;
 
@@ -238,10 +210,9 @@ router.post(
           user.dailyGoalReachedToday = true;
         }
       }
-
       await user.save();
     }
-    res.status(201).send({ demoCardsSeen });
+    res.status(201).send({ message: "no_data" });
   })
 );
 

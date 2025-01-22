@@ -13,7 +13,11 @@
   </div>
   <div class="row">
       <div class="col-12 text-center">
+        <% if (currentUser) { %>
           <h2 class="text-center"><%= section.name %></h2> 
+        <% } else { %>
+          <h2 class="text-center">Vygenerovaný balíček</h2>
+        <% } %>
       </div>
   </div>
 
