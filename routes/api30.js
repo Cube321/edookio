@@ -408,8 +408,10 @@ router.post(
   "/api/appAnnounced",
   catchAsync(async (req, res) => {
     let { user } = req;
-    user.appAnnouncementModalShown = true;
-    await user.save();
+    if (user) {
+      user.appAnnouncementModalShown = true;
+      await user.save();
+    }
     res.sendStatus(200);
   })
 );
@@ -420,8 +422,10 @@ router.post(
   catchAsync(async (req, res) => {
     console.log("card30Explained route running");
     let { user } = req;
-    user.card30ExplanationModalShown = true;
-    await user.save();
+    if (user) {
+      user.card30ExplanationModalShown = true;
+      await user.save();
+    }
     res.sendStatus(200);
   })
 );

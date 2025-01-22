@@ -367,6 +367,7 @@
             <div
               class="col-12 d-flex justify-content-center align-items-center"
             >
+              <% if (!generatedSectionId) { %>
               <a
                 href=""
                 class="btn btn-lg btn-danger mb-4"
@@ -374,6 +375,16 @@
                 data-bs-target="#createWithAIModal"
                 >Vyzkoušet generování</a
               >
+              <% } else { %>
+              <a
+                href="/demo/<%= generatedSectionId %>/showAll"
+                class="btn btn-lg btn-danger mb-4 mx-1"
+                >Zobrazit vygenerovaný obsah</a
+              >
+              <a href="/auth/user/new" class="btn btn-lg btn-danger mb-4 mx-1"
+                >Pokračovat v generování</a
+              >
+              <% } %>
             </div>
           </div>
         </div>
@@ -401,7 +412,11 @@
                   pomůcek. Palcem můžeš označit kartičky, které již umíš, a poté
                   se vrátit jen k těm, které ještě potřebuješ procvičit.
                 </p>
-                <a href="#" class="btn btn-lg btn-danger">Vyzkoušet kartičky</a>
+                <a
+                  href="/category/678ff4b549b78234672fe406/section/679125738da45fa30cf718a2/card30/1?mode=unknown"
+                  class="btn btn-lg btn-danger"
+                  >Vyzkoušet kartičky</a
+                >
               </div>
             </div>
             <div class="col-lg-6 mb-3">

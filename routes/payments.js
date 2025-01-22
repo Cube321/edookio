@@ -139,8 +139,8 @@ router.post(
         //handle subscription
         if (!data.canceled_at && data.plan.id == process.env.PRODUCT_YEARLY) {
           user.plan = "yearly";
-          user.creditsMonthlyLimit = 1000;
-          user.credits = 1000;
+          user.creditsMonthlyLimit = 1250;
+          user.credits = 1250;
           user.creditsLastRecharge = today;
           user.endDate = moment(today).add("1", "year").format();
           //format endDate

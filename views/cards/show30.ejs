@@ -44,9 +44,16 @@
     <nav class="navbar bg-white" style="border-bottom: 1px solid #EEEEEE;" id="card-nav">
       <div class="container">
         <ul class="navbar-nav">
-          <li><a href="/category/<%= section.categoryId %>" class="back-link"><i
-                class="fas fa-chevron-left me-2 mb-2"></i>Zpět na předmět</a></li>
-          <li>
+          <% if (!currentUser) { %>
+            <li><a href="/" class="back-link"><i
+                  class="fas fa-chevron-left me-2 mb-2"></i>Zpět</a></li>
+            <li>
+          <% } else { %>
+            <li><a href="/category/<%= section.categoryId %>" class="back-link"><i
+                  class="fas fa-chevron-left me-2 mb-2"></i>Zpět na předmět</a></li>
+            <li>
+          <% } %>
+          
             <p class="m-0"><small id="sectionId" name="<%= section._id %>">
               <span class="nezobrazovat-na-mobilu d-flex align-items-center">
                   <span><%= section.name %></span>
