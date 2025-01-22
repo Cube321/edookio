@@ -28,36 +28,50 @@ mongoose
 const openai = new OpenAI({ apiKey: process.env.CHATGPT_SECRET });
 
 async function processDocumentJob(job) {
-  const { extractedText, name, categoryId, user, sectionSize, cardsPerPage } =
-    job.data;
-  console.log("Job data received. Text length:", extractedText.length);
+  try {
+    const { extractedText, name, categoryId, user, sectionSize, cardsPerPage } =
+      job.data;
+    console.log("Job data received. Text length:", extractedText.length);
 
-  const foundCategory = await Category.findById(categoryId);
-  if (!foundCategory) throw new Error("Category not found.");
+    const foundCategory = await Category.findById(categoryId);
+    if (!foundCategory) throw new Error("Category not found.");
 
-  const foundUser = await User.findById(user._id);
-  if (!foundUser) throw new Error("User not found.");
+    let foundUser;
+    let demoUser;
+    let userId;
+    let userEmail;
 
-  console.log("Splitting text into chunks...");
-  const maxTokensPerRequest = Math.floor(3000 / (cardsPerPage * 3));
-  const textChunks = splitTextIntoChunks(extractedText, maxTokensPerRequest);
-  console.log("Text split into", textChunks.length, "chunks.");
+    if (!user) {
+      demoUser = await User.findOne({ email: "demo@edookio.com" });
+      userId = demoUser._id;
+      userEmail = demoUser.email;
+    } else {
+      foundUser = await User.findById(user._id);
+      if (!foundUser) throw new Error("User not found.");
+      userId = foundUser._id;
+      userEmail = foundUser.email;
+    }
 
-  await job.progress(10);
+    console.log("Splitting text into chunks...");
+    const maxTokensPerRequest = Math.floor(3000 / (cardsPerPage * 3));
+    const textChunks = splitTextIntoChunks(extractedText, maxTokensPerRequest);
+    console.log("Text split into", textChunks.length, "chunks.");
 
-  const totalChunks = textChunks.length;
-  let completedChunks = 0;
+    await job.progress(10);
 
-  // Create an array of promises
-  const chunkPromises = textChunks.map((chunk, index) => {
-    console.log("Sending text chunk to OpenAI for processing...", index);
-    return openai.chat.completions
-      .create({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "user",
-            content: `Below is a text. You must create flashcards in Czech language from it. 
+    const totalChunks = textChunks.length;
+    let completedChunks = 0;
+
+    // Create an array of promises
+    const chunkPromises = textChunks.map((chunk, index) => {
+      console.log("Sending text chunk to OpenAI for processing...", index);
+      return openai.chat.completions
+        .create({
+          model: "gpt-4o",
+          messages: [
+            {
+              role: "user",
+              content: `Below is a text. You must create flashcards in Czech language from it. 
             
                     Use only the following HTML tags to format the answers:
       
@@ -86,159 +100,165 @@ async function processDocumentJob(job) {
                       {"flashcardQuestion": "Question2", "flashcardAnswer": "Answer2", "testQuestion": "TestQuestion2", "correctAnswer": "CorrectAnswer2", "wrongAnswerOne": "WrongAnswer", "wrongAnswerTwo": "WrongAnswer"}
                     ]
                     `,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens: 1000,
-      })
-      .then((completion) => {
-        const content = completion.choices[0].message.content;
-        console.log("Received response from OpenAI for chunk", index);
-        const cleanedContent = content.replace(/```json|```/g, "").trim();
-        let flashcards;
-        try {
-          flashcards = JSON.parse(cleanedContent);
-        } catch (err) {
-          // If parsing fails, we throw an error
-          throw new Error(
-            `Error parsing JSON for chunk ${index}: ${err.message}`
-          );
-        }
+            },
+          ],
+          temperature: 0.7,
+          max_tokens: 1000,
+        })
+        .then((completion) => {
+          const content = completion.choices[0].message.content;
+          console.log("Received response from OpenAI for chunk", index);
+          const cleanedContent = content.replace(/```json|```/g, "").trim();
+          let flashcards;
+          try {
+            flashcards = JSON.parse(cleanedContent);
+          } catch (err) {
+            // If parsing fails, we throw an error
+            throw new Error(
+              `Error parsing JSON for chunk ${index}: ${err.message}`
+            );
+          }
 
-        completedChunks++;
-        const progressValue =
-          10 + Math.floor((completedChunks / totalChunks) * 70);
-        job.progress(progressValue);
+          completedChunks++;
+          const progressValue =
+            10 + Math.floor((completedChunks / totalChunks) * 70);
+          job.progress(progressValue);
 
-        return { index, flashcards };
-      });
-  });
+          return { index, flashcards };
+        });
+    });
 
-  // Use Promise.allSettled() to handle partial failures
-  const results = await Promise.allSettled(chunkPromises);
+    // Use Promise.allSettled() to handle partial failures
+    const results = await Promise.allSettled(chunkPromises);
 
-  // Filter successful results
-  const successfulResults = results
-    .filter((result) => result.status === "fulfilled")
-    .map((result) => result.value); // 'value' contains { index, flashcards }
+    // Filter successful results
+    const successfulResults = results
+      .filter((result) => result.status === "fulfilled")
+      .map((result) => result.value); // 'value' contains { index, flashcards }
 
-  // Sort by index to maintain order
-  successfulResults.sort((a, b) => a.index - b.index);
+    // Sort by index to maintain order
+    successfulResults.sort((a, b) => a.index - b.index);
 
-  // Concatenate all flashcards from successful chunks
-  let allFlashcards = [];
-  for (const result of successfulResults) {
-    allFlashcards = allFlashcards.concat(result.flashcards);
-  }
+    // Concatenate all flashcards from successful chunks
+    let allFlashcards = [];
+    for (const result of successfulResults) {
+      allFlashcards = allFlashcards.concat(result.flashcards);
+    }
 
-  // Now you have partial results even if some chunks failed
-  if (allFlashcards.length === 0) {
-    throw new Error("No flashcards generated from any chunk.");
-  }
+    // Now you have partial results even if some chunks failed
+    if (allFlashcards.length === 0) {
+      throw new Error("No flashcards generated from any chunk.");
+    }
 
-  await job.progress(95);
+    await job.progress(95);
 
-  console.log("Saving flashcards and questions to database...");
-  let sectionIndex = 0;
-  let section = null;
+    console.log("Saving flashcards and questions to database...");
+    let sectionIndex = 0;
+    let section = null;
 
-  let cardsCreated = 0;
-  let questionsCreated = 0;
+    let cardsCreated = 0;
+    let questionsCreated = 0;
 
-  for (let i = 0; i < allFlashcards.length; i++) {
-    if (i % sectionSize === 0) {
-      sectionIndex++;
-      section = new Section({
-        name: `${name} ${sectionIndex}`,
+    for (let i = 0; i < allFlashcards.length; i++) {
+      if (i % sectionSize === 0) {
+        sectionIndex++;
+        section = new Section({
+          name: `${name} ${sectionIndex}`,
+          categoryId: categoryId,
+          author: userId,
+          cards: [],
+        });
+        await section.save();
+        foundCategory.sections.push(section._id);
+        await foundCategory.save();
+      }
+
+      const cardData = allFlashcards[i];
+      const card = new Card({
         categoryId: categoryId,
-        author: user._id,
-        cards: [],
+        pageA: cardData.flashcardQuestion,
+        pageB: cardData.flashcardAnswer,
+        author: userId,
+        section: section._id,
       });
-      await section.save();
-      foundCategory.sections.push(section._id);
-      await foundCategory.save();
-    }
-
-    const cardData = allFlashcards[i];
-    const card = new Card({
-      categoryId: categoryId,
-      pageA: cardData.flashcardQuestion,
-      pageB: cardData.flashcardAnswer,
-      author: user._id,
-      section: section._id,
-    });
-    await card.save();
-    cardsCreated++;
-    foundCategory.numOfCards++;
-
-    const question = new Question({
-      category: categoryId,
-      categoryId: categoryId,
-      section: section._id,
-      author: user.email,
-      question: cardData.testQuestion,
-      correctAnswers: [cardData.correctAnswer],
-      wrongAnswers: [cardData.wrongAnswerOne, cardData.wrongAnswerTwo],
-      sourceCard: card?._id,
-    });
-    await question.save();
-
-    if (card) {
-      card.connectedQuestionId = question?._id;
       await card.save();
+      cardsCreated++;
+      foundCategory.numOfCards++;
+
+      const question = new Question({
+        category: categoryId,
+        categoryId: categoryId,
+        section: section._id,
+        author: userEmail,
+        question: cardData.testQuestion,
+        correctAnswers: [cardData.correctAnswer],
+        wrongAnswers: [cardData.wrongAnswerOne, cardData.wrongAnswerTwo],
+        sourceCard: card?._id,
+      });
+      await question.save();
+
+      if (card) {
+        card.connectedQuestionId = question?._id;
+        await card.save();
+      }
+
+      questionsCreated++;
+      foundCategory.numOfQuestions++;
+
+      section.cards.push(card._id);
+      section.questions.push(question._id);
+      await section.save();
     }
 
-    questionsCreated++;
-    foundCategory.numOfQuestions++;
+    await foundCategory.save();
 
-    section.cards.push(card._id);
-    section.questions.push(question._id);
-    await section.save();
+    if (foundUser) {
+      // Update user's counters outside the loop
+      foundUser.generatedCardsCounterMonth += cardsCreated;
+      foundUser.generatedQuestionsCounterMonth += questionsCreated;
+      foundUser.generatedCardsCounterTotal += cardsCreated;
+      foundUser.generatedQuestionsCounterTotal += questionsCreated;
+      foundUser.usedCreditsMonth += cardsCreated + questionsCreated;
+      foundUser.usedCreditsTotal += cardsCreated + questionsCreated;
+      foundUser.lastJobCredits = cardsCreated + questionsCreated;
+
+      let creditsUsed = cardsCreated;
+      let creditsToReduce = creditsUsed;
+
+      if (foundUser.extraCredits > 0 && foundUser.extraCredits >= creditsUsed) {
+        foundUser.extraCredits -= creditsUsed;
+        creditsToReduce = 0;
+      } else if (
+        foundUser.extraCredits > 0 &&
+        foundUser.extraCredits < creditsUsed
+      ) {
+        creditsToReduce = creditsUsed - foundUser.extraCredits;
+        foundUser.extraCredits = 0;
+      }
+
+      if (foundUser.credits < creditsToReduce) {
+        foundUser.credits = 0;
+      } else {
+        foundUser.credits -= creditsToReduce;
+      }
+
+      try {
+        await foundUser.save();
+        console.log("User saved successfully.");
+      } catch (err) {
+        console.error("Error saving user:", err);
+        throw err; //
+      }
+    }
+
+    await job.progress(100);
+
+    console.log("Flashcards generated.");
+    return "Flashcards generated successfully!";
+  } catch (error) {
+    console.error("Error processing document job:", error);
+    throw error;
   }
-
-  await foundCategory.save();
-
-  // Update user's counters outside the loop
-  foundUser.generatedCardsCounterMonth += cardsCreated;
-  foundUser.generatedQuestionsCounterMonth += questionsCreated;
-  foundUser.generatedCardsCounterTotal += cardsCreated;
-  foundUser.generatedQuestionsCounterTotal += questionsCreated;
-  foundUser.usedCreditsMonth += cardsCreated + questionsCreated;
-  foundUser.usedCreditsTotal += cardsCreated + questionsCreated;
-  foundUser.lastJobCredits = cardsCreated + questionsCreated;
-
-  let creditsUsed = cardsCreated;
-  let creditsToReduce = creditsUsed;
-
-  if (foundUser.extraCredits > 0 && foundUser.extraCredits >= creditsUsed) {
-    foundUser.extraCredits -= creditsUsed;
-    creditsToReduce = 0;
-  } else if (
-    foundUser.extraCredits > 0 &&
-    foundUser.extraCredits < creditsUsed
-  ) {
-    creditsToReduce = creditsUsed - foundUser.extraCredits;
-    foundUser.extraCredits = 0;
-  }
-
-  if (foundUser.credits < creditsToReduce) {
-    foundUser.credits = 0;
-  } else {
-    foundUser.credits -= creditsToReduce;
-  }
-
-  try {
-    await foundUser.save();
-    console.log("User saved successfully.");
-  } catch (err) {
-    console.error("Error saving user:", err);
-    throw err; //
-  }
-
-  await job.progress(100);
-
-  console.log("Flashcards generated.");
-  return "Flashcards generated successfully!";
 }
 
 flashcardQueue.process(async (job) => {
