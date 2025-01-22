@@ -66,6 +66,8 @@ router.get(
       categoryId: foundSection.categoryId,
       containesCardWithoutQuestion,
       demo: false,
+      generatedCategoryId: req.session?.generatedCategoryId,
+      generatedSectionId: req.session?.generatedSectionId,
     });
   })
 );
