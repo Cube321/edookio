@@ -163,7 +163,7 @@ router.post(
       cardsPerPage,
     });
 
-    let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 5;
+    let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 10;
 
     return res.json({ jobId: job.id, expectedTimeInSeconds });
   })
@@ -322,7 +322,7 @@ router.post(
       cardsPerPage,
     });
 
-    let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 5;
+    let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 10;
 
     return res.json({
       jobId: job.id,

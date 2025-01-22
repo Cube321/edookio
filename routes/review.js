@@ -65,6 +65,66 @@ router.get(
       orphanedQuestions,
       categoryId: foundSection.categoryId,
       containesCardWithoutQuestion,
+      demo: false,
+    });
+  })
+);
+
+//show demo content of the section
+router.get(
+  "/demo/:sectionId/showAll",
+  catchAsync(async (req, res) => {
+    const { sectionId } = req.params;
+
+    const foundSection = await Section.findById(sectionId)
+      .populate({
+        path: "cards",
+        populate: { path: "connectedQuestionId" },
+      })
+      .populate({
+        path: "questions",
+        populate: { path: "sourceCard" },
+      })
+      .populate("author");
+
+    if (!foundSection) {
+      req.flash("error", "Balíček nebyl nalezen");
+      return res.redirect("/");
+    }
+
+    // 1) Build the main "pairs" array from cards
+    const pairs = foundSection.cards.map((card) => {
+      return {
+        card,
+        question: card.connectedQuestionId || null,
+      };
+    });
+
+    // 2) Figure out which questions are “already paired”
+    //    A question is paired if it's the connectedQuestionId of a card.
+    const pairedQuestionIds = pairs
+      .filter((p) => p.question !== null)
+      .map((p) => p.question._id.toString());
+
+    // 3) Find orphaned questions => those that are not in pairedQuestionIds
+    const orphanedQuestions = foundSection.questions.filter(
+      (q) => !pairedQuestionIds.includes(q._id.toString())
+    );
+
+    //check if there is any card in the section without connected question
+    let containesCardWithoutQuestion = false;
+    const cardsWithoutQuestion = pairs.filter((p) => p.question === null);
+    if (cardsWithoutQuestion.length > 0) {
+      containesCardWithoutQuestion = true;
+    }
+
+    res.status(200).render("review/showAll", {
+      section: foundSection,
+      pairs,
+      orphanedQuestions,
+      categoryId: foundSection.categoryId,
+      containesCardWithoutQuestion,
+      demo: true,
     });
   })
 );

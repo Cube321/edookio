@@ -104,7 +104,7 @@ async function fetchJobProgress(jobId, progressInterval, categoryId) {
         //add href to show-generated-content-btn
         document.getElementById(
           "show-generated-content-btn"
-        ).href = `/review/${sectionId}/showAll`;
+        ).href = `/demo/${sectionId}/showAll`;
       } else {
         document.getElementById("progress-text").textContent =
           "Omlouváme se, zpracování selhalo.";
