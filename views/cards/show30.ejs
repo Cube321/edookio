@@ -301,7 +301,7 @@
       </div>
 </body>
 
-<% if(!currentUser || (currentUser && !currentUser.card30ExplanationModalShown)){ %>
+<% if((!currentUser && !explainThumbsModalShown) || (currentUser && !currentUser.card30ExplanationModalShown)){ %>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
         var card30ExplanationModal = new bootstrap.Modal(document.getElementById("card30ExplanationModal"));

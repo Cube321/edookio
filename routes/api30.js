@@ -396,6 +396,8 @@ router.post(
     if (user) {
       user.card30ExplanationModalShown = true;
       await user.save();
+    } else {
+      req.session.explainThumbsModalShown = true;
     }
     res.sendStatus(200);
   })

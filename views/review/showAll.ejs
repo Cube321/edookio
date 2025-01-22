@@ -8,7 +8,7 @@
           <% } else { %>
             <a href="/" class="btn btn-outline-danger d-flex justify-content-center align-items-center px-3"><i class="fas fa-arrow-left"></i></a>
           <% } %>
-          <div></div>
+          <div name="placeholder"></div>
       </div>
   </div>
   <div class="row">
@@ -26,6 +26,8 @@
       <h4 class="mb-2">Kartičky</h4>
       <% if (!demo) { %>
         <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger">Přidat kartičku</a>
+      <% } else { %>
+        <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown" class="btn btn-sm btn-outline-danger">Studijní zobrazení</a>
       <% } %>
     </div>  
     <div class="col-sm-5 d-flex flex-column justify-content-center align-items-center">
@@ -91,6 +93,8 @@
                   <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
                   <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
                 </div>
+              <% } else { %>
+                <div name="placeholder"></div>
               <% } %>
             </div>
           <% } else { %>

@@ -280,7 +280,7 @@ router.post(
       console.log("File removed successfully.");
     }
 
-    let pagesLimit = 25;
+    let pagesLimit = 10;
     let charactersLimit = 1800 * pagesLimit;
 
     if (extractedText.length < 10) {

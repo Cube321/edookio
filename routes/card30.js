@@ -41,6 +41,7 @@ router.get(
       section: foundSection,
       categoryIcon: foundCategory.icon,
       mode,
+      explainThumbsModalShown: req.session.explainThumbsModalShown,
     });
   })
 );
