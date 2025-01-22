@@ -667,7 +667,9 @@
           ></button>
         </div>
         <div class="modal-body m-2 mt-0 pt-0">
-          <h5 class="modal-title text-center">Vygenerovat obsah pomocí AI</h5>
+          <h5 class="modal-title text-center" id="generate-modal-headline">
+            Vygenerovat obsah pomocí AI
+          </h5>
           <div id="document-formats-container">
             <p class="text-muted mb-1 mt-2 text-center">
               Nahrajte soubor ve formátu .docx, .pdf nebo .pptx.
@@ -729,11 +731,19 @@
             </div>
           </div>
           <div id="document-error-container" style="display: none">
-            <h5 class="mt-3 text-center" id="document-error-headline">
+            <h5 class="mt-1 text-center" id="document-error-headline">
               Generování selhalo
             </h5>
             <hr class="color-primary mx-5" style="height: 2px" />
             <p class="text-center" id="document-error-text"></p>
+            <div class="d-flex justify-content-center mt-2">
+              <button
+                class="btn btn-danger my-3"
+                id="retry-generate-content-btn"
+              >
+                Zkusit znovu
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -45,6 +45,8 @@
           -->
           <% if (!demo) { %>
             <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-outline-danger">Přidat otázku</a>
+          <% } else if (generatedCategoryId && generatedSectionId){ %>
+            <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/test" class="btn btn-sm btn-danger">Studijní zobrazení</a>
           <% } %>
       </div>
       

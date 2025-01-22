@@ -33,6 +33,8 @@ document
         await response.json();
 
       if (error) {
+        document.getElementById("generate-modal-headline").style.display =
+          "none";
         document.getElementById("document-progress-container").style.display =
           "none";
         document.getElementById("document-error-container").style.display =
@@ -41,10 +43,6 @@ document
           "document-error-headline"
         ).textContent = `${errorHeadline}`;
         document.getElementById("document-error-text").textContent = error;
-
-        if (showPremiumButton) {
-          document.getElementById("premium-button").style.display = "block";
-        }
 
         return;
       }
@@ -127,3 +125,31 @@ function updateProgressUI(progress, state) {
     progressText.textContent = `Zpracováno ${progress} %`;
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const createWithAIModal = document.getElementById("createWithAIModal");
+  const documentErrorContainer = document.getElementById(
+    "document-error-container"
+  );
+
+  const retryGenerateContentBtn = document.getElementById(
+    "retry-generate-content-btn"
+  );
+
+  retryGenerateContentBtn.addEventListener("click", () => {
+    document.getElementById("add-section-with-ai-form").style.display = "block";
+    document.getElementById("generate-modal-headline").style.display = "block";
+    documentErrorContainer.style.display = "none";
+  });
+
+  createWithAIModal.addEventListener("hidden.bs.modal", () => {
+    // Check if the error container is visible
+    if (documentErrorContainer.style.display !== "none") {
+      document.getElementById("add-section-with-ai-form").style.display =
+        "block";
+      document.getElementById("generate-modal-headline").style.display =
+        "block";
+      documentErrorContainer.style.display = "none";
+    }
+  });
+});

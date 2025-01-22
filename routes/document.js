@@ -164,8 +164,9 @@ router.post(
     });
 
     let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
+    let isPremium = user.isPremium;
 
-    return res.json({ jobId: job.id, expectedTimeInSeconds });
+    return res.json({ jobId: job.id, expectedTimeInSeconds, isPremium });
   })
 );
 

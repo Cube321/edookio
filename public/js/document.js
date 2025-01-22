@@ -36,9 +36,10 @@ document
         errorHeadline,
         showPremiumButton,
         expectedTimeInSeconds,
+        isPremium,
       } = await response.json();
 
-      if (error) {
+      if (error && !creditsRequired) {
         document.getElementById("document-progress-container").style.display =
           "none";
         document.getElementById("document-error-container").style.display =
@@ -50,6 +51,8 @@ document
 
         if (showPremiumButton) {
           document.getElementById("premium-button").style.display = "block";
+          document.getElementById("retry-generate-content-btn").style.display =
+            "none";
         }
 
         return;
@@ -66,6 +69,23 @@ document
         document.getElementById(
           "document-error-text"
         ).textContent = `Nemáte dostatek kreditů. Potřebujete ${creditsRequired} kreditů a zbývá vám pouze ${creditsLeft}.`;
+        if (isPremium) {
+          document.getElementById("premium-button-sub").style.display = "none";
+          document.getElementById(
+            "premium-button-credits-one-time"
+          ).style.display = "block";
+          document.getElementById("retry-generate-content-btn").style.display =
+            "none";
+        } else {
+          document.getElementById("premium-button-sub").style.display = "block";
+          document.getElementById("premium-button-credits").style.display =
+            "block";
+          document.getElementById(
+            "premium-advantages-container"
+          ).style.display = "block";
+          document.getElementById("retry-generate-content-btn").style.display =
+            "none";
+        }
 
         return;
       }
@@ -145,6 +165,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const sectionsContainer = document.getElementById("sections-container");
   const addSectionContainer = document.getElementById("add-section-container");
   const loader = document.getElementById("loader");
+
+  const retryGenerateContentBtn = document.getElementById(
+    "retry-generate-content-btn"
+  );
+
+  retryGenerateContentBtn.addEventListener("click", () => {
+    document.getElementById("add-section-with-ai-form").style.display = "block";
+    documentErrorContainer.style.display = "none";
+  });
 
   createWithAIModal.addEventListener("hidden.bs.modal", () => {
     // Check if the success container is visible
