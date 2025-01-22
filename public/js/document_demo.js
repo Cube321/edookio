@@ -15,7 +15,8 @@ document
 
     try {
       // Display a loading state
-      document.getElementById("progress-text").textContent = "Nahrávám...";
+      document.getElementById("progress-text").textContent =
+        "Generuji obsah...";
 
       // Submit the form data using fetch
       const response = await fetch(form.action, {
@@ -28,15 +29,8 @@ document
       }
 
       // Parse the JSON response to get the job ID
-      const {
-        jobId,
-        creditsRequired,
-        creditsLeft,
-        error,
-        errorHeadline,
-        showPremiumButton,
-        expectedTimeInSeconds,
-      } = await response.json();
+      const { jobId, error, errorHeadline, expectedTimeInSeconds, categoryId } =
+        await response.json();
 
       if (error) {
         document.getElementById("document-progress-container").style.display =
@@ -51,21 +45,6 @@ document
         if (showPremiumButton) {
           document.getElementById("premium-button").style.display = "block";
         }
-
-        return;
-      }
-
-      if (creditsRequired) {
-        document.getElementById("document-progress-container").style.display =
-          "none";
-        document.getElementById("document-error-container").style.display =
-          "block";
-        document.getElementById(
-          "document-error-headline"
-        ).textContent = `Nemáte dostatek kreditů`;
-        document.getElementById(
-          "document-error-text"
-        ).textContent = `Nemáte dostatek kreditů. Potřebujete ${creditsRequired} kreditů a zbývá vám pouze ${creditsLeft}.`;
 
         return;
       }
@@ -89,7 +68,7 @@ document
       if (jobId) {
         // Start polling for progress
         const progressInterval = setInterval(() => {
-          fetchJobProgress(jobId, progressInterval);
+          fetchJobProgress(jobId, progressInterval, categoryId);
         }, 500);
       }
     } catch (error) {
@@ -99,7 +78,7 @@ document
     }
   });
 
-async function fetchJobProgress(jobId, progressInterval) {
+async function fetchJobProgress(jobId, progressInterval, categoryId) {
   try {
     const response = await fetch(`/job/${jobId}/progress`);
     if (!response.ok) {
@@ -120,9 +99,6 @@ async function fetchJobProgress(jobId, progressInterval) {
           "none";
         document.getElementById("document-success-container").style.display =
           "block";
-        document.getElementById(
-          "document-success-text"
-        ).textContent = `Zbývá vám ještě ${credits} kreditů.`;
       } else {
         document.getElementById("progress-text").textContent =
           "Omlouváme se, zpracování selhalo.";
@@ -132,36 +108,6 @@ async function fetchJobProgress(jobId, progressInterval) {
     console.error("Error fetching job progress:", error);
   }
 }
-
-//on close of createWithAIModal reload the page
-document.addEventListener("DOMContentLoaded", () => {
-  const createWithAIModal = document.getElementById("createWithAIModal");
-  const documentSuccessContainer = document.getElementById(
-    "document-success-container"
-  );
-  const documentErrorContainer = document.getElementById(
-    "document-error-container"
-  );
-  const sectionsContainer = document.getElementById("sections-container");
-  const addSectionContainer = document.getElementById("add-section-container");
-  const loader = document.getElementById("loader");
-
-  createWithAIModal.addEventListener("hidden.bs.modal", () => {
-    // Check if the success container is visible
-    if (documentSuccessContainer.style.display !== "none") {
-      if (loader) loader.style.display = "block";
-      if (sectionsContainer) sectionsContainer.style.display = "none";
-      if (addSectionContainer) addSectionContainer.style.display = "none";
-      window.location.reload();
-    }
-    // Check if the error container is visible
-    if (documentErrorContainer.style.display !== "none") {
-      document.getElementById("add-section-with-ai-form").style.display =
-        "block";
-      documentErrorContainer.style.display = "none";
-    }
-  });
-});
 
 function updateProgressUI(progress, state) {
   const progressBar = document.getElementById("progress-bar");
