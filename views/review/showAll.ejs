@@ -26,7 +26,7 @@
       <h4 class="mb-2">Kartičky</h4>
       <% if (!demo) { %>
         <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger">Přidat kartičku</a>
-      <% } else { %>
+      <% } else if (generatedCategoryId && generatedSectionId) { %>
         <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown" class="btn btn-sm btn-outline-danger">Studijní zobrazení</a>
       <% } %>
     </div>  

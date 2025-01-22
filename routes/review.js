@@ -50,8 +50,6 @@ router.get(
       (q) => !pairedQuestionIds.includes(q._id.toString())
     );
 
-    const user = req.user;
-
     //check if there is any card in the section without connected question
     let containesCardWithoutQuestion = false;
     const cardsWithoutQuestion = pairs.filter((p) => p.question === null);
@@ -66,8 +64,6 @@ router.get(
       categoryId: foundSection.categoryId,
       containesCardWithoutQuestion,
       demo: false,
-      generatedCategoryId: req.session?.generatedCategoryId,
-      generatedSectionId: req.session?.generatedSectionId,
     });
   })
 );
@@ -127,6 +123,8 @@ router.get(
       categoryId: foundSection.categoryId,
       containesCardWithoutQuestion,
       demo: true,
+      generatedCategoryId: req.session?.generatedCategoryId,
+      generatedSectionId: req.session?.generatedSectionId,
     });
   })
 );
