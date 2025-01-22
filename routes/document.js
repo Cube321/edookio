@@ -33,13 +33,17 @@ router.post(
 
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
-      req.flash("error", "Předmět nebyl nalezen.");
-      return res.redirect("/");
+      return res.json({
+        error: "Předmět nebyl nalezen.",
+        errorHeadline: "Předmět nebyl nalezen v databázi.",
+      });
     }
 
     if (!file) {
-      req.flash("error", "Nebyl nahrán žádný soubor.");
-      return res.redirect("back");
+      return res.json({
+        error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX.",
+        errorHeadline: "Nebyl nahrán žádný soubor",
+      });
     }
 
     let extractedText = "";
@@ -89,27 +93,55 @@ router.post(
         });
       } else {
         console.error("Unsupported file type:", file.mimetype);
-        req.flash(
-          "error",
-          "Nepodporovaný typ souboru. Nahrajte PDF, DOCX nebo PPTX."
-        );
-        return res.redirect("back");
+        return res.json({
+          error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX.",
+          errorHeadline: "Nepodporovaný typ souboru",
+        });
       }
     } catch (err) {
       console.error("Error extracting text:", err);
-      req.flash(
-        "error",
-        "Chyba při extrakci textu z dokumentu. Zkuste to prosím ještě jednou."
-      );
-      return res.redirect("back");
+      res.json({
+        error:
+          "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
+        errorHeadline: "Chyba při extrakci textu",
+      });
     } finally {
       console.log("Cleaning up uploaded file:", file.path);
       fs.unlinkSync(file.path);
       console.log("File removed successfully.");
     }
 
+    let pagesLimit = 150;
+
+    if (!user.isPremium) {
+      pagesLimit = 25;
+    }
+
+    let charactersLimit = 1800 * pagesLimit;
+
+    if (extractedText.length < 10) {
+      console.error("Error extracting text (text below 10 characters)");
+      return res.json({
+        error:
+          "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
+        errorHeadline: "Chyba při extrakci textu",
+      });
+    }
+
+    if (extractedText.length > charactersLimit) {
+      return res.json({
+        error: `Maximální délka textu je ${formatNumber(
+          charactersLimit
+        )} znaků (${pagesLimit} stran). Tvůj text má ${formatNumber(
+          extractedText.length
+        )} znaků.`,
+        errorHeadline: "Text je příliš dlouhý",
+        showPremiumButton: !user.isPremium,
+      });
+    }
+
     let expectedCredits =
-      Math.floor(extractedText.length / 2000) * cardsPerPage;
+      Math.floor(extractedText.length / 1800) * cardsPerPage;
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
       return res.json({
@@ -118,6 +150,8 @@ router.post(
         jobId: null,
       });
     }
+
+    console.log(extractedText);
 
     // Now, enqueue the job with the extracted text instead of a file path
     const job = await flashcardQueue.add({
@@ -161,5 +195,10 @@ router.get("/job/:id/progress", isLoggedIn, async (req, res) => {
     res.status(500).json({ error: "Failed to fetch job progress" });
   }
 });
+
+//function to take a Number, transform it to string and add space every 3 digits from the end
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
 module.exports = router;
