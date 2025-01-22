@@ -80,12 +80,14 @@ document
 
 async function fetchJobProgress(jobId, progressInterval, categoryId) {
   try {
-    const response = await fetch(`/job/${jobId}/progress`);
+    const response = await fetch(
+      `/demoJob/${jobId}/progress?categoryId=${categoryId}`
+    );
     if (!response.ok) {
       throw new Error("Nepodařilo se načíst stav zpracování.");
     }
 
-    const { progress, state, lastJobCredits, credits } = await response.json();
+    const { progress, state, sectionId } = await response.json();
 
     // Update the progress UI
     updateProgressUI(progress, state);
@@ -99,6 +101,10 @@ async function fetchJobProgress(jobId, progressInterval, categoryId) {
           "none";
         document.getElementById("document-success-container").style.display =
           "block";
+        //add href to show-generated-content-btn
+        document.getElementById(
+          "show-generated-content-btn"
+        ).href = `/review/${sectionId}/showAll`;
       } else {
         document.getElementById("progress-text").textContent =
           "Omlouváme se, zpracování selhalo.";

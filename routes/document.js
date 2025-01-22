@@ -332,11 +332,9 @@ router.post(
   })
 );
 
-router.get("/demoJob/:id/progress", isLoggedIn, async (req, res) => {
+router.get("/demoJob/:id/progress", async (req, res) => {
   const jobId = req.params.id;
-  const { lastJobCredits, credits, extraCredits } = req.user;
-
-  let totalCredits = credits + extraCredits;
+  const categoryId = req.query.categoryId;
 
   try {
     const job = await flashcardQueue.getJob(jobId);
@@ -347,11 +345,16 @@ router.get("/demoJob/:id/progress", isLoggedIn, async (req, res) => {
     const progress = job.progress();
     const state = await job.getState(); // pending, active, completed, etc.
 
+    let foundCategory = null;
+
+    if (state === "completed") {
+      foundCategory = await Category.findById(categoryId);
+    }
+
     res.json({
       progress,
       state,
-      lastJobCredits,
-      credits: totalCredits,
+      sectionId: foundCategory?.sections[0],
     });
   } catch (error) {
     console.error("Error fetching job progress:", error);
