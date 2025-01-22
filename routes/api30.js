@@ -244,7 +244,6 @@ router.post(
 //get Questions of Section
 router.get(
   "/api/getQuestions/section/:sectionId",
-  isLoggedIn,
   catchAsync(async (req, res) => {
     let { sectionId } = req.params;
     if (sectionId !== "random_test") {

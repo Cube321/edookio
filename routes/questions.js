@@ -16,13 +16,25 @@ const { incrementEventCount } = require("../utils/helpers");
 //show questions of section
 router.get(
   "/category/:categoryId/section/:sectionId/test",
-  isLoggedIn,
   catchAsync(async (req, res) => {
     const { user } = req;
-    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+    const { categoryId, sectionId } = req.params;
+
+    //if user but not premium and reached limit
+    if (user && !user.isPremium && user.questionsSeenThisMonth > 50) {
       return res.redirect("/questions/reachedMonthlyLimit");
     }
-    const { categoryId, sectionId } = req.params;
+
+    //if no user
+    if (
+      !user &&
+      sectionId !== req.session.generatedSectionId &&
+      sectionId !== process.env.DEMO_SECTION_ID
+    ) {
+      req.flash("error", "Pro pokračování se musíte přihlásit");
+      return res.redirect("/auth/user/login");
+    }
+
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findById(categoryId);
     if (!foundSection) {
@@ -73,7 +85,6 @@ router.get(
 //render finished test page
 router.get(
   "/category/:categoryId/section/:sectionId/testFinished",
-  isLoggedIn,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
 
@@ -82,50 +93,64 @@ router.get(
     const skipped = parseInt(req.query.skipped) || 0;
 
     let { user } = req;
-    const foundSection = await Section.findById(sectionId);
-    const foundCategory = await Category.findById(categoryId);
-    if (!foundSection) {
-      throw Error("Balíček s tímto ID neexistuje");
-    }
-    if (!foundCategory) {
-      throw Error("Předmět s tímto ID neexistuje");
-    }
 
-    const totalQuestions =
-      parseInt(correct) + parseInt(wrong) + parseInt(skipped);
-    const percentage = Math.round((correct / totalQuestions) * 100);
+    if (user) {
+      const foundSection = await Section.findById(sectionId);
+      const foundCategory = await Category.findById(categoryId);
+      if (!foundSection) {
+        throw Error("Balíček s tímto ID neexistuje");
+      }
+      if (!foundCategory) {
+        throw Error("Předmět s tímto ID neexistuje");
+      }
 
-    // Save the test result
-    await TestResult.create({
-      user: user._id,
-      category: categoryId,
-      section: sectionId,
-      testType: "section",
-      score: { correct, wrong, skipped },
-      percentage,
-      totalQuestions,
-    });
+      const totalQuestions =
+        parseInt(correct) + parseInt(wrong) + parseInt(skipped);
+      const percentage = Math.round((correct / totalQuestions) * 100);
 
-    let counters = {
-      correct: parseInt(correct),
-      wrong: parseInt(wrong),
-      skipped: parseInt(skipped),
-    };
-    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
-      user.reachedQuestionsLimitDate = Date.now();
+      // Save the test result
+      await TestResult.create({
+        user: user._id,
+        category: categoryId,
+        section: sectionId,
+        testType: "section",
+        score: { correct, wrong, skipped },
+        percentage,
+        totalQuestions,
+      });
+
+      let counters = {
+        correct: parseInt(correct),
+        wrong: parseInt(wrong),
+        skipped: parseInt(skipped),
+      };
+      if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+        user.reachedQuestionsLimitDate = Date.now();
+      }
+      let step = 100 / (counters.correct + counters.wrong + counters.skipped);
+      step = step.toFixed(2);
+      foundSection.countFinishedTest++;
+      user.finishedQuestions.push(sectionId);
+      await user.save();
+      await foundSection.save();
+      res.status(200).render("questions/finished", {
+        counters,
+        step,
+        section: foundSection,
+        category: foundCategory,
+      });
+    } else {
+      res.status(200).render("questions/finishedDemo", {
+        counters: {
+          correct: parseInt(correct),
+          wrong: parseInt(wrong),
+          skipped: parseInt(skipped),
+        },
+        step: 100 / (parseInt(correct) + parseInt(wrong) + parseInt(skipped)),
+        section: { name: "Test" },
+        category: { text: "Test" },
+      });
     }
-    let step = 100 / (counters.correct + counters.wrong + counters.skipped);
-    step = step.toFixed(2);
-    foundSection.countFinishedTest++;
-    user.finishedQuestions.push(sectionId);
-    await user.save();
-    await foundSection.save();
-    res.status(200).render("questions/finished", {
-      counters,
-      step,
-      section: foundSection,
-      category: foundCategory,
-    });
   })
 );
 

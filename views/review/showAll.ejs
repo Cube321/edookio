@@ -27,7 +27,7 @@
       <% if (!demo) { %>
         <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger">Přidat kartičku</a>
       <% } else if (generatedCategoryId && generatedSectionId) { %>
-        <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown" class="btn btn-sm btn-outline-danger">Studijní zobrazení</a>
+        <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown" class="btn btn-sm btn-danger">Studijní zobrazení</a>
       <% } %>
     </div>  
     <div class="col-sm-5 d-flex flex-column justify-content-center align-items-center">
@@ -94,7 +94,7 @@
                   <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
                 </div>
               <% } else { %>
-                <div name="placeholder"></div>
+                <div name="placeholder" style="opacity: 0">X</div>
               <% } %>
             </div>
           <% } else { %>

@@ -37,6 +37,8 @@ router.get(
         percent,
         generatedSectionId,
         generatedCategoryId,
+        demoSectionId: process.env.DEMO_SECTION_ID,
+        demoCategoryId: process.env.DEMO_CATEGORY_ID,
       });
     }
 
