@@ -11,6 +11,15 @@ body {
   background-blend-mode: darken;
 }
 
+.dashboard-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(../img/bg_cover1.jpg) no-repeat center center;
+  background-size: cover;
+  min-height: 150px;
+  color: white;
+  background-blend-mode: darken;
+}
+
 .about-header {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url(../img/bg_cover1.jpg) no-repeat center center;

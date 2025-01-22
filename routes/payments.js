@@ -296,6 +296,7 @@ router.post(
                 null,
                 1000
               );
+              await mail.creditsAddedConfirmationEmail(user.email, 1000);
               await mail.adminInfoCreditsPurchased(
                 user.email,
                 1000,
@@ -325,6 +326,7 @@ router.post(
                 null,
                 5000
               );
+              await mail.creditsAddedConfirmationEmail(user.email, 5000);
               await mail.adminInfoCreditsPurchased(
                 user.email,
                 5000,
@@ -354,6 +356,7 @@ router.post(
                 null,
                 10000
               );
+              await mail.creditsAddedConfirmationEmail(user.email, 10000);
               await mail.adminInfoCreditsPurchased(
                 user.email,
                 10000,
@@ -383,6 +386,7 @@ router.post(
                 null,
                 25000
               );
+              await mail.creditsAddedConfirmationEmail(user.email, 25000);
               await mail.adminInfoCreditsPurchased(
                 user.email,
                 25000,

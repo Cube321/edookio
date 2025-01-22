@@ -232,7 +232,6 @@ router.post(
     let savedCategory = await newCategory.save();
     user.createdCategories.push(savedCategory._id);
     await user.save();
-    console.log(savedCategory);
     req.flash("successOverlay", "Předmět byl vytvořen.");
     res.status(201).redirect(`/`);
   })

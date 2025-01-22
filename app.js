@@ -63,7 +63,9 @@ cron.schedule(
 );
 
 //send infoEmail to users registered 3 days ago
-cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);
+//TEMPORARILY DISABLED + NEEDS EMAIL CONTENT UPDATE
+//cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);
+
 //notify users about daily activity
 cron.schedule(
   cronHelpers.cronExpressionDaily730PM,

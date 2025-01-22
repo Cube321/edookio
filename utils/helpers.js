@@ -36,7 +36,7 @@ helpers.createInvoice = async function (
     settingName: "lastInvoiceNumber",
   });
 
-  let invoiceNum = invoiceNumObject.settingValue + 1;
+  let invoiceNum = parseInt(invoiceNumObject.settingValue) + 1;
 
   //check if the last invoice number is not in the db
   invoiceNumberExists = await Invoice.findOne({

@@ -74,11 +74,19 @@
         <div class="container">
           <div class="row">
             <div class="col-md-5 offset-md-1 my-5 p-4">
-              <h1 class="jumbotron-heading mb-3">Studuj efektivně s Edookio</h1>
+              <h1 class="jumbotron-heading mb-3">Vítej zpět v <span class="text-primary">Edookio AI</span></h1>
               <p class="lead">
-                Opakovací kartičky a testy jsou vědecky prokázané studijní
-                metody s vysokou efektivitou
+                Vytvářej nové předměty, přidávej balíčky a studuj efektivně s pomocí AI
               </p>
+              <div class="mt-5 text-center-on-mobile">
+                <a
+                  href="/auth/user/new"
+                  data-bs-toggle="modal" 
+                  data-bs-target="#modal-category"
+                  class="btn btn-lg btn-danger call-to-action"
+                  >Přidat předmět</a
+                >
+              </div>
             </div>
             <% if (currentUser) { %>
             <div class="col-md-6">
