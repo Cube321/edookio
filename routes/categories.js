@@ -395,8 +395,8 @@ router.get(
     const { shareId } = req.params;
 
     if (!req.user) {
-      req.flash("error", "Pro přidání předmětu se musíš přihlásit.");
-      return res.status(404).redirect("/");
+      req.session.shareId = shareId;
+      return res.status(404).redirect("/?shareId=" + shareId);
     }
 
     const category = await Category.findOne({ shareId });

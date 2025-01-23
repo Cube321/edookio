@@ -22,6 +22,10 @@ router.get(
     //no user - render index (landing page)
     if (!user) {
       const { generatedSectionId, generatedCategoryId } = req.session;
+      const { shareId } = req.query;
+
+      let sharedCategory = await Category.findOne({ shareId });
+
       const categories = [];
       let numOfCategories = 0;
       const numOfCards = 0;
@@ -39,6 +43,8 @@ router.get(
         generatedCategoryId,
         demoSectionId: process.env.DEMO_SECTION_ID,
         demoCategoryId: process.env.DEMO_CATEGORY_ID,
+        shareId,
+        sharedCategory,
       });
     }
 

@@ -735,5 +735,57 @@
     </div>
   </div>
 
+  <!-- MODAL - shared category -->
+  <% if (shareId && sharedCategory) { %>
+  <div class="modal fade" id="sharedCategoryModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header" style="border: none">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <div class="modal-body m-2 mt-0 pt-0">
+          <h5 class="modal-title text-center" id="generate-modal-headline">
+            Někdo s tebou sdílí předmět
+          </h5>
+          <h4 class="text-center my-3"><%= sharedCategory.text %></h4>
+          <p class="text-center text-muted">
+            Tento předmět obsahuje <%= sharedCategory.numOfCards %> opakovacích
+            kartiček a <%= sharedCategory.numOfQuestions %> testových otázek.
+            Pro přístup je třeba se zaregistrovat nebo přihlásit.
+          </p>
+
+          <div
+            class="mt-4 mb-2 d-flex flex-column justify-content-center align-items-center"
+          >
+            <a
+              href="/auth/user/new?shareId=<%= shareId %>"
+              class="btn btn-danger"
+              >Vytvořit účet zdarma</a
+            >
+            <a
+              href="/auth/user/login?shareId=<%= shareId %>"
+              class="mt-3 text-smaller"
+              >Máš účet? Přihlaš se</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var myModal = new bootstrap.Modal(
+        document.getElementById("sharedCategoryModal")
+      );
+      myModal.show();
+    });
+  </script>
+  <% } %>
+
   <script src="/js/document_demo.js"></script>
 </html>

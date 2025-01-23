@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Stats = require("../models/stats");
 const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
+const Category = require("../models/category");
 const passport = require("passport");
 const { isLoggedIn } = require("../utils/middleware");
 const { validateUser } = require("../utils/middleware");
@@ -14,6 +15,7 @@ const mail = require("../mail/mail_inlege");
 const Stripe = require("../utils/stripe");
 const moment = require("moment");
 const bcrypt = require("bcryptjs");
+const helpers = require("../utils/helpers");
 
 //PROFILE (show)
 //my profile view page
@@ -93,6 +95,7 @@ router.get("/auth/user/new", (req, res) => {
   if (req.query.premium === "true") {
     requiresPremium = true;
   }
+
   res.status(200).render("auth/register_form", { requiresPremium });
 });
 
@@ -107,6 +110,8 @@ router.post(
   validateUser,
   catchAsync(async (req, res, next) => {
     let { email, password, key, source, school } = req.body;
+    let { shareId } = req.session;
+
     if (school) {
       req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
       return res.redirect("back");
@@ -173,6 +178,18 @@ router.post(
       let createdCategoryId = await seedContent(newUser._id);
       newUser.createdCategories.push(createdCategoryId);
       await newUser.save();
+
+      //handle shareId
+      if (shareId) {
+        let sharedCategory = await Category.findOne({ shareId: shareId });
+        if (sharedCategory) {
+          newUser.sharedCategories.push(sharedCategory._id);
+          await newUser.save();
+          await helpers.incrementEventCount("registeredAfterShare");
+          req.session.shareId = null;
+        }
+      }
+
       req.flash("successOverlay", "Skvělé! Účet byl vytvořen.");
       if (req.query.requiresPremium) {
         res.status(201).redirect("/premium");
@@ -244,6 +261,16 @@ router.post(
     failureRedirect: "/auth/user/login",
   }),
   catchAsync(async (req, res) => {
+    let { shareId } = req.session;
+    //handle shareId
+    if (shareId) {
+      let sharedCategory = await Category.findOne({ shareId: shareId });
+      if (sharedCategory) {
+        req.user.sharedCategories.push(sharedCategory._id);
+        await req.user.save();
+        req.session.shareId = null;
+      }
+    }
     res.status(200).redirect("/");
   })
 );

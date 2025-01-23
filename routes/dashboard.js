@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
+const Stats = require("../models/stats");
 const { isLoggedIn, isAdmin } = require("../utils/middleware");
 const moment = require("moment");
 
@@ -86,6 +87,17 @@ router.get(
     const numberOfUsersWithStripeSubscription =
       getNumberOfUsersWithStripeSubscription(users);
 
+    //STATS
+    const registeredAfterShareStat = await Stats.findOne({
+      eventName: "registeredAfterShare",
+    });
+    let registeredAfterShare = registeredAfterShareStat?.eventCount;
+    if (!registeredAfterShare) {
+      registeredAfterShare = 0;
+    }
+
+    console.log(registeredAfterShare);
+
     res.render("admin/dashboard", {
       numberOfUsers,
       numberOfUsersWithActiveSubscription,
@@ -117,6 +129,7 @@ router.get(
       numberOfUsersUpdatedSubscriptionInLast30Days,
       numberOfUsersWithRevenuecatSubscription,
       numberOfUsersWithStripeSubscription,
+      registeredAfterShare,
     });
   })
 );
