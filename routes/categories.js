@@ -354,6 +354,10 @@ router.post(
       req.flash("error", "Předmět nenalezen.");
       return res.status(404).redirect("/");
     }
+    if (category.isDemo) {
+      req.flash("error", "Tento předmět nemůžeš přidat (demo předmět).");
+      return res.status(404).redirect("/");
+    }
     if (req.user.createdCategories.includes(category._id)) {
       req.flash("error", "Tento předmět jsi vytvořil.");
       return res.status(404).redirect("/");
@@ -400,6 +404,12 @@ router.get(
       req.flash("error", "Předmět nenalezen.");
       return res.status(404).redirect("/");
     }
+
+    if (category.isDemo) {
+      req.flash("error", "Tento předmět nemůžeš přidat (demo předmět).");
+      return res.status(404).redirect("/");
+    }
+
     if (req.user.createdCategories.includes(category._id)) {
       req.flash("error", "Tento předmět jsi vytvořil.");
       return res.status(404).redirect("/");

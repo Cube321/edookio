@@ -62,6 +62,9 @@ cron.schedule(
   cronHelpers.addCreditsToPremiumUsers
 );
 
+//dailyCleanpuOps
+cron.schedule(cronHelpers.cronExpressionDaily3AM, cronHelpers.dailyCleanupOps);
+
 //send infoEmail to users registered 3 days ago
 //TEMPORARILY DISABLED + NEEDS EMAIL CONTENT UPDATE
 //cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);

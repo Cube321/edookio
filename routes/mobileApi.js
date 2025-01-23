@@ -755,6 +755,13 @@ router.post(
     if (!category) {
       return res.status(404).json({ message: "Předmět nenalezen." });
     }
+
+    if (category.isDemo) {
+      return res
+        .status(404)
+        .json({ message: "Tento předmět je demo, nelze jej sdílet." });
+    }
+
     if (req.user.createdCategories.includes(category._id)) {
       return res.status(404).json({ message: "Tento předmět jsi vytvořil." });
     }

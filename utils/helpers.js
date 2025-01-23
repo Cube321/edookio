@@ -2,6 +2,10 @@ const Stats = require("../models/stats");
 const Invoice = require("../models/invoice");
 const User = require("../models/user");
 const Settings = require("../models/settings");
+const Category = require("../models/category");
+const Section = require("../models/section");
+const Card = require("../models/card");
+const Question = require("../models/question");
 const moment = require("moment");
 
 const helpers = {};
@@ -79,6 +83,37 @@ helpers.createInvoice = async function (
   //save new invoice ID reference on user
   foundUser.invoicesDbObjects.unshift(createdInvoice._id);
   await foundUser.save();
+};
+
+//async function to delete demo category by ID and all its sections, cards and questions
+//can not be used for real categories unless handled the createdCategories and sharedCategories array on each user
+helpers.deleteDemoCategoryById = async function (categoryId) {
+  try {
+    const foundCategory = await Category.findById(categoryId);
+    if (!foundCategory) throw new Error("Category not found.");
+
+    if (!foundCategory.isDemo) {
+      throw new Error("Category is not a demo category.");
+    }
+
+    await Section.deleteMany({ categoryId: categoryId });
+    await Card.deleteMany({ categoryId: categoryId });
+    await Question.deleteMany({ categoryId: categoryId });
+
+    await Category.findByIdAndDelete(categoryId);
+
+    console.log(
+      "Demo category and all its sections, cards and questions deleted.",
+      categoryId
+    );
+
+    return {
+      status: "Category and all its sections, cards and questions deleted.",
+    };
+  } catch (error) {
+    console.error("Error deleting category by ID:", error);
+    throw error;
+  }
 };
 
 module.exports = helpers;

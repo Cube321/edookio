@@ -1,6 +1,8 @@
 const User = require("../models/user");
 const Stats = require("../models/stats");
+const Category = require("../models/category");
 const catchAsync = require("../utils/catchAsync");
+const helpers = require("../utils/helpers");
 const moment = require("moment");
 const mail = require("../mail/mail_inlege");
 const { sendPushNotification } = require("../utils/pushNotifications");
@@ -190,6 +192,23 @@ cronHelpers.addCreditsToPremiumUsers = catchAsync(async () => {
     }
   }
   mail.sendCronReport("addCreditsToPremiumUsers", counter);
+});
+
+cronHelpers.dailyCleanupOps = catchAsync(async () => {
+  console.log("RUNNING CRON: dailyCleanupOps");
+
+  // Delete all demo categories
+  let demoCategories = await Category.find({ isDemo: true });
+
+  let counter = demoCategories.length;
+
+  demoCategories.forEach(async (category) => {
+    await helpers.deleteDemoCategoryById(category._id);
+  });
+
+  console.log("Deleted demo categories", counter);
+  console.log("Daily cleanup ops finished");
+  await mail.sendCronReport("Deleted demo categories", counter);
 });
 
 let saveLeaderboard = catchAsync(async (users) => {
