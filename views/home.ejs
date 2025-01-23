@@ -27,22 +27,7 @@
     <link rel="stylesheet" href="/css/custom.css" />
     <link rel="stylesheet" href="/css/landing.css" />
     <!-- META TAGS -->
-    <meta name="description" content="<%= texts.header.description %>" />
-    <meta name="author" content="<%= texts.header.author %>" />
-    <meta name="keywords" content="<%= texts.header.keywords %>" />
-    <meta name="twitter:title" content="<%= texts.header.title %>" />
-    <meta
-      name="twitter:description"
-      content="<%= texts.header.description %>"
-    />
-    <meta name="twitter:image" content="<%= texts.header.sharingImgUrl %>" />
-    <meta property="og:url" content="<%= texts.header.homepageUrl %>" />
-    <meta property="og:title" content="<%= texts.header.title %>" />
-    <meta
-      property="og:description"
-      content="<%= texts.header.description %>>"
-    />
-    <meta property="og:image" content="<%= texts.header.sharingImgUrl %>" />
+    <%- include('./partials/meta') %>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
