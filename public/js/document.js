@@ -65,10 +65,10 @@ document
           "block";
         document.getElementById(
           "document-error-headline"
-        ).textContent = `Nemáte dostatek kreditů`;
+        ).textContent = `Nemáš dostatek AI kreditů`;
         document.getElementById(
           "document-error-text"
-        ).textContent = `Nemáte dostatek kreditů. Potřebujete ${creditsRequired} kreditů a zbývá vám pouze ${creditsLeft}.`;
+        ).textContent = `Nemáš dostatek AI kreditů. Potřebuješ ${creditsRequired} AI kreditů a zbývá ti pouze ${creditsLeft} AI kreditů.`;
         if (isPremium) {
           document.getElementById("premium-button-sub").style.display = "none";
           document.getElementById(
@@ -142,7 +142,7 @@ async function fetchJobProgress(jobId, progressInterval) {
           "block";
         document.getElementById(
           "document-success-text"
-        ).textContent = `Zbývá vám ještě ${credits} kreditů.`;
+        ).textContent = `Zbývá ti ještě ${credits} AI kreditů.`;
       } else {
         document.getElementById("progress-text").textContent =
           "Omlouváme se, zpracování selhalo.";

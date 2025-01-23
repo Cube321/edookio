@@ -304,6 +304,25 @@ form .form-borders.border-darkgrey {
   animation: shimmer 3s infinite linear; /* Slower animation */
 }
 
+.premium-plan-card p {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 1rem;
+}
+
+.premium-card-list {
+  list-style: none;
+}
+
+.premium-card-list .fa-check-circle {
+  color: #9ae80f;
+}
+
+.premium-card-list li {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
 @keyframes shimmer {
   from {
     transform: translateX(-150%);
