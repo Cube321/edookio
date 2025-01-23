@@ -158,7 +158,7 @@ async function generateQuizQuestion(card, sectionId, categoryId, user) {
     let newQuestion = new Question({
       category: categoryId,
       section: sectionId,
-      author: user.email,
+      author: user._id,
       question: parsedResponse.Q,
       correctAnswers: [parsedResponse.CA],
       wrongAnswers: [parsedResponse.WA1, parsedResponse.WA2],
@@ -214,7 +214,7 @@ async function generateEnQuizQuestion(card, sectionId, categoryId, user) {
     let newQuestion = new Question({
       category: categoryId,
       section: sectionId,
-      author: user.email,
+      author: user._id,
       question: parsedResponse.Q,
       correctAnswers: [parsedResponse.CA],
       wrongAnswers: [parsedResponse.WA1, parsedResponse.WA2],

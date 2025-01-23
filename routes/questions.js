@@ -230,7 +230,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
     const { question, correctAnswer, wrongAnswer1, wrongAnswer2 } = req.body;
-    const { email } = req.user;
+    const { _id } = req.user;
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findById(categoryId);
     if (!foundSection) {
@@ -243,7 +243,7 @@ router.post(
       category: categoryId,
       categoryId: categoryId,
       section: sectionId,
-      author: email,
+      author: _id,
       question,
       correctAnswers: [correctAnswer],
       wrongAnswers: [wrongAnswer1, wrongAnswer2],

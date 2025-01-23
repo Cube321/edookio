@@ -13,8 +13,8 @@ const CardSchema = new Schema({
   pageA: String,
   pageB: String,
   author: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   section: {
     type: Schema.Types.ObjectId,

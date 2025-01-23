@@ -41,7 +41,7 @@ router.post(
   isCategoryAuthor,
   catchAsync(async (req, res, next) => {
     let { pageA, pageB } = req.body;
-    const author = req.user.email;
+    const author = req.user._id;
     const { categoryId, sectionId } = req.params;
 
     //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
@@ -115,7 +115,7 @@ router.put(
     pageA = pageA.replace(/<p><br><\/p>/g, "");
     pageB = pageB.replace(/<p><br><\/p>/g, "");
 
-    let author = req.user.email;
+    let author = req.user._id;
     const foundCard = await Card.findByIdAndUpdate(id, {
       pageA,
       pageB,

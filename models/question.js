@@ -15,8 +15,8 @@ const QuestionSchema = new Schema({
     ref: "Section",
   },
   author: {
-    type: String,
-    required: true,
+    type: Schema.Types.ObjectId,
+    ref: "User",
   },
   question: {
     type: String,

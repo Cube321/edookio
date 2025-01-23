@@ -29,7 +29,7 @@
   gtag('config', 'G-W9NBWFYGZ1');
   gtag('config', 'AW-990983899');
 </script>
-<body class="d-flex flex-column vh-100">
+<body class="d-flex flex-column vh-100 bg-light">
     <%- include('../partials/navbar') %> 
 
     <main role="main"> 
@@ -44,7 +44,7 @@
           <div name="placeholder"></div>
       </div>
   </div>
-  <div class="row">
+  <div class="row mb-4">
       <div class="col-12 text-center">
         <% if (currentUser) { %>
           <h2 class="text-center"><%= section.name %></h2> 
@@ -52,40 +52,18 @@
           <h2 class="text-center">Vygenerovaný balíček</h2>
         <% } %>
       </div>
+      <% if (!demo) { %>
+       <div class="col-12 d-flex justify-content-center mt-2">
+        <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-danger mx-1">Přidat kartičku</a>
+        <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-danger mx-1">Přidat otázku</a>
+       </div>
+      <% } else { %>
+        <div class="col-12 d-flex justify-content-center mt-2">
+          <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown" class="btn btn-sm btn-danger mx-1">Procházet kartičky</a>
+          <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/test" class="btn btn-sm btn-danger mx-1">Procházek otázky</a>
+        </div>
+      <% } %>
   </div>
-
-  <div class="row mt-4 mb-3">
-    <div class="offset-sm-1 col-sm-5 d-flex flex-column justify-content-between align-items-center">
-      <h4 class="mb-2">Kartičky</h4>
-      <div class="mb-3">
-        <% if (!demo) { %>
-          <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard" class="btn btn-sm btn-outline-danger">Přidat kartičku</a>
-        <% } else if (generatedCategoryId && generatedSectionId) { %>
-          <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/card30/1?mode=unknown" class="btn btn-sm btn-danger">Studijní zobrazení</a>
-        <% } %>
-      </div>
-    </div>  
-    <div class="col-sm-5 d-flex flex-column justify-content-center align-items-center">
-      <h4 class="mb-2">Otázky</h4>
-      
-      <div class="mb-3">
-          <!--
-            <% if (section.questions && !containesCardWithoutQuestion) { %>  
-                <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#questionsExistModal">Vygenerovat otázky z kartiček</a>
-            <% } else if (section.cards && section.cards.length === 0){ %>
-                <a href="#" class="btn btn-sm btn-outline-danger" style='min-width:124px' data-bs-toggle="modal" data-bs-target="#noCardsModal">Vygenerovat otázky z kartiček</a>
-            <% } else { %>
-                <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/generate" class="btn btn-sm btn-outline-danger" style='min-width:124px' id="generate-ai">Vygenerovat otázky z kartiček</a>
-            <% } %>
-          -->
-          <% if (!demo) { %>
-            <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new" class="btn btn-sm btn-outline-danger">Přidat otázku</a>
-          <% } else if (generatedCategoryId && generatedSectionId){ %>
-            <a href="/category/<%= generatedCategoryId %>/section/<%= generatedSectionId %>/test" class="btn btn-sm btn-danger">Studijní zobrazení</a>
-          <% } %>
-      </div>
-      
-    </div>
 
   <% pairs.forEach((pair) => { 
        const card = pair.card;
@@ -99,9 +77,9 @@
                   <div class="question"><%- card.pageA %></div>
                     <div><%- card.pageB %></div>
                     <% if (!demo) { %>
-                      <div class="d-flex justify-content-end">
-                          <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
-                          <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn">Odstranit</a>
+                      <div class="d-flex justify-content-end mb-2">
+                          <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
+                          <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn" style="color: red"><i class="far fa-trash-alt"></i></a>
                       </div>
                     <% } %>
                   </div>  
@@ -125,9 +103,9 @@
                   <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[1] %></span> <i class="far fa-times-circle icon-md"></i></p>
               </div>
               <% if (!demo) { %>
-                <div class="d-flex justify-content-end">
-                  <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
-                  <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
+                <div class="d-flex justify-content-end mb-2">
+                  <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
+                  <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn" style="color: red"><i class="far fa-trash-alt"></i></a>
                 </div>
               <% } else { %>
                 <div name="placeholder" style="opacity: 0">X</div>
@@ -142,7 +120,6 @@
           <% } %>
         </div>
       </div>
-    </div>
   <% }) %>
 
   <!-- 
@@ -171,10 +148,10 @@
               <p class="answer-item wrong d-flex justify-content-between align-items-center"> <span><%- question.wrongAnswers[1] %></span> <i class="far fa-times-circle icon-md"></i></p>
           </div>
           
-          <div class="d-flex justify-content-end">
-            <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2">Upravit</a>
-            <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn">Odstranit</a>
-          </div>
+          <div class="d-flex justify-content-end mb-2">
+              <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/questions/<%= question._id %>/edit" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
+              <a href="/review/<%= section._id %>/deleteQuestion/<%= question._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-question-btn" style="color: red"><i class="far fa-trash-alt"></i></a>
+            </div>
         </div>
       </div>
     </div>

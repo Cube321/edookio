@@ -189,7 +189,7 @@ async function processDocumentJob(job) {
         category: categoryId,
         categoryId: categoryId,
         section: section._id,
-        author: userEmail,
+        author: userId,
         question: cardData.testQuestion,
         correctAnswers: [cardData.correctAnswer],
         wrongAnswers: [cardData.wrongAnswerOne, cardData.wrongAnswerTwo],

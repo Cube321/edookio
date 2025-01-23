@@ -39,7 +39,7 @@ const seedContent = async function (userId) {
     const dummyContent = [
       {
         pageA: "Jaké je hlavní město České republiky?",
-        pageB: "Praha je hlavní a největší město České republiky.",
+        pageB: "<b>Praha</b> je hlavní a největší město České republiky.",
         question: "Které město je hlavním městem ČR?",
         correctAnswer: "Praha",
         wrongAnswer1: "Brno",
@@ -48,7 +48,7 @@ const seedContent = async function (userId) {
       {
         pageA: "Kdy vznikla samostatná Česká republika?",
         pageB:
-          "Samostatná Česká republika vznikla 1. ledna 1993 po rozdělení Československa.",
+          "Samostatná Česká republika vznikla <b>1. ledna 1993</b> po rozdělení Československa.",
         question: "Které datum označuje vznik samostatné ČR?",
         correctAnswer: "1. ledna 1993",
         wrongAnswer1: "28. října 1918",
@@ -56,7 +56,7 @@ const seedContent = async function (userId) {
       },
       {
         pageA: "Jak se jmenuje nejvyšší hora České republiky?",
-        pageB: "Nejvyšší hora ČR je Sněžka s nadmořskou výškou 1603 m.",
+        pageB: "Nejvyšší hora ČR je <b>Sněžka</b> s nadmořskou výškou 1603 m.",
         question: "Jak se jmenuje nejvyšší hora ČR?",
         correctAnswer: "Sněžka",
         wrongAnswer1: "Praděd",
@@ -64,7 +64,7 @@ const seedContent = async function (userId) {
       },
       {
         pageA: "Jaký je oficiální jazyk v České republice?",
-        pageB: "Úředním jazykem je čeština.",
+        pageB: "Úředním jazykem je <b>čeština</b>.",
         question: "Který jazyk je oficiálním jazykem ČR?",
         correctAnswer: "Čeština",
         wrongAnswer1: "Slovenština",
@@ -73,7 +73,7 @@ const seedContent = async function (userId) {
       {
         pageA: "Kolik sousedních států má Česká republika?",
         pageB:
-          "ČR má čtyři sousední státy: Německo, Polsko, Slovensko a Rakousko.",
+          "ČR má <b>čtyři</b> sousední státy: Německo, Polsko, Slovensko a Rakousko.",
         question: "Kolik států sousedí s Českou republikou?",
         correctAnswer: "4",
         wrongAnswer1: "3",
@@ -98,7 +98,7 @@ const seedContent = async function (userId) {
         category: createdCategory._id,
         categoryId: createdCategory._id,
         section: newSection._id,
-        author: userId, // or user email, depending on your schema
+        author: userId,
         question: contentItem.question,
         correctAnswers: [contentItem.correctAnswer],
         wrongAnswers: [contentItem.wrongAnswer1, contentItem.wrongAnswer2],
