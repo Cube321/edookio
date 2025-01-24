@@ -1,18 +1,14 @@
 <% layout('layouts/boilerplate.ejs') %>
-<div class="container">
+<div class="container mb-5">
   <div class="row">
     <div class="col-lg-12">
       <h2 class="text-center">Vložit novou kartičku</h2>
       <p class="text-center">do balíčku <%= sectionName %></p>
-      <form
-        class="row g-3"
-        novalidate
-        action="/category/<%= categoryId %>/section/<%= sectionId %>/newCard"
-        method="POST"
-        onsubmit="return submitForm()"
-      >
+      <form class="row g-3" id="create-card-form" novalidate>
         <div class="col-lg-6">
-          <label for="pageA" class="new-card-label">Přední strana</label>
+          <label for="pageA" class="new-card-label mb-2 text-center w-100"
+            >Přední strana</label
+          >
           <!-- Quill Editor Container for Page A -->
           <div
             id="editorPageA"
@@ -23,7 +19,9 @@
           <input type="hidden" name="pageA" id="hiddenPageA" required />
         </div>
         <div class="col-lg-6">
-          <label for="pageB" class="new-card-label">Zadní strana</label>
+          <label for="pageB" class="new-card-label mb-2 text-center w-100"
+            >Zadní strana</label
+          >
           <!-- Quill Editor Container for Page B -->
           <div
             id="editorPageB"
@@ -40,6 +38,11 @@
           >
             Obě strany kartičky musí být vyplněny.
           </p>
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <span class="text-muted text-smaller text-center mx-2"
+            >Ctrl/Cmd + Enter = <i class="fas fa-cloud-upload-alt"></i
+          ></span>
         </div>
         <div class="col-12 d-flex justify-content-center align-items-center">
           <button
@@ -59,7 +62,246 @@
   </div>
 </div>
 
+<!-- A container for toasts, placed near the top-right corner -->
+<div
+  class="toast-container position-fixed bottom-0 start-0 p-3"
+  style="z-index: 9999"
+  aria-live="polite"
+  aria-atomic="true"
+>
+  <!-- Success Toast -->
+  <div
+    id="success-toast"
+    class="toast align-items-center text-white bg-success border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    data-bs-delay="3000"
+  >
+    <div class="d-flex">
+      <div class="toast-body">Kartička uložena.</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+
+  <!-- Error Toast -->
+  <div
+    id="error-toast"
+    class="toast align-items-center text-white bg-red border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    data-bs-delay="3000"
+  >
+    <div class="d-flex">
+      <div class="toast-body">Omlouváme se, kartičku se nepovedlo uložit.</div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+</div>
+
 <!-- Include Quill JS and CSS -->
 <link href="/css/quill.css" rel="stylesheet" />
 <script src="/js/quill.js"></script>
-<script src="/js/quillCardSetup.js"></script>
+
+<script>
+  // Run this after DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. Initialize Quill Editors
+    // Initialize Quill for Page A
+    var quillPageA = new Quill("#editorPageA", {
+      theme: "snow",
+      modules: {
+        toolbar: [["bold", "italic", { list: "bullet" }]],
+        keyboard: {
+          bindings: {
+            // Override default Tab
+            tab: {
+              key: 9, // Tab
+              handler: function (range, context) {
+                // Move focus to Page B
+                quillPageB.focus();
+                // Return false to prevent Quill from inserting indentation
+                return false;
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // Initialize Quill for Page B
+    var quillPageB = new Quill("#editorPageB", {
+      theme: "snow",
+      modules: {
+        toolbar: [["bold", "italic", { list: "bullet" }]],
+        keyboard: {
+          bindings: {
+            tab: {
+              key: 9,
+              handler: function (range, context) {
+                // Move focus to Page A (or the next input on your form)
+                quillPageA.focus();
+                return false;
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // 2. Attach an event listener to the form (pure JS, no action/method)
+    const form = document.getElementById("create-card-form");
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); // Stop normal form submission
+      submitForm();
+    });
+
+    // 3. The async submission/validation function
+    async function submitForm() {
+      let isPageAValid = true;
+      let isPageBValid = true;
+
+      // Read the HTML content from each Quill editor
+      const pageAContent = quillPageA.root.innerHTML;
+      const pageBContent = quillPageB.root.innerHTML;
+
+      // (Optional) store them in hidden inputs for easy referencing
+      document.getElementById("hiddenPageA").value = pageAContent;
+      document.getElementById("hiddenPageB").value = pageBContent;
+
+      // Simple validation
+      if (pageAContent.trim() === "" || pageAContent === "<p><br></p>") {
+        document.getElementById("editorPageA").classList.add("red-border");
+        document
+          .getElementById("editorPageA")
+          .previousElementSibling.classList.add("red-border");
+        isPageAValid = false;
+      } else {
+        document.getElementById("editorPageA").classList.remove("red-border");
+        document
+          .getElementById("editorPageA")
+          .previousElementSibling.classList.remove("red-border");
+      }
+
+      if (pageBContent.trim() === "" || pageBContent === "<p><br></p>") {
+        document.getElementById("editorPageB").classList.add("red-border");
+        document
+          .getElementById("editorPageB")
+          .previousElementSibling.classList.add("red-border");
+        isPageBValid = false;
+      } else {
+        document.getElementById("editorPageB").classList.remove("red-border");
+        document
+          .getElementById("editorPageB")
+          .previousElementSibling.classList.remove("red-border");
+      }
+
+      // If either side is invalid, show error message & stop
+      const errorWarning = document.getElementById("error-warning");
+      if (!isPageAValid || !isPageBValid) {
+        errorWarning.classList.remove("hidden");
+        return;
+      } else {
+        errorWarning.classList.add("hidden");
+      }
+
+      // Disable button + show spinner
+      const saveBtn = document.getElementById("save-card-btn");
+      saveBtn.classList.add("disabled");
+      saveBtn.innerHTML =
+        "<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>";
+
+      // Clear Quill editors on success
+      quillPageA.setContents([{ insert: "\n" }]);
+      quillPageB.setContents([{ insert: "\n" }]);
+      document.getElementById("hiddenPageA").value = "";
+      document.getElementById("hiddenPageB").value = "";
+      quillPageA.focus();
+
+      // 4. Send data to your server
+      try {
+        const response = await fetch(
+          "/category/<%= categoryId %>/section/<%= sectionId %>/newCard?api=true",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              pageA: pageAContent,
+              pageB: pageBContent,
+            }),
+          }
+        );
+
+        if (!response.ok) {
+          // restore old HTML data in Quill editors properly
+          quillPageA.clipboard.dangerouslyPasteHTML(pageAContent);
+          quillPageB.clipboard.dangerouslyPasteHTML(pageBContent);
+
+          // reassign hidden inputs if you still need them
+          document.getElementById("hiddenPageA").value = pageAContent;
+          document.getElementById("hiddenPageB").value = pageBContent;
+
+          throw new Error("Server responded with status " + response.status);
+        }
+
+        // 6. Give the user feedback
+        showSuccessToast();
+      } catch (err) {
+        console.error("Error creating card:", err);
+        showErrorToast();
+      } finally {
+        // 7. Re-enable button & restore text
+        saveBtn.classList.remove("disabled");
+        saveBtn.textContent = "Vložit kartičku";
+      }
+    }
+
+    function showSuccessToast() {
+      // 1. Get the toast element by ID
+      const toastEl = document.getElementById("success-toast");
+
+      // 2. Initialize a Bootstrap toast object
+      const toast = new bootstrap.Toast(toastEl);
+
+      // 3. Show the toast
+      toast.show();
+    }
+
+    document.addEventListener("keydown", function (event) {
+      // 1. Check if user pressed Enter
+      if (event.key === "Enter") {
+        // 2. Check if Ctrl (on Windows/Linux) OR Cmd (on macOS) is pressed
+        if (event.ctrlKey || event.metaKey) {
+          // 3. Prevent any default action
+          event.preventDefault();
+          // 4. Call the same function that handles form submission
+          submitForm();
+        }
+      }
+    });
+  });
+
+  function showErrorToast() {
+    // 1. Get the toast element by ID
+    const toastEl = document.getElementById("error-toast");
+
+    // 2. Initialize a Bootstrap toast object
+    const toast = new bootstrap.Toast(toastEl);
+
+    // 3. Show the toast
+    toast.show();
+  }
+</script>

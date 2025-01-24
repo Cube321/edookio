@@ -75,6 +75,16 @@
   border-color: #7ac705;
 }
 
+.bg-success {
+  background-color: #7ac705 !important;
+  border-color: #7ac705 !important;
+}
+
+.bg-red {
+  background-color: rgb(230, 12, 12) !important;
+  border-color: rgb(230, 12, 12) !important;
+}
+
 .form-control:focus,
 .btn-danger:focus,
 .btn-danger:active,

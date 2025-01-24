@@ -1,121 +1,174 @@
 <% layout('layouts/boilerplate.ejs') %>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <h2 class="text-center">Upravit kartičku</h2> 
-            <p class="text-center">v balíčku <%= sectionName %></p>
-            <form class="row g-3" novalidate action="/cards/edit/<%=card._id%>?_method=PUT" method="POST" onsubmit="return submitForm()">
-                <div class="col-lg-6">
-                    <label for="pageA" class="new-card-label">Přední strana</label>
-                    <!-- Quill Editor Container for Page A -->
-                    <div id="editorPageA" class="form-control form-borders" style="height: 300px;"></div>
-                    <!-- Hidden Input to Store Quill HTML Content -->
-                    <input type="hidden" name="pageA" id="hiddenPageA" required>
-                </div>
-                <div class="col-lg-6">
-                    <label for="pageB" class="new-card-label">Zadní strana</label>
-                    <!-- Quill Editor Container for Page B -->
-                    <div id="editorPageB" class="form-control form-borders" style="height: 300px;"></div>
-                    <!-- Hidden Input to Store Quill HTML Content -->
-                    <input type="hidden" name="pageB" id="hiddenPageB" required>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center">
-                    <p class="error-warning mb-0 red text-smaller hidden" id="error-warning">Obě strany kartičky musí být vyplněny.</p>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center">
-                    <button class="btn btn-danger btn-lg mt-1" style="width: 200px" type="submit" id="save-card-btn">Uložit změny</button>
-                </div>
-                <div class="col-12 d-flex justify-content-center align-items-center">
-                    <a href="/review/<%= card.section %>/showAll">zpět</a>
-                </div>
-            </form>
+  <div class="row">
+    <div class="col-lg-12">
+      <h2 class="text-center">Upravit kartičku</h2>
+      <p class="text-center">v balíčku <%= sectionName %></p>
+      <form
+        class="row g-3"
+        novalidate
+        action="/cards/edit/<%=card._id%>?_method=PUT"
+        method="POST"
+        onsubmit="return submitForm()"
+      >
+        <div class="col-lg-6">
+          <label for="pageA" class="new-card-label">Přední strana</label>
+          <!-- Quill Editor Container for Page A -->
+          <div
+            id="editorPageA"
+            class="form-control form-borders"
+            style="height: 300px"
+          ></div>
+          <!-- Hidden Input to Store Quill HTML Content -->
+          <input type="hidden" name="pageA" id="hiddenPageA" required />
         </div>
+        <div class="col-lg-6">
+          <label for="pageB" class="new-card-label">Zadní strana</label>
+          <!-- Quill Editor Container for Page B -->
+          <div
+            id="editorPageB"
+            class="form-control form-borders"
+            style="height: 300px"
+          ></div>
+          <!-- Hidden Input to Store Quill HTML Content -->
+          <input type="hidden" name="pageB" id="hiddenPageB" required />
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <p
+            class="error-warning mb-0 red text-smaller hidden"
+            id="error-warning"
+          >
+            Obě strany kartičky musí být vyplněny.
+          </p>
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <button
+            class="btn btn-danger btn-lg mt-1"
+            style="width: 200px"
+            type="submit"
+            id="save-card-btn"
+          >
+            Uložit změny
+          </button>
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <a href="/review/<%= card.section %>/showAll">zpět</a>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 
 <!-- Include Quill JS and CSS from Local Files -->
-<link href="/css/quill.css" rel="stylesheet">
+<link href="/css/quill.css" rel="stylesheet" />
 <script src="/js/quill.js"></script>
 
 <script>
-    // Initialize Quill Editors
-    var quillPageA = new Quill('#editorPageA', {
-        theme: 'snow',
-        modules: {
-            toolbar: [["bold", "italic", { list: "bullet" }]]
-        }
-    });
+  // Initialize Quill for Page A
+  var quillPageA = new Quill("#editorPageA", {
+    theme: "snow",
+    modules: {
+      toolbar: [["bold", "italic", { list: "bullet" }]],
+      keyboard: {
+        bindings: {
+          // Override default Tab
+          tab: {
+            key: 9, // Tab
+            handler: function (range, context) {
+              // Move focus to Page B
+              quillPageB.focus();
+              // Return false to prevent Quill from inserting indentation
+              return false;
+            },
+          },
+        },
+      },
+    },
+  });
 
-    var quillPageB = new Quill('#editorPageB', {
-        theme: 'snow',
-        modules: {
-            toolbar: [["bold", "italic", { list: "bullet" }]]
-        }
-    });
+  // Initialize Quill for Page B
+  var quillPageB = new Quill("#editorPageB", {
+    theme: "snow",
+    modules: {
+      toolbar: [["bold", "italic", { list: "bullet" }]],
+      keyboard: {
+        bindings: {
+          tab: {
+            key: 9,
+            handler: function (range, context) {
+              // Move focus to Page A (or the next input on your form)
+              quillPageA.focus();
+              return false;
+            },
+          },
+        },
+      },
+    },
+  });
 
-    // Populate the Quill editors with existing content
-    quillPageA.root.innerHTML = `<%- card.pageA %>`;
-    quillPageB.root.innerHTML = `<%- card.pageB %>`;
+  // Populate the Quill editors with existing content
+  quillPageA.root.innerHTML = `<%- card.pageA %>`;
+  quillPageB.root.innerHTML = `<%- card.pageB %>`;
 
-    // Form Submission Handler
-    function submitForm() {
-        let isPageAValid = true;
-        let isPageBValid = true;
-        // Get HTML content from Quill editor
-        var pageAContent = quillPageA.root.innerHTML;
-        var pageBContent = quillPageB.root.innerHTML;
+  // Form Submission Handler
+  function submitForm() {
+    let isPageAValid = true;
+    let isPageBValid = true;
+    // Get HTML content from Quill editor
+    var pageAContent = quillPageA.root.innerHTML;
+    var pageBContent = quillPageB.root.innerHTML;
 
-        // Set the hidden input values to the Quill content
-        document.getElementById('hiddenPageA').value = pageAContent;
-        document.getElementById('hiddenPageB').value = pageBContent;
+    // Set the hidden input values to the Quill content
+    document.getElementById("hiddenPageA").value = pageAContent;
+    document.getElementById("hiddenPageB").value = pageBContent;
 
-        if (pageAContent === "<p><br></p>" || pageAContent === "") {
-            //add ".red-border" class to the editor
-            document.getElementById("editorPageA").classList.add("red-border");
-            //add the red-border class to the previous sibling
-            document
-            .getElementById("editorPageA")
-            .previousElementSibling.classList.add("red-border");
-            document.getElementById("error-warning").classList.remove("hidden");
-            isPageAValid = false;
-        } else {
-            //remove the red-border class from the editor
-            document.getElementById("editorPageA").classList.remove("red-border");
-            //remove the red-border class from the previous sibling
-            document
-            .getElementById("editorPageA")
-            .previousElementSibling.classList.remove("red-border");
-            isPageAValid = true;
-        }
-
-        if (pageBContent === "<p><br></p>" || pageBContent === "") {
-            //add ".red-border" class to the editor
-            document.getElementById("editorPageB").classList.add("red-border");
-            //add the red-border class to the previous sibling
-            document
-            .getElementById("editorPageB")
-            .previousElementSibling.classList.add("red-border");
-            document.getElementById("error-warning").classList.remove("hidden");
-            isPageBValid = false;
-        } else {
-            //remove the red-border class from the editor
-            document.getElementById("editorPageB").classList.remove("red-border");
-            //remove the red-border class from the previous sibling
-            document
-            .getElementById("editorPageB")
-            .previousElementSibling.classList.remove("red-border");
-            isPageBValid = true;
-        }
-
-        // Allow form submission
-        if (isPageAValid && isPageBValid) {
-            document.getElementById("error-warning").classList.add("hidden");
-            document.getElementById("save-card-btn").classList.add("disabled");
-            document.getElementById("save-card-btn").innerHTML =
-            "<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>";
-            return true;
-        } else {
-            return false;
-        }
+    if (pageAContent === "<p><br></p>" || pageAContent === "") {
+      //add ".red-border" class to the editor
+      document.getElementById("editorPageA").classList.add("red-border");
+      //add the red-border class to the previous sibling
+      document
+        .getElementById("editorPageA")
+        .previousElementSibling.classList.add("red-border");
+      document.getElementById("error-warning").classList.remove("hidden");
+      isPageAValid = false;
+    } else {
+      //remove the red-border class from the editor
+      document.getElementById("editorPageA").classList.remove("red-border");
+      //remove the red-border class from the previous sibling
+      document
+        .getElementById("editorPageA")
+        .previousElementSibling.classList.remove("red-border");
+      isPageAValid = true;
     }
+
+    if (pageBContent === "<p><br></p>" || pageBContent === "") {
+      //add ".red-border" class to the editor
+      document.getElementById("editorPageB").classList.add("red-border");
+      //add the red-border class to the previous sibling
+      document
+        .getElementById("editorPageB")
+        .previousElementSibling.classList.add("red-border");
+      document.getElementById("error-warning").classList.remove("hidden");
+      isPageBValid = false;
+    } else {
+      //remove the red-border class from the editor
+      document.getElementById("editorPageB").classList.remove("red-border");
+      //remove the red-border class from the previous sibling
+      document
+        .getElementById("editorPageB")
+        .previousElementSibling.classList.remove("red-border");
+      isPageBValid = true;
+    }
+
+    // Allow form submission
+    if (isPageAValid && isPageBValid) {
+      document.getElementById("error-warning").classList.add("hidden");
+      document.getElementById("save-card-btn").classList.add("disabled");
+      document.getElementById("save-card-btn").innerHTML =
+        "<div class='spinner-border spinner-border-small' role='status'><span class='visually-hidden'>Loading...</span></div>";
+      return true;
+    } else {
+      return false;
+    }
+  }
 </script>

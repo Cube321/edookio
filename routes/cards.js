@@ -44,6 +44,7 @@ router.post(
   catchAsync(async (req, res, next) => {
     let { pageA, pageB } = req.body;
     const author = req.user._id;
+    const { api } = req.query;
     const { categoryId, sectionId } = req.params;
 
     //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
@@ -71,6 +72,12 @@ router.post(
     await foundCategory.save();
     foundSection.cards.push(createdCard._id);
     await foundSection.save();
+
+    //if the card is created via API, send the card ID back
+    if (api) {
+      return res.status(201).json({ cardId: createdCard._id });
+    }
+
     req.flash("successOverlay", "Kartička byla přidána do databáze.");
     res
       .status(201)
