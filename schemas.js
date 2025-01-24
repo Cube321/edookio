@@ -64,3 +64,8 @@ module.exports.questionSchema = Joi.object({
   wrongAnswer2: Joi.string().required().escapeHTML(),
   wrongAnswer3: Joi.string().allow("").escapeHTML(),
 });
+
+module.exports.nameSchema = Joi.object({
+  firstname: Joi.string().required().escapeHTML(),
+  lastname: Joi.string().required().escapeHTML(),
+});

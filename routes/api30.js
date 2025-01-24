@@ -3,7 +3,8 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
-const CardInfo = require("../models/cardInfo");
+const mongoose = require("mongoose");
+const sanitizeHtml = require("sanitize-html");
 const moment = require("moment");
 const { isLoggedIn } = require("../utils/middleware");
 
@@ -13,6 +14,12 @@ router.get(
   "/api/getCards/section/:sectionId",
   catchAsync(async (req, res) => {
     let { sectionId } = req.params;
+
+    //sanitize
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      return res.status(400).send({ error: "Invalid section ID" });
+    }
+
     let foundSection = await Section.findById(sectionId).populate("cards");
     if (!foundSection) {
       return res.status(404).send({ error: "Section not found" });
@@ -58,6 +65,12 @@ router.get(
   "/api/getCardsUnknown/section/:sectionId",
   catchAsync(async (req, res) => {
     let { sectionId } = req.params;
+
+    //sanitize
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      return res.status(400).send({ error: "Invalid section ID" });
+    }
+
     let foundSection = await Section.findById(sectionId).populate("cards");
     if (!foundSection) {
       return res.status(404).send({ error: "Section not found" });
@@ -139,6 +152,12 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     let { categoryId } = req.params;
+
+    //sanitize
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      return res.status(400).send({ error: "Invalid category ID" });
+    }
+
     let { user } = req;
     let cards = await getRandomCards(categoryId);
 
@@ -189,7 +208,7 @@ async function getRandomCards(categoryId) {
   return final20cards;
 }
 
-//update last seen Card of Section
+//used only to mark lastActive date of user
 router.post(
   "/api/updateLastSeenCard/section/:sectionId/:cardNum",
   catchAsync(async (req, res) => {
@@ -246,7 +265,13 @@ router.get(
   "/api/getQuestions/section/:sectionId",
   catchAsync(async (req, res) => {
     let { sectionId } = req.params;
+
     if (sectionId !== "random_test") {
+      //sanitize
+      if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+        return res.status(400).send({ error: "Invalid section ID" });
+      }
+
       let foundSection = await Section.findById(sectionId).populate({
         path: "questions",
         populate: {
@@ -334,6 +359,31 @@ router.post(
   catchAsync(async (req, res) => {
     let { sectionId, ratingValue } = req.params;
     let { type } = req.query;
+
+    //sanitize
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      return res.status(400).send({ error: "Invalid section ID" });
+    }
+
+    // Validate ratingValue
+    const parsedRatingValue = Number(ratingValue);
+    if (
+      isNaN(parsedRatingValue) ||
+      parsedRatingValue < 1 ||
+      parsedRatingValue > 5
+    ) {
+      return res.status(400).send({
+        error: "Invalid rating value. It must be a number between 1 and 5.",
+      });
+    }
+
+    // Validate type
+    if (!type || !["cards", "questions"].includes(type)) {
+      return res
+        .status(400)
+        .send({ error: "Invalid type. Must be 'cards' or 'questions'." });
+    }
+
     let section = await Section.findById(sectionId);
     if (type === "cards") {
       section.votesAmountCards++;
@@ -358,18 +408,62 @@ router.post(
 router.post(
   "/api/saveFeedback/section/:sectionId/",
   catchAsync(async (req, res) => {
-    let { sectionId } = req.params;
-    let { type } = req.query;
+    const { sectionId } = req.params;
+    const { type } = req.query;
     let { text } = req.body;
-    let section = await Section.findById(sectionId);
+
+    // Validate sectionId
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      return res.status(400).send({ error: "Invalid section ID" });
+    }
+
+    // Validate type
+    if (!type || !["cards", "questions"].includes(type)) {
+      return res
+        .status(400)
+        .send({ error: "Invalid type. Must be 'cards' or 'questions'." });
+    }
+
+    // Validate and sanitize feedback text
+    if (!text || typeof text !== "string") {
+      return res
+        .status(400)
+        .send({ error: "Feedback text is required and must be a string." });
+    }
+    text = sanitizeHtml(text, {
+      allowedTags: [], // Remove all HTML tags
+      allowedAttributes: {}, // Remove all attributes
+    });
+
+    // Find section
+    let section;
+    try {
+      section = await Section.findById(sectionId);
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ error: "Database error occurred while finding the section." });
+    }
+    if (!section) {
+      return res.status(404).send({ error: "Section not found." });
+    }
+
+    // Save feedback
     if (type === "cards") {
       section.feedbackCards.unshift(text);
-    }
-    if (type === "questions") {
+    } else if (type === "questions") {
       section.feedbackQuestions.unshift(text);
     }
-    await section.save();
-    res.sendStatus(201);
+
+    try {
+      await section.save();
+    } catch (error) {
+      return res
+        .status(500)
+        .send({ error: "Failed to save feedback to the section." });
+    }
+
+    res.status(201).send({ message: "Feedback saved successfully." });
   })
 );
 
@@ -377,12 +471,23 @@ router.post(
 router.post(
   "/api/appAnnounced",
   catchAsync(async (req, res) => {
-    let { user } = req;
-    if (user) {
+    const { user } = req;
+
+    // Avoid unnecessary database updates
+    if (!user.appAnnouncementModalShown) {
       user.appAnnouncementModalShown = true;
-      await user.save();
+
+      try {
+        await user.save();
+      } catch (error) {
+        return res.status(500).send({ error: "Failed to update user data" });
+      }
     }
-    res.sendStatus(200);
+
+    // Send success response
+    res
+      .status(200)
+      .send({ message: "App announcement status updated successfully" });
   })
 );
 
@@ -390,7 +495,6 @@ router.post(
 router.post(
   "/api/card30Explained",
   catchAsync(async (req, res) => {
-    console.log("card30Explained route running");
     let { user } = req;
     if (user) {
       user.card30ExplanationModalShown = true;

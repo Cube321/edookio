@@ -8,7 +8,7 @@ const CardsResult = require("../models/cardsResult");
 const Category = require("../models/category");
 const passport = require("passport");
 const { isLoggedIn } = require("../utils/middleware");
-const { validateUser } = require("../utils/middleware");
+const { validateUser, validateName } = require("../utils/middleware");
 const seedContent = require("../utils/seed");
 const uuid = require("uuid");
 const mail = require("../mail/mail");
@@ -501,6 +501,25 @@ router.post(
     foundUser.nickname = req.body.nickname;
     await foundUser.save();
     res.status(200).redirect("/leaderboard");
+  })
+);
+
+//change firstname and lastname (POST)
+router.post(
+  "/auth/user/changeName",
+  isLoggedIn,
+  validateName,
+  catchAsync(async (req, res) => {
+    let foundUser = await User.findById(req.user._id);
+    if (!foundUser) {
+      req.flash("error", "Uživatel s tímto ID nebyl nenalezen.");
+      return res.redirect("/auth/user/profile");
+    }
+    foundUser.firstname = req.body.firstname;
+    foundUser.lastname = req.body.lastname;
+    await foundUser.save();
+    req.flash("successOverlay", "Jméno bylo změněno.");
+    res.status(200).redirect("/auth/user/profile");
   })
 );
 

@@ -17,8 +17,16 @@
           <div class="col-4 fw-bold d-flex align-items-center">
             <p>Jméno</p>
           </div>
-          <div class="col-8 d-flex align-items-center">
-            <%= user.firstname %> <%= user.lastname %>
+          <div class="col-8 d-flex justify-content-between align-items-center">
+            <span><%= user.firstname %> <%= user.lastname %></span>
+            <a
+              href="#"
+              class="btn btn-sm btn-danger"
+              style="margin-bottom: 5px"
+              data-bs-toggle="modal"
+              data-bs-target="#modal-name"
+              >Změnit</a
+            >
           </div>
           <hr />
           <div class="col-4 fw-bold d-flex align-items-center">
@@ -329,6 +337,58 @@
           >Ano, odstranit</a
         >
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Set name modal -->
+<div
+  class="modal fade"
+  id="modal-name"
+  tabindex="-1"
+  aria-labelledby="modalWarning"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nastavit jméno</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/auth/user/changeName" method="POST" class="m-lg-3 m-2">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="firstname" class="form-label">Jméno</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstname"
+              name="firstname"
+              value="<%= currentUser.firstname %>"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Příjmení</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastname"
+              name="lastname"
+              value="<%= currentUser.lastname %>"
+              required
+            />
+          </div>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-danger" type="submit">Uložit</button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

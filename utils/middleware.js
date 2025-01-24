@@ -2,6 +2,7 @@ const { cardSchema } = require("../schemas.js");
 const { userSchema } = require("../schemas.js");
 const { sectionSchema } = require("../schemas.js");
 const { questionSchema } = require("../schemas.js");
+const { nameSchema } = require("../schemas.js");
 const User = require("../models/user");
 const Section = require("../models/section");
 const ExpressError = require("../utils/ExpressError");
@@ -125,6 +126,16 @@ middleware.validateSection = (req, res, next) => {
 
 middleware.validateQuestion = (req, res, next) => {
   const { error } = questionSchema.validate(req.body);
+  if (error) {
+    req.flash("error", error.message);
+    return res.redirect("/");
+  } else {
+    next();
+  }
+};
+
+middleware.validateName = (req, res, next) => {
+  const { error } = nameSchema.validate(req.body);
   if (error) {
     req.flash("error", error.message);
     return res.redirect("/");
