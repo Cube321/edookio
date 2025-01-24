@@ -39,17 +39,14 @@ async function processDocumentJob(job) {
     let foundUser;
     let demoUser;
     let userId;
-    let userEmail;
 
     if (!user) {
       demoUser = await User.findOne({ email: "demo@edookio.com" });
       userId = demoUser._id;
-      userEmail = demoUser.email;
     } else {
       foundUser = await User.findById(user._id);
       if (!foundUser) throw new Error("User not found.");
       userId = foundUser._id;
-      userEmail = foundUser.email;
     }
 
     console.log("Splitting text into chunks...");

@@ -92,6 +92,12 @@ router.get(
   isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId } = req.params;
+
+    //sanitize categoryId
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      throw Error("Nesprávný formát ID předmětu");
+    }
+
     const foundSection = await Section.findById(req.params.sectionId);
     const foundCategory = await Category.findById(categoryId).populate(
       "sections"
@@ -123,11 +129,7 @@ router.put(
     foundSection.name = name;
     await foundSection.save();
     req.flash("successOverlay", "Informace byly aktualizovány.");
-    res
-      .status(201)
-      .redirect(
-        `/category/${req.params.category}/editSection/${req.params.sectionId}`
-      );
+    res.status(201).redirect(`/category/${req.params.categoryId}`);
   })
 );
 

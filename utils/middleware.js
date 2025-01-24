@@ -62,12 +62,13 @@ middleware.isEditor = (req, res, next) => {
 //check if the user created the category
 middleware.isCategoryAuthor = async (req, res, next) => {
   const { categoryId } = req.params;
+
   //is categoryId in createdCategories of user?
   if (req.user.createdCategories.includes(categoryId)) {
     next();
   } else {
     req.flash("error", "Tuto operaci může provést pouze autor.");
-    res.redirect("back");
+    res.redirect("/");
   }
 };
 
