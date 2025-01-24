@@ -5,7 +5,7 @@ const Stripe = require("../utils/stripe");
 const { isLoggedIn } = require("../utils/middleware");
 const User = require("../models/user");
 const moment = require("moment");
-const mail = require("../mail/mail_inlege");
+const mail = require("../mail/mail");
 const helpers = require("../utils/helpers");
 
 let productToPriceMap = {

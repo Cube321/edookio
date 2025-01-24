@@ -4,7 +4,7 @@ const Category = require("../models/category");
 const catchAsync = require("../utils/catchAsync");
 const helpers = require("../utils/helpers");
 const moment = require("moment");
-const mail = require("../mail/mail_inlege");
+const mail = require("../mail/mail");
 const { sendPushNotification } = require("../utils/pushNotifications");
 
 let cronHelpers = {};
@@ -75,7 +75,7 @@ cronHelpers.dailyActivityReminder = catchAsync(async () => {
     if (user.expoPushToken && user.actionsToday === user.dailyGoal) {
       sendPushNotification(
         user.expoPushToken,
-        "InLege",
+        "Edookio",
         `Nezapomeň si dnes procvičit své znalosti!`,
         {}
       );
@@ -83,7 +83,7 @@ cronHelpers.dailyActivityReminder = catchAsync(async () => {
     } else if (user.expoPushToken && user.actionsToday < user.dailyGoal) {
       sendPushNotification(
         user.expoPushToken,
-        "InLege",
+        "Edookio",
         `Ještě ti chybí ${
           user.dailyGoal - user.actionsToday
         } bodů k dosažení dnešního cíle!`,
@@ -138,7 +138,7 @@ cronHelpers.saveDailyStats = catchAsync(async () => {
   mail.sendCronReport("saveDailyStats", "success");
 });
 
-//cronHelper to send e-mail with information about InLege to all users registered three days ago
+//cronHelper to send e-mail with information about Edookio to all users registered three days ago
 cronHelpers.sendInfoEmail = catchAsync(async () => {
   console.log("RUNNING CRON: sendInfoEmail");
 

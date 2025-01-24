@@ -75,7 +75,7 @@ router.post(
           messages.push({
             to: token,
             sound: "default",
-            title: title || "InLege",
+            title: title || "Edookio",
             body: body || "Opakování je matka moudrosti",
             data: {},
           });

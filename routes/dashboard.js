@@ -27,8 +27,6 @@ router.get(
       getNumberOfUsersWithActiveSubscription(users);
     const numberOfUsersWithActiveMonthlySubscription =
       getNumberOfUsersWithActiveMonthlySubscription(users);
-    const numberOfUsersWithActiveHalfyearSubscription =
-      getNumberOfUsersWithActiveHalfyearSubscription(users);
     const numberOfUsersWithActiveYearlySubscription =
       getNumberOfUsersWithActiveYearlySubscription(users);
     const numberOfUsersRegisteredToday = getNumberOfUsersRegisteredToday(users);
@@ -102,7 +100,6 @@ router.get(
       numberOfUsers,
       numberOfUsersWithActiveSubscription,
       numberOfUsersWithActiveMonthlySubscription,
-      numberOfUsersWithActiveHalfyearSubscription,
       numberOfUsersWithActiveYearlySubscription,
       numberOfUsersRegisteredToday,
       numberOfUsersRegisteredInLast30Days,
@@ -158,21 +155,6 @@ function getNumberOfUsersWithActiveMonthlySubscription(users) {
     if (
       user.isPremium &&
       user.plan === "monthly" &&
-      !user.premiumGrantedByAdmin
-    ) {
-      count++;
-    }
-  });
-  return count;
-}
-
-//function to get number of users with active halfyear subscription
-function getNumberOfUsersWithActiveHalfyearSubscription(users) {
-  let count = 0;
-  users.forEach((user) => {
-    if (
-      user.isPremium &&
-      user.plan === "halfyear" &&
       !user.premiumGrantedByAdmin
     ) {
       count++;

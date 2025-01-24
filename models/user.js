@@ -182,7 +182,7 @@ const UserSchema = new Schema({
   openInvoiceData: {},
   plan: {
     type: String,
-    enum: ["none", "yearly", "monthly", "halfyear", "daily"],
+    enum: ["none", "yearly", "monthly", "daily"],
     default: "none",
   },
   subscriptionPrice: {

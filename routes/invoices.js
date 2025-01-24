@@ -190,11 +190,9 @@ router.get(
     csvRows.push(headers.join(";")); // Header row
     filteredInvoices.forEach((inv) => {
       if (inv.subscriptionPeriod === "monthly") {
-        inv.subscriptionPeriod = "InLege Premium - měsíční";
-      } else if (inv.subscriptionPeriod === "halfyear") {
-        inv.subscriptionPeriod = "InLege Premium - půlroční";
+        inv.subscriptionPeriod = "Edookio Premium - měsíční";
       } else if (inv.subscriptionPeriod === "yearly") {
-        inv.subscriptionPeriod = "InLege Premium - roční";
+        inv.subscriptionPeriod = "Edookio Premium - roční";
       }
 
       if (inv.amountOfCredits !== 0 && inv.amountOfCredits !== undefined) {

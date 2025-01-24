@@ -1,89 +1,121 @@
-<% layout ('layouts/boilerplate.ejs')  %> 
+<% layout ('layouts/boilerplate.ejs') %>
 <div class="container">
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <div class="ro">
-                <div class="col-12">    
-                    <h3>Kontakt</h3>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card profile-card">
-                        <div class="row p-3">
-                            <div class="col-4 fw-bold">
-                                <p>Kontaktní osoba</p>
-                            </div>
-                            <div class="col-8">
-                                <p>Ondřej Holubec</p>
-                            </div>
-                            <hr />
-                            <div class="col-4 fw-bold">
-                                <p>Instagram</p>
-                            </div>
-                            <div class="col-8">
-                                <p><a href="https://www.instagram.com/inlege">@InLege</a></p>
-                            </div>
-                            <hr />
-                            <div class="col-4 fw-bold">
-                                <p>E-mail</p>
-                            </div>
-                            <div class="col-8">
-                                <p><a href="mailto:ondrej@inlege.cz">ondrej@inlege.cz</a></p>
-                            </div>
-                            <hr />
-                            <div class="col-4 fw-bold">
-                                <p>Provozovatel portálu</p>
-                            </div>
-                            <div class="col-8">
-                                <p>Chilero s. r. o.</p>
-                            </div>
-                            <hr />
-                            <div class="col-4 fw-bold">
-                                <p>Sídlo</p>
-                            </div>
-                            <div class="col-8">
-                                <p>Kaštanová 493/3,<br /> Olomouc 779 00</p>
-                            </div>
-                            <hr />
-                            <div class="col-4 fw-bold">
-                                <p>IČO</p>
-                            </div>
-                            <div class="col-8">
-                                <p>08900230</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6 mt-3 mt-lg-0">
-                    <div class="card profile-card">
-                        <div class="p-3">
-                            <h5>Kontaktní formulář</h5>
-                            <form action="/legal/contactForm" method="POST">
-                                <div class="form-group mb-3">
-                                    <input type="text" class="form-control form-borders mt-2" id="name" name="name" placeholder="Jméno" required>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-borders mt-2" id="email" name="email" placeholder="E-mail" required>
-                                </div>
-                                <div class="form-group">
-                                    <textarea class="form-control form-borders mt-3" id="text" name="text" rows="6" placeholder="Zpráva" required></textarea>
-                                </div>
-                                <div>
-                                    <input type="text" name="school" style="display:none;" tabindex="-1" autocomplete="off">
-                                </div>
-                                <div class="d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-danger mt-3">Odeslat zprávu</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col-lg-8 offset-lg-2">
+      <div class="ro">
+        <div class="col-12">
+          <h3>Kontakt</h3>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="card profile-card">
+            <div class="row p-3">
+              <div class="col-4 fw-bold">
+                <p>Kontaktní osoba</p>
+              </div>
+              <div class="col-8">
+                <p>Ondřej Holubec</p>
+              </div>
+              <hr />
+              <div class="col-4 fw-bold">
+                <p>Instagram</p>
+              </div>
+              <div class="col-8">
+                <p><a href="https://www.instagram.com/edookio">@Edookio</a></p>
+              </div>
+              <hr />
+              <div class="col-4 fw-bold">
+                <p>E-mail</p>
+              </div>
+              <div class="col-8">
+                <p><a href="mailto:ondrej@edookio.cz">ondrej@edookio.cz</a></p>
+              </div>
+              <hr />
+              <div class="col-4 fw-bold">
+                <p>Provozovatel portálu</p>
+              </div>
+              <div class="col-8">
+                <p>Chilero s. r. o.</p>
+              </div>
+              <hr />
+              <div class="col-4 fw-bold">
+                <p>Sídlo</p>
+              </div>
+              <div class="col-8">
+                <p>
+                  Kaštanová 493/3,<br />
+                  Olomouc 779 00
+                </p>
+              </div>
+              <hr />
+              <div class="col-4 fw-bold">
+                <p>IČO</p>
+              </div>
+              <div class="col-8">
+                <p>08900230</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 mt-3 mt-lg-0">
+          <div class="card profile-card">
+            <div class="p-3">
+              <h5>Kontaktní formulář</h5>
+              <form action="/legal/contactForm" method="POST">
+                <div class="form-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control form-borders mt-2"
+                    id="name"
+                    name="name"
+                    placeholder="Jméno"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    class="form-control form-borders mt-2"
+                    id="email"
+                    name="email"
+                    placeholder="E-mail"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <textarea
+                    class="form-control form-borders mt-3"
+                    id="text"
+                    name="text"
+                    rows="6"
+                    placeholder="Zpráva"
+                    required
+                  ></textarea>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    name="school"
+                    style="display: none"
+                    tabindex="-1"
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-danger mt-3">
+                    Odeslat zprávu
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<script src="/js/jquery.min.js" ></script>
+<script src="/js/jquery.min.js"></script>
 <script type="text/javascript" src="https://js.stripe.com/v3/"></script>
 <script type="text/javascript" src="/js/profile.js"></script>

@@ -8,7 +8,7 @@ const Stats = require("../models/stats");
 const Feedback = require("../models/feedback");
 const { isLoggedIn, isAdmin } = require("../utils/middleware");
 const moment = require("moment");
-const mail = require("../mail/mail_inlege");
+const mail = require("../mail/mail");
 const icons = require("../utils/icons");
 
 //ADMIN - SHOW ADMIN

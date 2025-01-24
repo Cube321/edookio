@@ -726,7 +726,7 @@ router.get(
       android: "1.0.0",
     };
     const updateUrl = {
-      ios: "https://apps.apple.com/us/app/inlege/id6740498818",
+      ios: "https://apps.apple.com/us/app/edookio/id6740498818",
       android:
         "https://play.google.com/store/apps/details?id=com.edookio.edookio",
     };

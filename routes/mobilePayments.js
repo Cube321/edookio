@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
-const mail = require("../mail/mail_inlege");
+const mail = require("../mail/mail");
 const helpers = require("../utils/helpers");
 const moment = require("moment");
 

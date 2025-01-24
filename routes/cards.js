@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Card = require("../models/card");
+const Question = require("../models/question");
+const CardInfo = require("../models/cardInfo");
 const Section = require("../models/section");
 const User = require("../models/user");
 const Category = require("../models/category");
-const mail = require("../mail/mail_inlege");
+const mail = require("../mail/mail");
 const {
   validateCard,
   isLoggedIn,
@@ -162,6 +164,9 @@ router.get(
       connectedQuestion.sourceCard = null;
       await connectedQuestion.save();
     }
+
+    //delete cardInfo from all users
+    await CardInfo.deleteMany({ card: id });
 
     //removed card from cards saved by users
     await User.updateMany({}, { $pull: { savedCards: id } });

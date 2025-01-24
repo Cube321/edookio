@@ -25,7 +25,7 @@ const bodyParser = require("body-parser");
 const texts = require(`./utils/texts.${process.env.PROJECT}.js`);
 const cron = require("node-cron");
 const cronHelpers = require(`./utils/cron`);
-const mail = require("./mail/mail_inlege");
+const mail = require("./mail/mail");
 const seedContent = require("./utils/seed");
 
 const Stripe = require("./utils/stripe");

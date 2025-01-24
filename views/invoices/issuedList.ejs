@@ -34,10 +34,9 @@
           <td>Neznámý</td>
           <% } %> <% if (invoice.subscriptionPeriod) { %>
           <td>
-            InLege Premium - <% if (invoice.subscriptionPeriod === "yearly") {
+            Edookio Premium - <% if (invoice.subscriptionPeriod === "yearly") {
             %>Roční<% } %> <% if (invoice.subscriptionPeriod === "monthly") {
-            %>Měsíční<% } %> <% if (invoice.subscriptionPeriod === "halfyear") {
-            %>Půlroční<% } %> <% if (invoice.subscriptionPeriod === "daily") {
+            %>Měsíční<% } %> <% if (invoice.subscriptionPeriod === "daily") {
             %>Denní<% } %>
           </td>
           <% } else { %>
