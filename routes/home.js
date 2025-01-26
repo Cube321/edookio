@@ -21,10 +21,25 @@ router.get(
 
     //no user - render index (landing page)
     if (!user) {
-      const { generatedSectionId, generatedCategoryId } = req.session;
+      let { generatedSectionId, generatedCategoryId, generatedContentDate } =
+        req.session;
       const { shareId } = req.query;
 
       let sharedCategory = await Category.findOne({ shareId });
+
+      if (generatedContentDate) {
+        let now = new Date();
+        let generatedDate = new Date(generatedContentDate);
+        //if the generated content was generated yesterday or earlier, delete it
+        if (now.getDate() !== generatedDate.getDate()) {
+          delete req.session.generatedSectionId;
+          delete req.session.generatedCategoryId;
+          delete req.session.generatedContentDate;
+          generatedCategoryId = null;
+          generatedSectionId = null;
+          generatedContentDate = null;
+        }
+      }
 
       const categories = [];
       let numOfCategories = 0;

@@ -352,6 +352,7 @@ router.get("/demoJob/:id/progress", async (req, res) => {
       foundCategory = await Category.findById(categoryId);
       req.session.generatedSectionId = foundCategory?.sections[0];
       req.session.generatedCategoryId = categoryId;
+      req.session.generatedContentDate = new Date();
     }
 
     res.json({
