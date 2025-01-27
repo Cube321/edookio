@@ -1,20 +1,20 @@
-/* PALETTE #E80F88 #AF0171 #790252 #4C0033 */
+/* PALETTE #FF0037 #d2002d #790252 #4C0033 */
 
 .btn-danger {
-  background-color: #e80f88;
-  border-color: #e80f88;
-  outline-color: #af0171;
+  background-color: #ff0037;
+  border-color: #ff0037;
+  outline-color: #d2002d;
 }
 
 .btn-danger:hover {
-  background-color: #af0171;
-  border-color: #af0171;
-  outline-color: #af0171;
+  background-color: #d2002d;
+  border-color: #d2002d;
+  outline-color: #d2002d;
 }
 
 .btn-danger.disabled {
-  background-color: #af0171;
-  border-color: #af0171;
+  background-color: #d2002d;
+  border-color: #d2002d;
 }
 
 .btn-warning.disabled {
@@ -22,19 +22,19 @@
 }
 
 .btn-outline-danger {
-  border-color: #e80f88;
-  color: #e80f88;
+  border-color: #ff0037;
+  color: #ff0037;
 }
 
 .btn-outline-danger:hover {
-  border-color: #af0171;
-  background-color: #af0171;
+  border-color: #d2002d;
+  background-color: #d2002d;
 }
 
 .btn-danger:active,
 .btn-danger:focus {
-  outline-color: #af0171;
-  background-color: #af0171;
+  outline-color: #d2002d;
+  background-color: #d2002d;
 }
 
 .btn-warning {
@@ -67,7 +67,7 @@
 }
 
 .bg-danger {
-  background-color: #e80f88 !important;
+  background-color: #ff0037 !important;
 }
 
 .btn-success {
@@ -93,12 +93,12 @@
 }
 
 .text-primary {
-  color: #e80f88 !important;
+  color: #ff0037 !important;
 }
 
 .form-check-input:checked {
-  background-color: #e80f88;
-  border-color: #e80f88;
+  background-color: #ff0037;
+  border-color: #ff0037;
 }
 
 .card {
@@ -107,27 +107,27 @@
 }
 
 a {
-  color: #e80f88;
+  color: #ff0037;
   text-decoration: none;
 }
 
 a:hover {
-  color: #af0171;
+  color: #d2002d;
 }
 
 .navbar .nav-item .nav-link:hover {
-  color: #af0171;
+  color: #d2002d;
 }
 
 .btn-check:checked + .btn-outline-danger {
-  background-color: #e80f88 !important;
+  background-color: #ff0037 !important;
 }
 
 .dropdown-item.active,
 .dropdown-item:active {
   color: #fff;
   text-decoration: none;
-  background-color: #af0171;
+  background-color: #d2002d;
 }
 
 .table-bordered > :not(caption) > * > * {

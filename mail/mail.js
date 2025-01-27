@@ -24,7 +24,7 @@ mail.welcome = function (email, callback) {
                                                     <div style="box-sizing:border-box">
                                                         <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Vítej na Edookio!</h2> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvůj účet na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com">Edookio</a> byl vytvořen.</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvůj účet na portálu <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com">Edookio</a> byl vytvořen.</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Edookio Team</p> 
                                                     </div> 
                                                 </td> 
@@ -41,7 +41,7 @@ mail.welcome = function (email, callback) {
                                                                                 <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                     <div style="box-sizing:border-box">
                                                                                         <div>
-                                                                                            <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                            <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                         </div>
                                                                                     </div> 
                                                                                 </td> 
@@ -102,7 +102,7 @@ mail.sendInfoEmail = function (email, callback) {
                                     Ahoj,
                                 </p>
                                 <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
-                                    máš za sebou prvních pár dní s <a style="color:#E80F88;text-decoration:none;font-weight:400" href="https://www.edookio.com">Edookio</a>. S přípravou na zkoušky pomáháme již více než 2 000 studentů práv a rádi bychom se s tebou podělili o to, co nás dělá jedinečnými.
+                                    máš za sebou prvních pár dní s <a style="color:#FF0037;text-decoration:none;font-weight:400" href="https://www.edookio.com">Edookio</a>. S přípravou na zkoušky pomáháme již více než 2 000 studentů práv a rádi bychom se s tebou podělili o to, co nás dělá jedinečnými.
                                 </p>
                                 <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400">
                                     V čem je tajemství úspěchu?
@@ -144,7 +144,7 @@ mail.sendInfoEmail = function (email, callback) {
                                             <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center">
                                                 <div style="box-sizing:border-box">
                                                 <div>
-                                                    <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
+                                                    <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
                                                     Pustit se do studia
                                                     </a>
                                                 </div>
@@ -178,7 +178,7 @@ mail.sendInfoEmail = function (email, callback) {
                         <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">
                         
                         </p>
-                        <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
+                        <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#FF0037; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
                     </td>
                     </tr>
                 </tbody>
@@ -230,7 +230,7 @@ mail.emailVerification = function (email, userId, callback) {
                                                       <div style="box-sizing:border-box">
                                                           <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Ověření e-mailové adresy</h2> 
                                                           <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                          <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">ověř prosím svou e-mailovou adresu kliknutím tlačítko níže nebo otevřením následujícího odkazu v prohlížeči: <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com/auth/user/verifyEmail/${userId}">https://www.edookio.com/auth/user/verifyEmail/${userId}</a></p> 
+                                                          <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">ověř prosím svou e-mailovou adresu kliknutím tlačítko níže nebo otevřením následujícího odkazu v prohlížeči: <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com/auth/user/verifyEmail/${userId}">https://www.edookio.com/auth/user/verifyEmail/${userId}</a></p> 
                                                           <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">E-mail ${email} byl použit pro registraci na portálu Edookio. Pokud se nejedná o Tvou registraci, tento e-mail prosím ignoruj.</p> 
                                                           <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">S pozdravem</p> 
                                                           <p style="margin:0;margin-bottom:0px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Team Edookio</p> 
@@ -249,7 +249,7 @@ mail.emailVerification = function (email, userId, callback) {
                                                                                   <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                       <div style="box-sizing:border-box">
                                                                                           <div>
-                                                                                              <a href="https://www.edookio.com/auth/user/verifyEmail/${userId}" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Ověřit e-mail</a>
+                                                                                              <a href="https://www.edookio.com/auth/user/verifyEmail/${userId}" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Ověřit e-mail</a>
                                                                                           </div>
                                                                                       </div> 
                                                                                   </td> 
@@ -363,7 +363,7 @@ mail.subscriptionCreated = function (email, callback) {
                                                                                 <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                     <div style="box-sizing:border-box">
                                                                                         <div>
-                                                                                            <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                            <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                         </div>
                                                                                     </div> 
                                                                                 </td> 
@@ -438,7 +438,7 @@ mail.subscriptionUncancelled = function (email, callback) {
                                                                                   <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                       <div style="box-sizing:border-box">
                                                                                           <div>
-                                                                                              <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                              <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                           </div>
                                                                                       </div> 
                                                                                   </td> 
@@ -612,7 +612,7 @@ mail.sendAdminGrantedPremium = function (email, endDate, callback) {
                                                   <div style="box-sizing:border-box">
                                                       <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Dárek: Předplatné Premium bylo aktivováno</h2> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com">Edookio</a> Ti bylo právě administrátorem <strong>zdarma</strong> aktivováno předplatné Premium do ${endDate}!</p> 
+                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">na portálu <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com">Edookio</a> Ti bylo právě administrátorem <strong>zdarma</strong> aktivováno předplatné Premium do ${endDate}!</p> 
                                                       <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Edookio Team</p> 
                                                   </div> 
                                               </td> 
@@ -629,7 +629,7 @@ mail.sendAdminGrantedPremium = function (email, endDate, callback) {
                                                                               <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                   <div style="box-sizing:border-box">
                                                                                       <div>
-                                                                                          <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                          <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                       </div>
                                                                                   </div> 
                                                                               </td> 
@@ -709,7 +709,7 @@ mail.subscriptionCanceled = function (email, endDate, callback) {
                                                                               <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                   <div style="box-sizing:border-box">
                                                                                       <div>
-                                                                                          <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                          <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                       </div>
                                                                                   </div> 
                                                                               </td> 
@@ -809,7 +809,7 @@ mail.sendPremiumEnded = function (email, callback) {
                                                     <div style="box-sizing:border-box">
                                                         <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Předplatné Premium právě skončilo</h2> 
                                                         <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné Premium na portálu <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com">Edookio</a> právě skončilo. Předplatné můžeš kdykoliv <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com/premium">obnovit</a>.</p> 
+                                                        <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">tvé předplatné Premium na portálu <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com">Edookio</a> právě skončilo. Předplatné můžeš kdykoliv <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com/premium">obnovit</a>.</p> 
                                                         <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Edookio Team</p> 
                                                     </div> 
                                                 </td> 
@@ -826,7 +826,7 @@ mail.sendPremiumEnded = function (email, callback) {
                                                                                 <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                     <div style="box-sizing:border-box">
                                                                                         <div>
-                                                                                            <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                            <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                         </div>
                                                                                     </div> 
                                                                                 </td> 
@@ -916,7 +916,7 @@ mail.sendStreakReminder = function (email, days, callback) {
                                                                         <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                             <div style="box-sizing:border-box">
                                                                                 <div>
-                                                                                    <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Udržet streak</a>
+                                                                                    <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Udržet streak</a>
                                                                                 </div>
                                                                             </div> 
                                                                         </td> 
@@ -946,7 +946,7 @@ mail.sendStreakReminder = function (email, days, callback) {
             <table style="box-sizing:border-box;width:100%;border-spacing:0;font-size:12px;border-collapse:separate!important" width="100%"> 
                 <tbody>
                     <tr style="font-size:12px"> 
-                        <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;vertical-align:top;font-size:12px;text-align:center;padding:20px 0" valign="top" align="center"><a href="https://www.edookio.com" style="box-sizing:border-box;" target="_blank"></a> <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">Provozovatel Edookio: Chilero s.r.o., IČ: 089 00 230 se sídlem Kaštanová 3, 779 00 Olomouc, zapsaná v obchodním rejstříku vedeném Krajským soudem v Ostravě, sp. zn. C 81220 <br> Odhlásit se z odběru těchto e-mailů můžete <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribeStreak?email=${email}">zde</a></p> <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px"></p>
+                        <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;vertical-align:top;font-size:12px;text-align:center;padding:20px 0" valign="top" align="center"><a href="https://www.edookio.com" style="box-sizing:border-box;" target="_blank"></a> <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">Provozovatel Edookio: Chilero s.r.o., IČ: 089 00 230 se sídlem Kaštanová 3, 779 00 Olomouc, zapsaná v obchodním rejstříku vedeném Krajským soudem v Ostravě, sp. zn. C 81220 <br> Odhlásit se z odběru těchto e-mailů můžete <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribeStreak?email=${email}">zde</a></p> <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px"></p>
                         
                         </td> 
                     </tr> 
@@ -984,7 +984,7 @@ mail.testQuestionsLimitReset = function (email, callback) {
                                         Ahoj,
                                     </p>
                                     <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
-                                        v minulém měsíci jsi využil/a všech 50 testových otázek zdarma, které ti <a style="color:#E80F88;text-decoration:none;font-weight:400" href="https://www.edookio.com">Edookio</a> nabízí. Máme pro tebe skvělou zprávu – na začátku každého měsíce se ti znovu přičítá <strong style="font-weight:400">50 testových otázek</strong>, takže se můžeš pustit do procvičování a pokračovat v přípravě na zkoušky i s testovými otázkami!
+                                        v minulém měsíci jsi využil/a všech 50 testových otázek zdarma, které ti <a style="color:#FF0037;text-decoration:none;font-weight:400" href="https://www.edookio.com">Edookio</a> nabízí. Máme pro tebe skvělou zprávu – na začátku každého měsíce se ti znovu přičítá <strong style="font-weight:400">50 testových otázek</strong>, takže se můžeš pustit do procvičování a pokračovat v přípravě na zkoušky i s testovými otázkami!
                                     </p>
                                     <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400">
                                         Jak ti pomohou testové otázky na Edookio?
@@ -995,7 +995,7 @@ mail.testQuestionsLimitReset = function (email, callback) {
                                         <li style="margin-bottom:6px"><strong style="font-weight:400">Neustálé zlepšování:</strong> Opakováním získáš hlubší pochopení látky a předejdeš “vyklouznutí” klíčových informací z paměti.</li>
                                     </ul>
                                     <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
-                                        Pokud bys chtěl/a mít k dispozici ještě více testových otázek a dalších funkcí, prozkoumej možnosti <strong style="font-weight:400"><a style="color:#E80F88;text-decoration:none;font-weight:400" href="https://www.edookio.com/premium">Edookio Premium</a></strong> – pomůže ti dostat se v přípravě na zkoušky ještě dál.
+                                        Pokud bys chtěl/a mít k dispozici ještě více testových otázek a dalších funkcí, prozkoumej možnosti <strong style="font-weight:400"><a style="color:#FF0037;text-decoration:none;font-weight:400" href="https://www.edookio.com/premium">Edookio Premium</a></strong> – pomůže ti dostat se v přípravě na zkoušky ještě dál.
                                     </p>
                                     <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
                                         Přejeme ti hodně úspěchů v novém měsíci a mnoho štěstí při studiu!
@@ -1018,7 +1018,7 @@ mail.testQuestionsLimitReset = function (email, callback) {
                                                 <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center">
                                                     <div style="box-sizing:border-box">
                                                     <div>
-                                                        <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
+                                                        <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
                                                         Pustit se do studia
                                                         </a>
                                                     </div>
@@ -1052,7 +1052,7 @@ mail.testQuestionsLimitReset = function (email, callback) {
                             <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">
                             
                             </p>
-                                                    <p style="font-size:10px; text-align: center;color:#484848;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
+                                                    <p style="font-size:10px; text-align: center;color:#484848;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#FF0037; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
 
                         </td>
                         </tr>
@@ -1110,7 +1110,7 @@ mail.creditsAddedConfirmationEmail = function (
                                                                                   <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
                                                                                       <div style="box-sizing:border-box">
                                                                                           <div>
-                                                                                              <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
+                                                                                              <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Pustit se do studia</a>
                                                                                           </div>
                                                                                       </div> 
                                                                                   </td> 
@@ -1190,7 +1190,7 @@ mail.creditsRecharged = function (email, callback) {
                                                   <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center">
                                                       <div style="box-sizing:border-box">
                                                       <div>
-                                                          <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#E80F88;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#E80F88;border:solid 1px #E80F88;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
+                                                          <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">
                                                           Pustit se do studia
                                                           </a>
                                                       </div>
@@ -1224,7 +1224,7 @@ mail.creditsRecharged = function (email, callback) {
                               <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">
                               
                               </p>
-                              <p style="font-size:10px; text-align: center;color:#484848;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
+                              <p style="font-size:10px; text-align: center;color:#484848;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#FF0037; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
                           </td>
                           </tr>
                       </tbody>
@@ -1300,7 +1300,7 @@ mail.forgottenPassword = function (data, callback) {
                                                   <div style="box-sizing:border-box">
                                                       <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Zapomenuté heslo</h2> 
                                                       <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Ahoj,</p> 
-                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">své heslo můžeš změnit po kliknutí na tento odkaz: <a style="color:#E80F88;text-decoration:none" href="https://www.edookio.com${data.link}">https://www.edookio.com${data.link}</a>.</p> 
+                                                      <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">své heslo můžeš změnit po kliknutí na tento odkaz: <a style="color:#FF0037;text-decoration:none" href="https://www.edookio.com${data.link}">https://www.edookio.com${data.link}</a>.</p> 
                                                       <p style="margin:0;margin-bottom:30px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">Edookio Team</p> 
                                                   </div> 
                                               </td> 
@@ -1355,7 +1355,7 @@ mail.sendEmailToSubscribedUsers = function (email, subject, text, callback) {
     to: email,
     subject: subject,
     html: `${text}
-                <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>              `,
+                <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#FF0037; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>              `,
   };
   //send the mail
   sgMail.send(msg, function (err) {
@@ -1373,7 +1373,7 @@ mail.sendTestEmail = function (email, subject, text, callback) {
     to: email,
     subject: subject,
     html: `${text}              
-            <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#E80F88; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>              `,
+            <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#FF0037; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>              `,
   };
   //send the mail
   sgMail.send(msg, function (err) {

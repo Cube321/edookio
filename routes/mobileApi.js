@@ -537,22 +537,18 @@ router.post(
     let { content } = req.body;
     let user = req.user;
 
-    if (!content) {
-      return res.status(400).json({
-        error: "Content is required",
-      });
+    if (content) {
+      let newFeedback = {
+        content: content,
+        author: user.email,
+      };
+      await Feedback.create(newFeedback);
     }
-
-    let newFeedback = {
-      content: content,
-      author: user.email,
-    };
 
     user.feedbackFormShown = true;
     await user.save();
-    await Feedback.create(newFeedback);
 
-    res.status(201).json({ message: "Feedback saved" });
+    res.status(201).json({ message: "Feedback form shown status saved" });
   })
 );
 

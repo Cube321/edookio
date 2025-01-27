@@ -1,86 +1,86 @@
 #questions-list {
-    max-height: 185px;
+  max-height: 185px;
 }
 
 .color-primary {
-  color: #E80F88;
+  color: #ff0037;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 #questions-list::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  #questions-list {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#questions-list {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
 
 .question-card-wrapper {
-    border: 1px solid #DFDFDF;
-    border-radius: 0.25rem;
-    padding: 1rem;
+  border: 1px solid #dfdfdf;
+  border-radius: 0.25rem;
+  padding: 1rem;
 }
 
 .opacity-0 {
-    opacity: 0;
+  opacity: 0;
 }
 
 .opacity-1 {
-    opacity: 1;
+  opacity: 1;
 }
 
 .question-card {
-    width: 100%;
-    height: 320px;
-    font-size: 1rem;
-    
-    overflow: auto;
-  }
+  width: 100%;
+  height: 320px;
+  font-size: 1rem;
 
-  #question-content {
-    padding: 0.25rem 1rem 1rem 1rem;
+  overflow: auto;
+}
+
+#question-content {
+  padding: 0.25rem 1rem 1rem 1rem;
 }
 
 .hide {
-    display: none;
+  display: none;
 }
 
 .border-grey {
-    border: 1px solid #e0e0e0;  /* Light border color */
-    border-radius: 8px;  /* Rounded corners */
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);  /* Light shadow */
-  }
+  border: 1px solid #e0e0e0; /* Light border color */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
 
 .back-menu {
-    padding: 10px;
-  }
+  padding: 10px;
+}
 
 /* QUESTION CONTENT */
 .question {
-    text-align: center;
-    margin: 0 0 1.5rem 0;
-    font-weight: bold;
+  text-align: center;
+  margin: 0 0 1.5rem 0;
+  font-weight: bold;
 }
 
 .answers-list {
-    list-style-type: none;
-    padding-left: 0;
+  list-style-type: none;
+  padding-left: 0;
 }
 
 .answer-item {
-    margin-bottom: 16px;
-    padding: 8px 16px;
-    border: 3px solid #EEEEEE;
-    border-radius: 24px;
-    cursor: pointer;
+  margin-bottom: 16px;
+  padding: 8px 16px;
+  border: 3px solid #eeeeee;
+  border-radius: 24px;
+  cursor: pointer;
 }
 
 .answers-list .correct {
   border: 3px solid;
-  border-color: #E80F88;
-  background-color: #E80F88;
+  border-color: #ff0037;
+  background-color: #ff0037;
   color: white;
 }
 
@@ -91,40 +91,40 @@
 }
 
 .disabled-modal-link {
-    pointer-events: none;
-    cursor: default;
-    color: #6c757d;
+  pointer-events: none;
+  cursor: default;
+  color: #6c757d;
 }
 
 /* QUESTIONS LIST */
 #questions-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
 }
 
 #questions-list-mobile {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: start;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
 }
 
 .questions-list-item {
-    border: 1px solid #eeeeee;
-    width: 1.875rem;
-    height: 1.875rem;
-    border-radius: 50%;
-    margin: 1px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.8rem;
-    cursor: pointer;
+  border: 1px solid #eeeeee;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 50%;
+  margin: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  cursor: pointer;
 }
 
 .questions-list-item.correct {
-  border: 1px solid #E80F88;
-  background-color: #E80F88;
+  border: 1px solid #ff0037;
+  background-color: #ff0037;
   color: white;
 }
 
@@ -136,35 +136,36 @@
 
 /* Text gradient fade */
 .text-gradient {
-    position: relative;
-  }
-  
-  .text-gradient:after {
-    position: absolute;
-    bottom: 0;  
-    height: 18%;
-    width: 100%;
-    content: "";
-    background: linear-gradient(to top,
-       rgba(255,255,255, 1) 20%, 
-       rgba(255,255,255, 0) 80%
-    );
-    pointer-events: none; /* so the text is still selectable */
-  }
+  position: relative;
+}
 
-  .white-space {
-    white-space: pre-wrap;
-    line-height: 1;
-  }
+.text-gradient:after {
+  position: absolute;
+  bottom: 0;
+  height: 18%;
+  width: 100%;
+  content: "";
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  pointer-events: none; /* so the text is still selectable */
+}
+
+.white-space {
+  white-space: pre-wrap;
+  line-height: 1;
+}
 
 @media only screen and (max-width: 992px) {
-    .nezobrazovat-na-mobilu {
-      display: none;
-    }
+  .nezobrazovat-na-mobilu {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 992px) {
-    .zobrazovat-jen-na-mobilu {
-      display: none;
-    }
+  .zobrazovat-jen-na-mobilu {
+    display: none;
+  }
 }

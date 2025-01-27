@@ -44,7 +44,7 @@ body {
 }
 
 .text-primary {
-  color: #e80f88;
+  color: #ff0037;
 }
 
 .width-20 {
@@ -170,7 +170,7 @@ body {
 }
 
 .streak-card:nth-child(2) svg circle:last-of-type {
-  stroke: #e80f88;
+  stroke: #ff0037;
 }
 
 .landing-img {
@@ -252,7 +252,7 @@ body {
 }
 
 .landing-info .info-main {
-  color: #e80f88;
+  color: #ff0037;
   font-weight: bolder;
   font-size: 1.4rem;
 }
@@ -291,7 +291,7 @@ body {
 }
 
 .reason-title {
-  border-bottom: 2px solid #e80f88;
+  border-bottom: 2px solid #ff0037;
   display: inline;
   padding-bottom: 3px;
 }
@@ -314,7 +314,7 @@ body {
 }
 
 .explaination-card-title {
-  border-bottom: 2px solid #e80f88;
+  border-bottom: 2px solid #ff0037;
   display: inline;
   padding-bottom: 3px;
 }

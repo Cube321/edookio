@@ -3,7 +3,7 @@ body {
 }
 
 .color-primary {
-  color: #e80f88;
+  color: #ff0037;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -157,7 +157,7 @@ body {
 
 #rotate-back,
 #rotate-back-rendered {
-  color: #e80f88;
+  color: #ff0037;
   cursor: pointer;
   height: 100%;
   min-width: 40px;
@@ -166,7 +166,7 @@ body {
 
 #rotate-back-mobile,
 #rotate-back-mobile-rendered {
-  color: #e80f88;
+  color: #ff0037;
   cursor: pointer;
   height: 100%;
   min-width: 40px;
@@ -218,9 +218,9 @@ body {
 #btn-otocit-rendered:hover,
 #btn-otocit:active,
 #btn-otocit-rendered:active {
-  border: 1px solid #e80f88;
+  border: 1px solid #ff0037;
   background-color: white;
-  color: #e80f88;
+  color: #ff0037;
 }
 
 #predchozi-karticka-link {
@@ -234,7 +234,7 @@ body {
 }
 
 .chevron-back {
-  color: #e80f88;
+  color: #ff0037;
   font-size: 1.2em;
   padding: 0.5rem;
 }
@@ -251,14 +251,14 @@ body {
 }
 
 .save-star {
-  color: #e80f88;
+  color: #ff0037;
   height: 100%;
   min-width: 40px;
   font-size: 1.2em;
 }
 
 .save-star-spinner {
-  color: #e80f88;
+  color: #ff0037;
   min-width: 20px;
   min-height: 20px;
 }

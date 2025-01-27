@@ -1,11 +1,11 @@
-/* PALETTE #E80F88 #AF0171 #790252 #4C0033 */
+/* PALETTE #FF0037 #d2002d #790252 #4C0033 */
 
 body {
   font-family: "Nunito", sans-serif;
 }
 
 .color-primary {
-  color: #e80f88;
+  color: #ff0037;
 }
 
 .navbar-brand img {
@@ -14,7 +14,7 @@ body {
 }
 
 .color-1 {
-  color: #e80f88;
+  color: #ff0037;
 }
 
 .color-premium {
@@ -51,14 +51,14 @@ body {
 }
 
 .link {
-  color: #e80f88;
+  color: #ff0037;
   border: none;
   background-color: #ffffff;
   padding: 0;
 }
 
 .link:hover {
-  color: #af0171;
+  color: #d2002d;
 }
 
 *:focus {
@@ -361,7 +361,7 @@ form .form-borders.border-darkgrey {
   appearance: none;
   width: 20px;
   height: 20px;
-  background: #e80f88;
+  background: #ff0037;
   border-radius: 50%;
   cursor: pointer;
   position: relative;
@@ -379,7 +379,7 @@ form .form-borders.border-darkgrey {
 .scale-input::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  background: #e80f88;
+  background: #ff0037;
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -406,7 +406,7 @@ form .form-borders.border-darkgrey {
 .scale-input::-ms-thumb {
   width: 20px;
   height: 20px;
-  background: #e80f88;
+  background: #ff0037;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -451,7 +451,7 @@ form .form-borders.border-darkgrey {
 }
 
 .reason-title {
-  border-bottom: 2px solid #e80f88;
+  border-bottom: 2px solid #ff0037;
   display: inline;
   padding-bottom: 3px;
 }
@@ -461,7 +461,7 @@ form .form-borders.border-darkgrey {
 }
 
 .border-color {
-  border: 3px solid #e80f88;
+  border: 3px solid #ff0037;
 }
 
 .border-none {
@@ -506,12 +506,12 @@ form .form-borders {
 
 .premium-plan-card {
   transition: all 0.3s;
-  border-color: #e80f88;
-  border-top-color: #e80f88;
+  border-color: #ff0037;
+  border-top-color: #ff0037;
 }
 
 .premium-plan-card .card-header {
-  background-color: #e80f88;
+  background-color: #ff0037;
   text-align: center;
   font-size: large;
   border-bottom: none;
@@ -577,7 +577,7 @@ form .form-borders {
   -ms-flex-align: center;
   align-items: center;
   border-top: 3px solid white;
-  border-top: 3px solid #e80f88;
+  border-top: 3px solid #ff0037;
 }
 
 .cookies-warning p {
@@ -593,7 +593,7 @@ form .form-borders {
 .cookies-warning .btn-agree {
   text-decoration: none;
   color: black;
-  background: #e80f88;
+  background: #ff0037;
   padding: 5px 20px;
   border-radius: 16px;
   margin: 5px;
@@ -602,19 +602,19 @@ form .form-borders {
   transition-duration: 0.3s;
   font-weight: bold;
   font-size: 1rem;
-  border: 2px solid #e80f88;
+  border: 2px solid #ff0037;
   color: white;
 }
 
 .cookies-warning .btn-agree:hover {
-  color: #e80f88;
+  color: #ff0037;
   background: white;
   text-decoration: none;
 }
 
 /* NAVBAR */
 .navbar .nav-item .nav-link.premium {
-  color: #e80f88;
+  color: #ff0037;
 }
 
 /* FINISHED SECTION */
@@ -643,8 +643,8 @@ form .form-borders {
 
 .finished-test .finished-item.correct {
   border: 3px solid;
-  border-color: #e80f88;
-  background-color: #e80f88;
+  border-color: #ff0037;
+  background-color: #ff0037;
   color: white;
 }
 
@@ -722,7 +722,7 @@ form .form-borders {
 
 /*SHOW USER DETAIL*/
 .grant-premium-link {
-  border: 1px solid #e80f88;
+  border: 1px solid #ff0037;
   padding: 2px 5px;
   margin-right: 5px;
   border-radius: 5px;
@@ -756,8 +756,8 @@ form .form-borders {
 }
 
 .delete-btn {
-  color: #e80f88;
-  border: 1px solid #e80f88;
+  color: #ff0037;
+  border: 1px solid #ff0037;
   padding: 0 3px;
   margin: 0 5px;
   border-radius: 5px;
@@ -773,7 +773,7 @@ form .form-borders {
 }
 
 .clash-item .number {
-  border: 5px solid #e80f88;
+  border: 5px solid #ff0037;
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -782,7 +782,7 @@ form .form-borders {
 }
 
 .clash-item .number.last-month {
-  border-color: #af0171;
+  border-color: #d2002d;
 }
 
 .clash-item .points {
@@ -831,18 +831,18 @@ form .form-borders {
   content: "★ ";
 }
 .rate > input:checked ~ label {
-  color: #e80f88;
+  color: #ff0037;
 }
 .rate:not(:checked) > label:hover,
 .rate:not(:checked) > label:hover ~ label {
-  color: #e80f88;
+  color: #ff0037;
 }
 .rate > input:checked + label:hover,
 .rate > input:checked + label:hover ~ label,
 .rate > input:checked ~ label:hover,
 .rate > input:checked ~ label:hover ~ label,
 .rate > label:hover ~ input:checked ~ label {
-  color: #e80f88;
+  color: #ff0037;
 }
 
 #feedback-textarea {
@@ -904,8 +904,8 @@ form .form-borders {
 
 .list-all-card .correct {
   border: 3px solid;
-  border-color: #e80f88;
-  background-color: #e80f88;
+  border-color: #ff0037;
+  background-color: #ff0037;
   color: white;
 }
 
@@ -924,7 +924,7 @@ form .form-borders {
 }
 
 .list-all-card a:hover {
-  color: #af0171;
+  color: #d2002d;
 }
 
 form .form-control.bordered {
