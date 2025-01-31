@@ -11,7 +11,7 @@ const Feedback = require("../models/feedback");
 const passport = require("passport");
 const moment = require("moment");
 const { PARTNERS } = require("../utils/partners");
-const category = require("../models/category");
+const uuid = require("uuid");
 
 router.get(
   "/mobileApi/getCategories",
@@ -56,6 +56,7 @@ router.get(
 router.get(
   "/mobileApi/getSections",
   passport.authenticate("jwt", { session: false }),
+
   catchAsync(async (req, res) => {
     const { categoryId } = req.query;
     const { user } = req;
@@ -243,6 +244,12 @@ router.get(
     const cardsSeenTotal = user.cardsSeen;
     const feedbackFormShown = user.feedbackFormShown;
     const isUserPremium = user.isPremium;
+
+    //go through all cards pageB and pageA content and after every <li> tag add bullet point (•)
+    section.cards.forEach((card) => {
+      card.pageB = card.pageB.replace(/<li>/g, "<li> • ");
+      card.pageA = card.pageA.replace(/<li>/g, "<li> • ");
+    });
 
     let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
 
@@ -514,7 +521,9 @@ router.get(
 
     // Add formattedDate and other computed properties
     allResults.forEach((result) => {
-      result.formattedDate = moment(result.date).locale("cs").format("LLL");
+      let formatedDateDay = moment(result.date).locale("cs").format("l");
+      let formatedDateHour = moment(result.date).locale("cs").format("LT");
+      result.formattedDate = `${formatedDateDay} | ${formatedDateHour}`;
 
       if (result.type === "test") {
         result.totalQuestions =
@@ -685,6 +694,8 @@ router.get(
       }
     }
 
+    console.log("Is in top: ", isInTop);
+
     const leaderboardData = {
       topUsers,
       positionInArray,
@@ -743,32 +754,79 @@ router.get(
 router.post(
   "/mobileApi/addSharedSubject",
   passport.authenticate("jwt", { session: false }),
-  catchAsync(async (req, res) => {
-    const { shareId } = req.body;
+  async (req, res) => {
+    try {
+      const { shareId } = req.body;
 
-    const category = await Category.findOne({ shareId });
+      const category = await Category.findOne({ shareId });
 
-    if (!category) {
-      return res.status(404).json({ message: "Předmět nenalezen." });
-    }
+      if (!category) {
+        return res.status(404).json({ message: "Předmět nenalezen." });
+      }
 
-    if (category.isDemo) {
-      return res
-        .status(404)
-        .json({ message: "Tento předmět je demo, nelze jej sdílet." });
-    }
+      if (category.isDemo) {
+        return res
+          .status(404)
+          .json({ message: "Tento předmět je demo, nelze jej sdílet." });
+      }
 
-    if (req.user.createdCategories.includes(category._id)) {
-      return res.status(404).json({ message: "Tento předmět jsi vytvořil." });
+      if (req.user.createdCategories.includes(category._id)) {
+        return res.status(404).json({ message: "Tento předmět jsi vytvořil." });
+      }
+      if (req.user.sharedCategories.includes(category._id)) {
+        return res.status(404).json({ message: "Tento předmět již máš." });
+      }
+      req.user.sharedCategories.push(category._id);
+      await req.user.save();
+      console.log("Předmět byl přidán.");
+      res.status(200).json({ message: "Předmět byl přidán." });
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: "Předmět se nepodařilo přidat" });
     }
-    if (req.user.sharedCategories.includes(category._id)) {
-      return res.status(404).json({ message: "Tento předmět již máš." });
+  }
+);
+
+//=======================================================
+//CONTENT MANIPULATION
+//=======================================================
+
+//create new category
+router.post(
+  "/mobileApi/createCategory",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      let { text } = req.body;
+
+      let shareId = uuid.v4().slice(0, 6);
+      //check if the shareId is unique
+      let categoryWithShareId = await Category.findOne({ share: shareId });
+      while (categoryWithShareId) {
+        shareId = uuid.v4().slice(0, 6);
+        categoryWithShareId = await Category.findOne({ share: shareId });
+      }
+      let user = req.user;
+
+      let icon = "icon_knowledge.png";
+
+      const newCategory = new Category({
+        sections: [],
+        text,
+        icon,
+        author: req.user._id,
+        shareId,
+      });
+      let savedCategory = await newCategory.save();
+      user.createdCategories.push(savedCategory._id);
+      await user.save();
+
+      res.status(201).json(newCategory);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: "Předmět se nepodařilo přidat" });
     }
-    req.user.sharedCategories.push(category._id);
-    await req.user.save();
-    console.log("Předmět byl přidán.");
-    res.status(200).json({ message: "Předmět byl přidán." });
-  })
+  }
 );
 
 module.exports = router;

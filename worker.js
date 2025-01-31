@@ -75,7 +75,7 @@ async function processDocumentJob(job) {
                     <p> for paragraphs
                     <ul> for unordered lists
                     <li> for list items inside the <ul> tag
-                    <b> for bold text
+                    <strong> for bold text
                     <i> for italic text
       
                     Each answer has to be wrapped in one or more <p> tags. Use more if the answer contains multiple paragraphs. Always use the <b> tag to highlight the most important parts of the answer.
