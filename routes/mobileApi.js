@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
@@ -189,10 +190,17 @@ router.get(
       (averageTestPercentage + percentageOfKnownCards) / 2
     );
 
+    //check if user is author of the section
+    let isUserAuthor = false;
+    if (category.author && category.author.equals(user._id)) {
+      isUserAuthor = true;
+    }
+
     // 5) Return the sections as JSON
     res.status(200).json({
       sections: category.sections,
       percentageOfKnownCards: proficiencyPercetage,
+      isUserAuthor,
     });
   })
 );
@@ -252,6 +260,12 @@ router.get(
     const feedbackFormShown = user.feedbackFormShown;
     const isUserPremium = user.isPremium;
 
+    //is user author of the section?
+    let isUserAuthor = false;
+    if (section.author.equals(user._id)) {
+      isUserAuthor = true;
+    }
+
     //go through all cards pageB and pageA content and after every <li> tag add bullet point (•)
     section.cards.forEach((card) => {
       card.pageB = card.pageB.replace(/<li>/g, "<li> • ");
@@ -270,6 +284,7 @@ router.get(
       feedbackFormShown,
       randomPartner,
       isUserPremium,
+      isUserAuthor,
     });
   })
 );
@@ -446,6 +461,40 @@ router.post(
     await req.user.save();
     res.status(201).json({ message: "Questions reset" });
   }
+);
+
+//RESET USER`S STATS FOR SECTION (POST)
+router.post(
+  "/mobileApi/resetPackageStats",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    let { sectionId } = req.body;
+
+    //validate with mongoose ObjectID
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      return res.status(400).json({ message: "Invalid sectionId" });
+    }
+
+    const section = await Section.findById(sectionId);
+    if (!section) {
+      return res.status(404).json({ message: "Section not found" });
+    }
+
+    const cardIds = section.cards.map((card) => card._id);
+
+    await CardInfo.deleteMany({
+      user: req.user._id,
+      card: { $in: cardIds },
+    });
+
+    //mark all testResults of this user for this section as not showOnCategoryPage
+    await TestResult.updateMany(
+      { user: req.user._id, section: section._id },
+      { showOnCategoryPage: false }
+    );
+
+    res.status(201).json({ message: "Section reset" });
+  })
 );
 
 router.post(
@@ -902,6 +951,13 @@ router.post(
         return res.status(404).json({ message: "Balíček nenalezen" });
       }
 
+      //check if user is author of the section
+      if (!foundSection.author.equals(user._id)) {
+        return res
+          .status(403)
+          .json({ message: "Přidat kartičku může pouze autor balíčku" });
+      }
+
       const foundCategory = await Category.findById(foundSection.categoryId);
 
       if (!foundCategory) {
@@ -928,6 +984,59 @@ router.post(
       console.log(error);
       res.status(400).json({ error: "Kartičku se nepodařilo přidat" });
     }
+  }
+);
+
+//delete card
+router.post(
+  "/mobileApi/deleteCard",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let { cardId } = req.body;
+    let { user } = req;
+
+    //check if is valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(cardId)) {
+      return res.status(400).json({ message: "Neplatné ID kartičky" });
+    }
+
+    const foundCard = await Card.findById(cardId);
+
+    if (!foundCard) {
+      return res.status(404).json({ message: "Kartička nenalezena" });
+    }
+
+    const foundSection = await Section.findById(foundCard.section);
+
+    if (!foundSection) {
+      return res.status(404).json({ message: "Balíček nenalezen" });
+    }
+
+    const foundCategory = await Category.findById(foundSection.categoryId);
+
+    if (!foundCategory) {
+      return res.status(404).json({ message: "Předmět nenalezen" });
+    }
+
+    if (!foundCard.author.equals(user._id)) {
+      return res.status(403).json({ message: "Nemáte oprávnění" });
+    }
+
+    await Card.findByIdAndDelete(cardId);
+
+    foundSection.cards = foundSection.cards.filter(
+      (card) => !card.equals(cardId)
+    );
+    await foundSection.save();
+
+    //delete cardInfo for this card
+    await CardInfo.deleteMany({ card: cardId });
+
+    foundCategory.numOfCards--;
+    await foundCategory.save();
+
+    console.log("Kartička smazána");
+    res.status(201).json({ message: "Kartička smazána" });
   }
 );
 
