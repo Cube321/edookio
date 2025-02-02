@@ -1,9 +1,11 @@
 /* PALETTE #FF0037 #d2002d #790252 #4C0033 */
 
 .btn-danger {
-  background-color: #ff0037;
-  border-color: #ff0037;
   outline-color: #d2002d;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b);
+  /* Optional: To ensure backward compatibility */
+  background-color: #f1471b; /* Fallback for older browsers */
+  border-color: #ff6e1e;
 }
 
 .btn-danger:hover {

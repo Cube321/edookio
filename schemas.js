@@ -1,5 +1,6 @@
 const BaseJoi = require("joi");
 const sanitizeHtml = require("sanitize-html");
+const category = require("./models/category");
 
 const extension = (joi) => ({
   type: "string",
@@ -68,4 +69,19 @@ module.exports.questionSchema = Joi.object({
 module.exports.nameSchema = Joi.object({
   firstname: Joi.string().required().escapeHTML(),
   lastname: Joi.string().required().escapeHTML(),
+});
+
+module.exports.categorySchemaApi = Joi.object({
+  text: Joi.string().required().escapeHTML(),
+});
+
+module.exports.sectionSchemaApi = Joi.object({
+  name: Joi.string().required().escapeHTML(),
+  categoryId: Joi.string().required().escapeHTML(),
+});
+
+module.exports.cardSchemaApi = Joi.object({
+  pageA: Joi.string().required().escapeHTML(),
+  pageB: Joi.string().required().escapeHTML(),
+  sectionId: Joi.string().required().escapeHTML(),
 });

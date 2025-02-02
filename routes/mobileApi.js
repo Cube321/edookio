@@ -6,12 +6,19 @@ const Category = require("../models/category");
 const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
 const CardInfo = require("../models/cardInfo");
+const Card = require("../models/card");
 const User = require("../models/user");
 const Feedback = require("../models/feedback");
 const passport = require("passport");
 const moment = require("moment");
 const { PARTNERS } = require("../utils/partners");
+const {
+  validateCategoryApi,
+  validateSectionApi,
+  validateCardApi,
+} = require("../utils/middleware");
 const uuid = require("uuid");
+const category = require("../models/category");
 
 router.get(
   "/mobileApi/getCategories",
@@ -794,6 +801,7 @@ router.post(
 //create new category
 router.post(
   "/mobileApi/createCategory",
+  validateCategoryApi,
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
@@ -825,6 +833,100 @@ router.post(
     } catch (error) {
       console.log(error);
       res.status(400).json({ error: "Předmět se nepodařilo přidat" });
+    }
+  }
+);
+
+//create new section
+router.post(
+  "/mobileApi/createPackage",
+  validateSectionApi,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      let { name, categoryId } = req.body;
+      let { user } = req;
+
+      if (!name || !categoryId) {
+        return res
+          .status(400)
+          .json({ error: "Název balíčku a ID předmětu jsou povinné" });
+      }
+
+      const newSection = new Section({
+        name,
+        categoryId,
+        author: user._id,
+        isPublic: true,
+        isAccesible: true,
+        testIsPublic: true,
+      });
+      let savedSection = await newSection.save();
+
+      const foundCategory = await Category.findById(categoryId);
+
+      if (!foundCategory) {
+        return res.status(404).json({ message: "Předmět nenalezen" });
+      }
+
+      foundCategory.sections.push(savedSection._id);
+      await foundCategory.save();
+
+      res.status(201).json(savedSection);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: "Balíček se nepodařilo přidat" });
+    }
+  }
+);
+
+// create new card
+router.post(
+  "/mobileApi/createCard",
+  passport.authenticate("jwt", { session: false }),
+  validateCardApi,
+  async (req, res) => {
+    try {
+      let { sectionId, pageA, pageB } = req.body;
+      let { user } = req;
+
+      if (!sectionId || !pageA || !pageB) {
+        return res.status(400).json({
+          error: "ID balíčku a obě strany kartičky jsou povinné",
+        });
+      }
+
+      const foundSection = await Section.findById(sectionId);
+
+      if (!foundSection) {
+        return res.status(404).json({ message: "Balíček nenalezen" });
+      }
+
+      const foundCategory = await Category.findById(foundSection.categoryId);
+
+      if (!foundCategory) {
+        return res.status(404).json({ message: "Předmět nenalezen" });
+      }
+
+      const newCard = new Card({
+        section: sectionId,
+        categoryId: foundCategory._id,
+        pageA,
+        pageB,
+        author: user._id,
+      });
+      let savedCard = await newCard.save();
+
+      foundCategory.numOfCards++;
+      await foundCategory.save();
+
+      foundSection.cards.push(savedCard._id);
+      await foundSection.save();
+
+      res.status(201).json(savedCard);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: "Kartičku se nepodařilo přidat" });
     }
   }
 );
