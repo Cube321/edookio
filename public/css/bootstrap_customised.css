@@ -10,8 +10,8 @@
 
 .btn-danger:hover {
   background-color: #d2002d;
-  border-color: #d2002d;
-  outline-color: #d2002d;
+  border-color: #ff6e1e;
+  outline-color: #ff6e1e;
 }
 
 .btn-danger.disabled {

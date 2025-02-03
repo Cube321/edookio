@@ -231,6 +231,22 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  onInitialStreak: {
+    type: Boolean,
+    default: true,
+  },
+  bonus100added: {
+    type: Boolean,
+    default: false,
+  },
+  bonus500added: {
+    type: Boolean,
+    default: false,
+  },
+  bonus500shown: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.plugin(passportLocalMongoose);

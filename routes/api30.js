@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const sanitizeHtml = require("sanitize-html");
 const moment = require("moment");
 const { isLoggedIn } = require("../utils/middleware");
+const helpers = require("../utils/helpers");
 
 //API ROUTES FOR SHOW CARDS
 //get Cards of Section
@@ -50,6 +51,7 @@ router.get(
         markedCards.push(newCard);
       });
       cards = markedCards;
+      await helpers.registerAction(req.user, "cardSeen");
     }
     const resData = JSON.stringify({
       cards,
@@ -99,6 +101,7 @@ router.get(
 
       // Filter out known cards
       cards = cards.filter((card) => !knownCardIds.has(card._id.toString()));
+      await helpers.registerAction(req.user, "cardSeen");
     }
     // ---------------------------------------------------
     // End of known-cards filtering
@@ -208,33 +211,6 @@ async function getRandomCards(categoryId) {
   return final20cards;
 }
 
-//used only to mark lastActive date of user
-router.post(
-  "/api/updateLastSeenCard/section/:sectionId/:cardNum",
-  catchAsync(async (req, res) => {
-    if (req.user) {
-      let user = req.user;
-
-      //count new actions only every two seconds
-      let now = moment();
-      if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-        //update date of user's last activity
-        user.lastActive = moment();
-        //increase cardSeen by 1
-        user.cardsSeen++;
-        user.cardsSeenThisMonth++;
-        user.actionsToday++;
-        if (user.actionsToday === user.dailyGoal) {
-          user.streakLength++;
-          user.dailyGoalReachedToday = true;
-        }
-      }
-      await user.save();
-    }
-    res.status(201).send({ message: "no_data" });
-  })
-);
-
 //update Card counter on User (only for shuffle - probably)
 router.post(
   "/api/updateUsersCardsCounters",
@@ -243,17 +219,7 @@ router.post(
     let now = moment();
     //count new actions only every two seconds
     if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-      //update date of user's last activity
-      user.lastActive = moment();
-      //increase cardSeen by 1
-      user.cardsSeen++;
-      user.cardsSeenThisMonth++;
-      user.actionsToday++;
-      if (user.actionsToday === user.dailyGoal) {
-        user.streakLength++;
-        user.dailyGoalReachedToday = true;
-      }
-      await user.save();
+      await helpers.registerAction(user, "cardSeen");
     }
     res.sendStatus(201);
   })
@@ -333,18 +299,7 @@ router.post(
       let now = moment();
       //count new actions only every two seconds
       if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-        user.lastActive = moment();
-        user.questionsSeenThisMonth++;
-        user.questionsSeenTotal++;
-        user.actionsToday++;
-        if (user.actionsToday === user.dailyGoal) {
-          user.streakLength++;
-          user.dailyGoalReachedToday = true;
-        }
-        if (!user.isPremium && user.questionsSeenThisMonth === 50) {
-          user.reachedQuestionsLimitDate = Date.now();
-        }
-        await user.save();
+        await helpers.registerAction(user, "questionSeen");
       }
       res.sendStatus(201);
     } else {

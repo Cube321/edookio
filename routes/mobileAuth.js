@@ -292,6 +292,23 @@ router.post(
   }
 );
 
+//postBonus500Shown
+router.post(
+  "/mobileAuth/bonus500Shown",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { user } = req;
+      user.bonus500shown = true;
+      await user.save();
+      return res.status(200).json({ message: "Bonus 500 modal zobrazen." });
+    } catch (error) {
+      console.log("Error saving bonus500Shown:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+);
+
 router.post(
   "/mobileAuth/googleLogin",
   catchAsync(async (req, res) => {

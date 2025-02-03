@@ -38,6 +38,7 @@ cronHelpers.resetStreaks = catchAsync(async () => {
     if (user.actionsToday > 0 || user.streakLength > 0) {
       if (user.actionsToday < 10) {
         user.streakLength = 0;
+        user.onInitialStreak = false;
       }
       user.dailyGoalReachedToday = false;
       user.actionsToday = 0;

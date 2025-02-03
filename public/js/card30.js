@@ -161,9 +161,6 @@ $(document).ready(function () {
       //render next card
       renderCard(nextCard);
 
-      //update last seen card in DB
-      updateLastSeenCardInDB(nextCard);
-
       //set push to 0
       push = 0;
     }
@@ -198,9 +195,6 @@ $(document).ready(function () {
       //render next card
       renderCard(nextCard);
 
-      //update last seen card in DB
-      updateLastSeenCardInDB(nextCard);
-
       //set push to 0
       push = 0;
     }
@@ -213,8 +207,6 @@ $(document).ready(function () {
     }
     renderCard(previousCard);
     push = 0;
-    //update lastSeenCard in DB
-    updateLastSeenCardInDB(nextCard);
   });
 
   $("#btn-predchozi-back").click((e) => {
@@ -227,8 +219,6 @@ $(document).ready(function () {
     $("#front-menu-row").toggleClass("hide");
     renderCard(previousCard);
     push = 0;
-    //update lastSeenCard in DB
-    updateLastSeenCardInDB(nextCard);
   });
 
   //favorite cards logic
@@ -350,8 +340,6 @@ $(document).ready(function () {
           $("#front-menu-row").toggleClass("hide");
           renderCard(nextCard);
           push = 0;
-          // update lastSeenCard in DB
-          updateLastSeenCardInDB(nextCard);
         }
       }
     }
@@ -393,25 +381,11 @@ $(document).ready(function () {
           renderCard(nextCard);
           // reset push for the next card
           push = 0;
-          // update lastSeenCard in DB
-          updateLastSeenCardInDB(nextCard);
         }
       }
     }
   };
 });
-
-function updateLastSeenCardInDB(card) {
-  let updateLastCardUrl = `/api/updateLastSeenCard/section/${sectionId}/${card}`;
-  $.ajax({
-    method: "POST",
-    url: `${updateLastCardUrl}`,
-  })
-    .then((res) => {
-      return null;
-    })
-    .catch((err) => console.log(err));
-}
 
 function markCardKnowledge(known, cardId) {
   fetch(`/api/markCardKnown/${cardId}`, {

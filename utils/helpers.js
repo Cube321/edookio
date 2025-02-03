@@ -116,4 +116,47 @@ helpers.deleteDemoCategoryById = async function (categoryId) {
   }
 };
 
+//register action for user
+helpers.registerAction = async function (user, action) {
+  try {
+    user.lastActive = moment();
+    if (action === "questionSeen") {
+      user.questionsSeenTotal++;
+      user.questionsSeenThisMonth++;
+      if (!user.isPremium && user.questionsSeenThisMonth === 50) {
+        user.reachedQuestionsLimitDate = Date.now();
+        console.log("Reached questions limit for user:", user.email);
+      }
+    }
+
+    if (action === "cardSeen") {
+      user.cardsSeen++;
+      user.cardsSeenThisMonth++;
+    }
+
+    user.actionsToday++;
+    if (user.actionsToday === user.dailyGoal && !user.dailyGoalReachedToday) {
+      user.streakLength++;
+      user.dailyGoalReachedToday = true;
+      console.log("Daily goal reached for user:", user.email);
+    }
+
+    //evaluate conditions for bonus 500
+    if (
+      user.streakLength === 1 &&
+      user.onInitialStreak &&
+      !user.bonus500added
+    ) {
+      user.credits += 500;
+      user.bonus500added = true;
+      console.log("Bonus 500 AI credits for user:", user.email);
+    }
+
+    await user.save();
+  } catch (error) {
+    console.log("Error registering action for user (helpers):", error);
+    throw error;
+  }
+};
+
 module.exports = helpers;

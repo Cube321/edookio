@@ -6,6 +6,7 @@ const Card = require("../models/card");
 const CardInfo = require("../models/cardInfo");
 const passport = require("passport");
 const { isLoggedIn } = require("../utils/middleware");
+const helpers = require("../utils/helpers");
 
 //WEB
 router.post("/api/markCardKnown/:cardId", isLoggedIn, async (req, res) => {
@@ -37,19 +38,7 @@ router.post("/api/markCardKnown/:cardId", isLoggedIn, async (req, res) => {
         //count new actions only every two seconds
         let now = moment();
         if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-          //update date of user's last activity
-          user.lastActive = moment();
-          //increase cardSeen by 1
-          user.cardsSeen++;
-          user.cardsSeenThisMonth++;
-          user.actionsToday++;
-          if (
-            user.actionsToday === user.dailyGoal &&
-            !user.dailyGoalReachedToday
-          ) {
-            user.streakLength++;
-            user.dailyGoalReachedToday = true;
-          }
+          await helpers.registerAction(user, "cardSeen");
         }
       }
 
@@ -98,19 +87,7 @@ router.post(
           //count new actions only every two seconds
           let now = moment();
           if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-            //update date of user's last activity
-            user.lastActive = moment();
-            //increase cardSeen by 1
-            user.cardsSeen++;
-            user.cardsSeenThisMonth++;
-            user.actionsToday++;
-            if (
-              user.actionsToday === user.dailyGoal &&
-              !user.dailyGoalReachedToday
-            ) {
-              user.streakLength++;
-              user.dailyGoalReachedToday = true;
-            }
+            await helpers.registerAction(user, "cardSeen");
           }
         }
 

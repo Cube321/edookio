@@ -19,7 +19,7 @@ const {
   validateCardApi,
 } = require("../utils/middleware");
 const uuid = require("uuid");
-const category = require("../models/category");
+const helpers = require("../utils/helpers");
 
 router.get(
   "/mobileApi/getCategories",
@@ -84,9 +84,15 @@ router.get(
       return res.status(404).json({ message: "Category not found" });
     }
 
+    //check if user is author of the section
+    let isUserAuthor = false;
+    if (category.author && category.author.equals(user._id)) {
+      isUserAuthor = true;
+    }
+
     if (!category.sections || category.sections.length === 0) {
       let sections = [];
-      return res.status(200).json(sections);
+      return res.status(200).json({ sections, isUserAuthor });
     }
 
     // 2) Build a map of the latest test results for each section
@@ -190,12 +196,6 @@ router.get(
       (averageTestPercentage + percentageOfKnownCards) / 2
     );
 
-    //check if user is author of the section
-    let isUserAuthor = false;
-    if (category.author && category.author.equals(user._id)) {
-      isUserAuthor = true;
-    }
-
     // 5) Return the sections as JSON
     res.status(200).json({
       sections: category.sections,
@@ -246,15 +246,8 @@ router.get(
 
     //update date of user's last activity
     let user = req.user;
-    user.lastActive = moment();
-    //increase cardSeen by 1
-    user.cardsSeen++;
-    user.cardsSeenThisMonth++;
-    user.actionsToday++;
-    if (user.actionsToday === user.dailyGoal) {
-      user.streakLength++;
-      user.dailyGoalReachedToday = true;
-    }
+
+    await helpers.registerAction(user, "cardSeen");
 
     const cardsSeenTotal = user.cardsSeen;
     const feedbackFormShown = user.feedbackFormShown;
@@ -307,14 +300,8 @@ router.get(
 
     let user = req.user;
     //update date of user's last activity
-    user.lastActive = moment();
-    user.questionsSeenTotal++;
-    user.questionsSeenThisMonth++;
-    user.actionsToday++;
-    if (user.actionsToday === user.dailyGoal) {
-      user.streakLength++;
-      user.dailyGoalReachedToday = true;
-    }
+    await helpers.registerAction(user, "questionSeen");
+
     let questionsSeenThisMonth = user.questionsSeenThisMonth;
     let isUserPremium = user.isPremium;
 
@@ -338,19 +325,7 @@ router.post(
     //count new actions only every two seconds
     let now = moment();
     if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-      //update date of user's last activity
-      user.lastActive = moment();
-      user.questionsSeenTotal++;
-      user.questionsSeenThisMonth++;
-      user.actionsToday++;
-      if (user.actionsToday === user.dailyGoal) {
-        user.streakLength++;
-        user.dailyGoalReachedToday = true;
-      }
-      if (!user.isPremium && user.questionsSeenThisMonth === 50) {
-        user.reachedQuestionsLimitDate = Date.now();
-      }
-      await user.save();
+      await helpers.registerAction(user, "questionSeen");
     }
     res.status(200).json({ message: "Action registered" });
   })
@@ -875,6 +850,9 @@ router.post(
         shareId,
       });
       let savedCategory = await newCategory.save();
+
+      console.log(savedCategory);
+
       user.createdCategories.push(savedCategory._id);
       await user.save();
 
@@ -1037,6 +1015,33 @@ router.post(
 
     console.log("Kartička smazána");
     res.status(201).json({ message: "Kartička smazána" });
+  }
+);
+
+//add credits to user
+router.post(
+  "/mobileApi/addCredits",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let { amount, code } = req.body;
+    let { user } = req;
+
+    if (!amount) {
+      return res.status(400).json({ message: "Počet kreditů je povinný" });
+    }
+
+    if (code) {
+      if (code === "start_bonus_100" && !user.bonus100added) {
+        user.bonus100added = true;
+        user.credits += amount;
+        console.log("Kredity byly připsány (BONUS100)" + user.email);
+        await user.save();
+        return res
+          .status(201)
+          .json({ message: "Kredity byly připsány (BONUS100)" });
+      }
+    }
+    res.status(201).json({ message: "Kredity nebyly připsány" });
   }
 );
 
