@@ -38,9 +38,6 @@ router.get(
       cardsFreeCount = cardsFreeCount + section.cards.length;
     });
 
-    //count ratios
-    let sectionsTotal = sectionsFreeCount;
-
     let updatedUsers = [];
 
     //count all users and premium users
@@ -185,6 +182,14 @@ router.get(
       monthQuestionsSeen = monthQuestionsSeen + user.questionsSeenThisMonth;
     });
     updatedUsers.reverse();
+
+    //get all stats
+    let allStats = await Stats.find({});
+    //order stats alphabetically by eventName
+    allStats.sort(function (a, b) {
+      return a.eventName.localeCompare(b.eventName);
+    });
+
     res.status(200).render("admin/admin", {
       users: updatedUsers,
       premiumUsersCount,
@@ -208,6 +213,7 @@ router.get(
       hasUnsubscribedFromStreak,
       PUCMonth,
       PUCYear,
+      allStats,
     });
   })
 );

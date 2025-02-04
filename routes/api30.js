@@ -461,4 +461,34 @@ router.post(
   })
 );
 
+//markUser api30
+router.post("/api/markUser", isLoggedIn, async (req, res) => {
+  try {
+    const { action } = req.body;
+    const { user } = req;
+
+    if (action === "bonus100shown") {
+      user.bonus100shown = true;
+      user.bonus100added = true;
+      user.credits += 100;
+      console.log(
+        "Adding 100 credits and marking user as bonus100shown (webApi):",
+        user.email
+      );
+      helpers.incrementEventCount("bonus100addedWeb");
+    }
+
+    if (action === "bonus500shown") {
+      user.bonus500shown = true;
+      console.log("Marking user as bonus500shown (webApi):", user.email);
+    }
+
+    await user.save();
+    return res.status(200).json({ message: "User marked" });
+  } catch (error) {
+    console.log("Error saving bonus500Shown:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = router;

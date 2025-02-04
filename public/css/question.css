@@ -78,9 +78,10 @@
 }
 
 .answers-list .correct {
-  border: 3px solid;
-  border-color: #ff0037;
-  background-color: #ff0037;
+  border: none;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b);
   color: white;
 }
 
@@ -123,8 +124,8 @@
 }
 
 .questions-list-item.correct {
-  border: 1px solid #ff0037;
-  background-color: #ff0037;
+  border: 1px solid #ff6e1e;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b);
   color: white;
 }
 

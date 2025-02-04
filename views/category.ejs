@@ -71,44 +71,19 @@
           <% } %>
         </div>
       </div>
-      <% if(!currentUser || (currentUser && !currentUser.usedMobileApp)){ %>
-      <div
-        class="card-body d-flex flex-column align-items-center justify-content-center"
-      >
-        <p class="text-center">
-          Vyzkoušej i <b>mobilní aplikaci</b>
-          <b class="color-primary">Edookio</b>!
-        </p>
-        <div class="d-flex justify-content-evenly align-items-center">
-          <a
-            href="https://apps.apple.com/us/app/edookio/id6740498818"
-            target="_blank"
-            class="btn btn-outline-danger mx-2 text-small"
-            ><i class="fab fa-apple"></i>
-            <span class="hide-under-1200">iOS</span></a
-          >
-          <a
-            href="https://play.google.com/store/apps/details?id=com.edookio.edookio"
-            target="_blank"
-            class="btn btn-outline-danger mx-2 text-small"
-            ><i class="fab fa-android"></i>
-            <span class="hide-under-1200">Android</span></a
-          >
-        </div>
-      </div>
-      <% } %> <% if(currentUser && !currentUser.isEmailVerified){ %>
+      <% if(currentUser && !currentUser.isEmailVerified){ %>
       <div class="row">
         <div class="col-12">
-          <div class="card border-grey m-2">
+          <div class="border-grey m-2">
             <div
-              class="card-body card-info d-flex flex-row align-items-center justify-content-around"
+              class="card-body d-flex flex-row align-items-center justify-content-around"
             >
               <p class="text-center mb-0">
                 Ověř prosím svou <b>e-mailovou adresu</b>
               </p>
               <a
                 href="/auth/user/requestEmailVerification"
-                class="btn btn-sm btn-danger mx-2"
+                class="btn btn-sm btn-outline-danger mx-2"
                 >Ověřit</a
               >
             </div>
@@ -261,7 +236,7 @@
               <div>
                 <a
                   href="/category/<%= category._id %>/section/<%= section._id %>/card30/1?mode=unknown"
-                  class="btn btn-sm btn-outline-danger btn-spustit w-100 mt-2"
+                  class="btn btn-sm btn-danger btn-spustit w-100 mt-2"
                   >Spustit</a
                 >
               </div>
@@ -279,7 +254,7 @@
               <div>
                 <a
                   href="/category/<%= category._id %>/section/<%= section._id %>/card30/1?mode=unknown"
-                  class="btn btn-sm btn-outline-danger btn-spustit w-100 mt-2 disabled"
+                  class="btn btn-sm btn-danger btn-spustit w-100 mt-2 disabled"
                   >Spustit</a
                 >
               </div>
@@ -321,7 +296,7 @@
               <div>
                 <a
                   href="/category/<%= category._id %>/section/<%= section._id %>/test"
-                  class="btn btn-sm btn-outline-danger btn-spustit w-100 mt-2"
+                  class="btn btn-sm btn-danger btn-spustit w-100 mt-2"
                   >Spustit</a
                 >
               </div>
@@ -339,7 +314,7 @@
               <div>
                 <a
                   href="/category/<%= category._id %>/section/<%= section._id %>/test"
-                  class="btn btn-sm btn-outline-danger btn-spustit w-100 mt-2 disabled"
+                  class="btn btn-sm btn-danger btn-spustit w-100 mt-2 disabled"
                   >Spustit</a
                 >
               </div>
@@ -958,6 +933,58 @@ category.sections.forEach(section => { %>
       "Content-Type": "application/json",
     },
     body: JSON.stringify({}),
+  });
+</script>
+<% } %> <% if(currentUser && currentUser.bonus500added &&
+!currentUser.bonus500shown){ %>
+<!-- MODAL - App Anouncement with script -->
+<div class="modal fade" id="bonus500modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered edit-modal">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="d-flex justify-content-between w-100">
+          <div></div>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+          ></button>
+        </div>
+        <h3 class="text-center mt-3 mb-4">Získáváš bonus 500 AI kreditů</h3>
+        <div class="mt-4 text-center">
+          <p>
+            <b>Skvělá práce!</b> Za splnění denního cíle deset dnů v řadě jsme
+            ti právě připsali <b>dalších 500 AI kreditů</b>, které ti vystačí na
+            tvorbu 500 kartiček pomocí AI.
+          </p>
+        </div>
+        <div>
+          <div class="d-flex justify-content-center mt-4 mb-3">
+            <a href="#" class="btn btn-danger btn-lg" data-bs-dismiss="modal"
+              >Super, díky!</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %> <% if(currentUser && currentUser.bonus500added &&
+!currentUser.bonus500shown){ %>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var bonus500modal = new bootstrap.Modal(
+      document.getElementById("bonus500modal")
+    );
+    bonus500modal.show();
+  });
+  //send post request to /api/markUser to set bonus100shown to true to prevent showing the modal again
+  fetch("/api/markUser", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ action: "bonus500shown" }),
   });
 </script>
 <% } %>

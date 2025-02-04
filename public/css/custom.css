@@ -89,12 +89,6 @@ form .form-borders.border-darkgrey {
   justify-content: space-between;
 }
 
-.card-info {
-  background: linear-gradient(135deg, rgb(221, 195, 127), rgb(245, 235, 200));
-  /* Optional: To ensure backward compatibility */
-  background-color: rgb(221, 195, 127); /* Fallback for older browsers */
-}
-
 /* .alert-success-small  should create a small banner in the bottom ledft corner of green color and white text which does not move the content around it and is on the top of it*/
 .alert-success-small {
   position: fixed;
@@ -227,18 +221,21 @@ form .form-borders.border-darkgrey {
   background-color: #7ac705;
   border: 1px solid #7ac705;
   color: white;
+  border-radius: 8px;
 }
 
 .badge-green-outline {
   background-color: white;
   color: #7ac705;
   border: 1px solid #7ac705;
+  border-radius: 8px;
 }
 
 .badge-grey-outline {
   background-color: white;
   color: #b0b0b0;
   border: 1px solid #b0b0b0;
+  border-radius: 8px;
 }
 
 .discount-badge {
@@ -623,7 +620,7 @@ form .form-borders {
 }
 
 .green-check {
-  color: #f44dac;
+  color: #ff6e1e;
   font-size: 4rem;
 }
 
@@ -642,9 +639,10 @@ form .form-borders {
 }
 
 .finished-test .finished-item.correct {
-  border: 3px solid;
-  border-color: #ff0037;
-  background-color: #ff0037;
+  border: none;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b);
   color: white;
 }
 
@@ -1000,7 +998,7 @@ form .form-control.bordered {
   display: none;
 }
 .icon-container input[type="radio"]:checked + img {
-  border-color: #1270a2;
+  border-color: #ff6e1e;
 }
 
 .img-thumbnail {

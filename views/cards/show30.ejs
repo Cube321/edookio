@@ -271,6 +271,32 @@
           </div>
       </div>
     <% } %>
+
+    <% if(currentUser && currentUser.cardsSeen > 3 && !currentUser.bonus100shown && !currentUser.bonus100added){ %>
+      <!-- MODAL - App Anouncement with script -->
+      <div class="modal fade" id="bonus100modal" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered edit-modal">
+          <div class="modal-content">
+              <div class="modal-body">
+                  <div class="d-flex justify-content-between w-100">
+                      <div></div>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                    <h3 class="text-center mt-3 mb-4">Získáváš bonus 100 AI kreditů</h3>
+                  <div class="mt-4 text-center">
+                    <p>Pokud nyní splníš svůj <b>denní cíl</b> deset dnů v řadě, připíšeme ti <b>dalších 500 AI kreditů</b>.</p>
+                    <p>AI kredity můžeš využít k tvorbě kartiček pomocí AI.</p>
+                  </div>
+                  <div>
+                    <div class="d-flex justify-content-center mt-4 mb-3">
+                      <a href="#" class="btn btn-danger btn-lg" data-bs-dismiss="modal">Jdu do toho!</a>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+      </div>
+    <% } %>
     
     <div id="show-mode" style="opacity: 0" name="<%= mode %>"></div>
 
@@ -305,6 +331,23 @@
             "Content-Type": "application/json",
         },
         body: JSON.stringify({}),
+    });
+  </script>
+<% } %>
+
+<% if(currentUser && currentUser.cardsSeen > 3 && !currentUser.bonus100shown && !currentUser.bonus100added){ %>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var bonus100modal = new bootstrap.Modal(document.getElementById("bonus100modal"));
+        bonus100modal.show();
+    });
+    //send post request to /api/markUser to set bonus100shown to true to prevent showing the modal again
+    fetch("/api/markUser", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({action: "bonus100shown"}),
     });
   </script>
 <% } %>

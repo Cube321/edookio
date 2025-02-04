@@ -205,26 +205,6 @@
           </div>
           <div class="row" id="categories-row">
             <div class="offset-lg-2 col-lg-8">
-              <% if(currentUser && !currentUser.isEmailVerified){ %>
-              <div class="row">
-                <div class="col-12 mb-4">
-                  <div class="card border-grey">
-                    <div
-                      class="card-body card-info d-flex flex-row align-items-center justify-content-around"
-                    >
-                      <h5 class="text-center mb-0">
-                        Ověř prosím svou <b>e-mailovou adresu</b>
-                      </h5>
-                      <a
-                        href="/auth/user/requestEmailVerification"
-                        class="btn btn-danger mx-2"
-                        >Zaslat ověřovací e-mail</a
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <% } %>
               <!--
                     <div class="row">
                         <div class="col-12 mb-4">

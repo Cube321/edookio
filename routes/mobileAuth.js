@@ -292,16 +292,27 @@ router.post(
   }
 );
 
-//postBonus500Shown
+//markUser mobileAuth
 router.post(
-  "/mobileAuth/bonus500Shown",
+  "/mobileAuth/markUser",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
+      const { action } = req.body;
       const { user } = req;
-      user.bonus500shown = true;
+
+      if (action === "bonus100shown") {
+        user.bonus100shown = true;
+        console.log("Marking user as bonus100shown (mobileApi):", user.email);
+      }
+
+      if (action === "bonus500shown") {
+        user.bonus500shown = true;
+        console.log("Marking user as bonus500shown (mobileApi):", user.email);
+      }
+
       await user.save();
-      return res.status(200).json({ message: "Bonus 500 modal zobrazen." });
+      return res.status(200).json({ message: "User marked" });
     } catch (error) {
       console.log("Error saving bonus500Shown:", error);
       res.status(500).json({ message: "Internal server error" });

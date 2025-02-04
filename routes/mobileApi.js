@@ -267,6 +267,11 @@ router.get(
 
     let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
 
+    let showBonus100Modal = false;
+    if (user.bonus100shown === false && user.bonus100added === false) {
+      showBonus100Modal = true;
+    }
+
     await user.save();
 
     res.status(200).json({
@@ -278,6 +283,7 @@ router.get(
       randomPartner,
       isUserPremium,
       isUserAuthor,
+      showBonus100Modal,
     });
   })
 );
@@ -311,9 +317,18 @@ router.get(
 
     let randomPartner = PARTNERS[Math.floor(Math.random() * PARTNERS.length)];
 
-    res
-      .status(200)
-      .json({ section, questionsSeenThisMonth, isUserPremium, randomPartner });
+    let showBonus100Modal = false;
+    if (user.bonus100shown === false && user.bonus100added === false) {
+      showBonus100Modal = true;
+    }
+
+    res.status(200).json({
+      section,
+      questionsSeenThisMonth,
+      isUserPremium,
+      randomPartner,
+      showBonus100Modal,
+    });
   })
 );
 
@@ -1036,6 +1051,7 @@ router.post(
         user.credits += amount;
         console.log("Kredity byly připsány (BONUS100)" + user.email);
         await user.save();
+        helpers.incrementEventCount("bonus100addedApp");
         return res
           .status(201)
           .json({ message: "Kredity byly připsány (BONUS100)" });

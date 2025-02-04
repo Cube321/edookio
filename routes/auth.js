@@ -192,9 +192,9 @@ router.post(
 
       req.flash("successOverlay", "Skvělé! Účet byl vytvořen.");
       if (req.query.requiresPremium) {
-        res.status(201).redirect("/premium");
+        res.status(302).redirect("/premium");
       } else {
-        res.status(201).redirect("/");
+        res.status(302).redirect("/");
       }
     } catch (err) {
       if (
@@ -205,7 +205,7 @@ router.post(
         console.log(err);
         req.flash("error", "Jejda, něco se nepovedlo.");
       }
-      res.status(400).redirect("back");
+      res.status(400).redirect("/");
     }
   })
 );
@@ -227,7 +227,7 @@ router.get(
       "Přihlášení Google bylo neúspěšné. Zkuste se přihlásit jménem a heslem.",
   }),
   (req, res) => {
-    res.redirect("/");
+    res.status(302).redirect("/");
   }
 );
 
@@ -271,7 +271,7 @@ router.post(
         req.session.shareId = null;
       }
     }
-    res.status(200).redirect("/");
+    res.status(302).redirect("/");
   })
 );
 
@@ -281,9 +281,9 @@ router.get("/auth/user/logout", isLoggedIn, (req, res, next) => {
     if (err) {
       return next(err);
     }
-    res.status(200).redirect("/");
+    res.status(201).redirect("/");
   });
-  res.status(200).redirect("/");
+  res.status(201).redirect("/");
 });
 
 //verify email logic

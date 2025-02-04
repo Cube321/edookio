@@ -6,6 +6,7 @@
   /* Optional: To ensure backward compatibility */
   background-color: #f1471b; /* Fallback for older browsers */
   border-color: #ff6e1e;
+  border-radius: 8px;
 }
 
 .btn-danger:hover {
@@ -26,6 +27,7 @@
 .btn-outline-danger {
   border-color: #ff0037;
   color: #ff0037;
+  border-radius: 8px;
 }
 
 .btn-outline-danger:hover {
@@ -45,6 +47,7 @@
   background-color: rgb(221, 195, 127); /* Fallback for older browsers */
   border-color: rgb(221, 195, 127);
   transition: 0.3s;
+  border-radius: 8px;
 }
 
 .btn-warning:hover {
@@ -69,12 +72,13 @@
 }
 
 .bg-danger {
-  background-color: #ff0037 !important;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b) !important;
 }
 
 .btn-success {
   background-color: #7ac705;
   border-color: #7ac705;
+  border-radius: 8px;
 }
 
 .bg-success {

@@ -73,6 +73,12 @@ const UserSchema = new Schema({
   lastActive: {
     type: Date,
   },
+  activeDays: [
+    {
+      date: { type: String, required: true },
+      actions: { type: Number, default: 0 },
+    },
+  ],
   passChangeId: {
     type: String,
   },
@@ -236,6 +242,10 @@ const UserSchema = new Schema({
     default: true,
   },
   bonus100added: {
+    type: Boolean,
+    default: false,
+  },
+  bonus100shown: {
     type: Boolean,
     default: false,
   },

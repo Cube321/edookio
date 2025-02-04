@@ -120,6 +120,17 @@ helpers.deleteDemoCategoryById = async function (categoryId) {
 helpers.registerAction = async function (user, action) {
   try {
     user.lastActive = moment();
+
+    //check if today is in the activeDays array and if not, add it + increase count of actions
+    let today = moment().format("YYYY-MM-DD");
+    if (!user.activeDays.find((day) => day.date === today)) {
+      user.activeDays.push({ date: today, actions: 1 });
+    } else {
+      let todayIndex = user.activeDays.findIndex((day) => day.date === today);
+      user.activeDays[todayIndex].actions++;
+    }
+
+    //remove first element from activeDays array
     if (action === "questionSeen") {
       user.questionsSeenTotal++;
       user.questionsSeenThisMonth++;
@@ -134,6 +145,7 @@ helpers.registerAction = async function (user, action) {
       user.cardsSeenThisMonth++;
     }
 
+    //evaluate daily goal and streak
     user.actionsToday++;
     if (user.actionsToday === user.dailyGoal && !user.dailyGoalReachedToday) {
       user.streakLength++;
@@ -150,6 +162,7 @@ helpers.registerAction = async function (user, action) {
       user.credits += 500;
       user.bonus500added = true;
       console.log("Bonus 500 AI credits for user:", user.email);
+      helpers.incrementEventCount("bonus500added");
     }
 
     await user.save();
