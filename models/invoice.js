@@ -8,6 +8,10 @@ const InvoiceSchema = new Schema({
   },
   amount: Number,
   dateIssued: String,
+  created: {
+    type: Date,
+    default: Date.now,
+  },
   identificationNumber: Number,
   subscriptionPeriod: String,
   amountOfCredits: Number,

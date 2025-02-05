@@ -793,6 +793,11 @@ category.sections.forEach(section => { %>
         </div>
         <div class="row mb-2 mt-3 mx-3 d-flex">
           <a
+            href="/category/<%= category._id %>/resetSection/<%= section._id %>"
+            class="btn btn-sm btn-outline-danger btn-red my-1"
+            ><i class="fas fa-undo"></i> Resetovat statistiky</a
+          >
+          <a
             href="#"
             class="btn btn-sm btn-danger btn-red my-1"
             data-bs-toggle="modal"

@@ -155,4 +155,55 @@ router.get(
   })
 );
 
+//reset cards and questions of a particular section for a user
+router.get(
+  "/category/:categoryId/resetSection/:sectionId",
+  isLoggedIn,
+  async (req, res) => {
+    const { categoryId, sectionId } = req.params;
+
+    //validate with mongoose ObjectID
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      req.flash("error", "Předmět neexistuje (nesprávný formát ID).");
+      res.redirect(`/`);
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      req.flash("error", "Balíček neexistuje (nesprávný formát ID).");
+      res.redirect(`/category/${categoryId}`);
+    }
+
+    const category = await Category.findById(categoryId).populate("sections");
+    if (!category) {
+      req.flash("error", "Předmět neexistuje.");
+      return res.status(404).redirect("/");
+    }
+
+    const section = category.sections.find(
+      (section) => section._id.toString() === sectionId
+    );
+
+    if (!section) {
+      req.flash("error", "Balíček neexistuje.");
+      return res.status(404).redirect(`/category/${categoryId}`);
+    }
+
+    const cardIds = section.cards.map((card) => card._id);
+
+    await CardInfo.deleteMany({
+      user: req.user._id,
+      card: { $in: cardIds },
+    });
+
+    //mark all testResults of this user for this category as not showOnCategoryPage
+    await TestResult.updateMany(
+      { user: req.user._id, category: category._id, section: section._id },
+      { showOnCategoryPage: false }
+    );
+
+    req.flash("successOverlay", "Statistiky balíčku byly smazány");
+    res.status(200).redirect(`/category/${categoryId}`);
+  }
+);
+
 module.exports = router;
