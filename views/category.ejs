@@ -234,11 +234,21 @@
                 <% } %>
               </div>
               <div>
+                <% if (section.knownCount === section.cards.length) { %>
+                <a
+                  href="#"
+                  class="btn btn-sm btn-danger btn-spustit w-100 mt-2"
+                  data-bs-toggle="modal"
+                  data-bs-target="#resetCardsSectionModal<%=section._id%>"
+                  >Spustit</a
+                >
+                <% } else { %>
                 <a
                   href="/category/<%= category._id %>/section/<%= section._id %>/card30/1?mode=unknown"
                   class="btn btn-sm btn-danger btn-spustit w-100 mt-2"
                   >Spustit</a
                 >
+                <% } %>
               </div>
             </div>
             <% } else { %>
@@ -878,7 +888,39 @@ category.sections.forEach(section => { %>
     </div>
   </div>
 </div>
-<% }) %> <% } %> <% if (isAuthor) { %>
+
+<% if(section.knownCount === section.cards.length){ %>
+<!-- MODAL - Reset cards section -->
+<div
+  class="modal fade"
+  id="resetCardsSectionModal<%=section._id%>"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered edit-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <h5 class="text-center">Umíš všechny kartičky v tomto balíčku</h5>
+        <h6 class="text-center my-3">Chceš začít od začátku?</h6>
+        <div class="d-flex justify-content-center align-items-center mt-4">
+          <a
+            href="/category/<%= category._id %>/section/<%= section._id %>/resetCards"
+            class="btn btn-danger"
+            >Ano, začít od začátku</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% } %> <% }) %> <% } %> <% if (isAuthor) { %>
 <script src="/js/document.js"></script>
 <% } %> <% if(currentUser && !currentUser.appAnnouncementModalShown){ %>
 <!-- MODAL - App Anouncement with script -->

@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Card = require("../models/card");
@@ -243,6 +244,37 @@ router.get(
       savedCards: foundUser.savedCards,
       categories: categories,
     });
+  })
+);
+
+//reset cards of user in section
+router.get(
+  "/category/:categoryId/section/:sectionId/resetCards",
+  isLoggedIn,
+  catchAsync(async (req, res) => {
+    const { categoryId, sectionId } = req.params;
+    //validate with mongoose ObjectID
+    if (!mongoose.Types.ObjectId.isValid(sectionId)) {
+      req.flash("error", "Neplatné ID balíčku.");
+      return res.redirect(`/category/${categoryId}`);
+    }
+
+    const section = await Section.findById(sectionId);
+    if (!section) {
+      req.flash("error", "Balíček s tímto ID neexistuje.");
+      return res.redirect(`/category/${categoryId}`);
+    }
+
+    const cardIds = section.cards.map((card) => card._id);
+
+    await CardInfo.deleteMany({
+      user: req.user._id,
+      card: { $in: cardIds },
+    });
+
+    res.redirect(
+      `/category/${categoryId}/section/${sectionId}/card30/1?mode=unknown`
+    );
   })
 );
 

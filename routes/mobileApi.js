@@ -458,7 +458,7 @@ router.post(
   "/mobileApi/resetPackageStats",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    let { sectionId } = req.body;
+    let { sectionId, onlyCards } = req.body;
 
     //validate with mongoose ObjectID
     if (!mongoose.Types.ObjectId.isValid(sectionId)) {
@@ -477,11 +477,13 @@ router.post(
       card: { $in: cardIds },
     });
 
-    //mark all testResults of this user for this section as not showOnCategoryPage
-    await TestResult.updateMany(
-      { user: req.user._id, section: section._id },
-      { showOnCategoryPage: false }
-    );
+    if (!onlyCards) {
+      //mark all testResults of this user for this section as not showOnCategoryPage
+      await TestResult.updateMany(
+        { user: req.user._id, section: section._id },
+        { showOnCategoryPage: false }
+      );
+    }
 
     res.status(201).json({ message: "Section reset" });
   })
