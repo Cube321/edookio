@@ -31,6 +31,8 @@ const seedContent = require("./utils/seed");
 const Stripe = require("./utils/stripe");
 const uuid = require("uuid");
 
+const Sentry = require("@sentry/node");
+
 app.use("/webhook", bodyParser.raw({ type: "application/json" }));
 
 app.use(bodyParser.json());
@@ -80,6 +82,12 @@ cron.schedule(
   cronHelpers.cronExpressionDaily730PM,
   cronHelpers.dailyActivityReminder
 );
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN || "development",
+  tracesSampleRate: 1.0, //  Capture 100% of the transactions
+  profilesSampleRate: 1.0,
+});
 
 //routes
 const cardRoutes = require("./routes/cards");
@@ -354,6 +362,8 @@ app.use("/", reviewRoutes);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 
+Sentry.setupExpressErrorHandler(app);
+
 //error handling - has to be at the end!
 //catch all for any error - all errors go here
 app.use((err, req, res, next) => {
@@ -362,7 +372,20 @@ app.use((err, req, res, next) => {
     message = "Něco se pokazilo.",
     stack = "empty",
   } = err;
-  //res.status(statusCode).render('error', {message, stack});
+
+  const isMobileApiReq =
+    req.originalUrl.startsWith("/mobileApi") ||
+    req.originalUrl.startsWith("/mobileAuth") ||
+    req.xhr ||
+    (req.headers.accept && req.headers.accept.indexOf("json") !== -1);
+
+  if (isMobileApiReq) {
+    console.log("Mobile API error", err);
+    return res.status(statusCode).json({
+      message: message,
+    });
+  }
+
   if (err.name === "CastError") {
     req.flash(
       "error",
@@ -379,6 +402,19 @@ app.use((err, req, res, next) => {
 app.all("*", (req, res, next) => {
   console.log(`************************ 404 **********************`);
   console.log(req.path);
+
+  const isMobileApiReq =
+    req.originalUrl.startsWith("/mobileApi") ||
+    req.originalUrl.startsWith("/mobileAuth") ||
+    req.xhr ||
+    (req.headers.accept && req.headers.accept.indexOf("json") !== -1);
+
+  if (isMobileApiReq) {
+    return res.status(404).json({
+      message: "Data se nepovedlo načíst (nesprávná cesta)",
+    });
+  }
+
   req.flash("error", "Stránka nebyla nalezena.");
   res.status(404).redirect("/");
 });

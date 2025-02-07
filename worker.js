@@ -9,6 +9,14 @@ const { splitTextIntoChunks } = require("./utils/document");
 const mongoose = require("mongoose");
 const helpers = require("./utils/helpers");
 
+const Sentry = require("@sentry/node");
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV || "development",
+  tracesSampleRate: 1.0,
+});
+
 //connect to db
 const dbUrl = process.env.DB_URL;
 const dbName = process.env.DB_NAME;
@@ -256,6 +264,7 @@ async function processDocumentJob(job) {
     return "Flashcards generated successfully!";
   } catch (error) {
     console.error("Error processing document job:", error);
+    Sentry.captureException(error);
     helpers.incrementEventCount("workerGenerationError");
     throw error;
   }

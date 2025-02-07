@@ -34,7 +34,6 @@ router.get(
         return 1;
       }
     });
-
     res.status(200).json(categories);
   })
 );

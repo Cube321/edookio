@@ -112,6 +112,10 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
 
     if (!user.isPremium) {
       user.credits = 100;
+      let availableCredits = user.credits + user.extraCredits;
+      if (!user.hasUnsubscribed) {
+        mail.freeCreditsRecharged(user.email, 100, availableCredits);
+      }
     }
 
     //reset monthly counters
@@ -189,6 +193,9 @@ cronHelpers.sendDiscountEmail = catchAsync(async () => {
   );
   console.log("Users to send discount e-mail to: ", users.length);
   for (const user of users) {
+    if (user.hasUnsubscribed) {
+      continue;
+    }
     // Pick a random discount code
     const discountCode = discountCodes[Math.floor(Math.random() * 4)];
     // Send the email
@@ -222,7 +229,7 @@ cronHelpers.addCreditsToPremiumUsers = catchAsync(async () => {
       user.creditsLastRecharge = today;
       user.save();
       try {
-        await mail.creditsRecharged(user.email);
+        await mail.creditsRecharged(user.email, user.creditsMonthlyLimit);
       } catch (err) {
         console.log("Failed sending e-mail creditsRecharged: ", err);
       }
