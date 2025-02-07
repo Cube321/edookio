@@ -31,6 +31,10 @@ const CategorySchema = new Schema({
     type: String,
     default: "",
   },
+  deepSharingAllowed: {
+    type: Boolean,
+    default: true,
+  },
   removedByAuthor: {
     type: Boolean,
     default: false,

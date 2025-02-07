@@ -19,6 +19,7 @@ router.get(
   catchAsync(async (req, res) => {
     const { user } = req;
     const { categoryId, sectionId } = req.params;
+    const { demo } = req.query;
 
     //if user but not premium and reached limit
     if (user && !user.isPremium && user.questionsSeenThisMonth > 50) {
@@ -43,6 +44,28 @@ router.get(
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje");
     }
+
+    if (!demo) {
+      let isAuthor = false;
+      let isShared = false;
+      //check if user isAuthor or if the category is shared with the user
+      if (foundCategory.author.equals(user._id)) {
+        isAuthor = true;
+      }
+      if (
+        user.sharedCategories &&
+        user.sharedCategories.includes(foundCategory._id)
+      ) {
+        isShared = true;
+      }
+
+      //refuse access if the category is not shared with the user and the user is not the author
+      if (!isAuthor && !isShared && !user.admin) {
+        req.flash("error", "K tomuto předmětu nemáš přístup.");
+        return res.status(404).redirect("/");
+      }
+    }
+
     foundSection.countStartedTest++;
     await foundSection.save();
     res.status(200).render("questions/show", {

@@ -332,7 +332,7 @@ router.get(
   isAdmin,
   catchAsync(async (req, res) => {
     let user = await User.findById(req.params.userId).populate(
-      "invoicesDbObjects"
+      "invoicesDbObjects createdCategories"
     );
     if (!user) {
       req.flash("error", "Uživatel nebyl nalezen.");

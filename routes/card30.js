@@ -15,7 +15,8 @@ const { incrementEventCount } = require("../utils/helpers");
 router.get(
   "/category/:categoryId/section/:sectionId/card30/:cardNum",
   catchAsync(async (req, res) => {
-    let { mode } = req.query;
+    let { mode, demo } = req.query;
+    console.log("demo", demo);
     if (!mode) {
       mode = "all";
     }
@@ -31,6 +32,32 @@ router.get(
     if (!foundCategory) {
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
       return res.status(404).redirect("back");
+    }
+
+    if (!demo) {
+      let user = req.user;
+      let isAuthor = false;
+      let isShared = false;
+      if (!user) {
+        req.flash("error", "Pro zobrazení této stránky se musíš přihlásit.");
+        return res.status(404).redirect("/");
+      }
+      //check if user isAuthor or if the category is shared with the user
+      if (foundCategory.author.equals(user._id)) {
+        isAuthor = true;
+      }
+      if (
+        user.sharedCategories &&
+        user.sharedCategories.includes(foundCategory._id)
+      ) {
+        isShared = true;
+      }
+
+      //refuse access if the category is not shared with the user and the user is not the author
+      if (!isAuthor && !isShared && !user.admin) {
+        req.flash("error", "K tomuto předmětu nemáš přístup.");
+        return res.status(404).redirect("/");
+      }
     }
     //handle lastSeenCard
     if (req.user) {
@@ -58,6 +85,27 @@ router.get(
       req.flash("error", "Předmět se zadaným názvem neexistuje.");
       return res.status(404).redirect("back");
     }
+
+    let user = req.user;
+    let isAuthor = false;
+    let isShared = false;
+    //check if user isAuthor or if the category is shared with the user
+    if (foundCategory.author.equals(user._id)) {
+      isAuthor = true;
+    }
+    if (
+      user.sharedCategories &&
+      user.sharedCategories.includes(foundCategory._id)
+    ) {
+      isShared = true;
+    }
+
+    //refuse access if the category is not shared with the user and the user is not the author
+    if (!isAuthor && !isShared && !user.admin) {
+      req.flash("error", "K tomuto předmětu nemáš přístup.");
+      return res.status(404).redirect("/");
+    }
+
     incrementEventCount("startRandomCards");
 
     res.render("cards/show30shuffle", {

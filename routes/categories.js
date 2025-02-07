@@ -54,6 +54,7 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res, next) => {
     const { categoryId } = req.params;
+    const user = req.user;
     const category = await Category.findById(categoryId)
       .populate({
         path: "sections",
@@ -74,6 +75,18 @@ router.get(
       if (category.author.equals(req.user._id)) {
         isAuthor = true;
       }
+    }
+
+    //check if user isAuthor or if the category is shared with the user
+    let isShared = false;
+    if (user.sharedCategories.includes(category._id)) {
+      isShared = true;
+    }
+
+    //refuse access if the category is not shared with the user and the user is not the author
+    if (!isAuthor && !isShared && !user.admin) {
+      req.flash("error", "K tomuto předmětu nemáš přístup.");
+      return res.status(404).redirect("/");
     }
 
     let knownCardsOfCategory = 0;
@@ -240,6 +253,7 @@ router.post(
       icon,
       author: req.user._id,
       shareId,
+      deepSharingAllowed: true,
     });
     let savedCategory = await newCategory.save();
     user.createdCategories.push(savedCategory._id);
@@ -256,13 +270,24 @@ router.put(
   isCategoryAuthor,
   catchAsync(async (req, res) => {
     let { categoryId } = req.params;
-    let { text, icon } = req.body;
+    let { text, icon, share } = req.body;
+
+    if (share === "on") {
+      share = true;
+    } else {
+      share = false;
+    }
+
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       req.flash("error", "Předmět nebyl nalezen.");
       return res.redirect("/category/dashboard");
     }
-    await Category.findByIdAndUpdate(categoryId, { text, icon });
+    await Category.findByIdAndUpdate(categoryId, {
+      text,
+      icon,
+      deepSharingAllowed: share,
+    });
     req.flash("successOverlay", "Změny byly uloženy.");
     res.status(201).redirect(`/category/dashboard`);
   })
