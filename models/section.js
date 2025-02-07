@@ -14,6 +14,10 @@ const SectionSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  creationMethod: {
+    type: String,
+    default: "manual",
+  },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",

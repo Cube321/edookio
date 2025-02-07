@@ -897,16 +897,19 @@ category.sections.forEach(section => { %>
         <div
           class="d-flex flex-row justify-content-center align-items-center mx-3"
         >
+          <% if (section.cards.length) { %>
           <a
             href="/category/<%= category._id %>/section/<%= section._id %>/card30/1?mode=unknown"
             class="btn btn-sm btn-danger btn-spustit w-100 mt-1 mx-1 mb-2"
             >Kartičky <i class="fas fa-chevron-right mx-1"></i
           ></a>
+          <% } %> <% if (section.questions.length) { %>
           <a
             href="/category/<%= category._id %>/section/<%= section._id %>/test"
             class="btn btn-sm btn-danger btn-spustit w-100 mt-1 mx-1 mb-2"
             >Otázky <i class="fas fa-chevron-right mx-1"></i
           ></a>
+          <% } %>
         </div>
       </div>
     </div>

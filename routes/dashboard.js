@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const Stats = require("../models/stats");
+const Section = require("../models/section");
 const { isLoggedIn, isAdmin } = require("../utils/middleware");
 const moment = require("moment");
 
@@ -94,7 +95,12 @@ router.get(
       registeredAfterShare = 0;
     }
 
-    console.log(registeredAfterShare);
+    //ai/manual
+    const numberOfSectionsCreatedWithAi =
+      await getNumberOfSectionsCreatedWithAi(users);
+    const numberOfSectionsCreatedManually =
+      await getNumberOfSectionsCreatedManually(users);
+    const aiManualRatio = await getAiManualRatio(users);
 
     res.render("admin/dashboard", {
       numberOfUsers,
@@ -127,6 +133,9 @@ router.get(
       numberOfUsersWithRevenuecatSubscription,
       numberOfUsersWithStripeSubscription,
       registeredAfterShare,
+      numberOfSectionsCreatedWithAi,
+      numberOfSectionsCreatedManually,
+      aiManualRatio,
     });
   })
 );
@@ -403,4 +412,27 @@ function getNumberOfUsersWithStripeSubscription(users) {
   return users.filter((user) => user.subscriptionSource === "stripe").length;
 }
 
+//count sections with creationMethod = ai
+async function getNumberOfSectionsCreatedWithAi() {
+  const sectionsWithAi = await Section.countDocuments({
+    creationMethod: "ai",
+  });
+  return sectionsWithAi;
+}
+
+//count sections with creationMethod = manual
+async function getNumberOfSectionsCreatedManually() {
+  const sectionsManually = await Section.countDocuments({
+    creationMethod: "manual",
+  });
+  return sectionsManually;
+}
+
+//get  created with AI percentage
+async function getAiManualRatio(users) {
+  const sectionsWithAi = await getNumberOfSectionsCreatedWithAi();
+  const sectionsManually = await getNumberOfSectionsCreatedManually();
+  const totalSections = sectionsWithAi + sectionsManually;
+  return Math.floor((sectionsWithAi / totalSections) * 100);
+}
 module.exports = router;

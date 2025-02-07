@@ -10,6 +10,7 @@ const catchAsync = require("../utils/catchAsync");
 const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const textract = require("textract");
+const helpers = require("../utils/helpers");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -100,6 +101,7 @@ router.post(
       }
     } catch (err) {
       console.error("Error extracting text:", err);
+      helpers.incrementEventCount("errorExtractingText");
       res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -121,6 +123,7 @@ router.post(
 
     if (extractedText.length < 10) {
       console.error("Error extracting text (text below 10 characters)");
+      helpers.incrementEventCount("errorExtractingTextBelow10Chars");
       return res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",

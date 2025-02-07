@@ -7,6 +7,7 @@ const Question = require("./models/question");
 const { OpenAI } = require("openai");
 const { splitTextIntoChunks } = require("./utils/document");
 const mongoose = require("mongoose");
+const helpers = require("./utils/helpers");
 
 //connect to db
 const dbUrl = process.env.DB_URL;
@@ -164,6 +165,7 @@ async function processDocumentJob(job) {
           categoryId: categoryId,
           author: userId,
           cards: [],
+          creationMethod: "ai",
         });
         await section.save();
         foundCategory.sections.push(section._id);
@@ -254,6 +256,7 @@ async function processDocumentJob(job) {
     return "Flashcards generated successfully!";
   } catch (error) {
     console.error("Error processing document job:", error);
+    helpers.incrementEventCount("workerGenerationError");
     throw error;
   }
 }

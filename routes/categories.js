@@ -165,7 +165,9 @@ router.get(
     //get last test result for each section (percentage) and make an average, if the section has no test result, count is as 0
     let totalTestPercentage = 0;
     let testResultsCount = 0;
-    let averageTestPercentage = 100;
+    let averageTestPercentage = 0;
+    let noQuestions = false;
+    let proficiencyPercentage = 0;
     category.sections.forEach((section) => {
       if (section.lastTestResult) {
         totalTestPercentage += section.lastTestResult;
@@ -181,11 +183,21 @@ router.get(
       averageTestPercentage = Math.round(
         totalTestPercentage / testResultsCount
       );
+    } else {
+      noQuestions = true;
     }
 
-    let proficiencyPercentage = Math.floor(
-      (averageTestPercentage + knownPercentageOfCategory) / 2
-    );
+    if (!noQuestions) {
+      proficiencyPercentage = Math.floor(
+        (averageTestPercentage + knownPercentageOfCategory) / 2
+      );
+    } else {
+      proficiencyPercentage = knownPercentageOfCategory;
+    }
+
+    if (category.numOfCards === 0 && category.numOfQuestions === 0) {
+      proficiencyPercentage = 0;
+    }
 
     //create a shareLink
     let shareLink = `${process.env.DOMAIN}/share/${category.shareId}`;

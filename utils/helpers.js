@@ -141,7 +141,6 @@ helpers.registerAction = async function (user, action) {
       if (action === "cardSeen") {
         user.activeDays[todayIndex].cards++;
       }
-      console.log(user.activeDays[todayIndex]);
     }
 
     //remove first element from activeDays array

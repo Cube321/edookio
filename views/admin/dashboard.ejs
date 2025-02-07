@@ -346,4 +346,45 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <h5>Obsah</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Balíčky vygenerované AI</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfSectionsCreatedWithAi %></h2>
+                    <p class="dashboard-info">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Balíčky vytvořené manuálně</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= numberOfSectionsCreatedManually %></h2>
+                    <p class="dashboard-info">-</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-3">
+            <div class="dashboard-card">
+                <div class="dashboard-card-header">
+                    <h6>Vytvořeno AI</h6>
+                </div>
+                <div class="dashboard-card-body">
+                    <h2><%= aiManualRatio %> %</h2>
+                    <p class="dashboard-info">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

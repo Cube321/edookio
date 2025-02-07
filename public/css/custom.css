@@ -901,9 +901,10 @@ form .form-borders {
 }
 
 .list-all-card .correct {
-  border: 3px solid;
-  border-color: #ff0037;
-  background-color: #ff0037;
+  border: none;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b);
   color: white;
 }
 

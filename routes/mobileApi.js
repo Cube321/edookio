@@ -173,7 +173,9 @@ router.get(
     //get last test result for each section (percentage) and make an average, if the section has no test result, count is as 0
     let totalTestPercentage = 0;
     let testResultsCount = 0;
-    let averageTestPercentage = 100;
+    let averageTestPercentage = 0;
+    let noQuestions = false;
+    let proficiencyPercentage = 0;
     category.sections.forEach((section) => {
       if (section.lastTestResult) {
         totalTestPercentage += section.lastTestResult;
@@ -189,11 +191,21 @@ router.get(
       averageTestPercentage = Math.round(
         totalTestPercentage / testResultsCount
       );
+    } else {
+      noQuestions = true;
     }
 
-    let proficiencyPercentage = Math.floor(
-      (averageTestPercentage + percentageOfKnownCards) / 2
-    );
+    if (!noQuestions) {
+      proficiencyPercentage = Math.floor(
+        (averageTestPercentage + percentageOfKnownCards) / 2
+      );
+    } else {
+      proficiencyPercentage = percentageOfKnownCards;
+    }
+
+    if (category.numOfCards === 0 && category.numOfQuestions === 0) {
+      proficiencyPercentage = 0;
+    }
 
     // 5) Return the sections as JSON
     res.status(200).json({
@@ -867,10 +879,9 @@ router.post(
       });
       let savedCategory = await newCategory.save();
 
-      console.log(savedCategory);
-
       user.createdCategories.push(savedCategory._id);
       await user.save();
+      helpers.incrementEventCount("inAppCreatedCategory");
 
       res.status(201).json(newCategory);
     } catch (error) {
@@ -914,6 +925,7 @@ router.post(
 
       foundCategory.sections.push(savedSection._id);
       await foundCategory.save();
+      helpers.incrementEventCount("inAppCreatedSection");
 
       res.status(201).json(savedSection);
     } catch (error) {
@@ -972,6 +984,7 @@ router.post(
 
       foundSection.cards.push(savedCard._id);
       await foundSection.save();
+      helpers.incrementEventCount("inAppCreatedCard");
 
       res.status(201).json(savedCard);
     } catch (error) {
@@ -1028,6 +1041,7 @@ router.post(
 
     foundCategory.numOfCards--;
     await foundCategory.save();
+    helpers.incrementEventCount("inAppDeletedCard");
 
     console.log("Kartička smazána");
     res.status(201).json({ message: "Kartička smazána" });
