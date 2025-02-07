@@ -77,6 +77,8 @@ const UserSchema = new Schema({
     {
       date: { type: String, required: true },
       actions: { type: Number, default: 0 },
+      cards: { type: Number, default: 0 },
+      questions: { type: Number, default: 0 },
     },
   ],
   passChangeId: {
@@ -190,6 +192,10 @@ const UserSchema = new Schema({
     type: String,
     enum: ["none", "yearly", "monthly", "daily"],
     default: "none",
+  },
+  discountEmailSent: {
+    type: Boolean,
+    default: false,
   },
   subscriptionPrice: {
     type: Number,

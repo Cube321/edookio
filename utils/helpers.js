@@ -125,9 +125,23 @@ helpers.registerAction = async function (user, action) {
     let today = moment().format("YYYY-MM-DD");
     if (!user.activeDays.find((day) => day.date === today)) {
       user.activeDays.push({ date: today, actions: 1 });
+      if (action === "questionSeen") {
+        user.activeDays[user.activeDays.length - 1].questions = 1;
+      }
+      if (action === "cardSeen") {
+        user.activeDays[user.activeDays.length - 1].cards = 1;
+      }
+      console.log(user.activeDays[user.activeDays.length - 1]);
     } else {
       let todayIndex = user.activeDays.findIndex((day) => day.date === today);
       user.activeDays[todayIndex].actions++;
+      if (action === "questionSeen") {
+        user.activeDays[todayIndex].questions++;
+      }
+      if (action === "cardSeen") {
+        user.activeDays[todayIndex].cards++;
+      }
+      console.log(user.activeDays[todayIndex]);
     }
 
     //remove first element from activeDays array

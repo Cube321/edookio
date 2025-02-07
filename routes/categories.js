@@ -165,12 +165,13 @@ router.get(
     //get last test result for each section (percentage) and make an average, if the section has no test result, count is as 0
     let totalTestPercentage = 0;
     let testResultsCount = 0;
+    let averageTestPercentage = 100;
     category.sections.forEach((section) => {
-      if (section.isPublic && section.testIsPublic) {
-        if (section.lastTestResult) {
-          totalTestPercentage += section.lastTestResult;
-          testResultsCount++;
-        } else {
+      if (section.lastTestResult) {
+        totalTestPercentage += section.lastTestResult;
+        testResultsCount++;
+      } else {
+        if (section.questions.length > 0) {
           totalTestPercentage += 0;
           testResultsCount++;
         }
@@ -180,11 +181,9 @@ router.get(
       averageTestPercentage = Math.round(
         totalTestPercentage / testResultsCount
       );
-    } else {
-      averageTestPercentage = 0;
     }
 
-    let proficiencyPercetage = Math.floor(
+    let proficiencyPercentage = Math.floor(
       (averageTestPercentage + knownPercentageOfCategory) / 2
     );
 
@@ -195,7 +194,7 @@ router.get(
     res.status(200).render("category", {
       category,
       title,
-      knownPercentageOfCategory: proficiencyPercetage,
+      knownPercentageOfCategory: proficiencyPercentage,
       isAuthor,
       shareLink,
     });

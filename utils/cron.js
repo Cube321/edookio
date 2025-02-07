@@ -39,6 +39,8 @@ cronHelpers.resetStreaks = catchAsync(async () => {
       if (user.actionsToday < 10) {
         user.streakLength = 0;
         user.onInitialStreak = false;
+        user.bonus100shown = true;
+        user.bonus500shown = true;
       }
       user.dailyGoalReachedToday = false;
       user.actionsToday = 0;
@@ -165,6 +167,41 @@ cronHelpers.sendInfoEmail = catchAsync(async () => {
 
   // 6) Send a summary to the admin (optional)
   mail.sendCronReport("sendInfoEmail", counter);
+});
+
+//cronHelper to send e-mail with discount for yearly subscription to users who are not premium but have received the 500 credits bonus
+cronHelpers.sendDiscountEmail = catchAsync(async () => {
+  console.log("RUNNING CRON: sendDiscountEmail");
+
+  let counter = 0;
+
+  const discountCodes = [
+    process.env.DISCOUNT_CODE_1,
+    process.env.DISCOUNT_CODE_2,
+    process.env.DISCOUNT_CODE_3,
+    process.env.DISCOUNT_CODE_4,
+  ];
+
+  // Fetch all users who haven’t gotten the email yet
+  let users = await User.find(
+    { isPremium: false, bonus500added: true, discountEmailSent: false },
+    "email discountEmailSent"
+  );
+  console.log("Users to send discount e-mail to: ", users.length);
+  for (const user of users) {
+    // Pick a random discount code
+    const discountCode = discountCodes[Math.floor(Math.random() * 4)];
+    // Send the email
+    await mail.sendDiscountEmail(user.email, discountCode);
+    user.discountEmailSent = true;
+    await user.save();
+
+    helpers.incrementEventCount("bonus500discountEmailSent");
+    counter++;
+  }
+  // 4) Send a summary to the admin (optional)
+  console.log("Discount e-mail sent to: ", counter);
+  await mail.sendCronReport("sendDiscountEmail", counter);
 });
 
 //cronHelper to add credits to users have active premium and it has been a month or more since the last recharge
@@ -296,5 +333,8 @@ cronHelpers.cronExpressionMinutes = "1 * * * * *";
 
 // Schedule the function to run every 10th second of every minute
 cronHelpers.cronExpressionMinutesLater = "10 * * * * *";
+
+//Schedule the function to run every day at 10:30am
+cronHelpers.cronExpressionDaily1030AM = "0 9 * * *";
 
 module.exports = cronHelpers;

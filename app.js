@@ -62,6 +62,12 @@ cron.schedule(
   cronHelpers.addCreditsToPremiumUsers
 );
 
+//send discount e-mails to users who finished 10 day initial streak
+cron.schedule(
+  cronHelpers.cronExpressionDaily1030AM,
+  cronHelpers.sendDiscountEmail
+);
+
 //dailyCleanpuOps
 cron.schedule(cronHelpers.cronExpressionDaily3AM, cronHelpers.dailyCleanupOps);
 
