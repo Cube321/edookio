@@ -49,7 +49,7 @@ router.get(
       let isAuthor = false;
       let isShared = false;
       //check if user isAuthor or if the category is shared with the user
-      if (foundCategory.author.equals(user._id)) {
+      if (foundCategory.author && foundCategory.author.equals(user._id)) {
         isAuthor = true;
       }
       if (

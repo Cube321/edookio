@@ -32,7 +32,7 @@
 <body class="d-flex flex-column vh-100 bg-light">
     <%- include('../partials/navbar') %> 
 
-    <main role="main" class="container"> 
+    <main role="main"> 
     <%- include('../partials/alert') %>
     <div class="row pt-5">
       <div class="offset-1 col-10 d-flex justify-content-between mb-4">
@@ -71,32 +71,11 @@
   %>
     <div class="row">
       <!-- Card Column -->
-      <div class="col-sm-4 mb-5">
+      <div class="offset-sm-1 col-sm-5 mb-5">
               <% if (card) { %>
                 <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= card._id %>">
-                  <div class="text-smaller text-muted text-center">přední strana</div>
-                    <div class="question"><%- card.pageA %></div>
-                    <% if (!demo) { %>
-                      <div class="d-flex justify-content-end mb-2">
-                          <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
-                          <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn" style="color: red"><i class="far fa-trash-alt"></i></a>
-                      </div>
-                    <% } %>
-                  </div>  
-              <% } else { %>
-                <div class="card list-all-card d-flex justify-content-between flex-column">
-                  <div class="d-center h-100">
-                      <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
-                  </div>
-                </div>
-              <% } %>
-      </div>
-
-      <div class="col-sm-4 mb-5">
-              <% if (card) { %>
-                <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= card._id %>">
-                  <div class="text-smaller text-muted text-center">zadní strana</div>
-                    <div class=""><%- card.pageB %></div>
+                  <div class="question"><%- card.pageA %></div>
+                    <div><%- card.pageB %></div>
                     <% if (!demo) { %>
                       <div class="d-flex justify-content-end mb-2">
                           <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
@@ -114,10 +93,9 @@
       </div>
 
       <!-- Question Column -->
-      <div class="col-sm-4 mb-5">
+      <div class="col-sm-5 mb-5">
           <% if (question) { %>
             <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= question._id %>">
-              <div class="text-smaller text-muted text-center mb-2">otázka</div>
               <div>
                   <p class="question"><%- question.question %></p>
                   <p class="answer-item correct d-flex justify-content-between align-items-center"><span><%- question.correctAnswers[0] %></span><i class="far fa-check-circle icon-md"></i> </p>
@@ -152,15 +130,7 @@
     <% orphanedQuestions.forEach((question) => { %>
       <div class="row">
       <!-- Card Column -->
-      <div class="col-sm-4 mb-5">
-        <div class="card list-all-card d-flex justify-content-between flex-column">
-            <div class="d-center h-100">
-                <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
-            </div>
-        </div>
-      </div>
-
-      <div class="col-sm-4 mb-5">
+      <div class="offset-sm-1 col-sm-5 mb-5">
         <div class="card list-all-card d-flex justify-content-between flex-column">
             <div class="d-center h-100">
                 <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
@@ -169,7 +139,7 @@
       </div>
 
       <!-- Question Column -->
-      <div class="col-sm-4 mb-5">
+      <div class="col-sm-5 mb-5">
         <div class="card list-all-card d-flex justify-content-between flex-column" id="<%= question._id %>">
           <div>
               <p class="question"><%- question.question %></p>

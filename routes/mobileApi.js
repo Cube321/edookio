@@ -8,6 +8,7 @@ const TestResult = require("../models/testResult");
 const CardsResult = require("../models/cardsResult");
 const CardInfo = require("../models/cardInfo");
 const Card = require("../models/card");
+const Question = require("../models/question");
 const User = require("../models/user");
 const Feedback = require("../models/feedback");
 const passport = require("passport");
@@ -989,6 +990,78 @@ router.post(
     } catch (error) {
       console.log(error);
       res.status(400).json({ error: "Kartičku se nepodařilo přidat" });
+    }
+  }
+);
+
+//createQuestion
+router.post(
+  "/mobileApi/createQuestion",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      console.log("Creating question");
+      let {
+        sectionId,
+        question,
+        correctAnswer,
+        incorrectAnswer1,
+        incorrectAnswer2,
+      } = req.body;
+      let { user } = req;
+
+      if (
+        !sectionId ||
+        !question ||
+        !correctAnswer ||
+        !incorrectAnswer1 ||
+        !incorrectAnswer2
+      ) {
+        return res.status(400).json({
+          error: "ID balíčku a všechny odpovědi jsou povinné",
+        });
+      }
+
+      const foundSection = await Section.findById(sectionId);
+
+      if (!foundSection) {
+        return res.status(404).json({ message: "Balíček nenalezen" });
+      }
+
+      //check if user is author of the section
+      if (!foundSection.author.equals(user._id)) {
+        return res
+          .status(403)
+          .json({ message: "Přidat otázku může pouze autor balíčku" });
+      }
+
+      const foundCategory = await Category.findById(foundSection.categoryId);
+
+      if (!foundCategory) {
+        return res.status(404).json({ message: "Předmět nenalezen" });
+      }
+
+      const newQuestion = new Question({
+        section: sectionId,
+        categoryId: foundCategory._id,
+        category: foundCategory._id,
+        question,
+        correctAnswers: [correctAnswer],
+        wrongAnswers: [incorrectAnswer1, incorrectAnswer2],
+      });
+      let savedQuestion = await newQuestion.save();
+
+      foundCategory.numOfQuestions++;
+      await foundCategory.save();
+
+      foundSection.questions.push(savedQuestion._id);
+      await foundSection.save();
+      helpers.incrementEventCount("inAppCreatedQuestion");
+
+      res.status(201).json(savedQuestion);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ error: "Otázku se nepodařilo přidat" });
     }
   }
 );
