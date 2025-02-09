@@ -333,12 +333,18 @@ router.get(
       showBonus100Modal = true;
     }
 
+    let isUserAuthor = false;
+    if (section.author.equals(user._id)) {
+      isUserAuthor = true;
+    }
+
     res.status(200).json({
       section,
       questionsSeenThisMonth,
       isUserPremium,
       randomPartner,
       showBonus100Modal,
+      isUserAuthor,
     });
   })
 );
@@ -868,7 +874,7 @@ router.post(
       }
       let user = req.user;
 
-      let icon = "icon_knowledge.png";
+      let icon = "subject_1.png";
 
       const newCategory = new Category({
         sections: [],
@@ -1048,6 +1054,7 @@ router.post(
         question,
         correctAnswers: [correctAnswer],
         wrongAnswers: [incorrectAnswer1, incorrectAnswer2],
+        author: user._id,
       });
       let savedQuestion = await newQuestion.save();
 
@@ -1117,6 +1124,57 @@ router.post(
 
     console.log("Kartička smazána");
     res.status(201).json({ message: "Kartička smazána" });
+  }
+);
+
+//delete question
+router.post(
+  "/mobileApi/deleteQuestion",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let { questionId } = req.body;
+    let { user } = req;
+
+    //check if is valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(questionId)) {
+      return res.status(400).json({ message: "Neplatné ID otázky" });
+    }
+
+    const foundQuestion = await Question.findById(questionId);
+
+    if (!foundQuestion) {
+      return res.status(404).json({ message: "Otázka nenalezena" });
+    }
+
+    const foundSection = await Section.findById(foundQuestion.section);
+
+    if (!foundSection) {
+      return res.status(404).json({ message: "Balíček nenalezen" });
+    }
+
+    const foundCategory = await Category.findById(foundSection.categoryId);
+
+    if (!foundCategory) {
+      return res.status(404).json({ message: "Předmět nenalezen" });
+    }
+
+    if (foundQuestion.author && !foundQuestion.author.equals(user._id)) {
+      return res.status(403).json({ message: "Nemáte oprávnění" });
+    }
+
+    await Question.findByIdAndDelete(questionId);
+
+    foundSection.questions = foundSection.questions.filter(
+      (question) => !question.equals(questionId)
+    );
+    await foundSection.save();
+
+    foundCategory.numOfQuestions--;
+    await foundCategory.save();
+    helpers.incrementEventCount("inAppDeletedQuestion");
+
+    console.log("Otázka smazána");
+    res.status(201).json({ message: "Otázka smazána" });
   }
 );
 

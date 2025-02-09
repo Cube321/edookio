@@ -37,10 +37,10 @@
                 <div class="row">
                     <div class="col-md-8 offset-md-2 text-center mt-5">
                         <h1 class="headline">Žebříček</h1>
-                        <p class="lead">Každá nastudovaná kartička nebo zodpovězená otázka se počítá za 1 bod.</p>
+                        <p class="lead">Každá nastudovaná kartička nebo zodpovězená otázka <br /> se počítá za 1 bod.</p>
                         <h5 class="period-links">
-                            <a href="/leaderboard?order=day" <% if (order === "day") { %> class="active" <% } %>>Denní</a>| 
-                            <a href="/leaderboard?order=month" <% if (order === "month") { %> class="active" <% } %>>Měsíční</a> | 
+                            <a href="/leaderboard?order=day" <% if (order === "day") { %> class="active" <% } %>>Denní</a>
+                            <a href="/leaderboard?order=month" <% if (order === "month") { %> class="active" <% } %>>Měsíční</a>
                             <a href="/leaderboard?order=total" <% if (order !== "day" && order !== "month") { %> class="active" <% } %>>Celkově</a>
                         </h5>
                     </div>

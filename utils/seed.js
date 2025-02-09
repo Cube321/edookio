@@ -16,7 +16,7 @@ const seedContent = async function (userId) {
 
     const createdCategory = await Category.create({
       text: "Tvůj první předmět",
-      icon: "icon_knowledge.png",
+      icon: "subject_1.png",
       author: userId,
       shareId: shareId,
       sections: [],

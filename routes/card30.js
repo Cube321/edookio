@@ -16,7 +16,6 @@ router.get(
   "/category/:categoryId/section/:sectionId/card30/:cardNum",
   catchAsync(async (req, res) => {
     let { mode, demo } = req.query;
-    console.log("demo", demo);
     if (!mode) {
       mode = "all";
     }

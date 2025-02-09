@@ -673,25 +673,25 @@ form .form-borders {
 }
 
 .icon-background {
-  background-color: #eeeeee;
+  background-color: #f7f4ef;
   height: 3.5rem;
   width: 3.5rem;
 }
 
 .icon-background-medium {
-  background-color: #eeeeee;
+  background-color: #f7f4ef;
   height: 5rem;
   width: 5rem;
 }
 
 .icon-background-large {
-  background-color: #eeeeee;
+  background-color: #f7f4ef;
   height: 7rem;
   width: 7rem;
 }
 
 .icon-background-medium {
-  background-color: #eeeeee;
+  background-color: #f7f4ef;
   height: 5rem;
   width: 5rem;
 }
@@ -879,7 +879,7 @@ form .form-borders {
 /* LIST ALL QUESTIONS */
 .list-all-card {
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: 18px;
   border-color: #ccc;
   padding: 24px;
   padding-bottom: 8px;

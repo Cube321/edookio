@@ -19,7 +19,7 @@
 
 .question-card-wrapper {
   border: 1px solid #dfdfdf;
-  border-radius: 0.25rem;
+  border-radius: 18px;
   padding: 1rem;
 }
 
@@ -49,7 +49,7 @@
 
 .border-grey {
   border: 1px solid #e0e0e0; /* Light border color */
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 18px; /* Rounded corners */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Light shadow */
 }
 

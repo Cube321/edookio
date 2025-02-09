@@ -131,7 +131,6 @@ helpers.registerAction = async function (user, action) {
       if (action === "cardSeen") {
         user.activeDays[user.activeDays.length - 1].cards = 1;
       }
-      console.log(user.activeDays[user.activeDays.length - 1]);
     } else {
       let todayIndex = user.activeDays.findIndex((day) => day.date === today);
       user.activeDays[todayIndex].actions++;

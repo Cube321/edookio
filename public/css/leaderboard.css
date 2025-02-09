@@ -1,21 +1,13 @@
 /* PALETTE #FF0037 #d2002d #790252 #4C0033 */
 main {
-  background: linear-gradient(
-    to bottom,
-    rgba(232, 15, 136, 1),
-    rgba(175, 1, 113, 1)
-  );
+  background-color: #f7f4ef;
   background-repeat: no-repeat;
   background-size: cover;
   padding-bottom: 2rem;
 }
 
 #modal-share .modal-content {
-  background: linear-gradient(
-    to bottom,
-    rgba(232, 15, 136, 1),
-    rgba(175, 1, 113, 1)
-  );
+  background-color: #fff;
   background-repeat: no-repeat;
   background-size: cover;
   padding-bottom: 2rem;
@@ -29,46 +21,49 @@ main {
 }
 
 .headline {
-  color: white;
   font-weight: 800;
-}
-
-.lead {
-  color: white;
+  color: #ff0037;
 }
 
 .lead-clash {
-  color: white;
   font-size: 1.5rem;
 }
 
 .period-links {
-  color: white;
   margin: 2.5rem 0;
 }
 
 .period-links a {
-  color: white;
-  border: 1px solid white;
-  border-radius: 30px;
-  padding: 0 1rem;
-  margin: 0 0.5rem;
-  transition: 300ms;
+  outline-color: #d2002d;
+  border-color: #ff6e1e;
+  border: 1px solid #ff6e1e;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #ff6e1e;
+  background-color: white;
+  font-size: medium;
 }
 
 .period-links a:hover {
   background-color: white;
-  color: rgba(232, 15, 136, 1);
 }
 
 .period-links .active {
-  background-color: white;
-  color: rgba(232, 15, 136, 1);
+  outline-color: #d2002d;
+  background: linear-gradient(90deg, #ff6e1e, #f1471b);
+  /* Optional: To ensure backward compatibility */
+  background-color: #f1471b; /* Fallback for older browsers */
+  border-color: #ff6e1e;
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: white;
 }
 
 .leaderboard-item {
   background-color: #fff;
-  border-radius: 10px;
+  border: 1px solid #bc9b9b;
+  border-radius: 18px;
+  box-shadow: 0 3px 6px rgba(247, 244, 239, 0.1);
   margin-bottom: 1rem;
   max-width: 540px;
   margin-left: 1rem;
@@ -111,7 +106,6 @@ main {
 }
 
 .set-nickname-cta a {
-  color: white;
   border: 1px solid white;
   border-radius: 30px;
   padding: 0 1rem;
@@ -124,13 +118,11 @@ main {
 }
 
 .bottom-info {
-  color: white;
   text-align: center;
   margin-top: 2rem;
 }
 
 .bottom-info .profile-link {
-  color: white;
   border: 1px solid white;
   border-radius: 30px;
   padding: 0 0.5rem;
@@ -141,7 +133,6 @@ main {
 }
 
 .table-headline {
-  color: white;
   padding-left: 2rem;
 }
 
