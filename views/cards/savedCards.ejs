@@ -135,8 +135,8 @@
               <span class="p-3"><%= cat.text%></span>
             </h5>
             <div class="accordion accordion-flush" id="accordion-cards">
-              <% for(let card of savedCards){ %> <% if (card.categoryId ===
-              cat._id.toString) { %>
+              <% for(let card of savedCards){ %> <% if (card.categoryId.toString
+              === cat._id.toString) { %>
               <div
                 id="accordion-<%= card._id %>"
                 class="accordion-item"

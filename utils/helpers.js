@@ -41,9 +41,11 @@ helpers.createInvoice = async function (
   });
 
   if (!invoiceNumObject) {
+    let currentYear = new Date().getFullYear();
+    let invoceNum = parseInt(`${currentYear}00000`);
     invoiceNumObject = await Settings.create({
       settingName: "lastInvoiceNumber",
-      settingValue: 202500000,
+      settingValue: invoceNum,
     });
   }
 

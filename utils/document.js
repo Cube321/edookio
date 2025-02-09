@@ -14,6 +14,7 @@ function splitTextIntoChunks(text, maxTokens) {
       chunks.push(currentChunk);
       currentChunk = "";
     }
+    console.log("Chunk length:", currentChunk.length);
     currentChunk += sentence + " ";
   }
 

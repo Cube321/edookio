@@ -114,6 +114,7 @@ const documentRoutes = require("./routes/document");
 const spaceRepetitionRoutes = require("./routes/spacedRepetition");
 const mobilePushNotifications = require("./routes/mobilePushNotifications");
 const reviewRoutes = require("./routes/review");
+const documentApi = require("./routes/documentApi");
 
 const dbUrl = process.env.DB_URL;
 
@@ -359,6 +360,7 @@ app.use("/", documentRoutes);
 app.use("/", spaceRepetitionRoutes);
 app.use("/", mobilePushNotifications);
 app.use("/", reviewRoutes);
+app.use("/", documentApi);
 
 app.use("/.well-known", express.static(path.join(__dirname, ".well-known")));
 
