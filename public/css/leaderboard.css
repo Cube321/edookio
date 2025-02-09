@@ -1,6 +1,5 @@
 /* PALETTE #FF0037 #d2002d #790252 #4C0033 */
 main {
-  background-color: #f7f4ef;
   background-repeat: no-repeat;
   background-size: cover;
   padding-bottom: 2rem;
@@ -60,10 +59,10 @@ main {
 }
 
 .leaderboard-item {
-  background-color: #fff;
+  background-color: rgb(247, 244, 239);
   border: 1px solid #bc9b9b;
   border-radius: 18px;
-  box-shadow: 0 3px 6px rgba(247, 244, 239, 0.1);
+  box-shadow: 0 3px 6px rgba(247, 244, 239, 0.5);
   margin-bottom: 1rem;
   max-width: 540px;
   margin-left: 1rem;

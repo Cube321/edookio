@@ -301,11 +301,7 @@ $(document).ready(function () {
   document.body.onkeyup = function (e) {
     // 1) SPACE or M key logic
     if (
-      (e.key === " " ||
-        e.code === "Space" ||
-        e.key === "m" ||
-        e.key === "M" ||
-        e.code === "KeyM") &&
+      (e.key === "n" || e.key === "N" || e.code === "KeyN") &&
       ($("#data-loaded").length || push === 0)
     ) {
       push++;
@@ -345,7 +341,11 @@ $(document).ready(function () {
     }
     // 2) "N" key logic (mark unknown)
     else if (
-      (e.key === "n" || e.key === "N" || e.code === "KeyN") &&
+      (e.key === " " ||
+        e.code === "Space" ||
+        e.key === "m" ||
+        e.key === "M" ||
+        e.code === "KeyM") &&
       ($("#data-loaded").length || push === 0)
     ) {
       push++;
