@@ -40,6 +40,13 @@ helpers.createInvoice = async function (
     settingName: "lastInvoiceNumber",
   });
 
+  if (!invoiceNumObject) {
+    invoiceNumObject = await Settings.create({
+      settingName: "lastInvoiceNumber",
+      settingValue: 202500000,
+    });
+  }
+
   let invoiceNum = parseInt(invoiceNumObject.settingValue) + 1;
 
   //check if the last invoice number is not in the db
