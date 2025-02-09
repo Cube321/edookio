@@ -71,6 +71,14 @@ body {
 
 form .form-borders.border-darkgrey {
   border-color: #ccc;
+  border-radius: 18px;
+}
+
+.border-darkgrey {
+  border-color: #ccc;
+  border-radius: 18px;
+  border-width: 1px;
+  border-style: solid;
 }
 
 .no-resize {

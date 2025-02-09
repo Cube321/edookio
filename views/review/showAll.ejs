@@ -134,9 +134,14 @@
               <% } %>
             </div>
           <% } else { %>
-            <div class="card list-all-card d-flex justify-content-between flex-column">
-              <div class="d-center h-100">
+            <div class="card d-flex justify-content-between flex-column">
+              <div class="d-flex justify-content-center flex-column h-100">
                 <p class="text-center text-muted">K této kartičce není přiřazena <br> žádná otázka.</p>
+                <% if (!demo) { %>
+                  <div class="d-flex justify-content-center">
+                    <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new?sourceCard=<%= card._id %>" class="btn btn-danger">Přidat otázku ke kartičce</a>
+                  </div>
+                <% } %>
               </div>
             </div>
           <% } %>

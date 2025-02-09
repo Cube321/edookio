@@ -4,6 +4,7 @@ const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
 const Question = require("../models/question");
+const Card = require("../models/card");
 const TestResult = require("../models/testResult");
 const {
   isLoggedIn,
@@ -234,13 +235,21 @@ router.get(
   isCategoryAuthor,
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
+    const { sourceCard } = req.query;
+
+    let sourceCardData = null;
+    if (sourceCard) {
+      sourceCardData = await Card.findById(sourceCard);
+    }
     const category = await Category.findById(categoryId);
     const section = await Section.findById(sectionId);
     if (!category || !section) {
-      req.flash("error", "Kategorie nebo balíček nebyl nalezen");
+      req.flash("error", "Předmět nebo balíček nebyl nalezen");
       return res.redirect("/");
     }
-    res.status(200).render("questions/new", { category, section });
+    res
+      .status(200)
+      .render("questions/new", { category, section, sourceCardData });
   })
 );
 
@@ -253,6 +262,7 @@ router.post(
   catchAsync(async (req, res) => {
     const { categoryId, sectionId } = req.params;
     const { question, correctAnswer, wrongAnswer1, wrongAnswer2 } = req.body;
+    const { sourceCard } = req.query;
     const { _id } = req.user;
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findById(categoryId);
@@ -270,14 +280,29 @@ router.post(
       question,
       correctAnswers: [correctAnswer],
       wrongAnswers: [wrongAnswer1, wrongAnswer2],
+      sourceCard: sourceCard || null,
     });
     const createdQuestion = await newQuestion.save();
+
+    if (sourceCard) {
+      let connectedCard = await Card.findById(sourceCard);
+      connectedCard.connectedQuestionId = createdQuestion._id;
+      await connectedCard.save();
+    }
 
     foundCategory.numOfQuestions++;
     await foundCategory.save();
 
     foundSection.questions.push(createdQuestion._id);
     await foundSection.save();
+
+    if (sourceCard) {
+      req.flash(
+        "successOverlay",
+        "Otázka byla vložena do databáze a propojena s kartičkou"
+      );
+      return res.status(201).redirect(`/review/${sectionId}/showAll`);
+    }
 
     req.flash("successOverlay", "Otázka byla vložena do databáze.");
     res

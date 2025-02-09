@@ -2,7 +2,7 @@
 <div class="container mb-5">
   <div class="row">
     <div class="col-lg-12">
-      <h2 class="text-center">Vložit novou kartičku</h2>
+      <h2 class="text-center">Vytvořit novou kartičku</h2>
       <p class="text-center">do balíčku <%= sectionName %></p>
       <form class="row g-3" id="create-card-form" novalidate>
         <div class="col-lg-6">
@@ -51,7 +51,7 @@
             type="submit"
             id="save-card-btn"
           >
-            Vložit kartičku
+            Uložit kartičku
           </button>
         </div>
         <div class="col-12 d-flex justify-content-center align-items-center">
@@ -265,7 +265,7 @@
       } finally {
         // 7. Re-enable button & restore text
         saveBtn.classList.remove("disabled");
-        saveBtn.textContent = "Vložit kartičku";
+        saveBtn.textContent = "Uložit kartičku";
       }
     }
 

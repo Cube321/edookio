@@ -2,14 +2,33 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12">
-            <h2 class="text-center">Vložit novou testovou otázku</h2>
-            <p class="text-center">do balíčku <%= section.name %></p>
+            <h2 class="text-center">Vytvořit novou testovou otázku</h2>
+            <% if (sourceCardData) { %>
+             <p class="text-center">ke kartičce</p>
+            <% } else { %>
+            <p class="text-center pb-3">do balíčku <%= section.name %></p>
+            <% } %>
         </div>
     </div>
     <div class="row">
         <div class="offset-lg-3 col-lg-6">
-            <form class="row g-3 mt-3 needs-validation" novalidate action="/category/<%= category._id %>/section/<%= section._id %>/question" method="POST" id="new-question-form">
+            <form class="row g-3 needs-validation" novalidate action="/category/<%= category._id %>/section/<%= section._id %>/question?sourceCard=<%= sourceCardData?._id %>" method="POST" id="new-question-form">
                 <div class="mt-2">
+                    <% if (sourceCardData) { %>
+                        <div class="form-group row mb-4">
+                            <div>
+                                <div class="border-darkgrey">
+                                    <div class="d-flex justify-content-center align-items-center px-3 mt-3">
+                                        <b><%- sourceCardData.pageA %></b>
+                                    </div>
+                                    <hr class="mx-4 mb-4">
+                                    <div class="px-4">
+                                        <%- sourceCardData.pageB %>
+                                        </div>  
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
                     <div class="form-group row">
                         <div>
                             <textarea class="form-control form-borders border-darkgrey no-resize question-textarea" id="question" placeholder="Zadejte otázku..." name="question" rows="3" required></textarea>
@@ -33,7 +52,7 @@
                     <!--add select element below-->
                     <div class="form-group" style="margin-top: 20px;">
                         <div class="col-12 d-flex justify-content-center align-items-center mt-4 mb-3">
-                            <button class="btn btn-danger btn-lg mt-1" style="width: 200px" type="submit" id="save-question-btn">Vložit otázku</button>
+                            <button class="btn btn-danger btn-lg mt-1" style="width: 200px" type="submit" id="save-question-btn">Uložit otázku</button>
                         </div>
                         <div class="col-12 d-flex justify-content-center align-items-center">
                             <a href="/review/<%= section._id %>/showAll">zpět</a>
