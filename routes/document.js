@@ -4,6 +4,7 @@ const multer = require("multer");
 const fs = require("fs");
 const { isLoggedIn, isCategoryAuthor } = require("../utils/middleware");
 const Category = require("../models/category");
+const JobEvent = require("../models/jobEvent");
 const flashcardQueue = require("../jobs/flashcardQueue");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
@@ -11,6 +12,7 @@ const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const textract = require("textract");
 const helpers = require("../utils/helpers");
+const { create } = require("connect-mongo");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -25,6 +27,12 @@ router.post(
     const { file } = req;
     const { categoryId } = req.params;
     const { user } = req;
+
+    //create JobEvent
+    let createdJobEvent = await JobEvent.create({
+      user: user._id,
+      source: "web",
+    });
 
     const sectionSize = parseInt(req.body.sectionSize) || 10;
     console.log("Section size:", sectionSize);
@@ -46,6 +54,10 @@ router.post(
         errorHeadline: "Nebyl nahrán žádný soubor",
       });
     }
+
+    createdJobEvent.categoryId = categoryId;
+    createdJobEvent.sectionSize = sectionSize;
+    createdJobEvent.cardsPerPage = cardsPerPage;
 
     let extractedText = "";
     try {
@@ -94,6 +106,9 @@ router.post(
         });
       } else {
         console.error("Unsupported file type:", file.mimetype);
+        createdJobEvent.finishedSuccessfully = false;
+        createdJobEvent.errorMessage = "Nepodporovaný typ souboru";
+        await createdJobEvent.save();
         return res.json({
           error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX.",
           errorHeadline: "Nepodporovaný typ souboru",
@@ -102,6 +117,10 @@ router.post(
     } catch (err) {
       console.error("Error extracting text:", err);
       helpers.incrementEventCount("errorExtractingText");
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage =
+        "Nepodařilo se extrahovat text z dokumentu";
+      await createdJobEvent.save();
       res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -124,6 +143,10 @@ router.post(
     if (extractedText.length < 10) {
       console.error("Error extracting text (text below 10 characters)");
       helpers.incrementEventCount("errorExtractingTextBelow10Chars");
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage =
+        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)";
+      await createdJobEvent.save();
       return res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -132,6 +155,11 @@ router.post(
     }
 
     if (extractedText.length > charactersLimit) {
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage = `Překročena maximální délka textu ${formatNumber(
+        charactersLimit
+      )} znaků (${pagesLimit} stran)`;
+      await createdJobEvent.save();
       return res.json({
         error: `Maximální délka textu je ${formatNumber(
           charactersLimit
@@ -145,8 +173,18 @@ router.post(
 
     let expectedCredits =
       Math.floor(extractedText.length / 1800) * cardsPerPage;
+
+    createdJobEvent.extractedTextLength = extractedText.length;
+    createdJobEvent.extractedTextPages = Math.floor(
+      extractedText.length / 1800
+    );
+    createdJobEvent.expectedCredits = expectedCredits;
+
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage = "Nedostatek kreditů";
+      await createdJobEvent.save();
       return res.json({
         creditsRequired: expectedCredits,
         creditsLeft: user.credits,
@@ -164,10 +202,18 @@ router.post(
       cardsCreated: 0,
       questionsCreated: 0,
       cardsPerPage,
+      jobEventId: createdJobEvent._id,
     });
 
     let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
     let isPremium = user.isPremium;
+
+    createdJobEvent.isPremium = isPremium;
+    createdJobEvent.expectedTimeInSeconds = expectedTimeInSeconds;
+
+    await createdJobEvent.save();
+    console.log("JobEvent created:", createdJobEvent._id);
+    console.log(createdJobEvent);
 
     return res.json({ jobId: job.id, expectedTimeInSeconds, isPremium });
   })
@@ -207,6 +253,12 @@ router.post(
     const { file } = req;
     const { user } = req;
 
+    //create JobEvent
+    let createdJobEvent = await JobEvent.create({
+      source: "web",
+      isDemo: true,
+    });
+
     let name = "Můj balíček";
 
     const sectionSize = 40;
@@ -218,6 +270,9 @@ router.post(
         errorHeadline: "Nebyl nahrán žádný soubor",
       });
     }
+
+    createdJobEvent.sectionSize = sectionSize;
+    createdJobEvent.cardsPerPage = cardsPerPage;
 
     let extractedText = "";
     try {
@@ -266,6 +321,9 @@ router.post(
         });
       } else {
         console.error("Unsupported file type:", file.mimetype);
+        createdJobEvent.finishedSuccessfully = false;
+        createdJobEvent.errorMessage = "Nepodporovaný typ souboru";
+        await createdJobEvent.save();
         return res.json({
           error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX.",
           errorHeadline: "Nepodporovaný typ souboru",
@@ -273,6 +331,11 @@ router.post(
       }
     } catch (err) {
       console.error("Error extracting text:", err);
+      helpers.incrementEventCount("errorExtractingText");
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage =
+        "Nepodařilo se extrahovat text z dokumentu";
+      await createdJobEvent.save();
       res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -289,6 +352,10 @@ router.post(
 
     if (extractedText.length < 10) {
       console.error("Error extracting text (text below 10 characters)");
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage =
+        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)";
+      await createdJobEvent.save();
       return res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -297,6 +364,11 @@ router.post(
     }
 
     if (extractedText.length > charactersLimit) {
+      createdJobEvent.finishedSuccessfully = false;
+      createdJobEvent.errorMessage = `Překročena maximální délka textu ${formatNumber(
+        charactersLimit
+      )} znaků (${pagesLimit} stran)`;
+      await createdJobEvent.save();
       return res.json({
         error: `Maximální délka textu je ${formatNumber(
           charactersLimit
@@ -324,9 +396,15 @@ router.post(
       cardsCreated: 0,
       questionsCreated: 0,
       cardsPerPage,
+      jobEventId: createdJobEvent._id,
     });
 
     let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
+
+    createdJobEvent.expectedTimeInSeconds = expectedTimeInSeconds;
+    await createdJobEvent.save();
+    console.log("JobEvent created:", createdJobEvent._id);
+    console.log(createdJobEvent);
 
     return res.json({
       jobId: job.id,

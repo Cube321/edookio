@@ -4,6 +4,7 @@ const Section = require("./models/section");
 const Card = require("./models/card");
 const User = require("./models/user");
 const Question = require("./models/question");
+const JobEvent = require("./models/jobEvent");
 const { OpenAI } = require("openai");
 const { splitTextIntoChunks } = require("./utils/document");
 const mongoose = require("mongoose");
@@ -38,12 +39,21 @@ const openai = new OpenAI({ apiKey: process.env.CHATGPT_SECRET });
 
 async function processDocumentJob(job) {
   try {
-    const { extractedText, name, categoryId, user, sectionSize, cardsPerPage } =
-      job.data;
+    const {
+      extractedText,
+      name,
+      categoryId,
+      user,
+      sectionSize,
+      cardsPerPage,
+      jobEventId,
+    } = job.data;
     console.log("Job data received. Text length:", extractedText.length);
 
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) throw new Error("Category not found.");
+
+    let jobEvent = await JobEvent.findById(jobEventId);
 
     let foundUser;
     let demoUser;
@@ -225,9 +235,9 @@ async function processDocumentJob(job) {
       foundUser.generatedQuestionsCounterMonth += questionsCreated;
       foundUser.generatedCardsCounterTotal += cardsCreated;
       foundUser.generatedQuestionsCounterTotal += questionsCreated;
-      foundUser.usedCreditsMonth += cardsCreated + questionsCreated;
-      foundUser.usedCreditsTotal += cardsCreated + questionsCreated;
-      foundUser.lastJobCredits = cardsCreated + questionsCreated;
+      foundUser.usedCreditsMonth += cardsCreated;
+      foundUser.usedCreditsTotal += cardsCreated;
+      foundUser.lastJobCredits = cardsCreated;
 
       let creditsUsed = cardsCreated;
       let creditsToReduce = creditsUsed;
@@ -256,6 +266,16 @@ async function processDocumentJob(job) {
         console.error("Error saving user:", err);
         throw err; //
       }
+    }
+
+    if (jobEvent) {
+      jobEvent.cardsCreated = cardsCreated;
+      jobEvent.questionsCreated = questionsCreated;
+      jobEvent.actualCredits = cardsCreated;
+      jobEvent.finishedSuccessfully = true;
+      let finishedJobEvent = await jobEvent.save();
+      console.log("Job event saved successfully:");
+      console.log(finishedJobEvent);
     }
 
     await job.progress(100);
