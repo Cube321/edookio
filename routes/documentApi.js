@@ -192,6 +192,9 @@ router.post(
       });
     }
 
+    //shorten extracted text to 3 600 characters
+    extractedText = extractedText.substring(0, 3600);
+
     // Now, enqueue the job with the extracted text instead of a file path
     const job = await flashcardQueue.add({
       extractedText, // pass the extracted text directly
