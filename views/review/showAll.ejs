@@ -81,6 +81,8 @@
                           <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
                           <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn" style="color: red"><i class="far fa-trash-alt"></i></a>
                       </div>
+                    <% } else { %>
+                      <div name="placeholder" style="opacity: 0">X</div>
                     <% } %>
                   </div>  
               <% } else { %>
@@ -102,6 +104,8 @@
                           <a href="/cards/edit/<%=card._id%>" class="d-flex align-items-center justify-content-center mx-2 text-primary"><i class="far fa-edit"></i></a>
                           <a href="/review/<%= section._id %>/deleteCard/<%= card._id %>" class="d-flex align-items-center justify-content-center mx-2 review-delete-card-btn" style="color: red"><i class="far fa-trash-alt"></i></a>
                       </div>
+                    <% } else { %>
+                      <div name="placeholder" style="opacity: 0">X</div>
                     <% } %>
                   </div>  
               <% } else { %>

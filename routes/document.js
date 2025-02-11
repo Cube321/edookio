@@ -32,6 +32,7 @@ router.post(
     let createdJobEvent = await JobEvent.create({
       user: user._id,
       source: "web",
+      name,
     });
 
     const sectionSize = parseInt(req.body.sectionSize) || 10;
@@ -106,9 +107,7 @@ router.post(
         });
       } else {
         console.error("Unsupported file type:", file.mimetype);
-        createdJobEvent.finishedSuccessfully = false;
-        createdJobEvent.errorMessage = "Nepodporovaný typ souboru";
-        await createdJobEvent.save();
+        await jobFailed(createdJobEvent, "Nepodporovaný typ souboru");
         return res.json({
           error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX.",
           errorHeadline: "Nepodporovaný typ souboru",
@@ -117,10 +116,10 @@ router.post(
     } catch (err) {
       console.error("Error extracting text:", err);
       helpers.incrementEventCount("errorExtractingText");
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nepodařilo se extrahovat text z dokumentu";
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        "Nepodařilo se extrahovat text z dokumentu"
+      );
       res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -143,10 +142,10 @@ router.post(
     if (extractedText.length < 10) {
       console.error("Error extracting text (text below 10 characters)");
       helpers.incrementEventCount("errorExtractingTextBelow10Chars");
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)";
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)"
+      );
       return res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -155,11 +154,12 @@ router.post(
     }
 
     if (extractedText.length > charactersLimit) {
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage = `Překročena maximální délka textu ${formatNumber(
-        charactersLimit
-      )} znaků (${pagesLimit} stran)`;
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        `Překročena maximální délka textu ${formatNumber(
+          charactersLimit
+        )} znaků (${pagesLimit} stran)`
+      );
       return res.json({
         error: `Maximální délka textu je ${formatNumber(
           charactersLimit
@@ -182,9 +182,7 @@ router.post(
 
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage = "Nedostatek kreditů";
-      await createdJobEvent.save();
+      await jobFailed(createdJobEvent, "Nedostatek kreditů");
       return res.json({
         creditsRequired: expectedCredits,
         creditsLeft: user.credits,
@@ -213,7 +211,6 @@ router.post(
 
     await createdJobEvent.save();
     console.log("JobEvent created:", createdJobEvent._id);
-    console.log(createdJobEvent);
 
     return res.json({ jobId: job.id, expectedTimeInSeconds, isPremium });
   })
@@ -257,6 +254,7 @@ router.post(
     let createdJobEvent = await JobEvent.create({
       source: "web",
       isDemo: true,
+      name: "demo",
     });
 
     let name = "Můj balíček";
@@ -321,9 +319,7 @@ router.post(
         });
       } else {
         console.error("Unsupported file type:", file.mimetype);
-        createdJobEvent.finishedSuccessfully = false;
-        createdJobEvent.errorMessage = "Nepodporovaný typ souboru";
-        await createdJobEvent.save();
+        await jobFailed(createdJobEvent, "Nepodporovaný typ souboru");
         return res.json({
           error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX.",
           errorHeadline: "Nepodporovaný typ souboru",
@@ -332,10 +328,10 @@ router.post(
     } catch (err) {
       console.error("Error extracting text:", err);
       helpers.incrementEventCount("errorExtractingText");
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nepodařilo se extrahovat text z dokumentu";
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        "Nepodařilo se extrahovat text z dokumentu"
+      );
       res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -352,10 +348,10 @@ router.post(
 
     if (extractedText.length < 10) {
       console.error("Error extracting text (text below 10 characters)");
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)";
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)"
+      );
       return res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -364,11 +360,12 @@ router.post(
     }
 
     if (extractedText.length > charactersLimit) {
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage = `Překročena maximální délka textu ${formatNumber(
-        charactersLimit
-      )} znaků (${pagesLimit} stran)`;
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        `Překročena maximální délka textu ${formatNumber(
+          charactersLimit
+        )} znaků (${pagesLimit} stran)`
+      );
       return res.json({
         error: `Maximální délka textu je ${formatNumber(
           charactersLimit
@@ -402,9 +399,9 @@ router.post(
     let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
 
     createdJobEvent.expectedTimeInSeconds = expectedTimeInSeconds;
+
     await createdJobEvent.save();
     console.log("JobEvent created:", createdJobEvent._id);
-    console.log(createdJobEvent);
 
     return res.json({
       jobId: job.id,
@@ -450,6 +447,12 @@ router.get("/demoJob/:id/progress", async (req, res) => {
 //function to take a Number, transform it to string and add space every 3 digits from the end
 function formatNumber(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+async function jobFailed(createdJobEvent, errorMessage) {
+  createdJobEvent.finishedSuccessfully = false;
+  createdJobEvent.errorMessage = errorMessage;
+  await createdJobEvent.save();
 }
 
 module.exports = router;

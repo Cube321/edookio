@@ -60,6 +60,21 @@ const jobEventSchema = new Schema({
   expectedTimeInSeconds: {
     type: Number,
   },
+  totalPromptTokens: {
+    type: Number,
+  },
+  totalCompletionTokens: {
+    type: Number,
+  },
+  totalTokens: {
+    type: Number,
+  },
+  totalPriceUSD: {
+    type: Number,
+  },
+  totalPriceCZK: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("JobEventSchema", jobEventSchema);

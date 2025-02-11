@@ -33,6 +33,7 @@ router.post(
     let createdJobEvent = await JobEvent.create({
       user: user._id,
       source: "app",
+      name,
     });
 
     console.log("categoryId:", categoryId);
@@ -50,10 +51,7 @@ router.post(
 
     //check if user is the author of the category
     if (foundCategory.author && !foundCategory.author.equals(user._id)) {
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nemáš oprávnění přidávat balíčky do tohoto předmětu";
-      await createdJobEvent.save();
+      await jobFailed(createdJobEvent, "Neautorizovaný uživatel");
       return res
         .status(400)
         .json({ error: "Nemáš oprávnění přidávat balíčky do tohoto předmětu" });
@@ -115,9 +113,7 @@ router.post(
           );
         });
       } else {
-        createdJobEvent.finishedSuccessfully = false;
-        createdJobEvent.errorMessage = "Nepodporovaný typ souboru";
-        await createdJobEvent.save();
+        await jobFailed(createdJobEvent, "Nepodporovaný typ souboru");
         console.error("Unsupported file type:", file.mimetype);
         return res.status(400).json({
           error: "Nahrajte soubor ve formátu PDF, DOCX nebo PPTX",
@@ -126,10 +122,7 @@ router.post(
     } catch (err) {
       console.error("Error extracting text:", err);
       helpers.incrementEventCount("errorExtractingText");
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nepodařilo se extrahovat text z dokumentu";
-      await createdJobEvent.save();
+      await jobFailed(createdJobEvent, "Chyba při extrakci textu");
       res.status(400).json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -152,10 +145,10 @@ router.post(
     if (extractedText.length < 10) {
       console.error("Error extracting text (text below 10 characters)");
       helpers.incrementEventCount("errorExtractingTextBelow10Chars");
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage =
-        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)";
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)"
+      );
       return res.status(400).json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
@@ -164,11 +157,12 @@ router.post(
     }
 
     if (extractedText.length > charactersLimit) {
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage = `Překročena maximální délka textu ${formatNumber(
-        charactersLimit
-      )} znaků (${pagesLimit} stran)`;
-      await createdJobEvent.save();
+      await jobFailed(
+        createdJobEvent,
+        `Překročena maximální délka textu ${formatNumber(
+          charactersLimit
+        )} znaků (${pagesLimit} stran)`
+      );
       return res.status(400).json({
         error: `Maximální délka textu je ${formatNumber(
           charactersLimit
@@ -191,9 +185,7 @@ router.post(
 
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
-      createdJobEvent.finishedSuccessfully = false;
-      createdJobEvent.errorMessage = "Nedostatek kreditů";
-      await createdJobEvent.save();
+      await jobFailed(createdJobEvent, "Nedostatek kreditů");
       return res.json({
         creditsRequired: expectedCredits,
         creditsLeft: user.credits,
@@ -259,6 +251,12 @@ router.get(
 //function to take a Number, transform it to string and add space every 3 digits from the end
 function formatNumber(num) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+async function jobFailed(createdJobEvent, errorMessage) {
+  createdJobEvent.finishedSuccessfully = false;
+  createdJobEvent.errorMessage = errorMessage;
+  await createdJobEvent.save();
 }
 
 module.exports = router;

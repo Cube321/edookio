@@ -1,0 +1,86 @@
+<% layout ('layouts/boilerplate.ejs') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h5>Generování dokumentů (posledních 100)</h5>
+      <span class="text-smaller"
+        >Řazení: <a href="/admin/jobs">vše</a> |
+        <a href="/admin/jobs?select=demo">demo</a> |
+        <a href="/admin/jobs?select=error">error</a></span
+      >
+    </div>
+  </div>
+  <div class="row text-smaller">
+    <div class="col-2">
+      <span class="text-bold">Uživatel</span>
+    </div>
+    <div class="col-2">
+      <span class="text-bold">Název</span>
+    </div>
+    <div class="col-1 text-center">
+      <span class="text-bold">Zdroj</span>
+    </div>
+    <div class="col-1 text-center">
+      <span class="text-bold">Strany</span>
+    </div>
+    <div class="col-1 text-center">
+      <span class="text-bold">Plánované kredity</span>
+    </div>
+    <div class="col-1 text-center">
+      <span class="text-bold">Využité kredity</span>
+    </div>
+    <div class="col-1 text-center">
+      <span class="text-bold">Tokeny</span>
+    </div>
+    <div class="col-1 text-center">
+      <span class="text-bold">Cena</span>
+    </div>
+    <div class="col-2">
+      <span class="text-bold">Status</span>
+    </div>
+    <hr />
+  </div>
+  <% jobEvents.forEach((job, i) => { %>
+    <div class="row text-smaller">
+        <div class="col-2 d-flex flex-column">
+            <span><%= job.user?.email || "demo" %></span>
+            <span class="text-small text-muted"><%= job.dateFormatted %></span>
+        </div>
+        <div class="col-2">
+            <span><%= job.name || "neuvedeno" %></span>
+        </div>
+        <div class="col-1 d-flex justify-content-center">
+          <span><%= job.source %></span>
+        </div>
+        <div class="col-1 d-flex justify-content-center">
+            <span><%= job.extractedTextPages %></span>
+        </div>
+        <div class="col-1 d-flex justify-content-center">
+            <span><%= job.expectedCredits %></span>
+        </div>
+        <div class="col-1 d-flex justify-content-center">
+            <span><%= job.actualCredits %></span>
+        </div>
+        <div class="col-1 d-flex justify-content-center">
+          <span><%= job.totalTokens %></span>
+        </div>
+        <div class="col-1 d-flex flex-column justify-content-center">
+          <span><%= job.totalPriceCZK %> CZK</span>
+          <span class="text-small text-muted"><%= job.totalPriceUSD %> USD</span>
+        </div>
+        <div class="col-2">
+            <% if (job.finishedSuccessfully && !job.isDemo) { %>
+              <a href="/category/<%= job.categoryId %>">
+                <span class="badge bg-success">dokončeno</span>
+              </a>
+            <% } else if (job.finishedSuccessfully && job.isDemo) { %>
+              <span class="badge bg-success">dokončeno (demo)</span>
+            <% } else { %>
+              <span class="badge bg-red"><%= job.errorMessage %></span>
+            <% } %>
+        </div>
+        <hr />
+    </div>
+  <% }) %>
+  </div>
+</div>

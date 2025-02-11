@@ -122,6 +122,7 @@ async function processDocumentJob(job) {
           max_tokens: 1000,
         })
         .then((completion) => {
+          const usage = completion.usage;
           const content = completion.choices[0].message.content;
           console.log("Received response from OpenAI for chunk", index);
           const cleanedContent = content.replace(/```json|```/g, "").trim();
@@ -140,7 +141,7 @@ async function processDocumentJob(job) {
             10 + Math.floor((completedChunks / totalChunks) * 70);
           job.progress(progressValue);
 
-          return { index, flashcards };
+          return { index, flashcards, usage };
         });
     });
 
@@ -154,6 +155,31 @@ async function processDocumentJob(job) {
 
     // Sort by index to maintain order
     successfulResults.sort((a, b) => a.index - b.index);
+
+    // Accumulate total usage
+    let totalPromptTokens = 0;
+    let totalCompletionTokens = 0;
+    let totalTokens = 0;
+
+    for (const result of successfulResults) {
+      totalPromptTokens += result.usage.prompt_tokens;
+      totalCompletionTokens += result.usage.completion_tokens;
+      totalTokens += result.usage.total_tokens;
+    }
+
+    console.log("Total tokens used:", totalTokens);
+
+    // Calculate the pricing based on the provided rates
+    const costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
+    const costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
+
+    const priceForPrompt = totalPromptTokens * costPerPromptToken;
+    const priceForCompletion = totalCompletionTokens * costPerCompletionToken;
+    const totalPrice = priceForPrompt + priceForCompletion;
+
+    console.log("Price for prompt tokens:", priceForPrompt.toFixed(6));
+    console.log("Price for completion tokens:", priceForCompletion.toFixed(6));
+    console.log("Total price:", totalPrice.toFixed(6));
 
     // Concatenate all flashcards from successful chunks
     let allFlashcards = [];
@@ -273,9 +299,16 @@ async function processDocumentJob(job) {
       jobEvent.questionsCreated = questionsCreated;
       jobEvent.actualCredits = cardsCreated;
       jobEvent.finishedSuccessfully = true;
-      let finishedJobEvent = await jobEvent.save();
-      console.log("Job event saved successfully:");
-      console.log(finishedJobEvent);
+
+      // Save token usage details
+      jobEvent.totalTokens = totalTokens;
+      jobEvent.totalPromptTokens = totalPromptTokens;
+      jobEvent.totalCompletionTokens = totalCompletionTokens;
+      jobEvent.totalPriceUSD = totalPrice;
+      jobEvent.totalPriceCZK = (totalPrice * 22).toFixed(2);
+
+      await jobEvent.save();
+      console.log("Job event finished successfully");
     }
 
     await job.progress(100);
