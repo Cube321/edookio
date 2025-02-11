@@ -318,6 +318,11 @@ async function processDocumentJob(job) {
   } catch (error) {
     console.error("Error processing document job:", error);
     Sentry.captureException(error);
+    if (jobEvent) {
+      jobEvent.finishedSuccessfully = false;
+      jobEvent.errorMessage = "Selhalo zpracování - worker";
+      await jobEvent.save();
+    }
     helpers.incrementEventCount("workerGenerationError");
     throw error;
   }

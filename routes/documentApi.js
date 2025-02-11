@@ -13,6 +13,7 @@ const mammoth = require("mammoth");
 const textract = require("textract");
 const helpers = require("../utils/helpers");
 const passport = require("passport");
+const { error } = require("console");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -126,7 +127,6 @@ router.post(
       res.status(400).json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
-        errorHeadline: "Chyba při extrakci textu",
       });
     } finally {
       console.log("Cleaning up uploaded file:", file.path);
@@ -152,7 +152,6 @@ router.post(
       return res.status(400).json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
-        errorHeadline: "Chyba při extrakci textu",
       });
     }
 
@@ -164,13 +163,14 @@ router.post(
         )} znaků (${pagesLimit} stran)`
       );
       return res.status(400).json({
-        error: `Maximální délka textu je ${formatNumber(
+        error: `Text je příliš dlouhý. Maximální délka textu je ${formatNumber(
           charactersLimit
         )} znaků (${pagesLimit} stran). Tvůj text má ${formatNumber(
           extractedText.length
         )} znaků.`,
-        errorHeadline: "Text je příliš dlouhý",
-        showPremiumButton: !user.isPremium,
+        showPremiumButton: user.isPremium
+          ? undefined
+          : "zvýšit limit na 150 stran",
       });
     }
 
@@ -186,10 +186,9 @@ router.post(
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
       await jobFailed(createdJobEvent, "Nedostatek kreditů");
-      return res.json({
-        creditsRequired: expectedCredits,
-        creditsLeft: user.credits,
-        jobId: null,
+      return res.status(400).json({
+        error: `Nemáš dostatek kreditů. Ke zpracování textu potřebuješ ${expectedCredits} AI kreditů.`,
+        showPremiumButton: user.isPremium ? undefined : "navýšit kredity",
       });
     }
 
@@ -211,14 +210,13 @@ router.post(
 
     await createdJobEvent.save();
     console.log("JobEvent created:", createdJobEvent._id);
-    console.log(createdJobEvent);
 
     return res.json({ jobId: job.id, expectedTimeInSeconds, isPremium });
   })
 );
 
 router.get(
-  "/mobileApi/:id/progress",
+  "/mobileApi/:id/getJobProgress",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const jobId = req.params.id;

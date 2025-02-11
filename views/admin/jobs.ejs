@@ -64,9 +64,8 @@
         <div class="col-1 d-flex justify-content-center">
           <span><%= job.totalTokens %></span>
         </div>
-        <div class="col-1 d-flex flex-column justify-content-center">
-          <span><%= job.totalPriceCZK %> CZK</span>
-          <span class="text-small text-muted"><%= job.totalPriceUSD %> USD</span>
+        <div class="col-1 d-flex justify-content-center">
+          <span><%= job.totalPriceCZK %> Kč</span>
         </div>
         <div class="col-2">
             <% if (job.finishedSuccessfully && !job.isDemo) { %>
@@ -76,7 +75,7 @@
             <% } else if (job.finishedSuccessfully && job.isDemo) { %>
               <span class="badge bg-success">dokončeno (demo)</span>
             <% } else { %>
-              <span class="badge bg-red"><%= job.errorMessage %></span>
+              <span class="badge bg-red text-break text-wrap"><%= job.errorMessage %></span>
             <% } %>
         </div>
         <hr />
