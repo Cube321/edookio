@@ -117,6 +117,10 @@ form .form-borders.border-darkgrey {
   margin-left: 16px;
 }
 
+#success-toast {
+  background-color: #6aad04 !important;
+}
+
 /*CATEGORY*/
 
 .section-list .add-icon {
@@ -498,7 +502,7 @@ form .form-control,
 
 form .form-borders {
   border: 1px solid #eeeeee;
-  border-radius: 5px;
+  border-radius: 18px;
 }
 
 /* PROFILE - PREMIUM OFFERS*/
@@ -937,6 +941,14 @@ form .form-borders {
 form .form-control.bordered {
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+/* NEW CARD FORM */
+.connected-question-above-form {
+  height: auto;
+  margin-bottom: 2rem;
+  min-height: 300px;
+  width: 50%;
 }
 
 /* ADMIN STATS */

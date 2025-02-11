@@ -12,6 +12,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const seedContent = require("../utils/seed");
 
+const { validateEditUserApi } = require("../utils/middleware");
+
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -422,6 +424,50 @@ router.post(
       return res.status(500).json({ message: "Internal server error" });
     }
   })
+);
+
+//updateAcountData with userData
+router.post(
+  "/mobileAuth/updateAcountData",
+  passport.authenticate("jwt", { session: false }),
+  validateEditUserApi,
+  async (req, res) => {
+    try {
+      const userData = req.body;
+      const { user } = req;
+
+      if (!userData) {
+        return res.status(400).json({ message: "Missing user data" });
+      }
+
+      if (userData.dailyGoal < 10) {
+        return res.status(400).json({ message: "Minimální denní cíl je 10" });
+      }
+
+      //check if nickname is unique
+      if (userData.nickname) {
+        const nicknameExists = await User.findOne({
+          nickname: userData.nickname,
+        });
+        if (
+          nicknameExists &&
+          nicknameExists._id.toString() !== user._id.toString()
+        ) {
+          return res.status(400).json({ message: "Přezdívka je již obsazena" });
+        }
+      }
+
+      user.firstname = userData.firstName;
+      user.lastname = userData.lastName;
+      user.nickname = userData.nickname;
+      user.dailyGoal = userData.dailyGoal;
+      await user.save();
+      return res.status(200).json({ message: "User data updated" });
+    } catch (error) {
+      console.log("Error updating user data:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
 );
 
 module.exports = router;

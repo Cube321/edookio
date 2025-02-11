@@ -12,7 +12,6 @@ const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const textract = require("textract");
 const helpers = require("../utils/helpers");
-const { create } = require("connect-mongo");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });

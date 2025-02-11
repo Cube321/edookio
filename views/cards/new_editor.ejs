@@ -2,8 +2,41 @@
 <div class="container mb-5">
   <div class="row">
     <div class="col-lg-12">
-      <h2 class="text-center">Vytvořit novou kartičku</h2>
+      <h2 class="text-center">Vytvořit kartičku</h2>
+      <% if (!connectedQuestion) { %>
       <p class="text-center">do balíčku <%= sectionName %></p>
+      <% } else { %>
+      <p class="text-center">k testové otázce</p>
+      <% } %> <% if (connectedQuestion) { %>
+      <div class="d-flex justify-content-center align-items-center">
+        <div
+          class="card list-all-card connected-question-above-form d-flex justify-content-between flex-column"
+          id="<%= connectedQuestion._id %>"
+        >
+          <div>
+            <p class="question"><%- connectedQuestion.question %></p>
+            <p
+              class="answer-item correct d-flex justify-content-between align-items-center"
+            >
+              <span><%- connectedQuestion.correctAnswers[0] %></span
+              ><i class="far fa-check-circle icon-md"></i>
+            </p>
+            <p
+              class="answer-item wrong d-flex justify-content-between align-items-center"
+            >
+              <span><%- connectedQuestion.wrongAnswers[0] %></span>
+              <i class="far fa-times-circle icon-md"></i>
+            </p>
+            <p
+              class="answer-item wrong d-flex justify-content-between align-items-center"
+            >
+              <span><%- connectedQuestion.wrongAnswers[1] %></span>
+              <i class="far fa-times-circle icon-md"></i>
+            </p>
+          </div>
+        </div>
+      </div>
+      <% } %>
       <form class="row g-3" id="create-card-form" novalidate>
         <div class="col-lg-6">
           <label for="pageA" class="new-card-label mb-2 text-center w-100"
@@ -232,7 +265,7 @@
       // 4. Send data to your server
       try {
         const response = await fetch(
-          "/category/<%= categoryId %>/section/<%= sectionId %>/newCard?api=true",
+          "/category/<%= categoryId %>/section/<%= sectionId %>/newCard?api=true&connectedQuestionId=<%= connectedQuestion ? connectedQuestion._id : '' %>",
           {
             method: "POST",
             headers: {

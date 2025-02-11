@@ -85,3 +85,10 @@ module.exports.cardSchemaApi = Joi.object({
   pageB: Joi.string().required().escapeHTML(),
   sectionId: Joi.string().required().escapeHTML(),
 });
+
+module.exports.editUserSchemaApi = Joi.object({
+  nickname: Joi.string().required().escapeHTML(),
+  firstName: Joi.string().required().escapeHTML(),
+  lastName: Joi.string().required().escapeHTML(),
+  dailyGoal: Joi.number().required(),
+});

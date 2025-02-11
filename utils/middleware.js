@@ -6,6 +6,7 @@ const { nameSchema } = require("../schemas.js");
 const { categorySchemaApi } = require("../schemas.js");
 const { sectionSchemaApi } = require("../schemas.js");
 const { cardSchemaApi } = require("../schemas.js");
+const { editUserSchemaApi } = require("../schemas.js");
 const User = require("../models/user");
 const Section = require("../models/section");
 const ExpressError = require("../utils/ExpressError");
@@ -168,6 +169,15 @@ middleware.validateSectionApi = (req, res, next) => {
 
 middleware.validateCardApi = (req, res, next) => {
   const { error } = cardSchemaApi.validate(req.body);
+  if (error) {
+    return res.status(400).json({ error: error.message });
+  } else {
+    next();
+  }
+};
+
+middleware.validateEditUserApi = (req, res, next) => {
+  const { error } = editUserSchemaApi.validate(req.body);
   if (error) {
     return res.status(400).json({ error: error.message });
   } else {

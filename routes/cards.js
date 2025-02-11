@@ -24,14 +24,26 @@ router.get(
   isCategoryAuthor,
   catchAsync(async (req, res, next) => {
     const { categoryId, sectionId } = req.params;
+    const { connectedQuestionId } = req.query;
     const foundSection = await Section.findById(sectionId);
     if (!foundSection) {
       throw Error("Sekce s tímto ID neexistuje");
     }
+
+    let connectedQuestion = null;
+
+    if (connectedQuestionId) {
+      connectedQuestion = await Question.findById(connectedQuestionId);
+      if (!connectedQuestion) {
+        throw Error("Otázka s tímto ID neexistuje");
+      }
+    }
+
     res.status(200).render("cards/new_editor", {
       categoryId,
       sectionId,
       sectionName: foundSection.name,
+      connectedQuestion,
     });
   })
 );
@@ -47,10 +59,14 @@ router.post(
     const author = req.user._id;
     const { api } = req.query;
     const { categoryId, sectionId } = req.params;
+    const { connectedQuestionId } = req.query;
 
     //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
     pageA = pageA.replace(/<p><br><\/p>/g, "");
     pageB = pageB.replace(/<p><br><\/p>/g, "");
+
+    pageA = cleanHtmlTags(pageA);
+    pageB = cleanHtmlTags(pageB);
 
     const foundSection = await Section.findById(sectionId);
     const foundCategory = await Category.findById(categoryId);
@@ -60,6 +76,7 @@ router.post(
     if (!foundCategory) {
       throw Error("Kategorie s tímto ID neexistuje");
     }
+
     const newCard = new Card({
       categoryId,
       section: sectionId,
@@ -69,6 +86,19 @@ router.post(
       author,
     });
     const createdCard = await newCard.save();
+
+    //check if connectedQuestionId is valid objectID
+    if (connectedQuestionId) {
+      if (mongoose.Types.ObjectId.isValid(connectedQuestionId)) {
+        const foundQuestion = await Question.findById(connectedQuestionId);
+        if (foundQuestion) {
+          foundQuestion.sourceCard = createdCard._id;
+          newCard.connectedQuestionId = foundQuestion._id;
+          await foundQuestion.save();
+        }
+      }
+    }
+
     foundCategory.numOfCards++;
     await foundCategory.save();
     foundSection.cards.push(createdCard._id);
@@ -124,6 +154,9 @@ router.put(
     //replace all instances of <p><br></p> with nothing (remove empty paragraphs)
     pageA = pageA.replace(/<p><br><\/p>/g, "");
     pageB = pageB.replace(/<p><br><\/p>/g, "");
+
+    pageA = cleanHtmlTags(pageA);
+    pageB = cleanHtmlTags(pageB);
 
     let author = req.user._id;
     const foundCard = await Card.findByIdAndUpdate(id, {
@@ -287,6 +320,15 @@ function isCardInArray(arrayOfIds, cardIdString) {
   } else {
     return false;
   }
+}
+
+//function to take a text with html tags and remove everything between < and > including the brackets except for <p> </p> <b> </b> <i> </i> <br> <br/> <strong> </strong> <em> </em> <li> </li> <ul> </ul>
+function cleanHtmlTags(text) {
+  const result = text.replace(
+    /<(?!\/?(?:p|b|i|br|strong|em|li|ul)\b)[^>]*>/gi,
+    ""
+  );
+  return result;
 }
 
 module.exports = router;

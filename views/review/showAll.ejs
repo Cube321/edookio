@@ -86,9 +86,14 @@
                     <% } %>
                   </div>  
               <% } else { %>
-                <div class="card list-all-card d-flex justify-content-between flex-column">
-                  <div class="d-center h-100">
+                <div class="card d-flex justify-content-between flex-column">
+                  <div class="d-flex justify-content-center flex-column h-100">
                       <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
+                      <% if (!demo) { %>
+                        <div class="d-flex justify-content-center">
+                          <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard?connectedQuestionId=<%= question._id %>" class="btn btn-danger">Přidat kartičku k otázce</a>
+                        </div>
+                      <% } %>
                   </div>
                 </div>
               <% } %>
@@ -111,7 +116,7 @@
               <% } else { %>
                 <div class="card list-all-card d-flex justify-content-between flex-column">
                   <div class="d-center h-100">
-                      <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
+  
                   </div>
                 </div>
               <% } %>
@@ -143,7 +148,7 @@
                 <p class="text-center text-muted">K této kartičce není přiřazena <br> žádná otázka.</p>
                 <% if (!demo) { %>
                   <div class="d-flex justify-content-center">
-                    <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new?sourceCard=<%= card._id %>" class="btn btn-danger">Přidat otázku ke kartičce</a>
+                    <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/question/new?sourceCard=<%= card._id %>" class="btn btn-danger mt-2">Přidat otázku ke kartičce</a>
                   </div>
                 <% } %>
               </div>
@@ -162,17 +167,27 @@
       <div class="row">
       <!-- Card Column -->
       <div class="col-sm-4 mb-5">
-        <div class="card list-all-card d-flex justify-content-between flex-column">
-            <div class="d-center h-100">
+        <div class="card d-flex justify-content-between flex-column">
+            <div class="d-flex justify-content-center flex-column h-100">
                 <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
+                <% if (!demo) { %>
+                  <div class="d-flex justify-content-center">
+                    <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard?connectedQuestionId=<%= question._id %>" class="btn btn-danger mt-4">Přidat kartičku k otázce</a>
+                  </div>
+                <% } %>
             </div>
         </div>
       </div>
 
       <div class="col-sm-4 mb-5">
-        <div class="card list-all-card d-flex justify-content-between flex-column">
-            <div class="d-center h-100">
+        <div class="card d-flex justify-content-between flex-column">
+            <div class="d-flex justify-content-center flex-column h-100">
                 <p class="mb-0 text-muted text-center">Tato testová otázka nenavazuje na <br> žádnou kartičku.</p>
+                <% if (!demo) { %>
+                  <div class="d-flex justify-content-center">
+                    <a href="/category/<%= section.categoryId %>/section/<%= section._id %>/newCard?connectedQuestionId=<%= question._id %>" class="btn btn-danger mt-4">Přidat kartičku k otázce</a>
+                  </div>
+                <% } %>
             </div>
         </div>
       </div>
