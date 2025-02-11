@@ -174,9 +174,14 @@ helpers.registerAction = async function (user, action) {
       console.log("Daily goal reached for user:", user.email);
     }
 
+    let streakBonusLimit = 10;
+    if (process.env.NODE_ENV === "development") {
+      streakBonusLimit = 1;
+    }
+
     //evaluate conditions for bonus 500
     if (
-      user.streakLength === 1 &&
+      user.streakLength === streakBonusLimit &&
       user.onInitialStreak &&
       !user.bonus500added
     ) {
