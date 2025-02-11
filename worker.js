@@ -304,8 +304,8 @@ async function processDocumentJob(job) {
       jobEvent.totalTokens = totalTokens;
       jobEvent.totalPromptTokens = totalPromptTokens;
       jobEvent.totalCompletionTokens = totalCompletionTokens;
-      jobEvent.totalPriceUSD = totalPrice;
-      jobEvent.totalPriceCZK = (totalPrice * 22).toFixed(2);
+      jobEvent.totalPriceUSD = totalPrice.toFixed(6);
+      jobEvent.totalPriceCZK = (totalPrice * 22).toFixed(3);
 
       await jobEvent.save();
       console.log("Job event finished successfully");
