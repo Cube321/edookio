@@ -470,7 +470,7 @@ router.post("/api/markUser", isLoggedIn, async (req, res) => {
     if (action === "bonus100shown") {
       user.bonus100shown = true;
       user.bonus100added = true;
-      user.credits += 100;
+      user.extraCredits += 100;
       console.log(
         "Adding 100 credits and marking user as bonus100shown (webApi):",
         user.email

@@ -206,13 +206,20 @@ router.post(
         //cancelation
         if (data.canceled_at && user.plan !== "none") {
           // cancelled
+          let oldPlan = user.plan;
           user.premiumDateOfCancelation = moment();
           user.creditsMonthlyLimit = 100;
           user.plan = "none";
           const endDate = moment(user.endDate).locale("cs").format("LL");
           try {
             await mail.subscriptionCanceled(user.email, endDate);
-            await mail.adminInfoSubscriptionCanceled(user, endDate);
+            await mail.adminInfoSubscriptionCanceled(
+              user,
+              endDate,
+              "stripe",
+              "STRIPE",
+              oldPlan
+            );
           } catch (err) {
             console.log("Failed sending e-mail subscriptionCanceled: ", err);
           }

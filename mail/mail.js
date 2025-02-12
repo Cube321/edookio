@@ -760,6 +760,7 @@ mail.adminInfoSubscriptionCanceled = function (
   endDate,
   paymentSource,
   store,
+  oldPlan,
   callback
 ) {
   if (!paymentSource) paymentSource = "stripe";
@@ -767,7 +768,7 @@ mail.adminInfoSubscriptionCanceled = function (
   const msg = {
     from: "edookio@edookio.com",
     to: process.env.ADMIN_MAIL,
-    subject: `(EDOOKIO) UKONČENÍ | ${user.plan}: ${user.email}`,
+    subject: `(EDOOKIO) UKONČENÍ | ${oldPlan}: ${user.email}`,
     html: `
           <p>(${paymentSource} - ${store})<p>
           <p>${user.email}</p>
@@ -776,7 +777,7 @@ mail.adminInfoSubscriptionCanceled = function (
             .format("LLLL")}</p>
           <p>Premium: ${user.isPremium}</p>
           <p>Stripe ID: ${user.billingId}</p>
-          <p>Plán předplatného: ${user.plan}</p>
+          <p>Plán předplatného: ${oldPlan}</p>
           <p>Konec předplatného: ${moment(user.endDate)
             .locale("cs")
             .format("LLLL")}</p>

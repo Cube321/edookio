@@ -1193,7 +1193,7 @@ router.post(
     if (code) {
       if (code === "start_bonus_100" && !user.bonus100added) {
         user.bonus100added = true;
-        user.credits += amount;
+        user.extraCredits += amount;
         console.log("Kredity byly připsány (BONUS100)" + user.email);
         await user.save();
         helpers.incrementEventCount("bonus100addedApp");

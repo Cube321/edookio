@@ -254,8 +254,13 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const { pushToken } = req.body;
+      const { pushToken, error } = req.body;
       const userId = req.user._id;
+
+      if (error) {
+        console.error("Error storing push token:", error);
+        return res.status(400).json({ error: "Error storing push token" });
+      }
 
       console.log("Storing push token for user:", pushToken);
 

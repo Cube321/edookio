@@ -91,7 +91,9 @@ router.post(
         user.isPremium = true;
         user.plan = plan;
         user.premiumDateOfUpdate = new Date();
-        user.endDate = moment(user.endDate).add(1, "months");
+        user.endDate = expiration_at_ms
+          ? new Date(Number(expiration_at_ms))
+          : null;
         user.subscriptionSource = "revenuecat";
         user.creditsMonthlyLimit = 1000;
         user.credits = 1000;
@@ -123,6 +125,7 @@ router.post(
         break;
 
       case "CANCELLATION":
+        let oldPlan = user.plan;
         user.plan = "none";
         const endDate = moment(user.endDate).locale("cs").format("LL");
         user.premiumDateOfCancelation = new Date();
@@ -135,7 +138,8 @@ router.post(
             user,
             endDate,
             paymentSource,
-            store
+            store,
+            oldPlan
           );
         } catch (error) {
           console.error(
