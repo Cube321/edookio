@@ -75,6 +75,11 @@ router.get(
     let invoices = await Invoice.find({}).populate("user");
     invoices.reverse();
     let { show } = req.query;
+    //get last invoice number from settings
+    let lastInvoiceNumberObject = await Settings.findOne({
+      settingName: "lastInvoiceNumber",
+    });
+    let lastInvoiceNumber = lastInvoiceNumberObject.settingValue;
     if (show === "lastMonth") {
       // Calculate the start and end of the previous calendar month
       const startOfLastMonth = moment().subtract(1, "month").startOf("month");
@@ -92,12 +97,18 @@ router.get(
       });
 
       invoices = filteredInvoices;
-      return res.status(201).render(`invoices/issuedFull`, { invoices });
+      return res
+        .status(201)
+        .render(`invoices/issuedFull`, { invoices, lastInvoiceNumber });
     }
     if (show === "full") {
-      res.status(201).render(`invoices/issuedFull`, { invoices });
+      res
+        .status(201)
+        .render(`invoices/issuedFull`, { invoices, lastInvoiceNumber });
     } else {
-      res.status(201).render(`invoices/issuedList`, { invoices });
+      res
+        .status(201)
+        .render(`invoices/issuedList`, { invoices, lastInvoiceNumber });
     }
   })
 );
@@ -116,7 +127,14 @@ router.get(
     }
 
     //remove invoice object from DB
-    await Invoice.findByIdAndDelete(invoiceId);
+    let deletedInvoice = await Invoice.findByIdAndDelete(invoiceId);
+
+    //set last invoice number to the one that was removed
+    let lastInvoiceNumber = await Settings.findOne({
+      settingName: "lastInvoiceNumber",
+    });
+    lastInvoiceNumber.settingValue = deletedInvoice.identificationNumber - 1;
+    await lastInvoiceNumber.save();
 
     // Function to filter out an object based on invoiceNum
     function filterArrayOfInvoices(arr, invoiceId) {
@@ -129,7 +147,7 @@ router.get(
     foundUser.invoicesDbObjects = filteredInvoices;
     foundUser.save();
     req.flash("successOverlay", "Faktura byla odstraněna");
-    res.status(201).redirect(`/admin/${userId}/showDetail`);
+    res.status(201).redirect(`/invoices/issued`);
   })
 );
 

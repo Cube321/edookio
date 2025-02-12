@@ -3,6 +3,7 @@
   <div class="row">
     <div class="col-12 mb-3">
       <h5>Vystavené faktury</h5>
+      <p>číslo poslední vystavené faktury: <%= lastInvoiceNumber %></p>
       <span
         >(<a href="/invoices/issued?show=list">seznam</a> |
         <a href="/invoices/issued?show=full">kompletní</a> |
@@ -20,8 +21,9 @@
           <th>Položka</th>
           <th>Datum</th>
           <th>Částka</th>
+          <th></th>
         </tr>
-        <% invoices.forEach(invoice => { %>
+        <% invoices.forEach((invoice, i) => { %>
         <tr>
           <td>
             <a href="/invoice/show/<%= invoice._id %>" target="_blank"
@@ -44,6 +46,15 @@
           <% } %>
           <td><%= invoice.dateIssued %></td>
           <td><%= invoice.amount %> Kč</td>
+          <td>
+            <% if(i === 0){ %>
+            <a
+              href="/invoice/removeInvoice/<%= invoice.user?._id %>/<%= invoice._id%>"
+              class="btn btn-sm btn-danger"
+              >odstranit</a
+            >
+            <% } %>
+          </td>
         </tr>
         <% }) %>
       </table>
