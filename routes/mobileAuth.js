@@ -258,7 +258,8 @@ router.post(
       const userId = req.user._id;
 
       if (error) {
-        console.error("Error storing push token:", error);
+        console.log("Error storing push token:");
+        console.log(error);
         return res.status(400).json({ error: "Error storing push token" });
       }
 
