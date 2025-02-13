@@ -968,7 +968,7 @@ mail.testQuestionsLimitReset = function (email, callback) {
   const msg = {
     from: { email: "edookio@edookio.com", name: "Edookio" },
     to: email,
-    subject: "Dalších 50 testových otázek zdarma",
+    subject: "Dalších 100 testových otázek zdarma",
     html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px">
                 <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0">
                     <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%">
@@ -985,7 +985,7 @@ mail.testQuestionsLimitReset = function (email, callback) {
                                         Ahoj,
                                     </p>
                                     <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300">
-                                        v minulém měsíci jsi využil/a všech 50 testových otázek zdarma, které ti <a style="color:#FF0037;text-decoration:none;font-weight:400" href="https://www.edookio.com">Edookio</a> nabízí. Máme pro tebe skvělou zprávu – na začátku každého měsíce se ti znovu přičítá <strong style="font-weight:400">50 testových otázek</strong>, takže se můžeš pustit do procvičování a pokračovat v přípravě na zkoušky i s testovými otázkami!
+                                        v minulém měsíci jsi využil/a všech 100 testových otázek zdarma, které ti <a style="color:#FF0037;text-decoration:none;font-weight:400" href="https://www.edookio.com">Edookio</a> nabízí. Máme pro tebe skvělou zprávu – na začátku každého měsíce se ti znovu přičítá <strong style="font-weight:400">100 testových otázek</strong>, takže se můžeš pustit do procvičování a pokračovat v přípravě na zkoušky i s testovými otázkami!
                                     </p>
                                     <p style="margin:0;margin-bottom:10px;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;font-weight:400">
                                         Jak ti pomohou testové otázky na Edookio?

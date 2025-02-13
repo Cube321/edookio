@@ -39,7 +39,7 @@ router.post(
 
     console.log("categoryId:", categoryId);
 
-    const sectionSize = parseInt(req.body.sectionSize) || 30;
+    const sectionSize = parseInt(req.body.sectionSize) || 20;
     console.log("Section size:", sectionSize);
 
     const cardsPerPage = parseInt(req.body.cardsPerPage) || 3;

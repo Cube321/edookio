@@ -155,7 +155,7 @@ helpers.registerAction = async function (user, action) {
     if (action === "questionSeen") {
       user.questionsSeenTotal++;
       user.questionsSeenThisMonth++;
-      if (!user.isPremium && user.questionsSeenThisMonth === 50) {
+      if (!user.isPremium && user.questionsSeenThisMonth === 100) {
         user.reachedQuestionsLimitDate = Date.now();
         console.log("Reached questions limit for user:", user.email);
       }

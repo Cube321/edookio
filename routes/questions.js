@@ -23,7 +23,7 @@ router.get(
     const { demo } = req.query;
 
     //if user but not premium and reached limit
-    if (user && !user.isPremium && user.questionsSeenThisMonth > 50) {
+    if (user && !user.isPremium && user.questionsSeenThisMonth > 100) {
       return res.redirect("/questions/reachedMonthlyLimit");
     }
 
@@ -82,7 +82,7 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { user } = req;
-    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+    if (!user.isPremium && user.questionsSeenThisMonth > 100) {
       return res.redirect("/questions/reachedMonthlyLimit");
     }
     const { categoryId } = req.params;
@@ -148,7 +148,7 @@ router.get(
         wrong: parseInt(wrong),
         skipped: parseInt(skipped),
       };
-      if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+      if (!user.isPremium && user.questionsSeenThisMonth > 100) {
         user.reachedQuestionsLimitDate = Date.now();
       }
       let step = 100 / (counters.correct + counters.wrong + counters.skipped);
@@ -214,7 +214,7 @@ router.get(
       wrong: parseInt(wrong),
       skipped: parseInt(skipped),
     };
-    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+    if (!user.isPremium && user.questionsSeenThisMonth > 100) {
       user.reachedQuestionsLimitDate = Date.now();
       await user.save();
     }

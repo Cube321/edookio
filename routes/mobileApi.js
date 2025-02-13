@@ -322,7 +322,7 @@ router.get(
     let questionsSeenThisMonth = user.questionsSeenThisMonth;
     let isUserPremium = user.isPremium;
 
-    if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+    if (!user.isPremium && user.questionsSeenThisMonth > 100) {
       return res.status(200).json({ limitReached: true });
     }
 

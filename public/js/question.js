@@ -5,7 +5,7 @@ let nextQuestion = 0;
 let currentQuestion = 0;
 let sectionId = "";
 let categoryId = "";
-let freeQuestionsLeft = 50;
+let freeQuestionsLeft = 100;
 
 $(document).ready(function () {
   //get section ID from DOM element

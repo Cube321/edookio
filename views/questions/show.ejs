@@ -104,7 +104,7 @@
                   <a href="#" class="disabled-modal-link" id="sourceCardIconPlaceholder"><i class="fas fa-graduation-cap"></i></a>
                 </div>
                 <% if (currentUser && !currentUser.isPremium) { %>
-                  <div class="d-flex justify-content-center align-items-center opacity-0" id="free-questions-text"><span class="text-small text-muted text-center">V rámci balíčku Free máš tento měsíc k dispozici ještě <span id="free-questions-left" name="<%= 50 - currentUser.questionsSeenThisMonth %>"><%= 50 - currentUser.questionsSeenThisMonth %></span> <span id="free-questions-ending">testových otázek</span>. <a href="#" data-bs-toggle="modal" data-bs-target="#premiumInfo">Více...</a></span></div>
+                  <div class="d-flex justify-content-center align-items-center opacity-0" id="free-questions-text"><span class="text-small text-muted text-center">V rámci balíčku Free máš tento měsíc k dispozici ještě <span id="free-questions-left" name="<%= 100 - currentUser.questionsSeenThisMonth %>"><%= 100 - currentUser.questionsSeenThisMonth %></span> <span id="free-questions-ending">testových otázek</span>. <a href="#" data-bs-toggle="modal" data-bs-target="#premiumInfo">Více...</a></span></div>
                 <% } %>
             </div>
         </div>
@@ -187,7 +187,7 @@
                   <h4 class="text-center mt-3 mb-4">Získej neomezený přístup k testovým otázkám</h4>
 
                   <div class="text-center mt-4">
-                    <p>Každý měsíc máš od nás 50 testových otázek <span class="color-1"><b>zdarma</b></span>. Můžeš si však aktivovat předplatné <span class="color-1"><b>Premium</b></span>, se kterým získáš přístup k více než 4 000 testových otázek <span class="color-1"><b>bez omezení</b></span>.</p>
+                    <p>Každý měsíc máš od nás 100 testových otázek <span class="color-1"><b>zdarma</b></span>. Můžeš si však aktivovat předplatné <span class="color-1"><b>Premium</b></span>, se kterým získáš přístup k více než 4 000 testových otázek <span class="color-1"><b>bez omezení</b></span>.</p>
                   </div>
                   <div>
                     <div class="d-flex justify-content-center mt-4 mb-3">

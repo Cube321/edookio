@@ -112,7 +112,7 @@ router.get(
         unsubscribedUsersCount++;
       }
       //count free users who reached questions limit
-      if (!user.isPremium && user.questionsSeenThisMonth > 50) {
+      if (!user.isPremium && user.questionsSeenThisMonth > 100) {
         reachedQuestionsLimit++;
       }
       //count users active in the last week
