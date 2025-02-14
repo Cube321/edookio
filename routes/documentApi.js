@@ -286,9 +286,11 @@ router.post(
       });
     }
 
+    let extractedText = undefined;
+
     // Now, enqueue the job with the extracted text instead of a file path
     const job = await flashcardQueue.add({
-      extractedText: undefined,
+      extractedText,
       name: topic,
       categoryId,
       user,
@@ -300,12 +302,7 @@ router.post(
       requestedCards: lengthNumber,
     });
 
-    let expectedTimeInSeconds = 0;
-    if (!extractedText) {
-      expectedTimeInSeconds = lengthNumber + 15;
-    } else {
-      expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
-    }
+    let expectedTimeInSeconds = lengthNumber + 15;
     let isPremium = user.isPremium;
 
     await createdJobEvent.save();
