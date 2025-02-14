@@ -874,7 +874,7 @@ router.post(
       }
       let user = req.user;
 
-      let icon = "subject_1.png";
+      let icon = "subject_9.png";
 
       const newCategory = new Category({
         sections: [],
