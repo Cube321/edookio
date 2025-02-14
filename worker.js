@@ -401,7 +401,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
       if (fullText.length < targetCharCount) {
         console.log("Continuing generation...");
         prompt =
-          "Prosím pokračuj v generování textu, navazuj na předchozí část, dokud text nedosáhne minimálně požadované délky.";
+          "Please continue with generation, connecting the text to the previous message. Add at least 5000 characters to the text and continue until you reach the target length.";
       }
     }
 

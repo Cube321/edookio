@@ -253,7 +253,7 @@ router.post(
     const sectionSize = 20;
     console.log("Section size:", sectionSize);
 
-    const cardsPerPage = 8;
+    const cardsPerPage = 6;
     console.log("Cards per page:", cardsPerPage);
 
     const foundCategory = await Category.findById(categoryId);
