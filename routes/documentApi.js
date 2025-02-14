@@ -35,6 +35,7 @@ router.post(
       user: user._id,
       source: "app",
       name,
+      jobType: "document",
     });
 
     console.log("categoryId:", categoryId);
@@ -203,6 +204,100 @@ router.post(
       questionsCreated: 0,
       cardsPerPage,
       jobEventId: createdJobEvent._id,
+    });
+
+    let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
+    let isPremium = user.isPremium;
+
+    await createdJobEvent.save();
+    console.log("JobEvent created:", createdJobEvent._id);
+
+    return res.json({ jobId: job.id, expectedTimeInSeconds, isPremium });
+  })
+);
+
+router.post(
+  "/mobileApi/generatePackageFromTopic",
+  passport.authenticate("jwt", { session: false }),
+  catchAsync(async (req, res) => {
+    console.log("Creating new section from topic...");
+
+    const { topic } = req.body;
+    const { length } = req.body;
+    const { categoryId } = req.query;
+    const { user } = req;
+
+    let lengthNumber = parseInt(length);
+
+    if (isNaN(lengthNumber) || lengthNumber < 1) {
+      return res.status(400).json({ error: "Neplatná délka textu" });
+    }
+
+    if (lengthNumber > 100) {
+      return res.status(400).json({
+        error: "Maximálně je možné vygenerovat 100 kartiček najednou",
+      });
+    }
+    //create JobEvent
+    let createdJobEvent = await JobEvent.create({
+      user: user._id,
+      source: "app",
+      name: topic,
+      jobType: "topic",
+    });
+
+    console.log("categoryId:", categoryId);
+
+    console.log("Topic:", topic);
+
+    const sectionSize = 20;
+    console.log("Section size:", sectionSize);
+
+    const cardsPerPage = 8;
+    console.log("Cards per page:", cardsPerPage);
+
+    const foundCategory = await Category.findById(categoryId);
+    if (!foundCategory) {
+      return res.status(404).json({ error: "Předmět nenalezen" });
+    }
+
+    //check if user is the author of the category
+    if (foundCategory.author && !foundCategory.author.equals(user._id)) {
+      await jobFailed(createdJobEvent, "Neautorizovaný uživatel");
+      return res
+        .status(400)
+        .json({ error: "Nemáš oprávnění přidávat balíčky do tohoto předmětu" });
+    }
+
+    createdJobEvent.categoryId = categoryId;
+    createdJobEvent.sectionSize = sectionSize;
+    createdJobEvent.cardsPerPage = cardsPerPage;
+
+    createdJobEvent.expectedCredits = lengthNumber;
+
+    let expectedCredits = lengthNumber;
+
+    console.log("Expected credits:", expectedCredits);
+    if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
+      await jobFailed(createdJobEvent, "Nedostatek kreditů");
+      return res.status(400).json({
+        error: `Nemáš dostatek kreditů. Ke zpracování textu potřebuješ ${expectedCredits} AI kreditů.`,
+        showPremiumButton: user.isPremium ? undefined : "navýšit kredity",
+      });
+    }
+
+    // Now, enqueue the job with the extracted text instead of a file path
+    const job = await flashcardQueue.add({
+      extractedText: undefined,
+      name: topic,
+      categoryId,
+      user,
+      sectionSize,
+      cardsCreated: 0,
+      questionsCreated: 0,
+      cardsPerPage,
+      jobEventId: createdJobEvent._id,
+      requestedCards: lengthNumber,
     });
 
     let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;

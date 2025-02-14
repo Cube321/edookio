@@ -9,6 +9,9 @@ const jobEventSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  jobType: {
+    type: String,
+  },
   isDemo: {
     type: Boolean,
     default: false,

@@ -32,6 +32,7 @@ router.post(
       user: user._id,
       source: "web",
       name,
+      jobType: "document",
     });
 
     const sectionSize = parseInt(req.body.sectionSize) || 10;

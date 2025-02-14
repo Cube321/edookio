@@ -39,7 +39,7 @@ const openai = new OpenAI({ apiKey: process.env.CHATGPT_SECRET });
 
 async function processDocumentJob(job) {
   try {
-    const {
+    let {
       extractedText,
       name,
       categoryId,
@@ -47,7 +47,20 @@ async function processDocumentJob(job) {
       sectionSize,
       cardsPerPage,
       jobEventId,
+      requestedCards,
     } = job.data;
+
+    if (!extractedText && requestedCards) {
+      console.log(
+        "No extracted text provided. Getting text from OpenAI based on topic..."
+      );
+      extractedText = await getTextForTopic(name, requestedCards);
+    }
+
+    if (!extractedText) {
+      throw new Error("No text provided or generated.");
+    }
+
     console.log("Job data received. Text length:", extractedText.length);
 
     const foundCategory = await Category.findById(categoryId);
@@ -332,3 +345,35 @@ flashcardQueue.process(async (job) => {
   console.log("Processing document job...");
   return await processDocumentJob(job);
 });
+
+//helper function to get text from OpenAi on a given topic where the length of the text is 225 times entered value
+async function getTextForTopic(topic, textLength) {
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has approximately ${
+            textLength * 225
+          } characters. The audience is university students. The text should be informative and engaging. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`,
+        },
+      ],
+      temperature: 0.7,
+    });
+
+    const content = completion.choices[0].message.content;
+
+    if (content.includes("invalid_topic")) {
+      throw new Error("K tomuto tématu nelze vygenerovat žadný obsah");
+    }
+
+    console.log("Received response from OpenAI for topic:", topic);
+    console.log(content);
+    return content;
+  } catch (error) {
+    console.error("Error getting text for topic:", error);
+    Sentry.captureException(error);
+    throw error;
+  }
+}
