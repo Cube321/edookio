@@ -286,7 +286,7 @@ body {
 
 .reason-title {
   border-bottom: 2px solid #ff0037;
-  display: inline;
+  display: inline-block;
   padding-bottom: 3px;
 }
 

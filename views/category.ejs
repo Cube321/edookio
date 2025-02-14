@@ -205,7 +205,7 @@
               >
             </div>
             <div>
-              <% if (isAuthor) { %>
+              <% if (isAuthor || (currentUser && currentUser.admin)) { %>
               <a
                 href="#"
                 class="text-small"
@@ -858,8 +858,8 @@
     </div>
   </div>
 </div>
-<% } %> <% if (category.sections.length > 0 && isAuthor) { %> <%
-category.sections.forEach(section => { %>
+<% } %> <% if (category.sections.length > 0 && (isAuthor || (currentUser &&
+currentUser.admin))) { %> <% category.sections.forEach(section => { %>
 <!-- MODAL - Edit section -->
 <div class="modal fade" id="editSectionModal<%=section._id%>" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered edit-modal">

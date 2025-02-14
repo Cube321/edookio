@@ -68,7 +68,7 @@ middleware.isCategoryAuthor = async (req, res, next) => {
   const { categoryId } = req.params;
 
   //is categoryId in createdCategories of user?
-  if (req.user.createdCategories.includes(categoryId)) {
+  if (req.user.createdCategories.includes(categoryId) || req.user?.admin) {
     next();
   } else {
     req.flash("error", "Tuto operaci může provést pouze autor.");
@@ -81,7 +81,7 @@ middleware.isSectionAuthor = async (req, res, next) => {
   const { sectionId } = req.params;
   //check author of the section
   const foundSection = await Section.findById(sectionId);
-  if (foundSection.author.equals(req.user._id)) {
+  if (foundSection.author.equals(req.user._id) || req.user?.admin) {
     next();
   } else {
     req.flash("error", "Tuto operaci může provést pouze autor.");
