@@ -352,19 +352,19 @@ flashcardQueue.process(async (job) => {
 async function getTextForTopic(topic, textLength, jobEvent) {
   try {
     console.log("Getting text for topic:", topic);
-    console.log("Requested text length:", textLength * 225);
+    console.log("Requested text length:", textLength * 163);
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
         {
           role: "user",
           content: `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has approximately ${
-            textLength * 225
+            textLength * 163
           } characters. The audience is university students. The text should be informative and engaging. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`,
         },
       ],
       temperature: 0.7,
-      max_tokens: textLength * 225,
+      max_tokens: textLength * 163,
     });
 
     const content = completion.choices[0].message.content;
@@ -398,7 +398,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     Sentry.captureException(error);
     if (jobEvent) {
       jobEvent.finishedSuccessfully = false;
-      jobEvent.errorMessage = "Selhalo zpracování - nesmyslné téma";
+      jobEvent.errorMessage = "Selhalo zpracování - worker topic";
       await jobEvent.save();
     }
     throw error;
