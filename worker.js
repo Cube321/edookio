@@ -47,7 +47,6 @@ async function processDocumentJob(job) {
       sectionSize,
       cardsPerPage,
       jobEventId,
-      requestedCards,
     } = job.data;
 
     await job.progress(1);
@@ -58,7 +57,7 @@ async function processDocumentJob(job) {
         "No extracted text provided. Getting text from OpenAI based on topic..."
       );
       await job.progress(8);
-      extractedText = await getTextForTopic(name, requestedCards, jobEvent);
+      extractedText = await getTextForTopic(name, 20, jobEvent);
     }
 
     if (!extractedText) {
@@ -352,7 +351,7 @@ flashcardQueue.process(async (job) => {
 async function getTextForTopic(topic, textLength, jobEvent) {
   try {
     console.log("Getting text for topic:", topic);
-    const targetCharCount = textLength * 225;
+    const targetCharCount = 5000;
     console.log("Requested text length:", targetCharCount);
 
     let fullText = "";
@@ -368,7 +367,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
       const remainingChars = targetCharCount - fullText.length;
       const estimatedTokens = Math.ceil(remainingChars / 4);
       // Use the smaller value between our original multiplier and the estimated tokens for this iteration
-      const max_tokens = Math.min(estimatedTokens, textLength * 163);
+      const max_tokens = 2000;
 
       const completion = await openai.chat.completions.create({
         model: "gpt-4o",
@@ -401,7 +400,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
       if (fullText.length < targetCharCount) {
         console.log("Continuing generation...");
         prompt =
-          "Please continue with generation, connecting the text to the previous message. Add at least 5000 characters to the text and continue until you reach the target length.";
+          "Please continue with generation, connecting the text to the previous message but do not explicitly include information from the original prompt, just use it as a guidance. Add at least 5000 characters to the text and continue until you reach the target length.";
       }
     }
 

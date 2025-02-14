@@ -223,21 +223,9 @@ router.post(
     console.log("Creating new section from topic...");
 
     const { topic } = req.body;
-    const { length } = req.body;
     const { categoryId } = req.query;
     const { user } = req;
 
-    let lengthNumber = parseInt(length);
-
-    if (isNaN(lengthNumber) || lengthNumber < 1) {
-      return res.status(400).json({ error: "Neplatná délka textu" });
-    }
-
-    if (lengthNumber > 100) {
-      return res.status(400).json({
-        error: "Maximálně je možné vygenerovat 100 kartiček najednou",
-      });
-    }
     //create JobEvent
     let createdJobEvent = await JobEvent.create({
       user: user._id,
@@ -253,7 +241,7 @@ router.post(
     const sectionSize = 20;
     console.log("Section size:", sectionSize);
 
-    const cardsPerPage = 16;
+    const cardsPerPage = 10;
     console.log("Cards per page:", cardsPerPage);
 
     const foundCategory = await Category.findById(categoryId);
@@ -273,9 +261,9 @@ router.post(
     createdJobEvent.sectionSize = sectionSize;
     createdJobEvent.cardsPerPage = cardsPerPage;
 
-    createdJobEvent.expectedCredits = lengthNumber;
+    createdJobEvent.expectedCredits = 20;
 
-    let expectedCredits = lengthNumber;
+    let expectedCredits = 20;
 
     console.log("Expected credits:", expectedCredits);
     if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
@@ -299,10 +287,10 @@ router.post(
       questionsCreated: 0,
       cardsPerPage,
       jobEventId: createdJobEvent._id,
-      requestedCards: lengthNumber,
+      requestedCards: 20,
     });
 
-    let expectedTimeInSeconds = lengthNumber + 15;
+    let expectedTimeInSeconds = 20 + 15;
     let isPremium = user.isPremium;
 
     await createdJobEvent.save();
