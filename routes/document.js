@@ -216,6 +216,85 @@ router.post(
   })
 );
 
+router.post(
+  "/category/:categoryId/newSectionFromTopic",
+  isLoggedIn,
+  isCategoryAuthor,
+  catchAsync(async (req, res) => {
+    const { topic } = req.body;
+    const { categoryId } = req.params;
+    const { user } = req;
+
+    console.log("Creating new section from topic:", topic);
+
+    //create JobEvent
+    let createdJobEvent = await JobEvent.create({
+      user: user._id,
+      source: "web",
+      name: topic,
+      jobType: "topic",
+    });
+
+    const sectionSize = 40;
+    console.log("Section size:", sectionSize);
+
+    const cardsPerPage = 10;
+    console.log("Cards per page:", cardsPerPage);
+
+    const foundCategory = await Category.findById(categoryId);
+    if (!foundCategory) {
+      return res.json({
+        error: "Předmět nebyl nalezen.",
+        errorHeadline: "Předmět nebyl nalezen v databázi.",
+      });
+    }
+
+    createdJobEvent.categoryId = categoryId;
+    createdJobEvent.sectionSize = sectionSize;
+    createdJobEvent.cardsPerPage = cardsPerPage;
+
+    let expectedCredits = 20;
+
+    createdJobEvent.expectedCredits = expectedCredits;
+
+    console.log("Expected credits:", expectedCredits);
+    if (!user.admin && expectedCredits > user.credits + user.extraCredits) {
+      await jobFailed(createdJobEvent, "Nedostatek kreditů");
+      return res.json({
+        creditsRequired: expectedCredits,
+        creditsLeft: user.credits,
+        jobId: null,
+      });
+    }
+    let extractedText = undefined;
+
+    // Now, enqueue the job with the extracted text instead of a file path
+    const job = await flashcardQueue.add({
+      extractedText, // pass the extracted text directly
+      name: topic,
+      categoryId,
+      user,
+      sectionSize,
+      cardsCreated: 0,
+      questionsCreated: 0,
+      cardsPerPage,
+      requestedCards: 20,
+      jobEventId: createdJobEvent._id,
+    });
+
+    let expectedTimeInSeconds = 20 + 15;
+    let isPremium = user.isPremium;
+
+    createdJobEvent.isPremium = isPremium;
+    createdJobEvent.expectedTimeInSeconds = expectedTimeInSeconds;
+
+    await createdJobEvent.save();
+    console.log("JobEvent created:", createdJobEvent._id);
+
+    return res.json({ jobId: job.id, expectedTimeInSeconds, isPremium });
+  })
+);
+
 router.get("/job/:id/progress", isLoggedIn, async (req, res) => {
   const jobId = req.params.id;
   const { lastJobCredits, credits, extraCredits } = req.user;
