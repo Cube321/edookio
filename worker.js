@@ -47,6 +47,7 @@ async function processDocumentJob(job) {
       sectionSize,
       cardsPerPage,
       jobEventId,
+      requestedCards,
     } = job.data;
 
     await job.progress(1);
