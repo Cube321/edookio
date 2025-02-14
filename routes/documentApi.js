@@ -238,7 +238,7 @@ router.post(
 
     console.log("Topic:", topic);
 
-    const sectionSize = 20;
+    const sectionSize = 40;
     console.log("Section size:", sectionSize);
 
     const cardsPerPage = 10;
