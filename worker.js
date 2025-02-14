@@ -358,8 +358,8 @@ async function getTextForTopic(topic, textLength, jobEvent) {
       messages: [
         {
           role: "user",
-          content: `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has approximately ${
-            textLength * 163
+          content: `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has at least ${
+            textLength * 225
           } characters. The audience is university students. The text should be informative and engaging. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`,
         },
       ],
