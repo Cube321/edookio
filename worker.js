@@ -355,66 +355,40 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     const targetCharCount = 5000;
     console.log("Requested text length:", targetCharCount);
 
-    let fullText = "";
-    // Accumulate usage across all requests
-    let accumulatedUsage = { prompt_tokens: 0, completion_tokens: 0 };
+    // Build the prompt for a single request
+    const prompt = `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has at least ${targetCharCount} characters. The audience is university students. The text should be informative and engaging. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`;
 
-    // Initial prompt message
-    let prompt = `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has at least ${targetCharCount} characters. The audience is university students. The text should be informative and engaging. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`;
+    // For 5000 characters, roughly 1250 tokens are needed (assuming 1 token ≈ 4 characters).
+    // We set max_tokens a bit higher (e.g., 2000) to allow for variability.
+    const max_tokens = 2000;
 
-    // Continue generating text until we reach the target character count
-    while (fullText.length < targetCharCount) {
-      // Estimate remaining tokens needed (rough conversion: 1 token ≈ 4 characters)
-      const remainingChars = targetCharCount - fullText.length;
-      const estimatedTokens = Math.ceil(remainingChars / 4);
-      // Use the smaller value between our original multiplier and the estimated tokens for this iteration
-      const max_tokens = 2000;
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens,
+    });
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
-        temperature: 0.7,
-        max_tokens,
-      });
+    const content = completion.choices[0].message.content;
+    const usage = completion.usage;
 
-      const content = completion.choices[0].message.content;
-      // Aggregate usage for price calculation
-      if (completion.usage) {
-        accumulatedUsage.prompt_tokens += completion.usage.prompt_tokens;
-        accumulatedUsage.completion_tokens +=
-          completion.usage.completion_tokens;
-      }
+    console.log("Generated text length:", content.length);
 
-      if (content.includes("invalid_topic")) {
-        throw new Error("K tomuto tématu nelze vygenerovat žádný obsah");
-      }
-
-      fullText += content;
-      console.log("Generated text length so far:", fullText.length);
-
-      // If we haven't reached the target length, update the prompt to continue
-      if (fullText.length < targetCharCount) {
-        console.log("Continuing generation...");
-        prompt =
-          "Please continue with generation, connecting the text to the previous message but do not explicitly include information from the original prompt, just use it as a guidance. Add at least 5000 characters to the text and continue until you reach the target length.";
-      }
+    if (content.includes("invalid_topic")) {
+      throw new Error("K tomuto tématu nelze vygenerovat žádný obsah");
     }
-
-    console.log("Received response from OpenAI for topic:", topic);
-    console.log("Final generated text length:", fullText.length);
 
     // Count textGenerationTokenPriceCZK and save it to jobEvent, using different prices for prompt and completion tokens
     const costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
     const costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
 
-    const priceForPrompt = accumulatedUsage.prompt_tokens * costPerPromptToken;
-    const priceForCompletion =
-      accumulatedUsage.completion_tokens * costPerCompletionToken;
+    const priceForPrompt = usage.prompt_tokens * costPerPromptToken;
+    const priceForCompletion = usage.completion_tokens * costPerCompletionToken;
     const totalPrice = priceForPrompt + priceForCompletion;
 
     if (jobEvent) {
@@ -422,7 +396,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
       await jobEvent.save();
     }
 
-    return fullText;
+    return content;
   } catch (error) {
     console.error("Error getting text for topic:", error);
     Sentry.captureException(error);
