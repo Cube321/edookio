@@ -50,12 +50,14 @@ async function processDocumentJob(job) {
       requestedCards,
     } = job.data;
 
+    await job.progress(1);
     let jobEvent = await JobEvent.findById(jobEventId);
 
     if (!extractedText && requestedCards) {
       console.log(
         "No extracted text provided. Getting text from OpenAI based on topic..."
       );
+      await job.progress(8);
       extractedText = await getTextForTopic(name, requestedCards, jobEvent);
     }
 
@@ -363,6 +365,21 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     });
 
     const content = completion.choices[0].message.content;
+    const usage = completion.usage;
+
+    //count textGenerationTokenPriceCZK and save it to jobEvent, different price for prompt and completion tokens
+    const costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
+    const costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
+
+    const priceForPrompt = usage.prompt_tokens * costPerPromptToken;
+    const priceForCompletion = usage.completion_tokens * costPerCompletionToken;
+
+    const totalPrice = priceForPrompt + priceForCompletion;
+
+    if (jobEvent) {
+      jobEvent.textGenerationTokenPriceCZK = (totalPrice * 22).toFixed(3);
+      await jobEvent.save();
+    }
 
     if (content.includes("invalid_topic")) {
       throw new Error("K tomuto tématu nelze vygenerovat žadný obsah");

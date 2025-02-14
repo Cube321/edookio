@@ -30,10 +30,10 @@
       <span class="text-bold">Využité kredity</span>
     </div>
     <div class="col-1 text-center">
-      <span class="text-bold">Tokeny</span>
+      <span class="text-bold">Cena za téma</span>
     </div>
     <div class="col-1 text-center">
-      <span class="text-bold">Cena</span>
+      <span class="text-bold">Cena celkem</span>
     </div>
     <div class="col-2">
       <span class="text-bold">Status</span>
@@ -62,10 +62,14 @@
             <span><%= job.actualCredits %></span>
         </div>
         <div class="col-1 d-flex justify-content-center">
-          <span><%= job.totalTokens %></span>
+          <span><%= job.textGenerationTokenPriceCZK || 0 %> Kč</span>
         </div>
         <div class="col-1 d-flex justify-content-center">
-          <span><%= job.totalPriceCZK %> Kč</span>
+          <% if (job.textGenerationTokenPriceCZK) { %>
+            <span><%= job.totalPriceCZK + job.textGenerationTokenPriceCZK %> Kč</span>
+          <% } else { %>
+            <span><%= job.totalPriceCZK %> Kč</span>
+          <% } %>
         </div>
         <div class="col-2">
             <% if (job.finishedSuccessfully && !job.isDemo) { %>
