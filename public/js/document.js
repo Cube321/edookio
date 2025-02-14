@@ -102,6 +102,8 @@ document
           "expected-time"
         ).textContent = `Očekávaná doba generování je ${timeLeft} sekund`;
         if (timeLeft <= 0) {
+          document.getElementById("progress-text").textContent =
+            "ještě chvilku prosím...";
           clearInterval(timeInterval);
         }
       }, 1000);
@@ -356,6 +358,11 @@ function updateProgressUI(progress, state) {
 
   if (progressBar) {
     progressBar.style.width = `${progress}%`;
+  }
+
+  if (progress === 95) {
+    progressText.textContent =
+      "Ukládám vygenerované kartičky do databáze, může to chvilku trvat...";
   }
 
   if (progressText) {
