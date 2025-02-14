@@ -351,6 +351,8 @@ flashcardQueue.process(async (job) => {
 //helper function to get text from OpenAi on a given topic where the length of the text is 225 times entered value
 async function getTextForTopic(topic, textLength, jobEvent) {
   try {
+    console.log("Getting text for topic:", topic);
+    console.log("Requested text length:", textLength * 225);
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
@@ -362,10 +364,13 @@ async function getTextForTopic(topic, textLength, jobEvent) {
         },
       ],
       temperature: 0.7,
+      max_tokens: textLength * 225,
     });
 
     const content = completion.choices[0].message.content;
     const usage = completion.usage;
+
+    console.log("Generated text length:", content.length);
 
     //count textGenerationTokenPriceCZK and save it to jobEvent, different price for prompt and completion tokens
     const costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
