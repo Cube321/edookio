@@ -50,11 +50,13 @@ async function processDocumentJob(job) {
       requestedCards,
     } = job.data;
 
+    let jobEvent = await JobEvent.findById(jobEventId);
+
     if (!extractedText && requestedCards) {
       console.log(
         "No extracted text provided. Getting text from OpenAI based on topic..."
       );
-      extractedText = await getTextForTopic(name, requestedCards);
+      extractedText = await getTextForTopic(name, requestedCards, jobEvent);
     }
 
     if (!extractedText) {
@@ -65,8 +67,6 @@ async function processDocumentJob(job) {
 
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) throw new Error("Category not found.");
-
-    let jobEvent = await JobEvent.findById(jobEventId);
 
     let foundUser;
     let demoUser;
@@ -347,7 +347,7 @@ flashcardQueue.process(async (job) => {
 });
 
 //helper function to get text from OpenAi on a given topic where the length of the text is 225 times entered value
-async function getTextForTopic(topic, textLength) {
+async function getTextForTopic(topic, textLength, jobEvent) {
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -374,6 +374,11 @@ async function getTextForTopic(topic, textLength) {
   } catch (error) {
     console.error("Error getting text for topic:", error);
     Sentry.captureException(error);
+    if (jobEvent) {
+      jobEvent.finishedSuccessfully = false;
+      jobEvent.errorMessage = "Selhalo zpracování - nesmyslné téma";
+      await jobEvent.save();
+    }
     throw error;
   }
 }

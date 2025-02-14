@@ -300,7 +300,12 @@ router.post(
       requestedCards: lengthNumber,
     });
 
-    let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
+    let expectedTimeInSeconds = 0;
+    if (!extractedText) {
+      expectedTimeInSeconds = lengthNumber + 15;
+    } else {
+      expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;
+    }
     let isPremium = user.isPremium;
 
     await createdJobEvent.save();
