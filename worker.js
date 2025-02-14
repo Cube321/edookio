@@ -356,7 +356,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     console.log("Requested text length:", targetCharCount);
 
     // Build the prompt for a single request
-    const prompt = `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has at least ${targetCharCount} characters. The audience is university students. The text should be informative and engaging. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`;
+    const prompt = `I would like to learn more about this topic: ${topic}. Create a text in the Czech language that has at least ${targetCharCount} characters. The audience is university students. The text should be informative and engaging. Avoid mentioning why this topic is relevant for students. If the topic does not make sense, tell me and include code "invalid_topic" in the response.`;
 
     // For 5000 characters, roughly 1250 tokens are needed (assuming 1 token ≈ 4 characters).
     // We set max_tokens a bit higher (e.g., 2000) to allow for variability.
@@ -393,6 +393,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
 
     if (jobEvent) {
       jobEvent.textGenerationTokenPriceCZK = (totalPrice * 22).toFixed(3);
+      jobEvent.extractedTextLength = content?.length;
       await jobEvent.save();
     }
 

@@ -165,10 +165,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const sectionsContainer = document.getElementById("sections-container");
   const addSectionContainer = document.getElementById("add-section-container");
   const loader = document.getElementById("loader");
+  const showBodyGenerateDocument = document.getElementById(
+    "show-body-generate-document"
+  );
+  const showBodyGenerateTopic = document.getElementById(
+    "show-body-generate-topic"
+  );
 
   const retryGenerateContentBtn = document.getElementById(
     "retry-generate-content-btn"
   );
+
+  showBodyGenerateDocument.addEventListener("click", () => {
+    document.getElementById("body-generate").style.display = "block";
+    document.getElementById("add-section-with-ai-form").style.display = "block";
+    document.getElementById("body-generate-btns").style.display = "none";
+  });
+
+  showBodyGenerateTopic.addEventListener("click", () => {
+    document.getElementById("body-generate").style.display = "block";
+    document.getElementById("add-section-with-ai-form").style.display = "none";
+    document.getElementById("body-generate-btns").style.display = "none";
+    document.getElementById("add-section-with-ai-form-topic").style.display =
+      "block";
+  });
 
   retryGenerateContentBtn.addEventListener("click", () => {
     document.getElementById("add-section-with-ai-form").style.display = "block";
@@ -188,6 +208,13 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("add-section-with-ai-form").style.display =
         "block";
       documentErrorContainer.style.display = "none";
+    } else {
+      document.getElementById("add-section-with-ai-form").style.display =
+        "none";
+      document.getElementById("body-generate-btns").style.display = "block";
+      document.getElementById("body-generate").style.display = "none";
+      document.getElementById("add-section-with-ai-form-topic").style.display =
+        "none";
     }
   });
 });

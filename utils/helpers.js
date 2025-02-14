@@ -187,6 +187,7 @@ helpers.registerAction = async function (user, action) {
     ) {
       user.extraCredits += 500;
       user.bonus500added = true;
+      user.bonus100shown = true;
       console.log("Bonus 500 AI credits for user:", user.email);
       helpers.incrementEventCount("bonus500added");
     }
