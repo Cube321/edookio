@@ -268,6 +268,12 @@ router.post(
     }
     let extractedText = undefined;
 
+    return res.json({
+      creditsRequired: expectedCredits,
+      creditsLeft: user.credits,
+      jobId: null,
+    });
+
     // Now, enqueue the job with the extracted text instead of a file path
     const job = await flashcardQueue.add({
       extractedText, // pass the extracted text directly

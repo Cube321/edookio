@@ -144,7 +144,10 @@ document
       // Submit the form data using fetch
       const response = await fetch(form.action, {
         method: form.method,
-        body: { topic },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ topic: topic }),
       });
 
       if (!response.ok) {
