@@ -360,12 +360,12 @@ function updateProgressUI(progress, state) {
     progressBar.style.width = `${progress}%`;
   }
 
+  if (progressText) {
+    progressText.textContent = `Zpracováno ${progress} %`;
+  }
+
   if (progress == 95) {
     progressText.textContent =
       "Ukládám vygenerované kartičky do databáze, může to chvilku trvat...";
-  }
-
-  if (progressText) {
-    progressText.textContent = `Zpracováno ${progress} %`;
   }
 }
