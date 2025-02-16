@@ -333,7 +333,11 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   retryGenerateContentBtn.addEventListener("click", () => {
-    document.getElementById("add-section-with-ai-form").style.display = "block";
+    document.getElementById("add-section-with-ai-form").style.display = "none";
+    document.getElementById("body-generate-btns").style.display = "block";
+    document.getElementById("body-generate").style.display = "none";
+    document.getElementById("add-section-with-ai-form-topic").style.display =
+      "none";
     documentErrorContainer.style.display = "none";
   });
 
