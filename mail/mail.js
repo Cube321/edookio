@@ -1274,7 +1274,7 @@ mail.creditsAddedConfirmationEmail = function (
   callback
 ) {
   const msg = {
-    from: { email: "edookio@edookio.cz", name: "Edookio" },
+    from: { email: "edookio@edookio.com", name: "Edookio" },
     to: email,
     subject: "AI kredity navýšeny o " + amountOfCredits,
     html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
@@ -1557,7 +1557,7 @@ mail.sendFeedback = function (email, name, text, callback) {
 //send message from contact form
 mail.sendMessageFromContactForm = function (email, name, text, callback) {
   const msg = {
-    from: "edookio@edookio.com",
+    from: email,
     to: "edookio@edookio.com",
     subject: "(EDOOKIO) Nová zpráva z kontaktního formuláře",
     html: `
