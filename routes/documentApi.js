@@ -319,8 +319,6 @@ router.get(
       const state = await job.getState(); // pending, active, completed, etc.
       const failedReason = state === "failed" ? job.failedReason : null;
 
-      console.log(job);
-
       res.json({
         progress,
         state,

@@ -381,7 +381,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     console.log("Generated text length:", content.length);
 
     if (content.includes("invalid_topic")) {
-      throw new Error("K tomuto tématu nelze vygenerovat žádný obsah");
+      throw new Error("invalid_topic");
     }
 
     // Count textGenerationTokenPriceCZK and save it to jobEvent, using different prices for prompt and completion tokens
