@@ -333,6 +333,7 @@ async function processDocumentJob(job) {
   } catch (error) {
     console.error("Error processing document job:", error);
     Sentry.captureException(error);
+    let jobEvent = await JobEvent.findById(job.data.jobEventId);
     if (jobEvent) {
       jobEvent.finishedSuccessfully = false;
       jobEvent.errorMessage = "Selhalo zpracování - worker";
