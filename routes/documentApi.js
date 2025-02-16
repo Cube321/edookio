@@ -317,12 +317,16 @@ router.get(
 
       const progress = job.progress();
       const state = await job.getState(); // pending, active, completed, etc.
+      const failedReason = state === "failed" ? job.failedReason : null;
+
+      console.log(job);
 
       res.json({
         progress,
         state,
         lastJobCredits,
         credits: totalCredits,
+        failedReason,
       });
     } catch (error) {
       console.error("Error fetching job progress:", error);
