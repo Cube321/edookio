@@ -1206,4 +1206,19 @@ router.post(
   }
 );
 
+//post route for reporting problematic AI content section
+router.post(
+  "/mobileApi/reportAiContent",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    let { sectionId } = req.body;
+    console.log("sectionId", sectionId);
+
+    helpers.incrementEventCount("reportedAiContent");
+
+    console.log("Problém nahlášen");
+    res.status(200).json({ message: "Problém byl nahlášen" });
+  }
+);
+
 module.exports = router;

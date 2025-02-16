@@ -356,8 +356,6 @@
                 <div class="row px-3 pb-3">
                     <% if(user.invoices.length === 0 && user.invoicesDbObjects.length === 0){ %>
                         <p class="text-center text-muted">Uživatel nemá vystaveny žádné faktury.</p>
-                        <p class="px-3 text-center text-small text-muted">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách byly zasílány e-mailem.</p>
-
                     <% } else { %>
                     <table class="mx-3">
                         <tr>
@@ -385,7 +383,6 @@
                                 </tr>
                             <% }) %>
                     </table>
-                    <p class="px-3 text-center text-small text-muted mt-3">Na tomto místě se zobrazují platby od 1. 1. 2024. Doklady o předchozích platbách najdeš ve svém e-mailu.</p>
 
                     <% } %>
                 </div>

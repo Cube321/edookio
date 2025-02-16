@@ -366,6 +366,6 @@ function updateProgressUI(progress, state) {
 
   if (progress == 95) {
     progressText.textContent =
-      "Ukládám vygenerované kartičky do databáze, může to chvilku trvat...";
+      "Ukládám vygenerovaný obsah do databáze, může to chvilku trvat...";
   }
 }
