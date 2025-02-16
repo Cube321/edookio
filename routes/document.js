@@ -310,12 +310,14 @@ router.get("/job/:id/progress", isLoggedIn, async (req, res) => {
 
     const progress = job.progress();
     const state = await job.getState(); // pending, active, completed, etc.
+    const failedReason = state === "failed" ? job.failedReason : null;
 
     res.json({
       progress,
       state,
       lastJobCredits,
       credits: totalCredits,
+      failedReason,
     });
   } catch (error) {
     console.error("Error fetching job progress:", error);
@@ -503,7 +505,6 @@ router.get("/demoJob/:id/progress", async (req, res) => {
 
     const progress = job.progress();
     const state = await job.getState(); // pending, active, completed, etc.
-    const failedReason = state === "failed" ? job.failedReason : null;
 
     let foundCategory = null;
 
@@ -518,7 +519,6 @@ router.get("/demoJob/:id/progress", async (req, res) => {
       progress,
       state,
       sectionId: foundCategory?.sections[0],
-      failedReason,
     });
   } catch (error) {
     console.error("Error fetching job progress:", error);

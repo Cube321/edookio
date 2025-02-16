@@ -220,7 +220,7 @@ async function processDocumentJob(job) {
       if (i % sectionSize === 0) {
         sectionIndex++;
         section = new Section({
-          name: `${name} ${sectionIndex}`,
+          name: `${name} ${sectionIndex > 1 ? sectionIndex : ""}`,
           categoryId: categoryId,
           author: userId,
           cards: [],
