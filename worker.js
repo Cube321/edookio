@@ -336,7 +336,9 @@ async function processDocumentJob(job) {
     let jobEvent = await JobEvent.findById(job.data.jobEventId);
     if (jobEvent) {
       jobEvent.finishedSuccessfully = false;
-      jobEvent.errorMessage = "Selhalo zpracování - worker";
+      if (!jobEvent.errorMessage) {
+        jobEvent.errorMessage = "Selhalo zpracování - worker";
+      }
       await jobEvent.save();
     }
     helpers.incrementEventCount("workerGenerationError");

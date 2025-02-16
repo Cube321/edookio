@@ -255,7 +255,8 @@ async function fetchJobProgress(jobId, progressInterval) {
       throw new Error("Nepodařilo se načíst stav zpracování.");
     }
 
-    const { progress, state, lastJobCredits, credits } = await response.json();
+    const { progress, state, lastJobCredits, credits, failedReason } =
+      await response.json();
 
     // Update the progress UI
     updateProgressUI(progress, state);
@@ -263,6 +264,8 @@ async function fetchJobProgress(jobId, progressInterval) {
     // Stop polling if the job is completed or failed
     if (state === "completed" || state === "failed") {
       clearInterval(progressInterval);
+
+      console.log(failedReason);
 
       if (state === "completed") {
         document.getElementById("document-progress-container").style.display =
@@ -275,6 +278,16 @@ async function fetchJobProgress(jobId, progressInterval) {
       } else {
         document.getElementById("progress-text").textContent =
           "Omlouváme se, zpracování selhalo.";
+        if (failedReason && failedReason === "invalid_topic") {
+          document.getElementById("document-progress-container").style.display =
+            "none";
+          document.getElementById("document-error-container").style.display =
+            "block";
+          document.getElementById("document-error-headline").textContent =
+            "Nevhodné téma";
+          document.getElementById("document-error-text").textContent =
+            "Omlouváme se, ze zadaného tématu se nepodařilo vygenerovat žádný obsah. Zkuste prosím téma upravit.";
+        }
       }
     }
   } catch (error) {

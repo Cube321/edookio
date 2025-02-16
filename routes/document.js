@@ -12,6 +12,7 @@ const pdfParse = require("pdf-parse");
 const mammoth = require("mammoth");
 const textract = require("textract");
 const helpers = require("../utils/helpers");
+const { fail } = require("assert");
 
 // Configure multer for file uploads
 const upload = multer({ dest: "uploads/" });
@@ -502,6 +503,7 @@ router.get("/demoJob/:id/progress", async (req, res) => {
 
     const progress = job.progress();
     const state = await job.getState(); // pending, active, completed, etc.
+    const failedReason = state === "failed" ? job.failedReason : null;
 
     let foundCategory = null;
 
@@ -516,6 +518,7 @@ router.get("/demoJob/:id/progress", async (req, res) => {
       progress,
       state,
       sectionId: foundCategory?.sections[0],
+      failedReason,
     });
   } catch (error) {
     console.error("Error fetching job progress:", error);
