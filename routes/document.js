@@ -337,6 +337,7 @@ router.post(
       source: "web",
       isDemo: true,
       name: "demo",
+      jobType: "document",
     });
 
     let name = "Můj balíček";

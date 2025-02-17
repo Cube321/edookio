@@ -81,6 +81,7 @@
   border: none;
   padding-top: 11px;
   padding-bottom: 11px;
+  padding-left: 19px;
   background: linear-gradient(90deg, #ff6e1e, #f1471b);
   color: white;
 }

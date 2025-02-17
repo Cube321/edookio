@@ -9,6 +9,7 @@ const { OpenAI } = require("openai");
 const { splitTextIntoChunks } = require("./utils/document");
 const mongoose = require("mongoose");
 const helpers = require("./utils/helpers");
+const parse5 = require("parse5");
 
 const Sentry = require("@sentry/node");
 
@@ -115,6 +116,8 @@ async function processDocumentJob(job) {
                     <li> for list items inside the <ul> tag
                     <strong> for bold text
                     <i> for italic text
+
+                    Produce strictly valid HTML with opening and closing tags.
       
                     Each answer has to be wrapped in one or more <p> tags. Use more if the answer contains multiple paragraphs. Always use the <b> tag to highlight the most important parts of the answer.
                     Formulate the questions clearly and concisely. The answers should be brief and to the point.
@@ -242,10 +245,14 @@ async function processDocumentJob(job) {
       }
 
       const cardData = allFlashcards[i];
+
+      const fixedPageA = fixHtml(cardData.flashcardQuestion);
+      const fixedPageB = fixHtml(cardData.flashcardAnswer);
+
       const card = new Card({
         categoryId: categoryId,
-        pageA: cardData.flashcardQuestion,
-        pageB: cardData.flashcardAnswer,
+        pageA: fixedPageA,
+        pageB: fixedPageB,
         author: userId,
         section: section._id,
       });
@@ -430,4 +437,11 @@ async function getTextForTopic(topic, textLength, jobEvent, user) {
     }
     throw error;
   }
+}
+
+function fixHtml(htmlString) {
+  // Since we're dealing with fragments (not full HTML documents),
+  // parse as a fragment to avoid <html>, <head>, <body> wrappers:
+  const fragment = parse5.parseFragment(htmlString);
+  return parse5.serialize(fragment);
 }
