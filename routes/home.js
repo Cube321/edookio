@@ -8,6 +8,7 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const icons = require("../utils/icons");
 const { isPremiumUser } = require("../utils/middleware");
+const helpers = require("../utils/helpers");
 
 //SHOW HOMEPAGE + helper
 router.get(
@@ -16,6 +17,15 @@ router.get(
   catchAsync(async (req, res) => {
     // Disable caching for this route:
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+
+    const { campaign } = req.query;
+    console.log("campaign", campaign);
+
+    if (campaign === "basic2025") {
+      await helpers.incrementEventCount("marketingCampaignBasic2025");
+    } else if (campaign === "creative2025") {
+      await helpers.incrementEventCount("marketingCampaignCreative2025");
+    }
 
     const { user } = req;
 
