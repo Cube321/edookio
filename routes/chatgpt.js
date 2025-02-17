@@ -149,7 +149,7 @@ async function generateQuizQuestion(card, sectionId, categoryId, user) {
         `,
       },
     ],
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     temperature: 0.8,
   });
 
@@ -203,7 +203,7 @@ async function generateEnQuizQuestion(card, sectionId, categoryId, user) {
         `,
       },
     ],
-    model: "gpt-4o",
+    model: "gpt-4o-mini",
     temperature: 0.8,
   });
 

@@ -58,7 +58,7 @@ async function processDocumentJob(job) {
         "No extracted text provided. Getting text from OpenAI based on topic..."
       );
       await job.progress(8);
-      extractedText = await getTextForTopic(name, 20, jobEvent);
+      extractedText = await getTextForTopic(name, 20, jobEvent, user);
     }
 
     if (!extractedText) {
@@ -73,6 +73,7 @@ async function processDocumentJob(job) {
     let foundUser;
     let demoUser;
     let userId;
+    let model = "gpt-4o";
 
     if (!user) {
       demoUser = await User.findOne({ email: "demo@edookio.com" });
@@ -81,8 +82,11 @@ async function processDocumentJob(job) {
       foundUser = await User.findById(user._id);
       if (!foundUser) throw new Error("User not found.");
       userId = foundUser._id;
+      if (!user.isPremium) {
+        model = "gpt-4o-mini";
+      }
     }
-
+    jobEvent.model = model;
     console.log("Splitting text into chunks...");
     const maxTokensPerRequest = Math.floor(3000 / (cardsPerPage * 3));
     const textChunks = splitTextIntoChunks(extractedText, maxTokensPerRequest);
@@ -98,7 +102,7 @@ async function processDocumentJob(job) {
       console.log("Sending text chunk to OpenAI for processing...", index);
       return openai.chat.completions
         .create({
-          model: "gpt-4o-mini",
+          model,
           messages: [
             {
               role: "user",
@@ -185,8 +189,13 @@ async function processDocumentJob(job) {
     console.log("Total tokens used:", totalTokens);
 
     // Calculate the pricing based on the provided rates
-    const costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
-    const costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
+    let costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
+    let costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
+
+    if (model === "gpt-4o-mini") {
+      costPerPromptToken = 0.15 / 1000000; // $0.15 per 1,000,000 input tokens
+      costPerCompletionToken = 0.6 / 1000000; // $0.60 per 1,000,000 output tokens
+    }
 
     const priceForPrompt = totalPromptTokens * costPerPromptToken;
     const priceForCompletion = totalCompletionTokens * costPerCompletionToken;
@@ -195,6 +204,7 @@ async function processDocumentJob(job) {
     console.log("Price for prompt tokens:", priceForPrompt.toFixed(6));
     console.log("Price for completion tokens:", priceForCompletion.toFixed(6));
     console.log("Total price:", totalPrice.toFixed(6));
+    console.log("Model: ", model);
 
     // Concatenate all flashcards from successful chunks
     let allFlashcards = [];
@@ -352,7 +362,11 @@ flashcardQueue.process(async (job) => {
 });
 
 //helper function to get text for a given topic where the length of the text is 225 times the entered value
-async function getTextForTopic(topic, textLength, jobEvent) {
+async function getTextForTopic(topic, textLength, jobEvent, user) {
+  let model = "gpt-4o";
+  if (user && !user.isPremium) {
+    model = "gpt-4o-mini";
+  }
   try {
     console.log("Getting text for topic:", topic);
     const targetCharCount = 5000;
@@ -366,7 +380,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     const max_tokens = 2000;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model,
       messages: [
         {
           role: "user",
@@ -387,8 +401,13 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     }
 
     // Count textGenerationTokenPriceCZK and save it to jobEvent, using different prices for prompt and completion tokens
-    const costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
-    const costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
+    let costPerPromptToken = 2.5 / 1000000; // $2.50 per 1,000,000 input tokens
+    let costPerCompletionToken = 10 / 1000000; // $10 per 1,000,000 output tokens
+
+    if (model === "gpt-4o-mini") {
+      costPerPromptToken = 0.15 / 1000000; // $0.15 per 1,000,000 input tokens
+      costPerCompletionToken = 0.6 / 1000000; // $0.60 per 1,000,000 output tokens
+    }
 
     const priceForPrompt = usage.prompt_tokens * costPerPromptToken;
     const priceForCompletion = usage.completion_tokens * costPerCompletionToken;

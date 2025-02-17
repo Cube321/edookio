@@ -16,6 +16,9 @@ const jobEventSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  model: {
+    type: String,
+  },
   sectionSize: {
     type: Number,
   },
