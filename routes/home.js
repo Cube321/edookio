@@ -18,13 +18,10 @@ router.get(
     // Disable caching for this route:
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
 
+    //measure marketing campaign event count
     const { campaign } = req.query;
-    console.log("campaign", campaign);
-
-    if (campaign === "basic2025") {
-      await helpers.incrementEventCount("marketingCampaignBasic2025");
-    } else if (campaign === "creative2025") {
-      await helpers.incrementEventCount("marketingCampaignCreative2025");
+    if (campaign) {
+      await helpers.incrementEventCount(`marketingCampaign-${campaign}`);
     }
 
     const { user } = req;
