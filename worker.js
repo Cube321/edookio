@@ -98,7 +98,7 @@ async function processDocumentJob(job) {
       console.log("Sending text chunk to OpenAI for processing...", index);
       return openai.chat.completions
         .create({
-          model: "gpt-4o",
+          model: "gpt-4o-mini",
           messages: [
             {
               role: "user",
@@ -366,7 +366,7 @@ async function getTextForTopic(topic, textLength, jobEvent) {
     const max_tokens = 2000;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "user",

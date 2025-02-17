@@ -265,8 +265,6 @@ async function fetchJobProgress(jobId, progressInterval) {
     if (state === "completed" || state === "failed") {
       clearInterval(progressInterval);
 
-      console.log(failedReason);
-
       if (state === "completed") {
         document.getElementById("document-progress-container").style.display =
           "none";
