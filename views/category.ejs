@@ -686,11 +686,16 @@
             />
           </div>
           <h5 class="mt-3 text-center mb-2">Generuji kartičky a otázky...</h5>
-          <% if (currentUser && currentUser.isPremium ){ %>
-          <p class="text-center text-smaller">gpt-4o</p>
+          <% if (currentUser && !currentUser.isPremium &&
+          currentUser.generatedCardsCounterTotal < 101 ){ %>
+          <p class="text-center text-smaller">
+            používám <b>gpt-4o</b> pro prvních 100 kartiček a otázek
+          </p>
+          <% } else if (currentUser && currentUser.isPremium) { %>
+          <p class="text-center text-smaller">používám <b>gpt-4o</b></p>
           <% } else { %>
           <p class="text-center text-smaller">
-            gpt-4o-mini |
+            používám <b>gpt-4o-mini</b> |
             <a href="/premium" target="_blank">přejít na gpt-4o</a>
           </p>
           <% } %>

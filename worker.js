@@ -83,7 +83,7 @@ async function processDocumentJob(job) {
       foundUser = await User.findById(user._id);
       if (!foundUser) throw new Error("User not found.");
       userId = foundUser._id;
-      if (!user.isPremium) {
+      if (!user.isPremium && user.generatedCardsCounterTotal > 100) {
         model = "gpt-4o-mini";
       }
     }
@@ -371,7 +371,7 @@ flashcardQueue.process(async (job) => {
 //helper function to get text for a given topic where the length of the text is 225 times the entered value
 async function getTextForTopic(topic, textLength, jobEvent, user) {
   let model = "gpt-4o";
-  if (user && !user.isPremium) {
+  if (user && !user.isPremium && user.generatedCardsCounterTotal > 100) {
     model = "gpt-4o-mini";
   }
   try {
