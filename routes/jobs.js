@@ -31,10 +31,18 @@ router.get(
 
     jobEvents = jobEvents.map((job) => {
       job.dateFormatted = moment(job.date).format("DD.MM.YYYY HH:mm");
-      job.totalPriceCZK = job.totalPriceCZK?.toFixed(3);
-      job.textGenerationTokenPriceCZK =
-        job.textGenerationTokenPriceCZK?.toFixed(3);
-
+      if (job.finishedSuccessfully) {
+        job.jobPrice = job.totalPriceCZK;
+        if (job.textGenerationTokenPriceCZK) {
+          job.jobPrice = job.totalPriceCZK + job.textGenerationTokenPriceCZK;
+        }
+      } else {
+        job.jobPrice = 0;
+      }
+      //limit the jobPrice to 3 decimal places
+      job.jobPrice = job.jobPrice.toFixed
+        ? job.jobPrice.toFixed(3)
+        : job.jobPrice;
       return job;
     });
 

@@ -67,11 +67,7 @@
           <span><%= job.textGenerationTokenPriceCZK || 0 %> Kč</span>
         </div>
         <div class="col-1 d-flex justify-content-center">
-          <% if (job.textGenerationTokenPriceCZK) { %>
-            <span><%= job.totalPriceCZK + job.textGenerationTokenPriceCZK %> Kč</span>
-          <% } else { %>
-            <span><%= job.totalPriceCZK %> Kč</span>
-          <% } %>
+          <span><%= job.jobPrice %> Kč</span>
         </div>
         <div class="col-2">
             <% if (job.finishedSuccessfully && !job.isDemo) { %>
