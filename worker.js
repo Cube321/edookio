@@ -107,7 +107,7 @@ async function processDocumentJob(job) {
           messages: [
             {
               role: "user",
-              content: `Below is a text. You must create flashcards in Czech language from it. 
+              content: `Below is a text. You must create flashcards in the same language based on the text. 
             
                     Use only the following HTML tags to format the answers:
       
