@@ -84,6 +84,9 @@ const jobEventSchema = new Schema({
   textGenerationTokenPriceCZK: {
     type: Number,
   },
+  generatedSections: {
+    type: Array,
+  },
 });
 
 module.exports = mongoose.model("JobEventSchema", jobEventSchema);

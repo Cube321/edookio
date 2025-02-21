@@ -241,6 +241,7 @@ async function processDocumentJob(job) {
         });
         await section.save();
         foundCategory.sections.push(section._id);
+        jobEvent.generatedSections.push(section._id);
         await foundCategory.save();
       }
 
