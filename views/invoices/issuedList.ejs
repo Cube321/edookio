@@ -31,7 +31,11 @@
             >
           </td>
           <% if(invoice.user && invoice.user.email){ %>
-          <td><%= invoice.user.email %></td>
+          <td>
+            <a href="/admin/<%= invoice.user?._id %>/showDetail"
+              ><%= invoice.user.email %></a
+            >
+          </td>
           <% } else { %>
           <td>Neznámý</td>
           <% } %> <% if (invoice.subscriptionPeriod) { %>
