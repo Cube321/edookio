@@ -22,6 +22,7 @@ router.get(
     const { campaign } = req.query;
     if (campaign) {
       await helpers.incrementEventCount(`marketingCampaign-${campaign}`);
+      req.session.campaign = campaign;
     }
 
     const { user } = req;
