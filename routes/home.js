@@ -49,13 +49,38 @@ router.get(
         }
       }
 
+      let renderPage = "index";
+
+      if (!req.session.landingPageVariant) {
+        await helpers.incrementEventCount("landingPageLoadedCounter");
+
+        landingPageLoadedCounter = await helpers.getEventCount(
+          "landingPageLoadedCounter"
+        );
+
+        //A/B testing
+        if (landingPageLoadedCounter % 2 === 0) {
+          renderPage = "index";
+          req.session.landingPageVariant = "A";
+        } else {
+          renderPage = "indexB";
+          req.session.landingPageVariant = "B";
+        }
+      } else {
+        if (req.session.landingPageVariant === "A") {
+          renderPage = "index";
+        } else {
+          renderPage = "indexB";
+        }
+      }
+
       const categories = [];
       let numOfCategories = 0;
       const numOfCards = 0;
       const numOfQuestions = 0;
       const numOfSections = 0;
       let percent = 0;
-      return res.status(200).render("index", {
+      return res.status(200).render(renderPage, {
         categories,
         numOfCards,
         numOfQuestions,

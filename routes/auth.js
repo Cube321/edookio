@@ -141,6 +141,11 @@ router.post(
         registrationCampaign = req.session.campaign;
       }
 
+      let landingPageVariant = null;
+      if (req.session?.landingPageVariant) {
+        landingPageVariant = req.session.landingPageVariant;
+      }
+
       //create nickname
       let randomNumber = Math.floor(Math.random() * 9000) + 1000;
       let nickname = `${email.substring(0, 5)}${randomNumber}`;
@@ -170,6 +175,7 @@ router.post(
         cookies,
         isEmailVerified: false,
         registrationCampaign,
+        landingPageVariant,
       });
       const newUser = await User.register(user, password);
       await req.login(newUser, (err) => {

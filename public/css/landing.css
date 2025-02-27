@@ -34,6 +34,11 @@ body {
   opacity: 0;
 }
 
+.call-to-action2 {
+  zoom: 130%;
+  opacity: 0;
+}
+
 .call-to-action-visible {
   zoom: 130%;
   opacity: 1;

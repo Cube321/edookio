@@ -140,8 +140,8 @@ router.post(
 
     let charactersLimit = 1800 * pagesLimit;
 
-    if (extractedText.length < 10) {
-      console.error("Error extracting text (text below 10 characters)");
+    if (extractedText.length < 100) {
+      console.error("Error extracting text (text below 100 characters)");
       helpers.incrementEventCount("errorExtractingTextBelow10Chars");
       await jobFailed(
         createdJobEvent,
@@ -429,11 +429,11 @@ router.post(
     let pagesLimit = 10;
     let charactersLimit = 1800 * pagesLimit;
 
-    if (extractedText.length < 10) {
-      console.error("Error extracting text (text below 10 characters)");
+    if (extractedText.length < 100) {
+      console.error("Error extracting text (text below 100 characters)");
       await jobFailed(
         createdJobEvent,
-        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)"
+        "Nepodařilo se extrahovat text z dokumentu (méně než 100 znaků)"
       );
       return res.json({
         error:

@@ -41,6 +41,9 @@ const UserSchema = new Schema({
   registrationCampaign: {
     type: String,
   },
+  landingPageVariant: {
+    type: String,
+  },
   usedMobileApp: {
     type: Boolean,
     default: false,

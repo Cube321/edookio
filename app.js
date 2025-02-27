@@ -166,6 +166,7 @@ app.use(flash());
 app.use(helmet());
 
 const scriptSrcUrls = [
+  "https://unpkg.com/",
   "https://stackpath.bootstrapcdn.com/",
   "https://kit.fontawesome.com/",
   "https://cdnjs.cloudflare.com/",
@@ -182,6 +183,7 @@ const styleSrcUrls = [
   "https://use.fontawesome.com/",
   "https://region1.google-analytics.com/",
   "https://fonts.gstatic.com",
+  "https://unpkg.com/",
 ];
 const connectSrcUrls = [
   "https://api.mapbox.com/",

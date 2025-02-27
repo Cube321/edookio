@@ -22,6 +22,18 @@ helpers.incrementEventCount = async function (eventName) {
   }
 };
 
+helpers.getEventCount = async function (eventName) {
+  try {
+    let event = await Stats.findOne({ eventName });
+    if (!event) {
+      return 0;
+    }
+    return event.eventCount;
+  } catch (err) {
+    console.error("Error getting event count:", err);
+  }
+};
+
 helpers.createInvoice = async function (
   userId,
   amount,

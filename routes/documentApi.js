@@ -143,12 +143,12 @@ router.post(
 
     let charactersLimit = 1800 * pagesLimit;
 
-    if (extractedText.length < 10) {
+    if (extractedText.length < 100) {
       console.error("Error extracting text (text below 10 characters)");
       helpers.incrementEventCount("errorExtractingTextBelow10Chars");
       await jobFailed(
         createdJobEvent,
-        "Nepodařilo se extrahovat text z dokumentu (méně než 10 znaků)"
+        "Nepodařilo se extrahovat text z dokumentu (méně než 100 znaků)"
       );
       return res.status(400).json({
         error:
