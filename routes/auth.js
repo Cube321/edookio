@@ -144,6 +144,9 @@ router.post(
       let landingPageVariant = null;
       if (req.session?.landingPageVariant) {
         landingPageVariant = req.session.landingPageVariant;
+        helpers.incrementEventCount(
+          `landingPageRegistered-${landingPageVariant}`
+        );
       }
 
       //create nickname
