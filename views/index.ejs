@@ -34,6 +34,8 @@
       href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Roboto&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   </head>
   <!-- Google tag (gtag.js) -->
   <script
@@ -77,7 +79,7 @@
       </section>
 
       <div class="album pt-5 pb-3">
-        <div class="container">
+        <div class="container" data-aos="fade-in">
           <div class="mb-3 landing-info-wrapper d-none-992-up">
             <div
               class="landing-info d-flex flex-row justify-content-evenly align-items-center"
@@ -230,13 +232,18 @@
         <div class="container">
           <div class="row pb-3">
             <div class="col-md-10 offset-md-1">
-              <h1 class="mb-2 mt-4 text-center">Jak to funguje?</h1>
-              <h5 class="text-muted text-center mb-4">
+              <h1 class="mb-2 mt-4 text-center" data-aos="fade-in">
+                Jak to funguje?
+              </h1>
+              <h5 class="text-muted text-center mb-4" data-aos="fade-in">
                 Přeměň své poznámky na kartičky a otázky pomocí AI
               </h5>
-              <div class="row">
+              <div class="row" data-aos="fade-up">
                 <div class="col-lg-4 mb-3">
-                  <div class="explaination-card white-background">
+                  <div
+                    class="explaination-card white-background"
+                    data-aos="flip-left"
+                  >
                     <div class="row">
                       <div
                         class="col-12 d-flex justify-content-center align-items-center mb-3"
@@ -266,7 +273,10 @@
                   </div>
                 </div>
                 <div class="col-lg-4 mb-3">
-                  <div class="explaination-card white-background">
+                  <div
+                    class="explaination-card white-background"
+                    data-aos="flip-left"
+                  >
                     <div class="row">
                       <div
                         class="col-12 d-flex justify-content-center align-items-center mb-3"
@@ -296,7 +306,10 @@
                   </div>
                 </div>
                 <div class="col-lg-4 mb-3">
-                  <div class="explaination-card white-background">
+                  <div
+                    class="explaination-card white-background"
+                    data-aos="flip-left"
+                  >
                     <div class="row">
                       <div
                         class="col-12 d-flex justify-content-center align-items-center mb-3"
@@ -328,7 +341,7 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row" data-aos="fade-up">
             <div
               class="col-12 d-flex justify-content-center align-items-center"
             >
@@ -357,19 +370,19 @@
 
       <section class="proc-edookio">
         <div class="container">
-          <div class="row pb-3">
+          <div class="row pb-3" data-aos="fade-up">
             <h1 class="mb-2 mt-5 text-center">Studuj efektivně</h1>
             <h5 class="text-muted text-center mb-4">
               Studuj prostřednictvím propojených kartiček a otázek
             </h5>
           </div>
           <div class="row">
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6 mb-3" data-aos="fade-up">
               <div>
                 <img src="/img/mock_card.png" alt="" class="img-fit-100" />
               </div>
             </div>
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6 mb-3" data-aos="fade-up">
               <div class="function-box p-5">
                 <h3 class="my-3">Opakovací kartičky</h3>
                 <p class="text-muted mb-4">
@@ -392,7 +405,7 @@
                 <% } %>
               </div>
             </div>
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6 mb-3" data-aos="fade-up">
               <div class="function-box p-5">
                 <h3 class="my-3">Testové otázky</h3>
                 <p class="text-muted mb-4">
@@ -415,17 +428,17 @@
                 <% } %>
               </div>
             </div>
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6 mb-3" data-aos="fade-up">
               <div>
                 <img src="/img/mock_question.png" alt="" class="img-fit-100" />
               </div>
             </div>
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6 mb-3" data-aos="fade-up">
               <div>
                 <img src="/img/mock_app.png" alt="" class="img-fit-100" />
               </div>
             </div>
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6 mb-3" data-aos="fade-up">
               <div class="function-box p-5">
                 <h3 class="my-3">Mobilní aplikace</h3>
                 <p class="text-muted mb-4">
@@ -456,7 +469,7 @@
       <section class="proc-edookio" style="background-color: #fffbf8">
         <div class="container">
           <div class="row">
-            <div class="col-md-10 offset-md-1 my-5">
+            <div class="col-md-10 offset-md-1 my-5" data-aos="fade-up">
               <h1 class="mb-5 text-center">
                 <%= texts.landingPage.whyUse %>
                 <span class="text-primary"
@@ -465,7 +478,7 @@
               </h1>
               <div class="row">
                 <div class="col-lg-6 mb-3">
-                  <div class="reason white-background">
+                  <div class="reason white-background" data-aos="flip-left">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -494,7 +507,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-3">
-                  <div class="reason white-background">
+                  <div class="reason white-background" data-aos="flip-left">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -523,7 +536,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-3">
-                  <div class="reason white-background">
+                  <div class="reason white-background" data-aos="flip-left">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -552,7 +565,7 @@
                   </div>
                 </div>
                 <div class="col-lg-6 mb-3">
-                  <div class="reason white-background">
+                  <div class="reason white-background" data-aos="flip-left">
                     <div class="row">
                       <div
                         class="col-4 d-flex justify-content-center align-items-center"
@@ -583,7 +596,7 @@
               </div>
             </div>
           </div>
-          <div class="row pb-5">
+          <div class="row pb-5" data-aos="fade-up">
             <div class="d-flex justify-content-center align-items-center">
               <a
                 href="/auth/user/new"
@@ -774,6 +787,13 @@
     });
   </script>
   <% } %>
+
+  <script>
+    AOS.init({
+      duration: 1500, // animation duration in ms
+      once: true, // whether animation should happen only once - while scrolling down
+    });
+  </script>
 
   <script src="/js/document_demo.js"></script>
 </html>
