@@ -51,6 +51,7 @@ router.get(
 
       let renderPage = "index";
 
+      /*
       if (!req.session.landingPageVariant) {
         await helpers.incrementEventCount("landingPageLoadedCounter");
 
@@ -73,6 +74,7 @@ router.get(
           renderPage = "indexB";
         }
       }
+      */
 
       const categories = [];
       let numOfCategories = 0;

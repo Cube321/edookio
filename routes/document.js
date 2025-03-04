@@ -135,7 +135,7 @@ router.post(
     let pagesLimit = 150;
 
     if (!user.isPremium) {
-      pagesLimit = 25;
+      pagesLimit = 75;
     }
 
     let charactersLimit = 1800 * pagesLimit;
@@ -426,7 +426,7 @@ router.post(
       console.log("File removed successfully.");
     }
 
-    let pagesLimit = 10;
+    let pagesLimit = 25;
     let charactersLimit = 1800 * pagesLimit;
 
     if (extractedText.length < 100) {

@@ -138,13 +138,13 @@ router.post(
     let pagesLimit = 150;
 
     if (!user.isPremium) {
-      pagesLimit = 25;
+      pagesLimit = 75;
     }
 
     let charactersLimit = 1800 * pagesLimit;
 
     if (extractedText.length < 100) {
-      console.error("Error extracting text (text below 10 characters)");
+      console.error("Error extracting text (text below 100 characters)");
       helpers.incrementEventCount("errorExtractingTextBelow10Chars");
       await jobFailed(
         createdJobEvent,
