@@ -450,7 +450,7 @@ router.post(
         )} znaků (${pagesLimit} stran)`
       );
       return res.json({
-        error: `Maximální délka textu je ${formatNumber(
+        error: `Maximální délka textu v demo režimu je ${formatNumber(
           charactersLimit
         )} znaků (${pagesLimit} stran). Tvůj text má ${formatNumber(
           extractedText.length
