@@ -25,6 +25,10 @@ body {
   color: #161619;
 }
 
+.color-text-hover:hover {
+  color: #161619;
+}
+
 .text-small {
   font-size: 0.8rem;
 }
@@ -119,6 +123,23 @@ form .form-borders.border-darkgrey {
 
 #success-toast {
   background-color: #6aad04 !important;
+}
+
+.rounded-top-18 {
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
+}
+
+.img-container {
+  overflow: hidden;
+}
+
+.img-container img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover .img-container img {
+  transform: scale(1.05);
 }
 
 /*CATEGORY*/
@@ -1040,6 +1061,20 @@ form .form-control.bordered {
   max-width: 100%;
 }
 
+/* BLOG POST */
+.blog-post p {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.blog-post li {
+  font-size: 1.1rem;
+}
+
+.blog-post h3 {
+  margin-top: 1.8rem;
+}
+
 @media only screen and (max-width: 1200px) {
   .cards-amount-div {
     flex-direction: column;
@@ -1075,6 +1110,44 @@ form .form-control.bordered {
 
 @media only screen and (min-width: 992px) {
   .zobrazovat-jen-na-mobilu {
+    display: none;
+  }
+}
+
+/* show on mobile */
+@media only screen and (max-width: 768px) {
+  .show-on-mobile {
+    display: block;
+  }
+
+  .hide-on-mobile {
+    display: none;
+  }
+
+  .show-on-desktop {
+    display: none;
+  }
+
+  .hide-on-desktop {
+    display: block;
+  }
+}
+
+/* show on desktop */
+@media only screen and (min-width: 768px) {
+  .show-on-mobile {
+    display: none;
+  }
+
+  .hide-on-mobile {
+    display: block;
+  }
+
+  .show-on-desktop {
+    display: block;
+  }
+
+  .hide-on-desktop {
     display: none;
   }
 }

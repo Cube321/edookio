@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="cs">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edookio Blog</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap_customised.css" />
+    <link rel="stylesheet" href="/css/custom.css" />
+    <!-- META TAGS -->
+    <%- include('../partials/meta') %>
+    <meta
+      name="keywords"
+      content="edookio, jak se ucit efektivne, tipy a triky pro uceni, studium, zkousky, maturita"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;1,400&family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-W9NBWFYGZ1"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "G-W9NBWFYGZ1");
+    gtag("config", "AW-990983899");
+  </script>
+  <body class="d-flex flex-column vh-100">
+    <%- include('../partials/navbar') %>
+
+    <main role="main" class="mt-4">
+      <%- include('../partials/alert') %>
+      <article class="container">
+        <div class="row">
+          <div class="col-12 show-on-desktop hide-on-mobile">
+            <a href="/blog/jak-se-efektivne-ucit">
+              <div
+                class="card text-white mb-4 overflow-hidden"
+                style="width: 100%; height: 400px"
+              >
+                <div class="img-container">
+                  <img
+                    src="/img/blog-pic-1.jpg"
+                    class="card-img"
+                    alt="..."
+                    style="
+                      display: block;
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      object-position: center;
+                    "
+                  />
+                </div>
+                <div class="card-img-overlay">
+                  <div class="row">
+                    <div class="col-xl-5">
+                      <h1 class="card-title">
+                        Jak se efektivně učit: Tipy a triky pro úspěšné studium
+                        a zkoušky
+                      </h1>
+                      <h4 class="card-text">
+                        Učení na maturitu či jakoukoliv jinou zkoušku může být
+                        stresující, pokud nemáte jasný plán a strategii. Jak se
+                        tedy efektivně učit, aby studium přinášelo výsledky a
+                        nebylo jen ztrátou času?
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4 show-on-mobile hide-on-desktop">
+            <a
+              href="/blog/jak-se-efektivne-ucit"
+              class="color-text color-text-hover"
+            >
+              <div class="card mb-4 overflow-hidden">
+                <div class="img-container">
+                  <img
+                    src="/img/blog-pic-1.jpg"
+                    class="card-img-top rounded-top-18"
+                    alt="..."
+                  />
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Jak se efektivně učit: Tipy a triky pro úspěšné studium a
+                    zkoušky
+                  </h5>
+                  <p class="card-text">
+                    Učení na maturitu či jakoukoliv jinou zkoušku může být
+                    stresující, pokud nemáte jasný plán a strategii. Jak se tedy
+                    efektivně učit, aby studium...
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Gabriela Holubcová | 2. března 2025</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a
+              href="/blog/jak-prekonat-prokrastinaci"
+              class="color-text color-text-hover"
+            >
+              <div class="card mb-4 overflow-hidden">
+                <div class="img-container">
+                  <img
+                    src="/img/blog-pic-5.jpg"
+                    class="card-img-top rounded-top-18"
+                    alt="..."
+                  />
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Jak překonat prokrastinaci při studiu a soustředit se na
+                    učení
+                  </h5>
+                  <p class="card-text">
+                    Prokrastinace je nepřítel efektivního učení a může vést ke
+                    stresu z nestíhání termínů. Jak se tedy donutit učit,
+                    zlepšit produktivitu, zvládnout...
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Gabriela Holubcová | 28. února 2025</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a
+              href="/blog/jak-se-ucit-v-souvislostech"
+              class="color-text color-text-hover"
+            >
+              <div class="card mb-4">
+                <div class="img-container">
+                  <img
+                    src="/img/blog-pic-2.jpg"
+                    class="card-img-top rounded-top-18"
+                    alt="..."
+                  />
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Jak se učit v souvislostech: Přehled místo biflování
+                  </h5>
+                  <p class="card-text">
+                    Mnoho studentů se snaží naučit látku zpaměti, ale výsledkem
+                    bývá, že si po pár dnech nic nepamatují. Pokud chcete
+                    porozumět učivu a získat...
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Gabriela Holubcová | 20. února 2025</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a
+              href="/blog/jak-si-zlepsit-pamet"
+              class="color-text color-text-hover"
+            >
+              <div class="card mb-4">
+                <div class="img-container">
+                  <img
+                    src="/img/blog-pic-3.jpg"
+                    class="card-img-top rounded-top-18"
+                    alt="..."
+                  />
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Jak si zlepšit paměť: Nejlepší techniky a tipy pro efektivní
+                    učení
+                  </h5>
+                  <p class="card-text">
+                    Paměť je klíčovým nástrojem při studiu, ale mnoho studentů
+                    se potýká s tím, že si učivo rychle zapomenou nebo mají
+                    problém si zapamatovat...
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Gabriela Holubcová | 15. ledna 2025</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a
+              href="/blog/proc-jsou-opakovaci-karticky-a-testy-skvelou-studijní-pomuckou"
+              class="color-text color-text-hover"
+            >
+              <div class="card mb-4">
+                <div class="img-container">
+                  <img
+                    src="/img/blog-pic-4.jpg"
+                    class="card-img-top rounded-top-18"
+                    alt="..."
+                  />
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Proč jsou opakovací kartičky a testy skvělou studijní
+                    pomůckou?
+                  </h5>
+                  <p class="card-text">
+                    Učení může být náročné, zvláště když se snažíte zapamatovat
+                    velké množství informací. Možná jste si někdy všimli, že
+                    pouhé čtení učebnice vám...
+                  </p>
+                  <p class="card-text">
+                    <small class="text-muted"
+                      >Gabriela Holubcová | 10. ledna 2025</small
+                    >
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </article>
+    </main>
+    <%- include('../partials/footer') %>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+      integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

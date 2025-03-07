@@ -415,7 +415,7 @@ router.post(
         createdJobEvent,
         "Nepodařilo se extrahovat text z dokumentu"
       );
-      res.json({
+      return res.json({
         error:
           "Nepodařilo se extrahovat text z dokumentu. Nahrajte prosím dokument ve vyšší kvalitě nebo to zkuste znovu.",
         errorHeadline: "Chyba při extrakci textu",
