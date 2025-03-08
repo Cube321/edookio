@@ -174,7 +174,7 @@ helpers.registerAction = async function (user, action, sectionId) {
     if (action === "questionSeen") {
       user.questionsSeenTotal++;
       if (foundSection && foundSection.createdByTeacher) {
-        user.qustionsSeenThisMonthTeacher++;
+        user.questionsSeenThisMonthTeacher++;
         console.log("Teacher question seen");
       } else {
         user.questionsSeenThisMonth++;

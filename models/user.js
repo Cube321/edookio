@@ -106,7 +106,7 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
-  qustionsSeenThisMonthTeacher: {
+  questionsSeenThisMonthTeacher: {
     type: Number,
     default: 0,
   },
