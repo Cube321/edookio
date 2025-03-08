@@ -105,6 +105,8 @@
                 </div>
                 <% if (currentUser && !currentUser.isPremium) { %>
                   <div class="d-flex justify-content-center align-items-center opacity-0" id="free-questions-text"><span class="text-small text-muted text-center">V rámci balíčku Free máš tento měsíc k dispozici ještě <span id="free-questions-left" name="<%= 100 - currentUser.questionsSeenThisMonth %>"><%= 100 - currentUser.questionsSeenThisMonth %></span> <span id="free-questions-ending">testových otázek</span>. <a href="#" data-bs-toggle="modal" data-bs-target="#premiumInfo">Více...</a></span></div>
+                <% } else if (currentUser){ %>
+                  <div class="d-flex justify-content-center align-items-center opacity-0" id="free-questions-text"><span class="text-small text-muted text-center">Máš k dispozici neomezený počet testových otázek.</span></div>
                 <% } %>
             </div>
         </div>

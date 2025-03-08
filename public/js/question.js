@@ -181,11 +181,15 @@ $(document).ready(function () {
           `<span class="text-small text-muted text-center">Bezplatné testové otázky byly vyčerpány, můžeš však dokončit tutu sadu otázek.<span> <a href="#" data-bs-toggle="modal" data-bs-target="#premiumInfo">Chci více otázek...</a></span>`
         );
       }
-      if (createdByTeacher) {
-        $("#free-questions-text").html(
+    }
+
+    if (createdByTeacher) {
+      $("#free-questions-text")
+        .removeClass("opacity-0")
+        .addClass("opacity-1")
+        .html(
           `<span class="text-small text-muted text-center">Tato otázka byla vytvořena učitelem, nezapočítává se do měsíčního limitu</span>`
         );
-      }
     }
 
     //update list of questions
@@ -301,9 +305,10 @@ $(document).ready(function () {
   }
 
   function updateQuestionsCounters() {
+    console.log(sectionId);
     $.ajax({
       method: "POST",
-      url: "/api/updateUsersQuestionsCounters?sectionId=" + sectionId,
+      url: `/api/updateUsersQuestionsCounters?sectionId=${sectionId}`,
     });
   }
 

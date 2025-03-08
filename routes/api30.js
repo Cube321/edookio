@@ -480,12 +480,12 @@ router.post("/api/markUser", isLoggedIn, async (req, res) => {
     if (action === "bonus100shown") {
       user.bonus100shown = true;
       user.bonus100added = true;
-      user.extraCredits += 100;
+      user.extraCredits += 1000;
       console.log(
-        "Adding 100 credits and marking user as bonus100shown (webApi):",
+        "Adding 1000 credits and marking user as bonus100shown (webApi):",
         user.email
       );
-      helpers.incrementEventCount("bonus100addedWeb");
+      helpers.incrementEventCount("bonus1000addedWeb");
     }
 
     if (action === "bonus500shown") {
