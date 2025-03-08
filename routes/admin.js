@@ -790,6 +790,46 @@ router.get("/admin/:userId/addCredits", async (req, res) => {
   res.redirect(`/admin/${userId}/showDetail`);
 });
 
+//set isTeacher on user to true
+router.get("/admin/:userId/setTeacher", async (req, res) => {
+  let { userId } = req.params;
+  let foundUser = await User.findById(userId);
+  if (!foundUser) {
+    req.flash("error", "Uživatel nebyl nalezen.");
+    return res.redirect("/admin/users");
+  }
+  foundUser.isPremium = true;
+  foundUser.isTeacher = true;
+  foundUser.premiumGrantedByAdmin = true;
+  foundUser.credits = 10000;
+  foundUser.creditsMonthlyLimit = 10000;
+  foundUser.plan = "yearly";
+  foundUser.endDate = moment().add(100, "years");
+  await foundUser.save();
+  req.flash("successOverlay", "Uživatel je nyní učitel.");
+  res.redirect(`/admin/${userId}/showDetail`);
+});
+
+//set isTeacher on user to false
+router.get("/admin/:userId/removeTeacher", async (req, res) => {
+  let { userId } = req.params;
+  let foundUser = await User.findById(userId);
+  if (!foundUser) {
+    req.flash("error", "Uživatel nebyl nalezen.");
+    return res.redirect("/admin/users");
+  }
+  foundUser.isTeacher = false;
+  foundUser.isPremium = false;
+  foundUser.premiumGrantedByAdmin = false;
+  foundUser.credits = 500;
+  foundUser.creditsMonthlyLimit = 500;
+  foundUser.plan = "none";
+  foundUser.endDate = null;
+  await foundUser.save();
+  req.flash("successOverlay", "Uživatel je nyní student.");
+  res.redirect(`/admin/${userId}/showDetail`);
+});
+
 //HELPERS
 const monthsInCzech = [
   "Leden", // January

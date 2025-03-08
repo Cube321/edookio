@@ -59,9 +59,11 @@
         <% } %>
       </ul>
       <ul class="navbar-nav ms-auto">
+        <% if (!currentUser || currentUser.admin || !currentUser.isTeacher) { %>
         <li class="nav-item">
           <a class="nav-link premium" href="/premium">Premium</a>
         </li>
+        <% } %>
         <li class="nav-item">
           <a class="nav-link" href="/blog">Blog</a>
         </li>
@@ -102,7 +104,12 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i class="far fa-user"></i> Můj účet
+            <i class="far fa-user"></i>
+            <% if (currentUser?.isTeacher) { %>
+            <span class="color-1">Můj účet</span>
+            <% } else { %>
+            <span>Můj účet</span>
+            <% } %>
           </a>
           <ul class="dropdown-menu vybrat-predmet">
             <li>

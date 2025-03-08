@@ -84,7 +84,7 @@ async function processDocumentJob(job) {
       foundUser = await User.findById(user._id);
       if (!foundUser) throw new Error("User not found.");
       userId = foundUser._id;
-      if (!user.isPremium) {
+      if (!user.isPremium || user.isTeacher) {
         model = "gpt-4o-mini";
       }
     }
@@ -230,6 +230,11 @@ async function processDocumentJob(job) {
     let cardsCreated = 0;
     let questionsCreated = 0;
 
+    let createdByTeacher = false;
+    if (foundUser && foundUser.isTeacher) {
+      createdByTeacher = true;
+    }
+
     for (let i = 0; i < allFlashcards.length; i++) {
       if (i % sectionSize === 0) {
         sectionIndex++;
@@ -239,6 +244,7 @@ async function processDocumentJob(job) {
           author: userId,
           cards: [],
           creationMethod: "ai",
+          createdByTeacher: createdByTeacher,
         });
         await section.save();
         foundCategory.sections.push(section._id);
@@ -333,6 +339,7 @@ async function processDocumentJob(job) {
       jobEvent.questionsCreated = questionsCreated;
       jobEvent.actualCredits = cardsCreated;
       jobEvent.finishedSuccessfully = true;
+      jobEvent.createdByTeacher = createdByTeacher;
 
       // Save token usage details
       jobEvent.totalTokens = totalTokens;

@@ -87,6 +87,10 @@ const jobEventSchema = new Schema({
   generatedSections: {
     type: Array,
   },
+  createdByTeacher: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("JobEventSchema", jobEventSchema);

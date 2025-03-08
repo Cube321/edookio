@@ -68,6 +68,10 @@ const UserSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  isTeacher: {
+    type: Boolean,
+    default: false,
+  },
   finishedQuestions: Array,
   dateOfRegistration: {
     type: Date,

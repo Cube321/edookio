@@ -18,6 +18,10 @@ const SectionSchema = new Schema({
     type: String,
     default: "manual",
   },
+  createdByTeacher: {
+    type: Boolean,
+    default: false,
+  },
   categoryId: {
     type: Schema.Types.ObjectId,
     ref: "Category",

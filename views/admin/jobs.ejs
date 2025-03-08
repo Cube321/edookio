@@ -45,6 +45,12 @@
         <div class="col-2 d-flex flex-column">
             <span><a href="/admin/<%= job.user?._id %>/showDetail"><%= job.user?.email || "demo" %></a></span>
             <span class="text-small text-muted"><%= job.dateFormatted %></span>
+            <% if (job.createdByTeacher) { %>
+              <span class="text-small text-muted">učitel</span>
+            <% } else { %>
+              <span class="text-small
+                text-muted">student</span>
+            <% } %>
         </div>
         <div class="col-2">
             <span><%= job.name || "neuvedeno" %></span>

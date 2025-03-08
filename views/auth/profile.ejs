@@ -33,6 +33,13 @@
             <p>E-mail</p>
           </div>
           <div class="col-8 d-flex align-items-center"><%= user.email %></div>
+          <% if (currentUser.isTeacher) { %>
+          <hr />
+          <div class="col-4 fw-bold d-flex align-items-center">
+            <p>Uživatelský profil</p>
+          </div>
+          <div class="col-8 d-flex align-items-center">vyučující</div>
+          <% } %>
           <hr />
           <div class="col-4 fw-bold d-flex align-items-center">
             <p>Přezdívka (do žebříčku)</p>

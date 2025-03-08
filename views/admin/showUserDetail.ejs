@@ -261,6 +261,17 @@
                     </div>
                     <hr />
                     <div class="col-4 fw-bold d-flex align-items-center">
+                        <p>Učitel</p>
+                    </div>
+                    <div class="col-8 d-flex justify-content-between">
+                        <% if (!user.isTeacher) { %>
+                            <a href="/admin/<%= user._id %>/setTeacher" class="btn btn-outline-danger btn-sm">Změnit na učitelský profil</a>
+                        <% } else { %>
+                            <a href="/admin/<%= user._id %>/removeTeacher" class="btn btn-outline-danger btn-sm">Změnit na studentský profil</a>
+                        <% } %>
+                    </div>
+                    <hr />
+                    <div class="col-4 fw-bold d-flex align-items-center">
                         <p>Počet uložených kartiček</p>
                     </div>
                     <div class="col-8 d-flex align-items-center">

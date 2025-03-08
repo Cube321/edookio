@@ -171,7 +171,7 @@ router.post(
         )} znaků.`,
         showPremiumButton: user.isPremium
           ? undefined
-          : "zvýšit limit na 150 stran",
+          : "zvýšit limit na 300 stran",
       });
     }
 

@@ -166,7 +166,7 @@
                                 <a href="#" class="btn btn-warning my-3 disabled w-100">Je aktivní balíček Premium</a> 
                             <% } %>
                         </div>
-                        <% if (currentUser && currentUser.premiumGrantedByAdmin) { %>
+                        <% if (currentUser && currentUser.premiumGrantedByAdmin && !currentUser.isTeacher) { %>
                             <div>
                                 <p class="text-muted text-center" style="font-size: 0.8rem;">Tvé předplatné bylo nastaveno administrátorem. Přepnout na placenou verzi můžeš <a href="#" id="checkout-button-monthly">zde</a>.</p> 
                             </div>
@@ -252,7 +252,7 @@
                                 <a href="#" class="btn btn-warning my-3 disabled w-100">Je aktivní balíček Premium</a> 
                             <% } %>
                         </div>
-                        <% if (currentUser && currentUser.premiumGrantedByAdmin) { %>
+                        <% if (currentUser && currentUser.premiumGrantedByAdmin && !currentUser.isTeacher) { %>
                             <div>
                                 <p class="text-muted text-center" style="font-size: 0.8rem;">Tvé předplatné bylo nastaveno administrátorem. Přepnout na placenou verzi můžeš <a href="#" id="checkout-button-yearly">zde</a>.</p> 
                             </div>
