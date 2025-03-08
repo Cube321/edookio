@@ -549,7 +549,9 @@
               >Kartiček/strana
               <span
                 class="question-mark-box"
-                title="Kolik kartiček / otázek má být vygenerováno z jedné normostrany textu"
+                title="Kolik kartiček a otázek má být vygenerováno z jedné normostrany textu"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
                 >?</span
               ></label
             >
@@ -583,7 +585,9 @@
               >Velikost balíčku
               <span
                 class="question-mark-box"
-                title="Kolik kartiček/otázek má být v jednom balíčku"
+                title="Kolik kartiček a otázek má být v jednom balíčku"
+                data-bs-toggle="tooltip"
+                data-bs-placement="top"
                 >?</span
               ></label
             >
@@ -1161,3 +1165,14 @@ category.sections.forEach(section => { %>
   });
 </script>
 <% } %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
+    );
+    console.log(tooltipTriggerList);
+    [...tooltipTriggerList].map(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
+  });
+</script>
