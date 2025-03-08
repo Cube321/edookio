@@ -138,9 +138,16 @@ helpers.deleteDemoCategoryById = async function (categoryId) {
 };
 
 //register action for user
-helpers.registerAction = async function (user, action) {
+helpers.registerAction = async function (user, action, sectionId) {
   try {
     user.lastActive = moment();
+
+    let foundSection = null;
+    if (sectionId && sectionId !== "random_test") {
+      foundSection = await Section.findById(sectionId);
+    }
+
+    console.log("SectionId:", sectionId);
 
     //check if today is in the activeDays array and if not, add it + increase count of actions
     let today = moment().format("YYYY-MM-DD");
@@ -166,7 +173,13 @@ helpers.registerAction = async function (user, action) {
     //remove first element from activeDays array
     if (action === "questionSeen") {
       user.questionsSeenTotal++;
-      user.questionsSeenThisMonth++;
+      if (foundSection && foundSection.createdByTeacher) {
+        user.qustionsSeenThisMonthTeacher++;
+        console.log("Teacher question seen");
+      } else {
+        user.questionsSeenThisMonth++;
+        console.log("Student question seen");
+      }
       if (!user.isPremium && user.questionsSeenThisMonth === 100) {
         user.reachedQuestionsLimitDate = Date.now();
         console.log("Reached questions limit for user:", user.email);

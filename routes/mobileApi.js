@@ -312,12 +312,16 @@ router.get(
       },
     });
 
+    if (!section) {
+      return res.status(404).json({ error: "Section not found" });
+    }
+
     section.countStartedTest++;
     await section.save();
 
     let user = req.user;
     //update date of user's last activity
-    await helpers.registerAction(user, "questionSeen");
+    await helpers.registerAction(user, "questionSeen", sectionId);
 
     let questionsSeenThisMonth = user.questionsSeenThisMonth;
     let isUserPremium = user.isPremium;
@@ -354,10 +358,11 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
     let user = req.user;
+    const { sectionId } = req.body;
     //count new actions only every two seconds
     let now = moment();
     if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-      await helpers.registerAction(user, "questionSeen");
+      await helpers.registerAction(user, "questionSeen", sectionId);
     }
     res.status(200).json({ message: "Action registered" });
   })

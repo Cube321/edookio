@@ -294,12 +294,13 @@ router.post(
   "/api/updateUsersQuestionsCounters",
   isLoggedIn,
   catchAsync(async (req, res) => {
+    const { sectionId } = req.query;
     if (req.user) {
       let user = req.user;
       let now = moment();
       //count new actions only every two seconds
       if (!user.lastActive || now.diff(user.lastActive, "seconds") >= 2) {
-        await helpers.registerAction(user, "questionSeen");
+        await helpers.registerAction(user, "questionSeen", sectionId);
       }
       res.sendStatus(201);
     } else {

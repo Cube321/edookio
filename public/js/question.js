@@ -294,7 +294,7 @@ $(document).ready(function () {
   function updateQuestionsCounters() {
     $.ajax({
       method: "POST",
-      url: "/api/updateUsersQuestionsCounters",
+      url: "/api/updateUsersQuestionsCounters?sectionId=" + sectionId,
     });
   }
 
