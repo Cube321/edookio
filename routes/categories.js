@@ -247,6 +247,11 @@ router.post(
       icon = "icon_knowledge.png";
     }
 
+    let createdByTeacher = false;
+    if (user && user.isTeacher) {
+      createdByTeacher = true;
+    }
+
     const newCategory = new Category({
       sections: [],
       text,
@@ -254,6 +259,7 @@ router.post(
       author: req.user._id,
       shareId,
       deepSharingAllowed: true,
+      createdByTeacher,
     });
     let savedCategory = await newCategory.save();
     user.createdCategories.push(savedCategory._id);

@@ -4,7 +4,7 @@ const Card = require("../models/card");
 const Question = require("../models/question");
 const uuid = require("uuid");
 
-const seedContent = async function (userId) {
+const seedContent = async function (userId, teacher) {
   try {
     // 1) CREATE A NEW CATEGORY
     let shareId = uuid.v4().slice(0, 6);
@@ -14,12 +14,18 @@ const seedContent = async function (userId) {
       categoryWithShareId = await Category.findOne({ share: shareId });
     }
 
+    let createdByTeacher = false;
+    if (teacher) {
+      createdByTeacher = true;
+    }
+
     const createdCategory = await Category.create({
       text: "Tvůj první předmět",
       icon: "subject_9.png",
       author: userId,
       shareId: shareId,
       sections: [],
+      createdByTeacher: createdByTeacher,
     });
 
     // 2) CREATE ONE SECTION
@@ -29,6 +35,7 @@ const seedContent = async function (userId) {
       author: userId,
       cards: [],
       questions: [],
+      createdByTeacher: createdByTeacher,
     });
 
     // Link the section to the category

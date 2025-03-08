@@ -243,7 +243,11 @@
                       <div
                         class="card-body cat-text d-flex flex-column justify-content-between"
                       >
-                        <h5 class="card-title"><%= cat.text %></h5>
+                        <h5 class="card-title d-flex justify-content-center"><%= cat.text %>
+                          <% if (cat.createdByTeacher) { %>
+                            <span class="badge bg-danger rounded-circle p-1 verified-check mx-1" data-bs-toggle="tooltip" data-bs-placement="top" title="vytvořeno učitelem"><i class="fas fa-check" style="font-size: 0.5rem"></i></span>
+                          <% } %>
+                          </h5>
                         <div>
                           <p class="text-muted">
                             <%= cat.numOfCards %> <%= texts.landingPage.cards %>
@@ -442,5 +446,11 @@
     <script src="/js/jquery.min.js"></script>
     <script type="text/javascript" src="/js/cookies.js"></script>
     <script type="text/javascript" src="/js/landing.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    });
+    </script>
   </body>
 </html>

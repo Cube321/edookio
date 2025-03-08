@@ -215,7 +215,8 @@
           <div class="col-4 fw-bold d-flex align-items-center">
             <p>Odstranit účet</p>
           </div>
-          <% if(user.isPremium && user.plan !== "none"){ %>
+          <% if(user.isPremium && user.plan !== "none" &&
+          !user.premiumGrantedByAdmin){ %>
           <div class="col-8 d-flex align-items-center">
             před odstraněním účtu je nutné zrušit předplatné
           </div>

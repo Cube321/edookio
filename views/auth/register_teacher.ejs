@@ -1,0 +1,220 @@
+<% layout ('layouts/boilerplate.ejs') %>
+<div class="container mb-5">
+  <div class="row">
+    <div class="col-lg-4 offset-lg-1 d-flex justify-content-center">
+      <div class="" style="max-width: 400px">
+        <div class="card height-100 d-flex align-items-center">
+          <div class="card-body p-4 px-5">
+            <div class="text-center">
+              <h1 class="mb-3 mt-2 mt-xl-5">Vytvořit účet vyučujícího</h1>
+            </div>
+            <form
+              class="row g-3 needs-validation mt-1"
+              novalidate
+              action="/auth/user/new?teacher=true"
+              method="POST"
+            >
+              <div class="mt-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Pracovní (školní) e-mail"
+                  required
+                />
+              </div>
+              <div class="mt-3">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Heslo"
+                  minlength="8"
+                  required
+                />
+                <div class="invalid-feedback">
+                  Heslo musí obsahovat nejméně 8 znaků.
+                </div>
+              </div>
+              <div>
+                <select class="form-select" name="source" id="source">
+                  <option selected value="neuvedeno">
+                    Jak jste se o Edookio dozvěděli?
+                  </option>
+                  <option value="pratele">Od kamaráda/ky</option>
+                  <option value="ucitele">Od učitele/ky</option>
+                  <option value="instagram">Na Instagramu</option>
+                  <option value="facebook">Na Facebooku</option>
+                  <option value="google">Na Googlu</option>
+                  <option value="odjinud">Odjinud</option>
+                </select>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  name="school"
+                  style="display: none"
+                  tabindex="-1"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="mt-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="vop"
+                    id="vop"
+                    required
+                  />
+                  <label
+                    class="form-check-label text-small registration-gdpr"
+                    for="vop"
+                  >
+                    Souhlasím se
+                    <a href="/legal/vop" target="_blank"
+                      >všeobecnými obchodními podmínkami</a
+                    >
+                  </label>
+                </div>
+              </div>
+              <div class="mt-0">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    value="gdpr"
+                    id="gdpr"
+                    required
+                  />
+                  <label
+                    class="form-check-label text-small registration-gdpr"
+                    for="gdpr"
+                  >
+                    Beru na vědomí
+                    <a href="/legal/gdpr" target="_blank"
+                      >podmínky zpracování osobních údajů</a
+                    >
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  class="btn btn-lg btn-danger w-100 mt-3"
+                  type="submit"
+                  id="submit-registration"
+                >
+                  Pokračovat
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 d-flex justify-content-center align-items-center">
+      <div class="nezobrazovat-na-mobilu-landing">
+        <div class="card height-100 border-grey">
+          <div class="card-body">
+            <div class="text-center">
+              <h3 class="mb-3 mt-2">
+                Jaké jsou hlavní výhody <span class="color-1">Edookio AI</span>?
+              </h3>
+            </div>
+            <div class="row">
+              <div class="col-12 mb-3">
+                <div class="reason">
+                  <div class="row">
+                    <div
+                      class="col-4 d-flex justify-content-center align-items-center"
+                    >
+                      <div
+                        class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                      >
+                        <img src="/img/icon_ai.png" class="img-fit" alt="" />
+                      </div>
+                    </div>
+                    <div class="col-8">
+                      <div class="ml-3">
+                        <h5 class="reason-title">
+                          Vytvářejte interaktivní obsah pro své studenty pomocí
+                          AI
+                        </h5>
+                        <p class="reason-content mt-2">
+                          Přeměň své poznámky a prezentace na interaktivní
+                          opakovací kartičky a testové otázky. Zabere to jen
+                          několik vteřin!
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <div class="reason">
+                  <div class="row">
+                    <div
+                      class="col-4 d-flex justify-content-center align-items-center"
+                    >
+                      <div
+                        class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                      >
+                        <img src="/img/icon_time.png" class="img-fit" alt="" />
+                      </div>
+                    </div>
+                    <div class="col-8">
+                      <div class="ml-3">
+                        <h5 class="reason-title">Ušetřete 90 % času</h5>
+                        <p class="reason-content mt-2">
+                          Tvorba kvalitních studijních materiálů je časově
+                          náročná. Edookio dokáže ušetřit až 90 % času spojeného
+                          s jejich přípravou.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 mb-3">
+                <div class="reason">
+                  <div class="row">
+                    <div
+                      class="col-lg-4 d-flex justify-content-center align-items-center"
+                    >
+                      <div
+                        class="rounded-circle reason-icon-background d-flex justify-content-center align-items-center"
+                      >
+                        <img
+                          src="/img/icon_mobileandpc.png"
+                          class="img-fit"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                    <div class="col-8">
+                      <div class="ml-3">
+                        <h5 class="reason-title">
+                          Studium kdykoliv a kdekoliv
+                        </h5>
+                        <p class="reason-content mt-2">
+                          Díky mobilní aplikaci mohou vaši studenti studovat
+                          cestou do školy, při čekání na zkoušku nebo třeba doma
+                          v posteli.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/validateForms.js"></script>

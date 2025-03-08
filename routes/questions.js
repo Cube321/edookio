@@ -213,6 +213,13 @@ router.get(
       throw Error("Předmět s tímto ID neexistuje");
     }
 
+    //get first section of the category
+    const sectionId = foundCategory.sections[0];
+    const foundSection = await Section.findById(sectionId);
+    if (!foundSection) {
+      throw Error("Předmět neobsahuje žádné balíčky");
+    }
+
     const totalQuestions =
       parseInt(correct) + parseInt(wrong) + parseInt(skipped);
     const percentage = Math.round((correct / totalQuestions) * 100);
@@ -225,6 +232,7 @@ router.get(
       score: { correct, wrong, skipped },
       percentage,
       totalQuestions,
+      createdByTeacher: foundSection.createdByTeacher,
     });
 
     let counters = {

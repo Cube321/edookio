@@ -733,6 +733,14 @@ form .form-borders {
   border-radius: 50% !important;
 }
 
+.verified-check {
+  height: 16px;
+  width: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .btn-remove-from-saved {
   border: none;
   color: #212529;

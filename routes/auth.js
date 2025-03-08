@@ -99,6 +99,11 @@ router.get("/auth/user/new", (req, res) => {
   res.status(200).render("auth/register_form", { requiresPremium });
 });
 
+//register form teacher (GET)
+router.get("/auth/user/teacher", (req, res) => {
+  res.status(200).render("auth/register_teacher");
+});
+
 //register form admin (GET)
 router.get("/auth/admin/new", (req, res) => {
   res.status(200).render("auth/admin_registr");
@@ -111,6 +116,7 @@ router.post(
   catchAsync(async (req, res, next) => {
     let { email, password, key, source, school } = req.body;
     let { shareId } = req.session;
+    let { teacher } = req.query;
 
     if (school) {
       req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
@@ -190,7 +196,7 @@ router.post(
       mail.adminInfoNewUser(newUser);
 
       //seed content
-      let createdCategoryId = await seedContent(newUser._id);
+      let createdCategoryId = await seedContent(newUser._id, teacher);
       newUser.createdCategories.push(createdCategoryId);
       await newUser.save();
 
@@ -203,6 +209,17 @@ router.post(
           await helpers.incrementEventCount("registeredAfterShare");
           req.session.shareId = null;
         }
+      }
+
+      if (teacher) {
+        newUser.isPremium = true;
+        newUser.isTeacher = true;
+        newUser.premiumGrantedByAdmin = true;
+        newUser.credits = 10000;
+        newUser.creditsMonthlyLimit = 10000;
+        newUser.plan = "yearly";
+        newUser.endDate = moment().add(100, "years");
+        await newUser.save();
       }
 
       req.flash("successOverlay", "Skvělé! Účet byl vytvořen.");

@@ -43,6 +43,10 @@ const CategorySchema = new Schema({
     type: Boolean,
     default: false,
   },
+  createdByTeacher: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Category", CategorySchema);
