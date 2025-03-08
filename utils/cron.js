@@ -119,7 +119,11 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
     }
 
     //reset monthly counters
-    if (user.questionsSeenThisMonth > 0 || user.cardsSeenThisMonth > 0) {
+    if (
+      user.questionsSeenThisMonth > 0 ||
+      user.cardsSeenThisMonth > 0 ||
+      user.questionsSeenThisMonthTeacher > 0
+    ) {
       if (
         !user.isPremium &&
         user.reachedQuestionsLimitDate &&
@@ -129,6 +133,7 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
       }
       user.questionsSeenThisMonth = 0;
       user.cardsSeenThisMonth = 0;
+      user.questionsSeenThisMonthTeacher = 0;
       user.reachedQuestionsLimitDate = null;
       counter++;
     }
@@ -258,7 +263,10 @@ cronHelpers.dailyCleanupOps = catchAsync(async () => {
 
 let saveLeaderboard = catchAsync(async (users) => {
   users.forEach((user) => {
-    user.pointsMonth = user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+    user.pointsMonth =
+      user.cardsSeenThisMonth +
+      user.questionsSeenThisMonth +
+      user.questionsSeenThisMonthTeacher;
   });
 
   let topUsers = [];

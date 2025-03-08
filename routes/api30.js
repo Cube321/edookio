@@ -251,14 +251,23 @@ router.get(
 
       const resData = JSON.stringify({
         questions: foundSection.questions,
+        createdByTeacher: foundSection.createdByTeacher,
       });
 
       res.status(200).send(resData);
     } else {
       let { category } = req.query;
+      let randomSectionOfCategory = await Section.findOne({
+        categoryId: category,
+      });
+      let createdByTeacher = false;
+      if (randomSectionOfCategory) {
+        createdByTeacher = randomSectionOfCategory.createdByTeacher;
+      }
       let randomQuestions = await getRandomQuestions(category);
       const resData = JSON.stringify({
         questions: randomQuestions,
+        createdByTeacher: createdByTeacher,
       });
 
       res.status(200).send(resData);

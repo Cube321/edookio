@@ -106,6 +106,10 @@ const UserSchema = new Schema({
     type: Number,
     default: 0,
   },
+  qustionsSeenThisMonthTeacher: {
+    type: Number,
+    default: 0,
+  },
   questionsSeenTotal: {
     type: Number,
     default: 0,

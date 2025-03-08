@@ -1,4 +1,5 @@
 let questions = [];
+let createdByTeacher = false;
 let editedQuestions = [];
 let previousQuestion = 0;
 let nextQuestion = 0;
@@ -34,6 +35,10 @@ $(document).ready(function () {
     })
     .then((data) => {
       questions = data.questions;
+      createdByTeacher = data.createdByTeacher;
+      if (createdByTeacher) {
+        freeQuestionsLeft = 1000;
+      }
       questions.forEach((question) => {
         let editedQuestion = {
           status: "none",
@@ -176,6 +181,11 @@ $(document).ready(function () {
           `<span class="text-small text-muted text-center">Bezplatné testové otázky byly vyčerpány, můžeš však dokončit tutu sadu otázek.<span> <a href="#" data-bs-toggle="modal" data-bs-target="#premiumInfo">Chci více otázek...</a></span>`
         );
       }
+      if (createdByTeacher) {
+        $("#free-questions-text").html(
+          `<span class="text-small text-muted text-center">Tato otázka byla vytvořena učitelem, nezapočítává se do měsíčního limitu</span>`
+        );
+      }
     }
 
     //update list of questions
@@ -282,7 +292,6 @@ $(document).ready(function () {
     $("#question-card").append(`
             <div class="mt-5 pt-5 text-center" id="question-content">
                 <h4 class="">Je nám líto, nenalezli jsme žádné otázky.</h4>
-                <p class="">Je možné, že otázky zatím nebyly zveřejněny pro studenty nebo jsou dostupné pouze s předplatným Premium.</p>
             </div>
         `);
 

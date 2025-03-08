@@ -326,7 +326,11 @@ router.get(
     let questionsSeenThisMonth = user.questionsSeenThisMonth;
     let isUserPremium = user.isPremium;
 
-    if (!user.isPremium && user.questionsSeenThisMonth > 100) {
+    if (
+      !user.isPremium &&
+      user.questionsSeenThisMonth > 100 &&
+      !section.createdByTeacher
+    ) {
       return res.status(200).json({ limitReached: true });
     }
 
@@ -640,6 +644,8 @@ router.get(
 
     //simpligy the user to only the necessary data
     users = users.map((user) => {
+      let questionsThisMonth =
+        user.questionsSeenThisMonth + user.questionsSeenThisMonthTeacher;
       return {
         _id: user._id,
         email: user.email,
@@ -649,7 +655,7 @@ router.get(
         cardsSeen: user.cardsSeen,
         questionsSeenTotal: user.questionsSeenTotal,
         cardsSeenThisMonth: user.cardsSeenThisMonth,
-        questionsSeenThisMonth: user.questionsSeenThisMonth,
+        questionsSeenThisMonth: questionsThisMonth,
         actionsToday: user.actionsToday,
         dailyGoal: user.dailyGoal,
         isPremium: user.isPremium,
@@ -665,7 +671,10 @@ router.get(
 
     users.forEach((user) => {
       user.pointsTotal = user.cardsSeen + user.questionsSeenTotal;
-      user.pointsMonth = user.cardsSeenThisMonth + user.questionsSeenThisMonth;
+      user.pointsMonth =
+        user.cardsSeenThisMonth +
+        user.questionsSeenThisMonth +
+        user.questionsSeenThisMonthTeacher;
       user.pointsToday = user.actionsToday;
     });
 
@@ -736,6 +745,8 @@ router.get(
     }
 
     //create current user object with only the necessary data
+    let currentUserQuestionsThisMonth =
+      user.questionsSeenThisMonth + user.questionsSeenThisMonthTeacher;
     let currentUser = {
       _id: user._id,
       email: user.email,
@@ -745,11 +756,11 @@ router.get(
       cardsSeen: user.cardsSeen,
       questionsSeenTotal: user.questionsSeenTotal,
       cardsSeenThisMonth: user.cardsSeenThisMonth,
-      questionsSeenThisMonth: user.questionsSeenThisMonth,
+      questionsSeenThisMonth: currentUserQuestionsThisMonth,
       actionsToday: user.actionsToday,
       dailyGoal: user.dailyGoal,
       pointsTotal: user.cardsSeen + user.questionsSeenTotal,
-      pointsMonth: user.cardsSeenThisMonth + user.questionsSeenThisMonth,
+      pointsMonth: user.cardsSeenThisMonth + currentUserQuestionsThisMonth,
       pointsToday: user.actionsToday,
       isPremium: user.isPremium,
     };

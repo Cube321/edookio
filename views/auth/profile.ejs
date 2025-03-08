@@ -103,7 +103,10 @@
           <div class="col-8 d-flex align-items-center">
             <span>celkem: <%= user.cardsSeen %></span>
             <span class="mx-2">|</span>
-            <span> tento měsíc: <%= user.cardsSeenThisMonth %> </span>
+            <span>
+              tento měsíc: <%- user.questionsSeenThisMonth +
+              user.qustionsSeenThisMonthTeacher %>
+            </span>
           </div>
           <hr />
           <div class="col-4 fw-bold d-flex align-items-center">
