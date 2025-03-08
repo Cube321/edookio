@@ -110,7 +110,7 @@
         </div>
         <hr />
         <% if (!currentUser.isPremium && currentUser.questionsSeenThisMonth >
-        100) { %>
+        100 && !section.createdByTeacher) { %>
         <div class="row mt-3">
           <div class="col-12">
             <h5 class="mb-3">Získej neomezený přístup k testovým otázkám</h5>
