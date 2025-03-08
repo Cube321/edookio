@@ -22,11 +22,6 @@ router.get(
     const { categoryId, sectionId } = req.params;
     const { demo } = req.query;
 
-    //if user but not premium and reached limit
-    if (user && !user.isPremium && user.questionsSeenThisMonth > 100) {
-      return res.redirect("/questions/reachedMonthlyLimit");
-    }
-
     //if no user
     if (
       !user &&
@@ -44,6 +39,16 @@ router.get(
     }
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje");
+    }
+
+    //if user but not premium and reached limit
+    if (
+      user &&
+      !user.isPremium &&
+      user.questionsSeenThisMonth > 100 &&
+      !foundSection.createdByTeacher
+    ) {
+      return res.redirect("/questions/reachedMonthlyLimit");
     }
 
     if (!demo) {
@@ -82,14 +87,27 @@ router.get(
   isLoggedIn,
   catchAsync(async (req, res) => {
     const { user } = req;
-    if (!user.isPremium && user.questionsSeenThisMonth > 100) {
-      return res.redirect("/questions/reachedMonthlyLimit");
-    }
     const { categoryId } = req.params;
     const foundCategory = await Category.findById(categoryId);
     if (!foundCategory) {
       throw Error("Předmět s tímto ID neexistuje");
     }
+
+    //get first section of the category
+    const sectionId = foundCategory.sections[0];
+    const foundSection = await Section.findById(sectionId);
+    if (!foundSection) {
+      throw Error("Předmět neobsahuje žádné balíčky");
+    }
+
+    if (
+      !user.isPremium &&
+      user.questionsSeenThisMonth > 100 &&
+      !foundSection.createdByTeacher
+    ) {
+      return res.redirect("/questions/reachedMonthlyLimit");
+    }
+
     let constructedSection = {
       categoryId: foundCategory._id,
       _id: "random_test",
