@@ -144,15 +144,15 @@ const UserSchema = new Schema({
   },
   creditsMonthlyLimit: {
     type: Number,
-    default: 100,
+    default: 500,
   },
   credits: {
     type: Number,
-    default: 100,
+    default: 500,
   },
   extraCredits: {
     type: Number,
-    default: 300,
+    default: 0,
   },
   usedCreditsMonth: {
     type: Number,

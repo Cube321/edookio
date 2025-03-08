@@ -19,7 +19,7 @@ module.exports.landingPage = {
     "Proměň své poznámky v interaktivní kartičky a testové otázky pomocí umělé inteligence.",
   studyFree: "Studuj zdarma",
   pointOneMain: "Vytvářej kartičky a testy",
-  pointOneSecondary: "pomocí AI i bez ní",
+  pointOneSecondary: "500 kartiček měsíčně zdarma",
   pointTwoMain: "Opakuj kdykoliv a kdekoliv",
   pointTwoSecondary: "na mobilu i u počítače",
   pointThreeMain1: "Sdílej materiály s přáteli",

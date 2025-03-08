@@ -208,7 +208,7 @@ router.post(
           // cancelled
           let oldPlan = user.plan;
           user.premiumDateOfCancelation = moment();
-          user.creditsMonthlyLimit = 100;
+          user.creditsMonthlyLimit = 500;
           user.plan = "none";
           const endDate = moment(user.endDate).locale("cs").format("LL");
           try {

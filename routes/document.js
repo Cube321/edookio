@@ -132,7 +132,7 @@ router.post(
       console.log("File removed successfully.");
     }
 
-    let pagesLimit = 150;
+    let pagesLimit = 300;
 
     if (!user.isPremium) {
       pagesLimit = 75;
@@ -343,7 +343,7 @@ router.post(
     let name = "Můj balíček";
 
     const sectionSize = 40;
-    const cardsPerPage = 1;
+    const cardsPerPage = 2;
 
     if (!file) {
       return res.json({
@@ -426,7 +426,7 @@ router.post(
       console.log("File removed successfully.");
     }
 
-    let pagesLimit = 25;
+    let pagesLimit = 10;
     let charactersLimit = 1800 * pagesLimit;
 
     if (extractedText.length < 100) {
@@ -443,20 +443,8 @@ router.post(
     }
 
     if (extractedText.length > charactersLimit) {
-      await jobFailed(
-        createdJobEvent,
-        `Překročena maximální délka textu ${formatNumber(
-          charactersLimit
-        )} znaků (${pagesLimit} stran)`
-      );
-      return res.json({
-        error: `Maximální délka textu v demo režimu je ${formatNumber(
-          charactersLimit
-        )} znaků (${pagesLimit} stran). Tvůj text má ${formatNumber(
-          extractedText.length
-        )} znaků.`,
-        errorHeadline: "Text je příliš dlouhý",
-      });
+      //crop the text to the limit
+      extractedText = extractedText.substring(0, charactersLimit);
     }
 
     const createdCategory = await Category.create({

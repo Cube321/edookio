@@ -1,10 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
+const helpers = require("../utils/helpers");
 
 router.get(
   "/blog",
   catchAsync(async (req, res) => {
+    if (!req.session?.campaign) {
+      await helpers.incrementEventCount(`marketingCampaign-blog`);
+      req.session.campaign = "blog";
+    }
+
     res.render("blog/blog");
   })
 );
@@ -13,6 +19,12 @@ router.get(
   "/blog/:title",
   catchAsync(async (req, res) => {
     const { title } = req.params;
+
+    if (!req.session?.campaign) {
+      await helpers.incrementEventCount(`marketingCampaign-blog`);
+      req.session.campaign = "blog";
+    }
+
     if (title === "jak-se-efektivne-ucit") {
       return res.render("blog/post-1");
     }

@@ -135,7 +135,7 @@ router.post(
       console.log("File removed successfully.");
     }
 
-    let pagesLimit = 150;
+    let pagesLimit = 300;
 
     if (!user.isPremium) {
       pagesLimit = 75;

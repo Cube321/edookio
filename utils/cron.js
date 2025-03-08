@@ -111,10 +111,10 @@ cronHelpers.resetMonthlyCounters = catchAsync(async () => {
     user.usedCreditsMonth = 0;
 
     if (!user.isPremium) {
-      user.credits = 100;
+      user.credits = 500;
       let availableCredits = user.credits + user.extraCredits;
       if (!user.hasUnsubscribed) {
-        mail.freeCreditsRecharged(user.email, 100, availableCredits);
+        mail.freeCreditsRecharged(user.email, 500, availableCredits);
       }
     }
 

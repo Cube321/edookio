@@ -1191,15 +1191,15 @@ router.post(
     }
 
     if (code) {
-      if (code === "start_bonus_100" && !user.bonus100added) {
+      if (code === "start_bonus_1000" && !user.bonus100added) {
         user.bonus100added = true;
         user.extraCredits += amount;
-        console.log("Kredity byly připsány (BONUS100)" + user.email);
+        console.log("Kredity byly připsány (BONUS1000)" + user.email);
         await user.save();
-        helpers.incrementEventCount("bonus100addedApp");
+        helpers.incrementEventCount("bonus1000addedApp");
         return res
           .status(201)
-          .json({ message: "Kredity byly připsány (BONUS100)" });
+          .json({ message: "Kredity byly připsány (BONUS1000)" });
       }
     }
     res.status(201).json({ message: "Kredity nebyly připsány" });

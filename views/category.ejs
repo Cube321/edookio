@@ -494,6 +494,9 @@
                   style="height: 72px"
                 />
               </div>
+              <p class="text-muted text-center mb-3">
+                1 kartička = 1 AI kredit
+              </p>
               <a
                 href="#"
                 class="btn btn-danger mz-3"
@@ -622,11 +625,11 @@
               <% if (currentUser && !currentUser.isPremium){ %>
               <p class="text-muted text-smaller my-1">
                 Maximální rozsah textu je 75 stran -
-                <a href="/premium">zvýšit na 150 stran</a>.
+                <a href="/premium">zvýšit na 300 stran</a>.
               </p>
               <% } else { %>
               <p class="text-muted text-smaller my-1">
-                Maximální rozsah textu je 150 stran (270 000 znaků).
+                Maximální rozsah textu je 300 stran (540 000 znaků).
               </p>
               <% } %>
             </div>
@@ -690,8 +693,8 @@
           <p class="text-center text-smaller">používám <b>gpt-4o</b></p>
           <% } else { %>
           <p class="text-center text-smaller">
-            používám <b>gpt-4o-mini</b> |
-            <a href="/premium" target="_blank">přejít na gpt-4o</a>
+            používám <b>základní AI model</b> |
+            <a href="/premium" target="_blank">přejít na vyšší model</a>
           </p>
           <% } %>
           <p
@@ -746,7 +749,7 @@
               id="premium-button"
               class="btn btn-danger mt-2"
               style="display: none"
-              >Zvýšit limit na 150 stran</a
+              >Zvýšit limit na 300 stran</a
             >
             <a
               href="/premium"
@@ -806,7 +809,7 @@
                     <div>
                       <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="px-2">150 stran / dokument</div>
+                    <div class="px-2">300 stran / dokument</div>
                   </div>
                 </li>
               </ul>
@@ -1115,11 +1118,11 @@ category.sections.forEach(section => { %>
             alt="bonus-icon"
           />
         </div>
-        <h3 class="text-center mt-3 mb-4">Získáváš bonus 500 AI kreditů</h3>
+        <h3 class="text-center mt-3 mb-4">Získáváš bonus 2 500 AI kreditů</h3>
         <div class="mt-4 text-center">
           <p>
             <b>Skvělá práce!</b> Za splnění denního cíle deset dnů v řadě jsme
-            ti právě připsali <b>dalších 500 AI kreditů</b>.
+            ti právě připsali <b>dalších 2 500 AI kreditů</b>.
           </p>
           <p>
             Chceš <b>až 1 250 AI kreditů</b> měsíčně? Omrkni
