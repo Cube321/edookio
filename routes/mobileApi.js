@@ -785,8 +785,6 @@ router.get(
       user: currentUser,
     };
 
-    console.log("Leaderboard data: ", leaderboardData);
-
     res.status(200).json(leaderboardData);
   })
 );
