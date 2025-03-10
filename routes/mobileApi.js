@@ -671,10 +671,7 @@ router.get(
 
     users.forEach((user) => {
       user.pointsTotal = user.cardsSeen + user.questionsSeenTotal;
-      user.pointsMonth =
-        user.cardsSeenThisMonth +
-        user.questionsSeenThisMonth +
-        user.questionsSeenThisMonthTeacher;
+      user.pointsMonth = user.cardsSeenThisMonth + user.questionsThisMonth;
       user.pointsToday = user.actionsToday;
     });
 
@@ -785,6 +782,8 @@ router.get(
       hasSavedNickname,
       user: currentUser,
     };
+
+    console.log("Leaderboard data: ", leaderboardData);
 
     res.status(200).json(leaderboardData);
   })
