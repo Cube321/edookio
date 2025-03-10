@@ -178,6 +178,22 @@ cronHelpers.sendInfoEmail = catchAsync(async () => {
   mail.sendCronReport("sendInfoEmail", counter);
 });
 
+//add each user 500 credits
+cronHelpers.add500Credits = catchAsync(async () => {
+  console.log("RUNNING CRON: add500Credits");
+
+  let users = await User.find({});
+  let counter = 0;
+  for (const user of users) {
+    user.credits += 500;
+    await user.save();
+    counter++;
+  }
+  mail.sendCronReport("add500Credits", counter);
+});
+
+cronHelpers.add500Credits();
+
 //cronHelper to send e-mail with discount for yearly subscription to users who are not premium but have received the 500 credits bonus
 cronHelpers.sendDiscountEmail = catchAsync(async () => {
   console.log("RUNNING CRON: sendDiscountEmail");
