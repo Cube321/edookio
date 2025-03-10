@@ -644,8 +644,6 @@ router.get(
 
     //simpligy the user to only the necessary data
     users = users.map((user) => {
-      let questionsThisMonth =
-        user.questionsSeenThisMonth + user.questionsSeenThisMonthTeacher;
       return {
         _id: user._id,
         email: user.email,
@@ -655,7 +653,8 @@ router.get(
         cardsSeen: user.cardsSeen,
         questionsSeenTotal: user.questionsSeenTotal,
         cardsSeenThisMonth: user.cardsSeenThisMonth,
-        questionsSeenThisMonth: questionsThisMonth,
+        questionsSeenThisMonth: user.questionsThisMonth,
+        questionsSeenThisMonthTeacher: user.questionsSeenThisMonthTeacher,
         actionsToday: user.actionsToday,
         dailyGoal: user.dailyGoal,
         isPremium: user.isPremium,
@@ -671,7 +670,10 @@ router.get(
 
     users.forEach((user) => {
       user.pointsTotal = user.cardsSeen + user.questionsSeenTotal;
-      user.pointsMonth = user.cardsSeenThisMonth + user.questionsThisMonth;
+      user.pointsMonth =
+        user.cardsSeenThisMonth +
+        user.questionsThisMonth +
+        user.questionsSeenThisMonthTeacher;
       user.pointsToday = user.actionsToday;
     });
 
