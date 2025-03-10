@@ -806,12 +806,12 @@ router.get(
   catchAsync(async (req, res) => {
     const { platform } = req.query;
     const minimumVersion = {
-      ios: "1.0.21",
-      android: "1.0.21",
+      ios: "1.0.17",
+      android: "1.0.17",
     };
     const latestVersions = {
-      ios: "1.0.21",
-      android: "1.0.21",
+      ios: "1.0.17",
+      android: "1.0.17",
     };
     const updateUrl = {
       ios: "https://apps.apple.com/us/app/edookio/id6740498818",
