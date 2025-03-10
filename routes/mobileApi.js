@@ -654,7 +654,7 @@ router.get(
         questionsSeenTotal: user.questionsSeenTotal,
         cardsSeenThisMonth: user.cardsSeenThisMonth,
         questionsSeenThisMonth: user.questionsThisMonth,
-        questionsSeenThisMonthTeacher: user.questionsSeenThisMonthTeacher,
+        questionsSeenThisMonthTeacher: user.questionsSeenThisMonthTeacher || 0,
         actionsToday: user.actionsToday,
         dailyGoal: user.dailyGoal,
         isPremium: user.isPremium,
