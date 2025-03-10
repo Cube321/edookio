@@ -653,7 +653,7 @@ router.get(
         cardsSeen: user.cardsSeen,
         questionsSeenTotal: user.questionsSeenTotal,
         cardsSeenThisMonth: user.cardsSeenThisMonth,
-        questionsSeenThisMonth: user.questionsThisMonth,
+        questionsSeenThisMonth: user.questionsSeenThisMonth,
         questionsSeenThisMonthTeacher: user.questionsSeenThisMonthTeacher || 0,
         actionsToday: user.actionsToday,
         dailyGoal: user.dailyGoal,
@@ -672,7 +672,7 @@ router.get(
       user.pointsTotal = user.cardsSeen + user.questionsSeenTotal;
       user.pointsMonth =
         user.cardsSeenThisMonth +
-        user.questionsThisMonth +
+        user.questionsSeenThisMonth +
         user.questionsSeenThisMonthTeacher;
       user.pointsToday = user.actionsToday;
     });
