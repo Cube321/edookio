@@ -73,10 +73,13 @@ router.delete(
     //delete Section
     const deletedSection = await Section.findByIdAndDelete(sectionId);
     const foundCategory = await Category.findById(categoryId);
-    foundCategory.numOfCards =
-      foundCategory.numOfCards - deletedSection.cards.length;
+
+    let cardsLength = deletedSection.cards?.length || 0;
+    let questionsLength = deletedSection.questions?.length || 0;
+
+    foundCategory.numOfCards = foundCategory.numOfCards - cardsLength;
     foundCategory.numOfQuestions =
-      foundCategory.numOfQuestions - deletedSection.questions.length;
+      foundCategory.numOfQuestions - questionsLength;
     await foundCategory.save();
 
     //flash a redirect
