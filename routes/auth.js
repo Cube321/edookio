@@ -118,6 +118,12 @@ router.post(
     let { shareId } = req.session;
     let { teacher } = req.query;
 
+    if (teacher) {
+      console.log("bot detected");
+      req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
+      return res.redirect("back");
+    }
+
     if (school) {
       req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
       return res.redirect("back");
