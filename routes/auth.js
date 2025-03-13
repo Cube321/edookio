@@ -100,7 +100,7 @@ router.get("/auth/user/new", (req, res) => {
 });
 
 //register form teacher (GET)
-router.get("/auth/user/teacher", (req, res) => {
+router.get("/auth/user/ucitel", (req, res) => {
   res.status(200).render("auth/register_teacher");
 });
 
@@ -117,12 +117,6 @@ router.post(
     let { email, password, key, source, school } = req.body;
     let { shareId } = req.session;
     let { teacher } = req.query;
-
-    if (teacher) {
-      console.log("bot detected");
-      req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
-      return res.redirect("back");
-    }
 
     if (school) {
       req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
