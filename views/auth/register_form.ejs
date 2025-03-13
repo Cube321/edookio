@@ -21,7 +21,7 @@
                 <% if (requiresPremium) { %>
                     <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new?requiresPremium=true" method="POST">
                 <% } else { %>
-                <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new" method="POST">
+                <form class="row g-3 needs-validation mt-1" novalidate action="/auth/user/new" method="POST" id="register-form">
                 <% } %> 
                     <div class="mt-3">
                         <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
@@ -145,7 +145,7 @@
 </div>
 <script>
     window.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("myForm");
+      const form = document.getElementById("register-form");
       form.action = "/auth/user/new?js=1";
     });
     </script>

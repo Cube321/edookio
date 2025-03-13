@@ -13,6 +13,7 @@
               novalidate
               action="/auth/user/new?teacher=true"
               method="POST"
+              id="register-form"
             >
               <div class="mt-3">
                 <input
@@ -218,7 +219,7 @@
 </div>
 <script>
   window.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("myForm");
+    const form = document.getElementById("register-form");
     form.action = "/auth/user/new?teacher=true&js=1";
   });
 </script>
