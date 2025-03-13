@@ -216,5 +216,10 @@
     </div>
   </div>
 </div>
-
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("myForm");
+    form.action = "/auth/user/new?teacher=true&js=1";
+  });
+</script>
 <script src="/js/validateForms.js"></script>

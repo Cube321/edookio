@@ -116,12 +116,18 @@ router.post(
   catchAsync(async (req, res, next) => {
     let { email, password, key, source, school } = req.body;
     let { shareId } = req.session;
-    let { teacher } = req.query;
+    let { teacher, js } = req.query;
+
+    if (!js) {
+      req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
+      return res.redirect("back");
+    }
 
     if (school) {
       req.flash("error", "Detekován bot. Registrace byla odmítnuta.");
       return res.redirect("back");
     }
+
     try {
       //check for admin key
       let admin = false;
