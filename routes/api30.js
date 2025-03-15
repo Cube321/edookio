@@ -232,6 +232,11 @@ router.get(
   catchAsync(async (req, res) => {
     let { sectionId } = req.params;
 
+    let isPremium = false;
+    if (req.user) {
+      isPremium = req.user.isPremium;
+    }
+
     if (sectionId !== "random_test") {
       //sanitize
       if (!mongoose.Types.ObjectId.isValid(sectionId)) {
@@ -252,6 +257,7 @@ router.get(
       const resData = JSON.stringify({
         questions: foundSection.questions,
         createdByTeacher: foundSection.createdByTeacher,
+        isUserPremium: isPremium,
       });
 
       res.status(200).send(resData);
@@ -268,6 +274,7 @@ router.get(
       const resData = JSON.stringify({
         questions: randomQuestions,
         createdByTeacher: createdByTeacher,
+        isUserPremium: isPremium,
       });
 
       res.status(200).send(resData);

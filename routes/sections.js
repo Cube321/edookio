@@ -29,6 +29,12 @@ router.post(
     }
     //create new Section and add it to Category
     let { name } = req.body;
+    const user = req.user;
+
+    let createdByTeacher = false;
+    if (user && user.isTeacher) {
+      createdByTeacher = true;
+    }
     //create new section
     const newSection = new Section({
       name,
@@ -36,6 +42,7 @@ router.post(
       cards: [],
       questions: [],
       author: req.user._id,
+      createdByTeacher,
     });
     const savedSection = await newSection.save();
     foundCategory.sections.push(savedSection._id);

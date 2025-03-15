@@ -36,6 +36,7 @@ $(document).ready(function () {
     .then((data) => {
       questions = data.questions;
       createdByTeacher = data.createdByTeacher;
+      isUserPremium = data.isUserPremium;
       if (createdByTeacher) {
         freeQuestionsLeft = 1000;
       }
@@ -183,7 +184,7 @@ $(document).ready(function () {
       }
     }
 
-    if (createdByTeacher) {
+    if (createdByTeacher && !isUserPremium) {
       $("#free-questions-text")
         .removeClass("opacity-0")
         .addClass("opacity-1")

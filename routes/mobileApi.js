@@ -891,12 +891,18 @@ router.post(
 
       let icon = "subject_9.png";
 
+      let createdByTeacher = false;
+      if (user && user.isTeacher) {
+        createdByTeacher = true;
+      }
+
       const newCategory = new Category({
         sections: [],
         text,
         icon,
         author: req.user._id,
         shareId,
+        createdByTeacher,
       });
       let savedCategory = await newCategory.save();
 
@@ -928,6 +934,11 @@ router.post(
           .json({ error: "Název balíčku a ID předmětu jsou povinné" });
       }
 
+      let createdByTeacher = false;
+      if (user && user.isTeacher) {
+        createdByTeacher = true;
+      }
+
       const newSection = new Section({
         name,
         categoryId,
@@ -935,6 +946,7 @@ router.post(
         isPublic: true,
         isAccesible: true,
         testIsPublic: true,
+        createdByTeacher,
       });
       let savedSection = await newSection.save();
 
