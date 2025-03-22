@@ -277,6 +277,10 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  billingIssue: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 UserSchema.plugin(passportLocalMongoose);

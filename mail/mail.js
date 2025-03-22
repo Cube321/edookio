@@ -195,6 +195,41 @@ mail.sendInfoEmail = function (email, callback) {
   });
 };
 
+mail.sendEmailToAdmin = function (subject, text, callback) {
+  const msg = {
+    from: "edookio@edookio.com",
+    to: process.env.ADMIN_MAIL,
+    subject: subject,
+    text: text,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
+mail.sendBillingIssueWarningToUser = function (email, callback) {
+  const msg = {
+    from: "edookio@edookio.com",
+    to: email,
+    subject: "Upozornění na problém s platbou",
+    html: `
+              <p>Ahoj,</p>
+              <p>prodloužení předplatného nebylo úspěšné, protože platba selhala. Doporučujeme předplatné zrušit přes App Store nebo Google Play a znovu aktivovat přes webovou aplikaci, ve které je předplatné levnější.</p>
+              <p>S pozdravem</p>
+              <p>Team Edookio</p>
+          `,
+  };
+  //send the mail
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
 //info mail to admin mail - registration of a new user
 mail.adminInfoNewUser = function (newUser, callback) {
   const msg = {

@@ -154,6 +154,16 @@ router.get(
 //premium explanation page
 router.get("/premium", (req, res) => {
   let stripeEnv = process.env.STRIPE_ENV;
+
+  if (req.user && req.user.billingIssue) {
+    console.log("User has active subscription");
+    req.flash(
+      "error",
+      "Stále máte aktivní předplatné aktivované přes mobilní aplikaci, ale došlo k problému s platbou. Doporučujeme zrušit předplatné v mobilní aplikaci (App Store, Google Play) a aktivovat jej znovu přes web."
+    );
+    return res.redirect("/auth/user/profile");
+  }
+
   res.status(200).render("premium", { stripeEnv });
 });
 

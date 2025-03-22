@@ -101,6 +101,58 @@
       </div>
     </div>
 
+    <!-- form to edit the invoice -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+              <form action="/invoices/<%= invoice.identificationNumber %>" method="POST" class="card p-3 mt-3">
+                <div class="form-group mt-3">
+                  <label for="identificationNumber">Číslo dokladu</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    id="identificationNumber" 
+                    name="identificationNumber" 
+                    value="<%= invoice.identificationNumber %>"
+                  >
+                </div>
+                <div class="form-group mt-3">
+                  <label for="dateIssued">Datum vystavení</label>
+                  <input 
+                    type="date" 
+                    class="form-control" 
+                    id="dateIssued" 
+                    name="dateIssued" 
+                    value="<%= invoice.dateIssued %>"
+                  >
+                </div>
+                <div class="form-group mt-3">
+                  <label for="amount">Částka</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    id="amount" 
+                    name="amount" 
+                    value="<%= invoice.amount %>"
+                  >
+                </div>
+                <div class="form-group mt-3">
+                  <label for="subscriptionPeriod">Doba platnosti</label>
+                  <select class="form-control" id="subscriptionPeriod" name="subscriptionPeriod">
+                    <option value="daily"    <% if (invoice.subscriptionPeriod === "daily")    { %> selected <% } %>>Denní</option>
+                    <option value="monthly"  <% if (invoice.subscriptionPeriod === "monthly")  { %> selected <% } %>>Měsíční</option>
+                    <option value="halfyear" <% if (invoice.subscriptionPeriod === "halfyear") { %> selected <% } %>>Půlroční</option>
+                    <option value="yearly"   <% if (invoice.subscriptionPeriod === "yearly")   { %> selected <% } %>>Roční</option>
+                  </select>
+                </div>
+                <div class="form-group mt-3">
+                  <button type="submit" class="btn btn-danger">Upravit</button>
+                </div>
+              </form>              
+            </div>
+        </div>
+    </div>
+
     <!-- JS for Bootstrap -->
     <script src="/js/jquery.min.js"></script>
     <script

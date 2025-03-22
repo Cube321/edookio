@@ -51,6 +51,39 @@ router.post(
   })
 );
 
+// Update an existing invoice
+router.post(
+  "/invoices/:identificationNumber",
+  isLoggedIn,
+  isAdmin,
+  catchAsync(async (req, res) => {
+    const { identificationNumber } = req.params;
+
+    // Find the invoice by the original identificationNumber
+    const foundInvoice = await Invoice.findOne({ identificationNumber });
+    if (!foundInvoice) {
+      req.flash("error", "Faktura nebyla nalezena.");
+      return res.redirect("/invoices/issued");
+    }
+
+    // Update fields from the request body
+    foundInvoice.identificationNumber = req.body.identificationNumber;
+    foundInvoice.dateIssued = moment(req.body.dateIssued)
+      .locale("cs")
+      .format("l");
+    foundInvoice.amount = parseFloat(req.body.amount);
+    foundInvoice.subscriptionPeriod = req.body.subscriptionPeriod;
+
+    // Save updated invoice
+    await foundInvoice.save();
+
+    req.flash("successOverlay", "Faktura byla úspěšně upravena.");
+    // Redirect wherever is most appropriate for your flow:
+    // e.g. back to the invoice details, or a list of all invoices:
+    return res.redirect(`/invoice/show/${foundInvoice._id}`);
+  })
+);
+
 //show one invoice
 router.get(
   "/invoice/show/:invoiceId/",
@@ -62,6 +95,12 @@ router.get(
       req.flash("error", "Faktura nebyla nalezena");
       return res.redirect("/auth/user/profile");
     }
+
+    foundInvoice.dateIssued = moment(
+      foundInvoice.dateIssued,
+      "DD.MM.YYYY"
+    ).format("YYYY-MM-DD");
+
     res.status(201).render(`invoices/showOne`, { invoice: foundInvoice });
   })
 );

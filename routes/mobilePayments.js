@@ -40,6 +40,18 @@ router.post(
     // Find the user in your database
     const user = await User.findOne({ _id: app_user_id });
     if (!user) {
+      //if app_user_id contains RCAnonymousID, it means that user is not registered in our system
+      if (app_user_id.includes("RCAnonymousID")) {
+        mail.sendEmailToAdmin(
+          "(ED) ANONYMOUS USER",
+          `Anonymous user with RCAnonymousID: ${app_user_id} activated subscription on RevenueCat`
+        );
+      } else {
+        mail.sendEmailToAdmin(
+          "(ED) NO USER",
+          `Unknown user: ${app_user_id} activated subscription on RevenueCat`
+        );
+      }
       console.error("User not found:", app_user_id);
       return res.status(404).send("User not found");
     }
@@ -64,6 +76,7 @@ router.post(
           ? new Date(Number(expiration_at_ms))
           : null;
         user.subscriptionSource = "revenuecat";
+        user.billingIssue = false;
 
         //create invoice
         await helpers.createInvoice(
@@ -100,6 +113,7 @@ router.post(
         user.creditsLastRecharge = new Date();
         user.subscriptionPrice = 249;
         user.monthlySubscriptionPrice = 249;
+        user.billingIssue = false;
 
         //create invoice
         await helpers.createInvoice(
@@ -125,26 +139,47 @@ router.post(
         break;
 
       case "CANCELLATION":
-        let oldPlan = user.plan;
-        user.plan = "none";
-        const endDate = moment(user.endDate).locale("cs").format("LL");
-        user.premiumDateOfCancelation = new Date();
-        user.creditsMonthlyLimit = 500;
-        user.subscriptionPrice = 0;
-        user.monthlySubscriptionPrice = 0;
-        try {
-          await mail.subscriptionCanceled(user.email, endDate);
-          await mail.adminInfoSubscriptionCanceled(
-            user,
-            endDate,
-            paymentSource,
-            store,
-            oldPlan
+        const { cancel_reason } = event;
+
+        // If the user truly unsubscribed (turned off auto-renew in the iOS Settings)
+        if (
+          cancel_reason === "UNSUBSCRIBE" ||
+          cancel_reason === "developer_initiated"
+        ) {
+          let oldPlan = user.plan;
+          user.plan = "none";
+          const endDate = moment(user.endDate).locale("cs").format("LL");
+          user.premiumDateOfCancelation = new Date();
+          user.creditsMonthlyLimit = 500;
+          user.subscriptionPrice = 0;
+          user.monthlySubscriptionPrice = 0;
+          user.billingIssue = false;
+          try {
+            await mail.subscriptionCanceled(user.email, endDate);
+            await mail.adminInfoSubscriptionCanceled(
+              user,
+              endDate,
+              paymentSource,
+              store,
+              oldPlan
+            );
+          } catch (error) {
+            console.error(
+              "Error sending email - cancellation MobilePayments",
+              error
+            );
+          }
+        } else {
+          // If cancellation is due to billing error or another reason,
+          // don't immediately drop them to a free plan.
+          // You could optionally log it or update a `pendingCancellation` field:
+          user.billingIssue = true;
+          console.log(
+            `Cancellation event due to '${cancel_reason}'. Not marking as canceled yet.`
           );
-        } catch (error) {
-          console.error(
-            "Error sending email - cancellation MobilePayments",
-            error
+          mail.sendEmailToAdmin(
+            "(ED) BILLING ISSUE",
+            `User ${user.email} has billing issue on RevenueCat - cancellation reason: ${cancel_reason}`
           );
         }
         break;
