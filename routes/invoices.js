@@ -72,7 +72,6 @@ router.post(
       .locale("cs")
       .format("l");
     foundInvoice.amount = parseFloat(req.body.amount);
-    foundInvoice.subscriptionPeriod = req.body.subscriptionPeriod;
 
     // Save updated invoice
     await foundInvoice.save();

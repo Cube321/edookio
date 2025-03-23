@@ -326,7 +326,6 @@ router.get("/auth/user/logout", isLoggedIn, (req, res, next) => {
     }
     res.status(201).redirect("/");
   });
-  res.status(201).redirect("/");
 });
 
 //verify email logic
