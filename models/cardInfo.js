@@ -17,6 +17,25 @@ const cardInfoSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  // --- New fields for spaced repetition ---
+  lastReviewed: {
+    type: Date,
+  },
+  nextReview: {
+    type: Date,
+  },
+  interval: {
+    type: Number,
+    default: 1, // measured in days by default
+  },
+  repetitionCount: {
+    type: Number,
+    default: 0,
+  },
+  easeFactor: {
+    type: Number,
+    default: 2.5,
+  },
 });
 
 module.exports = mongoose.model("CardInfo", cardInfoSchema);

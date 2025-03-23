@@ -146,9 +146,6 @@ helpers.registerAction = async function (user, action, sectionId) {
     if (sectionId && sectionId !== "random_test") {
       foundSection = await Section.findById(sectionId);
     }
-
-    console.log("SectionId:", sectionId);
-
     //check if today is in the activeDays array and if not, add it + increase count of actions
     let today = moment().format("YYYY-MM-DD");
     if (!user.activeDays.find((day) => day.date === today)) {

@@ -150,16 +150,19 @@ router.get(
 
       //count how many cards from this package are known to the user and how many are unknown or he has not seen them yet
       let knownCards = 0;
+      const now = new Date();
 
       for (let card of foundSection.cards) {
         let cardInfo = await CardInfo.findOne({
           user: user._id,
           card: card,
         });
-        if (cardInfo && cardInfo.known) {
+        // Also check if nextReview hasn't passed
+        if (cardInfo && cardInfo.known && cardInfo.nextReview > now) {
           knownCards++;
         }
       }
+
       const cardsTotal = foundSection.cards.length;
 
       //knowsAll

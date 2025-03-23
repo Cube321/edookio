@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const Section = require("../models/section");
 const Category = require("../models/category");
+const CardInfo = require("../models/cardInfo");
 const mongoose = require("mongoose");
 const sanitizeHtml = require("sanitize-html");
 const moment = require("moment");
@@ -83,24 +84,28 @@ router.get(
     // 1) If the user is logged in, filter out known cards
     // ---------------------------------------------------
     if (req.user) {
-      // Import CardInfo
-      const CardInfo = require("../models/cardInfo");
-
-      // Get all cardIds from this section
+      // Get all cardIds
       const cardIds = cards.map((card) => card._id);
 
-      // Find which of those cards the user marked as known
-      const knownCards = await CardInfo.find({
+      // 1) Query CardInfo for user+cards
+      const cardInfos = await CardInfo.find({
         user: req.user._id,
         card: { $in: cardIds },
-        known: true,
       });
 
-      // Create a Set of known card IDs (for fast lookup)
-      const knownCardIds = new Set(knownCards.map((c) => c.card.toString()));
+      // 2) Build a set of cardIds that are "known" OR "not due yet"
+      const now = new Date();
+      const excludedCardIds = new Set();
+      for (let info of cardInfos) {
+        // if known or nextReview is in the future => exclude
+        if (info.known || (info.nextReview && info.nextReview > now)) {
+          excludedCardIds.add(info.card.toString());
+        }
+      }
 
-      // Filter out known cards
-      cards = cards.filter((card) => !knownCardIds.has(card._id.toString()));
+      // 3) Filter out from the list of cards
+      cards = cards.filter((card) => !excludedCardIds.has(card._id.toString()));
+
       await helpers.registerAction(req.user, "cardSeen");
     }
     // ---------------------------------------------------

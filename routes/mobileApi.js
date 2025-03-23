@@ -145,10 +145,12 @@ router.get(
       const cardIds = section.cards.map((card) => card._id);
 
       // Count how many are known
+      const now = new Date();
       const knownCount = await CardInfo.countDocuments({
         user: user._id,
         card: { $in: cardIds },
         known: true,
+        nextReview: { $gt: now }, // Overdue cards are not “known” anymore
       });
 
       knownInCategoryCount += knownCount;
@@ -240,15 +242,23 @@ router.get(
 
     const { mode } = req.query;
     if (mode === "unknown") {
-      const knownCards = await CardInfo.find({
+      const now = new Date();
+      const stillKnownInfos = await CardInfo.find({
         user: req.user._id,
         card: { $in: allCardIds },
         known: true,
+        nextReview: { $gt: now },
       });
-      const knownCardIds = new Set(knownCards.map((c) => c.card.toString()));
-      section.cards = section.cards.filter(
-        (card) => !knownCardIds.has(card._id.toString())
+      const stillKnownCardIds = new Set(
+        stillKnownInfos.map((c) => c.card.toString())
       );
+
+      // Filter out the “still-known” cards
+      section.cards = section.cards.filter(
+        (card) => !stillKnownCardIds.has(card._id.toString())
+      );
+
+      // If we ended up excluding all cards, that means the user “knows all”
       if (section.cards.length === 0) {
         section.cards = allCards;
         knowsAllCards = true;

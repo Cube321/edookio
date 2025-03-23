@@ -95,20 +95,36 @@ router.get(
       const CardInfo = require("../models/cardInfo");
 
       for (let section of category.sections) {
+        // 1) Get all cards in this section
         const cardIds = section.cards.map((c) => c._id);
 
-        // How many of these card IDs does the user know?
-        const knownCount = await CardInfo.countDocuments({
+        // 2) Fetch all CardInfo for these cards & this user
+        const cardInfos = await CardInfo.find({
           user: req.user._id,
           card: { $in: cardIds },
-          known: true,
         });
 
-        // Store this info so you can use it in your EJS
+        // 3) Count how many are “still known” (i.e., known=true & nextReview in future)
+        let knownCount = 0;
+        for (const info of cardInfos) {
+          const now = new Date();
+          if (
+            info.known === true &&
+            info.nextReview && // ensure nextReview is defined
+            info.nextReview > now // card is not overdue
+          ) {
+            knownCount++;
+          }
+        }
+
+        // 4) That is how many the user “knows” in this section
         section.knownCount = knownCount;
         knownCardsOfCategory += knownCount;
+
+        // 5) The rest are “left to study” (includes overdue + never seen)
         section.leftToStudy = cardIds.length - knownCount;
-        //how many percent of the cards the user already knows
+
+        // 6) Calculate known %
         section.knownPercentage = Math.round(
           (knownCount / cardIds.length) * 100
         );
