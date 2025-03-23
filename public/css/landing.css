@@ -322,6 +322,37 @@ body {
   padding-top: 1rem;
 }
 
+/* TESTIMONIALS */
+.testimonial-avatar {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin: 0 auto 1rem auto; /* center the avatar */
+}
+.testimonial-quote {
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.star-rating i {
+  color: #ffc107; /* bootstrap "warning" color for stars */
+}
+/* Example: Make the arrows appear bigger and lighter */
+.arrow-btn {
+  font-size: 1.5rem;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.arrow-btn:hover {
+  color: #333;
+}
+/* For extra spacing above/below the row */
+.testimonials-section {
+  padding: 2rem 0;
+}
+
 @media only screen and (max-width: 992px) {
   .landing-info-wrapper {
     flex-direction: column;
