@@ -111,7 +111,7 @@ router.post(
       case "customer.subscription.updated": {
         //changed payment period
         console.log("UPDATED RUNNING: webhook customer.subscription.updated");
-        console.log(`data.plan.id: ${data.plan.id}`);
+        console.log(`PLAN ID: ${data.items.data[0].price.id}`);
         let user = await User.findOne({ billingId: data.customer });
         if (!user) {
           console.log("Uživatel s tímto platebním ID nebyl nalezen");
@@ -137,7 +137,10 @@ router.post(
         }
 
         //handle subscription
-        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_YEARLY) {
+        if (
+          !data.canceled_at &&
+          data.items.data[0].price.id == process.env.PRODUCT_YEARLY
+        ) {
           user.plan = "yearly";
           user.creditsMonthlyLimit = 1250;
           user.credits = 1250;
@@ -170,7 +173,10 @@ router.post(
           user.isPremium = true;
         }
 
-        if (!data.canceled_at && data.plan.id == process.env.PRODUCT_MONTHLY) {
+        if (
+          !data.canceled_at &&
+          data.items.data[0].price.id == process.env.PRODUCT_MONTHLY
+        ) {
           user.plan = "monthly";
           user.creditsMonthlyLimit = 1000;
           user.credits = 1000;
@@ -240,8 +246,10 @@ router.post(
           return res.sendStatus(404);
         }
 
-        const amountPaid = data.amount_paid / 100; // Convert cents to currency
-        const originalPrice = data.subtotal / 100;
+        const invoice = data;
+        const line = invoice.lines.data[1] || invoice.lines.data[0];
+        const originalPrice = line.price.unit_amount / 100;
+        const amountPaid = invoice.amount_paid / 100;
 
         let plan = "none";
 

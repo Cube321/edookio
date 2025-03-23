@@ -193,9 +193,14 @@ router.post(
         landingPageVariant,
       });
       const newUser = await User.register(user, password);
-      await req.login(newUser, (err) => {
-        if (err) return next(err);
+
+      await new Promise((resolve, reject) => {
+        req.login(newUser, (err) => {
+          if (err) return reject(err);
+          resolve();
+        });
       });
+
       //send info e-mails
       mail.welcome(newUser.email);
       mail.emailVerification(newUser.email, newUser._id);

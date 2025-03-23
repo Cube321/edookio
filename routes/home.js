@@ -104,9 +104,6 @@ router.get(
     );
     const categories = userWithPopulatedCreatedCategories.createdCategories;
     let numOfCategories = categories.length;
-    const numOfCards = await Card.count();
-    const numOfQuestions = await Question.count();
-    const numOfSections = await Section.count();
     let percent = 0;
 
     //count how many percept of the dailyGoal has the user already seen today
@@ -140,9 +137,6 @@ router.get(
     res.status(200).render("home", {
       categories,
       sharedCategories: user.sharedCategories,
-      numOfCards,
-      numOfQuestions,
-      numOfSections,
       numOfCategories,
       percent,
       icons,
