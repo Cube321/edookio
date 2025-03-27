@@ -73,9 +73,8 @@ cron.schedule(
 //dailyCleanpuOps
 cron.schedule(cronHelpers.cronExpressionDaily3AM, cronHelpers.dailyCleanupOps);
 
-//send infoEmail to users registered 3 days ago
-//TEMPORARILY DISABLED + NEEDS EMAIL CONTENT UPDATE
-//cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);
+//send infoEmail to users registered 1 day ago
+cron.schedule(cronHelpers.cronExpressionDaily8PM, cronHelpers.sendInfoEmail);
 
 //notify users about daily activity
 cron.schedule(

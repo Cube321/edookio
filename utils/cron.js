@@ -162,9 +162,9 @@ cronHelpers.sendInfoEmail = catchAsync(async () => {
     // moment().diff(registrationDate, 'days') => how many days since registration
     const diffInDays = moment().diff(moment(user.dateOfRegistration), "days");
     // 3) Check if 3+ days have passed
-    if (diffInDays >= 3 && !user.infoEmailSent && !user.hasUnsubscribed) {
+    if (diffInDays >= 1 && !user.infoEmailSent && !user.hasUnsubscribed) {
       // 4) Send the email
-      mail.sendInfoEmail(user.email);
+      mail.dayAfterRegistrationEmail(user.email);
 
       // 5) Mark the user so we don't send again
       user.infoEmailSent = true;

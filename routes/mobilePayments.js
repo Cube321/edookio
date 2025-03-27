@@ -60,8 +60,6 @@ router.post(
     const plan = "monthly";
 
     // Update user's subscription status
-    let formattedEndDate = "unknown";
-
     const paymentSource = "revenuecat";
 
     switch (event_type) {
@@ -88,7 +86,7 @@ router.post(
         );
 
         try {
-          await mail.subscriptionCreated(user.email, formattedEndDate);
+          await mail.subscriptionCreated(user.email);
           await mail.adminInfoNewSubscription(user, paymentSource, store);
         } catch (error) {
           console.error(
@@ -101,9 +99,14 @@ router.post(
 
       case "RENEWAL":
       case "PRODUCT_CHANGE":
+        const actuallyActivation = !user.endDate;
         user.isPremium = true;
         user.plan = plan;
-        user.premiumDateOfUpdate = new Date();
+        if (actuallyActivation) {
+          user.premiumDateOfActivation = new Date();
+        } else {
+          user.premiumDateOfUpdate = new Date();
+        }
         user.endDate = expiration_at_ms
           ? new Date(Number(expiration_at_ms))
           : null;
@@ -124,14 +127,18 @@ router.post(
           user.plan
         );
 
-        formattedEndDate = "-";
         try {
-          await mail.adminInfoSubscriptionUpdated(
-            user,
-            formattedEndDate,
-            paymentSource,
-            store
-          );
+          if (actuallyActivation) {
+            await mail.subscriptionCreated(user.email);
+            await mail.adminInfoNewSubscription(user, paymentSource, store);
+          } else {
+            await mail.adminInfoSubscriptionUpdated(
+              user,
+              undefined,
+              paymentSource,
+              store
+            );
+          }
         } catch (error) {
           console.error("Error sending email - renewal MobilePayments", error);
         }

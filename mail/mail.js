@@ -80,6 +80,93 @@ mail.welcome = function (email, callback) {
   });
 };
 
+mail.dayAfterRegistrationEmail = function (email, callback) {
+  const msg = {
+    from: { email: "edookio@edookio.com", name: "Edookio" },
+    to: email,
+    subject: "Poznej tajemství rozloženého opakování",
+    html: `<div style="box-sizing:border-box;display:block;max-width:600px;margin:0 auto;padding:10px"> 
+                  <div style="box-sizing:border-box;width:100%;margin-bottom:30px;background:#ffffff;border:1px solid #f0f0f0"> 
+                      <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
+                          <tbody>
+                              <tr> 
+                                  <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;padding:30px" valign="top"> 
+                                      <table style="box-sizing:border-box;width:100%;border-spacing:0;border-collapse:separate!important" width="100%"> 
+                                          <tbody>
+                                              <tr> 
+                                                  <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top"> 
+                                                      <div style="box-sizing:border-box">
+                                                          <h2 style="margin:0;margin-bottom:30px;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;line-height:1.5;font-size:24px;color:#484848!important">Studuj chytřeji díky rozloženému opakování</h2> 
+                                                          <p style="margin:0;margin-bottom:10px;color:#484848;font-size:16px;font-weight:300">
+                                                              Věděl(a) jsi, že nejúčinnější způsob, jak si udržet znalosti v dlouhodobé paměti, je <strong style="font-weight:400">rozložené opakování</strong> (<i>spaced repetition</i>)?
+                                                          </p>
+                                                          <p style="margin:0;margin-bottom:10px;color:#484848;font-size:16px;font-weight:300">
+                                                              Tento vědecky podložený princip ti pomůže zapamatovat si látku pomocí opakování přesně ve chvíli, kdy ji můžeš zapomenout – čím lépe si něco pamatuješ, tím méně často to potřebuješ opakovat.
+                                                          </p>
+                                                          <ul style="margin-bottom:20px;color:#484848;font-size:16px;font-weight:300">
+                                                              <li>📈 Efektivnější zapamatování</li>
+                                                              <li>🧠 Dlouhodobé uchování informací</li>
+                                                              <li>⏱️ Úspora času při učení</li>
+                                                          </ul>
+                                                          <p style="margin:0;margin-bottom:30px;color:#484848;font-size:16px;font-weight:300">
+                                                              Edookio tento princip automaticky využívá při opakování kartiček. Vytvoř si kartičky pomocí AI z vlastních poznámek a začni studovat chytřeji během několika minut!
+                                                          </p>
+                                                      </div> 
+                                                  </td> 
+                                              </tr> 
+                                              <tr> 
+                                                  <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top" valign="top"> 
+                                                      <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border-spacing:0;width:100%;border-collapse:separate!important" width="100%"> 
+                                                          <tbody>
+                                                              <tr> 
+                                                                  <td align="center" style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;padding-bottom:15px" valign="top"> 
+                                                                      <table cellpadding="0" cellspacing="0" style="box-sizing:border-box;border-spacing:0;width:auto;border-collapse:separate!important"> 
+                                                                          <tbody>
+                                                                              <tr> 
+                                                                                  <td style="box-sizing:border-box;padding:0;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-size:16px;vertical-align:top;background-color:#ffffff;border-radius:2px;text-align:center" valign="top" bgcolor="#348EDA" align="center"> 
+                                                                                      <div style="box-sizing:border-box">
+                                                                                          <div>
+                                                                                              <a href="https://www.edookio.com/" style="box-sizing:border-box;border-color:#FF0037;font-weight:400;text-decoration:none;display:inline-block;margin:0;color:#ffffff;background-color:#FF0037;border:solid 1px #FF0037;border-radius:10px;font-size:16px;padding:12px 45px" target="_blank">Začít opakovat</a>
+                                                                                          </div>
+                                                                                      </div> 
+                                                                                  </td> 
+                                                                              </tr> 
+                                                                          </tbody>
+                                                                      </table> 
+                                                                  </td> 
+                                                              </tr> 
+                                                          </tbody>
+                                                      </table> 
+                                                  </td> 
+                                              </tr>
+                                          </tbody>
+                                      </table> 
+                                  </td> 
+                              </tr> 
+                          </tbody>
+                      </table> 
+                  </div>
+                  <div style="box-sizing:border-box;clear:both;width:100%"> 
+                      <table style="box-sizing:border-box;width:100%;border-spacing:0;font-size:12px;border-collapse:separate!important" width="100%"> 
+                          <tbody>
+                              <tr style="font-size:12px"> 
+                                  <td style="box-sizing:border-box;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;vertical-align:top;font-size:12px;text-align:center;padding:20px 0" valign="top" align="center">
+                                      <p style="margin:0;color:#484848;font-family:'Open Sans','Helvetica Neue','Helvetica',Helvetica,Arial,sans-serif;font-weight:300;font-size:12px;margin-bottom:5px">Provozovatel Edookio: Chilero s.r.o., IČ: 089 00 230, Kaštanová 3, 779 00 Olomouc</p>
+                                        <p style="font-size:10px; text-align: center;color:#6C657D;font-family:Helvetica Neue">Odhlásit se z odběru informačních e-mailů můžete <a style="color:#FF0037; text-decoration:none" href="https://www.edookio.com/admin/email/unsubscribe?email=${email}">zde</a>.</p>
+                                  </td> 
+                              </tr> 
+                          </tbody>
+                      </table> 
+                  </div>  
+              </div>`,
+  };
+  sgMail.send(msg, function (err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+
 //info e-mail after 3 days
 mail.sendInfoEmail = function (email, callback) {
   const msg = {
