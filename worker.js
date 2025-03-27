@@ -49,7 +49,29 @@ async function processDocumentJob(job) {
       cardsPerPage,
       jobEventId,
       requestedCards,
+      difficulty,
+      resultLanguage,
     } = job.data;
+
+    console.log("Difficulty:", difficulty);
+    console.log("Result language:", resultLanguage);
+
+    if (!difficulty) {
+      difficulty = "medium";
+    }
+
+    if (!resultLanguage) {
+      resultLanguage = "czech";
+    }
+
+    let difficultyLevel = "university student";
+    if (difficulty === "easy") {
+      difficultyLevel = "high school student";
+    } else if (difficulty === "hard") {
+      difficultyLevel = "very advanced graduate student";
+    }
+
+    console.log("The difficulty level is:", difficultyLevel);
 
     await job.progress(1);
     let jobEvent = await JobEvent.findById(jobEventId);
@@ -108,7 +130,7 @@ async function processDocumentJob(job) {
           messages: [
             {
               role: "user",
-              content: `Below is a text. You must create flashcards in the same language based on the text. 
+              content: `Below is a text. You must create flashcards in ${resultLanguage} language. 
             
                     Use only the following HTML tags to format the answers:
       
@@ -125,11 +147,11 @@ async function processDocumentJob(job) {
                     
                     You must produce at least 2 flashcards otherwise the job will be rejected.
       
-                    Avoid creating questions that are too easy or too difficult. They should be on a level of a university student.
+                    Avoid creating questions that are too easy or too difficult. They should be on a level of a ${difficultyLevel}.
                     Also avoid creating questions that are too similar to each other.
       
                     Also, create a test question for each flashcard. The test question should be in the form of a multiple-choice question 
-                    with three answers, only one correct. The correct answer should be very brief. The incorrect answers should be plausible but incorrect.
+                    with three answers, only one correct. The correct answer should be very brief. The incorrect answers should be plausible but incorrect. The test questions should be of ${difficulty} difficulty.
       
                     ${chunk}
                     

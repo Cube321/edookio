@@ -23,7 +23,7 @@ router.post(
   isCategoryAuthor,
   upload.single("document"),
   catchAsync(async (req, res) => {
-    const { name } = req.body;
+    const { name, difficulty, resultLanguage } = req.body;
     const { file } = req;
     const { categoryId } = req.params;
     const { user } = req;
@@ -202,6 +202,8 @@ router.post(
       questionsCreated: 0,
       cardsPerPage,
       jobEventId: createdJobEvent._id,
+      difficulty,
+      resultLanguage,
     });
 
     let expectedTimeInSeconds = Math.floor(extractedText.length / 1800) + 15;

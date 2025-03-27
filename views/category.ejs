@@ -535,7 +535,7 @@
             <div class="col-lg-8">
               <input
                 type="text"
-                class="form-control form-borders"
+                class="form-control form-borders bg-light"
                 id="name"
                 name="name"
                 required
@@ -613,13 +613,52 @@
             </div>
           </div>
 
-          <div class="row mt-5">
+          <!--  DROPDOWNS FOR DIFFICULTY AND RESULT LANGUAGE  -->
+          <div class="row mt-3">
+            <label
+              for="difficulty"
+              class="col-lg-4 col-form-label d-flex align-items-center"
+              >Obtížnost otázek</label
+            >
+            <div class="col-lg-8">
+              <select
+                class="form-control form-borders bg-light"
+                id="difficulty"
+                name="difficulty"
+              >
+                <option value="easy">nízká</option>
+                <option value="medium" selected>střední</option>
+                <option value="hard">vysoká</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <label
+              for="resultLanguage"
+              class="col-lg-4 col-form-label d-flex align-items-center"
+              >Jazyk výsledku</label
+            >
+            <div class="col-lg-8">
+              <select
+                class="form-control form-borders bg-light"
+                id="resultLanguage"
+                name="resultLanguage"
+              >
+                <option value="czech" selected>čeština</option>
+                <option value="english">angličtina</option>
+              </select>
+            </div>
+          </div>
+          <!--  END DROPDOWNS  -->
+
+          <div class="row mt-2">
             <label for="document" class="col-lg-4 col-form-label"
               >Nahrát dokument</label
             >
             <div class="col-lg-8">
               <input
-                class="form-control form-borders border-darkgrey"
+                class="form-control form-borders bg-light"
                 type="file"
                 id="document"
                 name="document"
@@ -627,12 +666,12 @@
                 required
               />
               <% if (currentUser && !currentUser.isPremium){ %>
-              <p class="text-muted text-smaller my-1">
+              <p class="text-muted text-small my-1">
                 Maximální rozsah textu je 75 stran -
                 <a href="/premium">zvýšit na 300 stran</a>.
               </p>
               <% } else { %>
-              <p class="text-muted text-smaller my-1">
+              <p class="text-muted text-small my-1">
                 Maximální rozsah textu je 300 stran (540 000 znaků).
               </p>
               <% } %>
