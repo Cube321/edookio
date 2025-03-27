@@ -205,6 +205,7 @@ app.use(
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
       workerSrc: ["'self'", "blob:"],
       objectSrc: [],
+      scriptSrcAttr: ["'self'", "'unsafe-inline'"],
       imgSrc: [
         "'self'",
         "blob:",
