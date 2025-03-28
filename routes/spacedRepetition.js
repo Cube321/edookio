@@ -143,10 +143,39 @@ function updateSRSFields(cardInfo, known) {
   }
 
   // Next review date = now + interval days
-  // You could also store intervals in hours, e.g. * 24 * 60 * 60 * 1000
   const nextReviewDate = new Date();
   nextReviewDate.setDate(nextReviewDate.getDate() + cardInfo.interval);
+  nextReviewDate.setHours(0, 1, 0, 0); // 00:01 AM
   cardInfo.nextReview = nextReviewDate;
 }
+
+async function updateCardInfos() {
+  try {
+    await CardInfo.updateMany(
+      {
+        known: true,
+        $or: [
+          { nextReview: { $exists: false } },
+          { interval: { $exists: false } },
+          { easeFactor: { $exists: false } },
+          { repetitionCount: { $exists: false } },
+        ],
+      },
+      {
+        $set: {
+          interval: 1,
+          easeFactor: 2.5,
+          repetitionCount: 1,
+          nextReview: new Date(new Date().setHours(0, 1, 0, 0)), // today at 00:01
+        },
+      }
+    );
+    console.log("Updated CardInfo documents.");
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+updateCardInfos();
 
 module.exports = router;
