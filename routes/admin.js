@@ -835,8 +835,8 @@ router.get("/admin/:userId/removeTeacher", async (req, res) => {
 router.get("/admin/cardinfos", isLoggedIn, async (req, res) => {
   try {
     const cardInfos = await CardInfo.find()
-      .sort({ updatedAt: -1 })
-      .limit(100)
+      .sort({ nextReview: -1 })
+      .limit(1000)
       .populate("user")
       .populate("card");
 
