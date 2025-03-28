@@ -1,0 +1,38 @@
+<% layout ('layouts/boilerplate.ejs') %>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mb-3">
+      <h5>Posledních 100 upravených CardInfo záznamů</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="w-100">
+        <tr>
+          <th>Uživatel</th>
+          <th>Kartička ID</th>
+          <th>Známo</th>
+          <th>Interval</th>
+          <th>Ease</th>
+          <th>Repetice</th>
+          <th>Další opakování</th>
+          <th>Poslední změna</th>
+        </tr>
+        <% cardInfos.forEach(info => { %>
+        <tr>
+          <td><%= info.user ? info.user.email : 'Neznámý' %></td>
+          <td><%= info.card ? info.card._id : 'Neznámá' %></td>
+          <td><%= info.known ? 'Ano' : 'Ne' %></td>
+          <td><%= info.interval || 0 %> dní</td>
+          <td><%= info.easeFactor || '—' %></td>
+          <td><%= info.repetitionCount || 0 %></td>
+          <td>
+            <%= info.nextReview ? info.nextReview.toLocaleDateString() : '—' %>
+          </td>
+          <td><%= info.updatedAt ? info.updatedAt.toLocaleString() : '—' %></td>
+        </tr>
+        <% }) %>
+      </table>
+    </div>
+  </div>
+</div>

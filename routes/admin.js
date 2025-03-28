@@ -3,6 +3,8 @@ const router = express.Router();
 const catchAsync = require("../utils/catchAsync");
 const User = require("../models/user");
 const Category = require("../models/category");
+const CardInfo = require("../models/cardInfo");
+const Card = require("../models/card");
 const Section = require("../models/section");
 const Stats = require("../models/stats");
 const Feedback = require("../models/feedback");
@@ -828,6 +830,21 @@ router.get("/admin/:userId/removeTeacher", async (req, res) => {
   await foundUser.save();
   req.flash("successOverlay", "Uživatel je nyní student.");
   res.redirect(`/admin/${userId}/showDetail`);
+});
+
+router.get("/admin/cardinfos", isLoggedIn, async (req, res) => {
+  try {
+    const cardInfos = await CardInfo.find()
+      .sort({ updatedAt: -1 })
+      .limit(100)
+      .populate("user")
+      .populate("card");
+
+    res.render("admin/cardInfos", { cardInfos });
+  } catch (err) {
+    console.error("Error loading CardInfos:", err);
+    res.status(500).send("Server Error");
+  }
 });
 
 //HELPERS
