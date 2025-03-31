@@ -84,7 +84,7 @@ router.get(
     // 1) If the user is logged in, filter out known cards
     // ---------------------------------------------------
     if (req.user) {
-      // Get all cardIds
+      // Get all cardIds from this section
       const cardIds = cards.map((card) => card._id);
 
       // 1) Query CardInfo for user+cards
@@ -93,19 +93,18 @@ router.get(
         card: { $in: cardIds },
       });
 
-      // 2) Build a set of cardIds that are "known" OR "not due yet"
+      // 2) Build a set of cardIds that are "known" AND "not due yet"
       const now = new Date();
       const excludedCardIds = new Set();
-      for (let info of cardInfos) {
-        // if known or nextReview is in the future => exclude
-        if (info.known || (info.nextReview && info.nextReview > now)) {
+      for (const info of cardInfos) {
+        // Exclude if known + nextReview is in the future
+        if (info.known && info.nextReview && info.nextReview > now) {
           excludedCardIds.add(info.card.toString());
         }
       }
 
       // 3) Filter out from the list of cards
       cards = cards.filter((card) => !excludedCardIds.has(card._id.toString()));
-
       await helpers.registerAction(req.user, "cardSeen");
     }
     // ---------------------------------------------------
