@@ -111,6 +111,8 @@ function updateSRSFields(cardInfo, known) {
   // Update lastReviewed every time
   cardInfo.lastReviewed = now;
 
+  const isFirstTime = !cardInfo.nextReview;
+
   if (known) {
     // user says "I know this card"
     cardInfo.known = true;
@@ -121,7 +123,9 @@ function updateSRSFields(cardInfo, known) {
     cardInfo.easeFactor = Math.min((cardInfo.easeFactor || 2.5) + 0.1, 3.0);
 
     // simpler logic for interval
-    if (cardInfo.repetitionCount === 1) {
+    if (isFirstTime) {
+      cardInfo.interval = 3;
+    } else if (cardInfo.repetitionCount === 1) {
       cardInfo.interval = 1;
     } else if (cardInfo.repetitionCount === 2) {
       cardInfo.interval = 3;
