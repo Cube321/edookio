@@ -22,43 +22,196 @@ const {
 const uuid = require("uuid");
 const helpers = require("../utils/helpers");
 
+/***********************
+ * 1) GET CATEGORIES
+ ***********************/
 router.get(
   "/mobileApi/getCategories",
   passport.authenticate("jwt", { session: false }),
   catchAsync(async (req, res) => {
-    const categories = await Category.find({ author: req.user._id });
-    ///order categories by name alphabetically
-    categories.sort((a, b) => {
-      if (a.text.toLowerCase() < b.text.toLowerCase()) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
+    // 1A) Load categories belonging to this user
+    //     But also populate sections -> cards, questions
+    let categories = await Category.find({ author: req.user._id })
+      .populate({
+        path: "sections",
+        populate: [{ path: "cards" }, { path: "questions" }],
+      })
+      .lean();
+
+    // 1B) Attach proficiency fields (averageTestPercentage, etc.)
+    categories = await computeProficiencyForCategories(categories, req.user);
+
+    // 1C) Sort by name
+    categories.sort((a, b) =>
+      a.text.toLowerCase().localeCompare(b.text.toLowerCase())
+    );
+
+    // 1D) Return JSON
     res.status(200).json(categories);
   })
 );
 
+/******************************
+ * 2) GET SHARED CATEGORIES
+ ******************************/
 router.get(
   "/mobileApi/getSharedCategories",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    await req.user.populate("sharedCategories");
-
-    let categories = req.user.sharedCategories;
-
-    //order categories by name alphabetically
-    categories.sort((a, b) => {
-      if (a.text.toLowerCase() < b.text.toLowerCase()) {
-        return -1;
-      } else {
-        return 1;
-      }
+    // 2A) Populate user’s sharedCategories
+    //     And also their sections -> cards, questions
+    await req.user.populate({
+      path: "sharedCategories",
+      populate: [
+        {
+          path: "sections",
+          populate: [{ path: "cards" }, { path: "questions" }],
+        },
+      ],
     });
 
+    let categories = req.user.sharedCategories || [];
+
+    // 2B) Attach proficiency
+    categories = await computeProficiencyForCategories(categories, req.user);
+
+    // 2C) Sort by name
+    categories.sort((a, b) =>
+      a.text.toLowerCase().localeCompare(b.text.toLowerCase())
+    );
+
+    // 2D) Return JSON
     res.status(200).json(categories);
   }
 );
+
+/*********************************************
+ * 3) HELPER: computeProficiencyForCategories
+ *********************************************/
+async function computeProficiencyForCategories(categories, user) {
+  const userId = user._id;
+  const now = new Date();
+
+  const output = [];
+
+  for (const cat of categories) {
+    // Convert Mongoose doc => plain JS object
+    const categoryObj = cat.toObject ? cat.toObject() : { ...cat };
+
+    // If no sections, just default everything to 0
+    if (!categoryObj.sections || categoryObj.sections.length === 0) {
+      categoryObj.averageTestPercentage = 0;
+      categoryObj.percentageOfKnownCards = 0;
+      categoryObj.proficiency = 0;
+      output.push(categoryObj);
+      continue;
+    }
+
+    // 1) Grab all user test results for this category
+    const testResults = await TestResult.find({
+      user: userId,
+      category: categoryObj._id,
+    }).sort({ date: -1 });
+
+    // Build a map of the most recent test result per section
+    const testResultsMap = {};
+    for (const tr of testResults) {
+      if (!testResultsMap[tr.section]) {
+        testResultsMap[tr.section] = tr;
+      }
+    }
+
+    // 2) Gather all card IDs in the category
+    const allCardIds = [];
+    let questionSectionsCount = 0; // how many sections have at least 1 question
+    let totalTestPercentage = 0; // sum of lastTestResult
+    let testResultsCount = 0; // number of test results we consider
+
+    for (const section of categoryObj.sections) {
+      // Collect card IDs
+      if (section.cards && section.cards.length > 0) {
+        section.cards.forEach((c) => allCardIds.push(c._id));
+      }
+
+      // If the section has questions, it contributes to the test average
+      const hasQuestions = section.questions && section.questions.length > 0;
+      if (hasQuestions) {
+        questionSectionsCount++;
+        // If there's a “most recent” test result that is set to showOnCategoryPage:
+        const lastTR = testResultsMap[section._id];
+        if (lastTR && lastTR.showOnCategoryPage) {
+          totalTestPercentage += lastTR.percentage;
+        } else {
+          // No test or showOnCategoryPage = false => treat as 0
+          totalTestPercentage += 0;
+        }
+        testResultsCount++;
+      }
+    }
+
+    // 3) Known cards => Overdue does not count
+    const knownCount = await CardInfo.countDocuments({
+      user: userId,
+      card: { $in: allCardIds },
+      known: true,
+      nextReview: { $gt: now },
+    });
+
+    // 4) The category might have numOfCards. If not, compute from sections
+    let totalCardsInCategory = categoryObj.numOfCards;
+    if (typeof totalCardsInCategory !== "number") {
+      // fallback: sum up each section’s cards
+      totalCardsInCategory = 0;
+      categoryObj.sections.forEach((sec) => {
+        if (sec.cards) {
+          totalCardsInCategory += sec.cards.length;
+        }
+      });
+    }
+
+    // 5) Known cards percentage
+    let percentageOfKnownCards = 0;
+    if (totalCardsInCategory > 0) {
+      percentageOfKnownCards = Math.floor(
+        (knownCount / totalCardsInCategory) * 100
+      );
+    }
+
+    // 6) Average test percentage
+    let averageTestPercentage = 0;
+    if (testResultsCount > 0) {
+      averageTestPercentage = Math.round(
+        totalTestPercentage / testResultsCount
+      );
+    }
+
+    // 7) Combine them for final proficiency
+    let proficiency = 0;
+    const totalQuestionsInCategory = categoryObj.numOfQuestions || 0;
+
+    if (totalCardsInCategory === 0 && totalQuestionsInCategory === 0) {
+      // If no cards & no questions => 0
+      proficiency = 0;
+    } else if (questionSectionsCount === 0) {
+      // No section had any questions => just known-cards
+      proficiency = percentageOfKnownCards;
+    } else {
+      // Normal: average of test% and known-cards%
+      proficiency = Math.floor(
+        (averageTestPercentage + percentageOfKnownCards) / 2
+      );
+    }
+
+    // 8) Attach
+    categoryObj.averageTestPercentage = averageTestPercentage;
+    categoryObj.percentageOfKnownCards = percentageOfKnownCards;
+    categoryObj.proficiency = proficiency;
+
+    output.push(categoryObj);
+  }
+
+  return output;
+}
 
 // GET SECTIONS FOR MOBILE (SHOW HOW MANY CARDS LEFT TO STUDY)
 router.get(
