@@ -350,3 +350,33 @@ body {
     align-items: center;
   }
 }
+
+@media only screen and (max-width: 440px) {
+  .knowledge-btn {
+    zoom: 90%;
+  }
+}
+
+@media only screen and (max-width: 415px) {
+  .knowledge-btn {
+    zoom: 80%;
+  }
+}
+
+@media only screen and (max-width: 390px) {
+  .knowledge-btn {
+    zoom: 70%;
+  }
+}
+
+@media only screen and (max-width: 370px) {
+  .knowledge-btn {
+    zoom: 60%;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .knowledge-btn {
+    zoom: 50%;
+  }
+}

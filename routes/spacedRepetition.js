@@ -134,6 +134,7 @@ function updateSRSFields(cardInfo, known) {
         (cardInfo.interval || 1) * cardInfo.easeFactor
       );
     }
+    console.log("Seeting interval to: ", cardInfo.interval);
   } else {
     // user says "I do NOT know this card"
     cardInfo.known = false;
