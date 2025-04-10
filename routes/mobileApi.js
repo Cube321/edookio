@@ -968,12 +968,12 @@ router.get(
   catchAsync(async (req, res) => {
     const { platform } = req.query;
     const minimumVersion = {
-      ios: "1.0.21",
-      android: "1.0.21",
+      ios: "1.0.22",
+      android: "1.0.22",
     };
     const latestVersions = {
-      ios: "1.0.21",
-      android: "1.0.21",
+      ios: "1.0.22",
+      android: "1.0.22",
     };
     const updateUrl = {
       ios: "https://apps.apple.com/us/app/edookio/id6740498818",
@@ -985,7 +985,7 @@ router.get(
       latestVersion: latestVersions[platform],
       updateUrl: updateUrl[platform],
       messageForUserRequiredUpdate:
-        "Aktualizujte prosím aplikaci na nejnovější verzi.",
+        "Aktualizujte prosím aplikaci na nejnovější verzi a využijte naplno rozložené opakování!",
       messageForUserRecommendedUpdate:
         "Máte starší verzi aplikace. Doporučujeme aktualizovat na nejnovější verzi.",
     };

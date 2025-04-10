@@ -216,4 +216,54 @@ router.get(
   }
 );
 
+//push section in category up (move it up in the array)
+router.get(
+  "/category/:categoryId/pushSectionUp/:sectionId",
+  isLoggedIn,
+  isCategoryAuthor,
+  catchAsync(async (req, res) => {
+    const { categoryId, sectionId } = req.params;
+    const foundCategory = await Category.findById(categoryId);
+    if (!foundCategory) {
+      throw Error("Kategorie s tímto ID neexistuje");
+    }
+    //find index of section in category
+    const index = foundCategory.sections.indexOf(sectionId);
+    if (index > 0) {
+      //swap sections
+      const temp = foundCategory.sections[index - 1];
+      foundCategory.sections[index - 1] = foundCategory.sections[index];
+      foundCategory.sections[index] = temp;
+      await foundCategory.save();
+    }
+    req.flash("successOverlay", "Balíček byl přesunut nahoru.");
+    res.status(200).redirect(`/category/${categoryId}`);
+  })
+);
+
+//push section in category down (move it down in the array)
+router.get(
+  "/category/:categoryId/pushSectionDown/:sectionId",
+  isLoggedIn,
+  isCategoryAuthor,
+  catchAsync(async (req, res) => {
+    const { categoryId, sectionId } = req.params;
+    const foundCategory = await Category.findById(categoryId);
+    if (!foundCategory) {
+      throw Error("Kategorie s tímto ID neexistuje");
+    }
+    //find index of section in category
+    const index = foundCategory.sections.indexOf(sectionId);
+    if (index < foundCategory.sections.length - 1) {
+      //swap sections
+      const temp = foundCategory.sections[index + 1];
+      foundCategory.sections[index + 1] = foundCategory.sections[index];
+      foundCategory.sections[index] = temp;
+      await foundCategory.save();
+    }
+    req.flash("successOverlay", "Balíček byl přesunut dolů.");
+    res.status(200).redirect(`/category/${categoryId}`);
+  })
+);
+
 module.exports = router;
