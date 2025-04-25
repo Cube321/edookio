@@ -400,8 +400,8 @@ router.post(
           isGdprApproved: true,
         });
         //seed content
-        let createdCategoryId = await seedContent(user._id);
-        user.createdCategories.push(createdCategoryId);
+        let createdCategoryIds = await seedContent(user._id);
+        user.createdCategories = createdCategoryIds;
 
         await user.save();
         mail.welcome(user.email);

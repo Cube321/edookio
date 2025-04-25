@@ -207,8 +207,8 @@ router.post(
       mail.adminInfoNewUser(newUser);
 
       //seed content
-      let createdCategoryId = await seedContent(newUser._id, teacher);
-      newUser.createdCategories.push(createdCategoryId);
+      let createdCategoryIds = await seedContent(newUser._id, teacher);
+      newUser.createdCategories = createdCategoryIds;
       await newUser.save();
 
       //handle shareId

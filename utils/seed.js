@@ -1,139 +1,217 @@
+// seedContent.js  ────────────────────────────────────────────────────────────
+const uuid = require("uuid");
 const Category = require("../models/category");
 const Section = require("../models/section");
 const Card = require("../models/card");
 const Question = require("../models/question");
-const uuid = require("uuid");
 
-const seedContent = async function (userId, teacher) {
-  try {
-    // 1) CREATE A NEW CATEGORY
-    let shareId = uuid.v4().slice(0, 6);
-    let categoryWithShareId = await Category.findOne({ share: shareId });
-    while (categoryWithShareId) {
-      shareId = uuid.v4().slice(0, 6);
-      categoryWithShareId = await Category.findOne({ share: shareId });
+/* -------------------------------------------------------------------------- */
+/* 0.  SEED DATA – add/clone objects here to create more categories           */
+/* -------------------------------------------------------------------------- */
+const categoriesSeed = [
+  {
+    text: "Základy společenských věd",
+    icon: "subject_10.png",
+    sections: [
+      {
+        name: "Psychologie 1",
+        dummyContent: [
+          {
+            pageA: "Definujte pojem psychologie a její hlavní úkol.",
+            pageB: `<p>Psychologie je věda, jejímž předmětem je <b>psychika člověka</b>.</p>
+      <p>Úkolem psychologie je popsat a vysvětlit zákonitosti a mechanismy vzniku, utváření a průběhu <b>lidské psychiky</b>.</p>`,
+            question: "Co je hlavním úkolem psychologie?",
+            correctAnswer:
+              "Popis a vysvětlení zákonitostí a mechanismů lidské psychiky.",
+            wrongAnswers: [
+              "Léčení fyzických onemocnění.",
+              "Studium anatomie lidského těla.",
+            ],
+          },
+          {
+            pageA: "Definujte pojem psychika a popište její základní dimenze.",
+            pageB: `<p>Psychika je souhrn <b>duševních dění</b>.</p>
+      <p>Dimenze psychiky jsou:</p>
+      <ul>
+      <li><b>prožívání</b> - vnitřní, subjektivní psychické procesy a stavy. prožívání se dělí na vědomé a nevědomé;</li>
+      <li><b>chování</b> - vnější projevy, které jsou zpracováním a vyjádřením vnitřní situace člověka.</li>
+      </ul>
+      <p>Chování  se dělí na expresivní a adaptivní.</p>
+      <p>Dimenze jsou základním východiskem k poznání osobnosti člověka.</p>`,
+            question:
+              "Které z následujících tvrzení správně popisuje dimenze psychiky?",
+            correctAnswer: "Prožívání a chování",
+            wrongAnswers: ["Vědomé a nevědomé", "Expresivní a adaptivní"],
+          },
+          {
+            pageA: "Vyjmenujte základní psychologické směry.",
+            pageB: `<p>Mezi <b>základní psychologické směry</b> řadíme:</p>
+      <ul>
+        <li>Experimentální psychologie</li>
+        <li>Behaviorismus</li>
+        <li>Psychoanalýza</li>
+        <li>Analytická psychologie</li>
+        <li>Tvarová psychologie (gestaltismus)</li>
+        <li>Hlubinná psychologie</li>
+        <li>Neobehavioralismus</li>
+        <li>Kognitivní psychologie</li>
+        <li>Humanistická psychologie</li>
+        <li>Transpersonální psychologie</li>
+      </ul>
+      <p>Psychologické směry se začínají objevovat během 19. století, do té doby byla psychologie pouze součástí filozofie.</p>`,
+            question:
+              "Který z následujících směrů je základní psychologický směr?",
+            correctAnswer: "Behaviorismus",
+            wrongAnswers: ["Existencialismus", "Postmodernismus"],
+          },
+          {
+            pageA:
+              "Vyjmenujte několik příkladů aplikovaných psychologických disciplín.",
+            pageB: `<p>Aplikované psychologické disciplíny se <b>věnují oblastem lidské činnosti z hlediska psychologie</b> a je jich nepřeberné množství, patří mezi ně například klinická psychologie, poradenská psychologi, pedagogická psychologie či soudní (forenzní) psychologie.</p>`,
+            question:
+              "Která z následujících disciplín patří mezi aplikované psychologické disciplíny?",
+            correctAnswer: "Soudní (forenzní) psychologie",
+            wrongAnswers: ["Historická psychologie", "Teoretická psychologie"],
+          },
+          {
+            pageA: "Jaké znáte metody výzkumu v psychologii?",
+            pageB: `<p>Psychologie se řadí mezi empirické vědy, využívá ke sběru empirických dat celou řadu výzkumných metod. Nejvýznamější metody jsou:</p>
+      <p><i><b>Pozorování</b></i> - základní psychologická metoda, sleduje jedince a jeho projevy. Rozlišujeme dva typy pozorování, extrospekci a introspekci.</p>
+      <p><i><b>Rozhovor</b></i> - velmi častá metoda, která se zakládá na dotazování. Rozhovor může být standardizovaný (otázky jsou dány předem) nebo nestandardizovaný (volné otázky).</p>
+      <p><i><b>Experiment</b></i> - experimentátor záměrně zasahuje do podmínek a vlivů na zkoumanou osobu tak, aby všechny proměnné byly kontrolovány a ze změn se daly kvantitativně vyjádřit souvislosti.</p>
+      <p><i>Další metody</i> - sociometrie, sémantický diferenciál, obsahová analýza a psychodiagnostické metody.</p>`,
+            question:
+              "Která z následujících metod výzkumu v psychologii umožňuje experimentátorovi záměrně zasahovat do podmínek a kontrolovat proměnné?",
+            correctAnswer: "Experiment",
+            wrongAnswers: ["Rozhovor", "Pozorování"],
+          },
+          {
+            pageA: "Co jsou to psychické jevy a jak je lze dělit?",
+            pageB: `<p><b>Psychické jevy</b> jsou funkcí mozku, které se zformovaly vlivem společnosti a výchovy. Díky psychickým jevům člověk poznává svět a působí na něj.</p>
+      <p>Psychický jevy lze dělit na:</p>
+      <ul>
+        <li>A) <b>Psychické procesy</b>
+          <ul>
+            <li>Poznávací procesy – čití, vnímání, učení, představy, řeč, myšlení;</li>
+            <li>Procesy paměti – zapamatování, uchování, vybavení;</li>
+            <li>Motivační procesy – motivace, vůle, potřeby.</li>
+          </ul>
+        </li>
+        <li>B) <b>Psychické stavy</b> - aktuální stav psychiky, citové stavy, stavy pozornosti.</li>
+        <li>C) <b>Vlastnosti osobnosti</b> - dlouhodobé, stále znaky psychiky (charakter, temperament, schopnosti a dovednosti, zaměřenost).</li>
+      </ul>`,
+            question: "Jak se dělí psychické jevy?",
+            correctAnswer:
+              "Psychické procesy, psychické stavy, vlastnosti osobnosti.",
+            wrongAnswers: [
+              "Psychické procesy, fyziologické stavy, vlastnosti osobnosti.",
+              "Psychické procesy, emocionální stavy, vlastnosti osobnosti.",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Psychologie 2",
+        dummyContent: [],
+      },
+    ],
+  },
+  // ⬇⬇  Klidně přidej další kategorií objekt  ⬇⬇
+];
+
+/* -------------------------------------------------------------------------- */
+/* 1.  MAIN SEEDER                                                            */
+/* -------------------------------------------------------------------------- */
+async function seedContent(userId, teacher = false) {
+  let createdCategoriesIds = [];
+  for (const cat of categoriesSeed) {
+    /* 1.1 – vytvoř / získej unikátní shareId (dup-key retry) */
+    let categoryDoc;
+    for (let retries = 0; retries < 5; retries++) {
+      try {
+        const shareId = uuid.v4().slice(0, 6);
+        categoryDoc = await Category.create({
+          text: cat.text,
+          icon: cat.icon,
+          author: userId,
+          shareId,
+          sections: [],
+          createdByTeacher: teacher,
+          numOfCards: 0,
+          numOfQuestions: 0,
+        });
+        break; // success
+      } catch (e) {
+        if (e.code === 11000) continue; // dup shareId, try again
+        throw e; // other error → bubble up
+      }
     }
+    if (!categoryDoc)
+      throw new Error("Unable to generate unique shareId after 5 attempts.");
 
-    let createdByTeacher = false;
-    if (teacher) {
-      createdByTeacher = true;
-    }
-
-    const createdCategory = await Category.create({
-      text: "Tvůj první předmět",
-      icon: "subject_9.png",
-      author: userId,
-      shareId: shareId,
-      sections: [],
-      createdByTeacher: createdByTeacher,
-    });
-
-    // 2) CREATE ONE SECTION
-    const newSection = await Section.create({
-      name: "Ukázkový balíček",
-      categoryId: createdCategory._id,
-      author: userId,
-      cards: [],
-      questions: [],
-      createdByTeacher: createdByTeacher,
-    });
-
-    // Link the section to the category
-    createdCategory.sections.push(newSection._id);
-    await createdCategory.save();
-
-    // 3) PREPARE FIVE OBJECTS IN THE DUMMY CONTENT ARRAY ABOUT THE CZECH REPUBLIC
-    const dummyContent = [
-      {
-        pageA: "Jaké je hlavní město České republiky?",
-        pageB: "<b>Praha</b> je hlavní a největší město České republiky.",
-        question: "Které město je hlavním městem ČR?",
-        correctAnswer: "Praha",
-        wrongAnswer1: "Brno",
-        wrongAnswer2: "Ostrava",
-      },
-      {
-        pageA: "Kdy vznikla samostatná Česká republika?",
-        pageB:
-          "Samostatná Česká republika vznikla <b>1. ledna 1993</b> po rozdělení Československa.",
-        question: "Které datum označuje vznik samostatné ČR?",
-        correctAnswer: "1. ledna 1993",
-        wrongAnswer1: "28. října 1918",
-        wrongAnswer2: "1. května 2004",
-      },
-      {
-        pageA: "Jak se jmenuje nejvyšší hora České republiky?",
-        pageB: "Nejvyšší hora ČR je <b>Sněžka</b> s nadmořskou výškou 1603 m.",
-        question: "Jak se jmenuje nejvyšší hora ČR?",
-        correctAnswer: "Sněžka",
-        wrongAnswer1: "Praděd",
-        wrongAnswer2: "Říp",
-      },
-      {
-        pageA: "Jaký je oficiální jazyk v České republice?",
-        pageB: "Úředním jazykem je <b>čeština</b>.",
-        question: "Který jazyk je oficiálním jazykem ČR?",
-        correctAnswer: "Čeština",
-        wrongAnswer1: "Slovenština",
-        wrongAnswer2: "Němčina",
-      },
-      {
-        pageA: "Kolik sousedních států má Česká republika?",
-        pageB:
-          "ČR má <b>čtyři</b> sousední státy: Německo, Polsko, Slovensko a Rakousko.",
-        question: "Kolik států sousedí s Českou republikou?",
-        correctAnswer: "4",
-        wrongAnswer1: "3",
-        wrongAnswer2: "5",
-      },
-    ];
-
-    // 4) INSERT CARDS AND QUESTIONS
-    for (const contentItem of dummyContent) {
-      // Create Card
-      const newCard = await Card.create({
-        categoryId: createdCategory._id,
-        pageA: contentItem.pageA,
-        pageB: contentItem.pageB,
+    createdCategoriesIds.push(categoryDoc._id);
+    console.log(`Seeding category "${cat.text}"...`);
+    /* 1.2 – SECTIONS */
+    for (const sec of cat.sections) {
+      const sectionDoc = await Section.create({
+        name: sec.name,
+        categoryId: categoryDoc._id,
         author: userId,
-        section: newSection._id,
-        connectedQuestionId: null,
+        cards: [],
+        questions: [],
+        createdByTeacher: teacher,
       });
 
-      // Create Question
-      const newQuestion = await Question.create({
-        category: createdCategory._id,
-        categoryId: createdCategory._id,
-        section: newSection._id,
+      // ---- CARDS ---------------------------------------------------------
+      const cardDocs = sec.dummyContent.map((d) => ({
+        categoryId: categoryDoc._id,
+        pageA: d.pageA,
+        pageB: d.pageB,
         author: userId,
-        question: contentItem.question,
-        correctAnswers: [contentItem.correctAnswer],
-        wrongAnswers: [contentItem.wrongAnswer1, contentItem.wrongAnswer2],
-        sourceCard: newCard._id,
+        section: sectionDoc._id,
+      }));
+      const insertedCards = await Card.insertMany(cardDocs);
+
+      // ---- QUESTIONS -----------------------------------------------------
+      const questionDocs = insertedCards.map((card, idx) => {
+        const d = sec.dummyContent[idx];
+        return {
+          category: categoryDoc._id,
+          categoryId: categoryDoc._id,
+          section: sectionDoc._id,
+          author: userId,
+          question: d.question,
+          correctAnswers: [d.correctAnswer],
+          wrongAnswers: d.wrongAnswers,
+          sourceCard: card._id,
+        };
       });
+      const insertedQuestions = await Question.insertMany(questionDocs);
 
-      // Update Card to link the newly created Question
-      newCard.connectedQuestionId = newQuestion._id;
-      await newCard.save();
+      // ---- LINK cards ⇄ questions in one bulk op ------------------------
+      await Card.bulkWrite(
+        insertedCards.map((card, idx) => ({
+          updateOne: {
+            filter: { _id: card._id },
+            update: { connectedQuestionId: insertedQuestions[idx]._id },
+          },
+        }))
+      );
 
-      // Push references to the Section
-      newSection.cards.push(newCard._id);
-      newSection.questions.push(newQuestion._id);
+      // ---- FINALISE SECTION & CATEGORY ----------------------------------
+      sectionDoc.cards = insertedCards.map((c) => c._id);
+      sectionDoc.questions = insertedQuestions.map((q) => q._id);
+      await sectionDoc.save();
+
+      categoryDoc.sections.push(sectionDoc._id);
+      categoryDoc.numOfCards += insertedCards.length;
+      categoryDoc.numOfQuestions += insertedQuestions.length;
     }
 
-    // Save the updated section
-    await newSection.save();
-
-    createdCategory.numOfCards = dummyContent.length;
-    createdCategory.numOfQuestions = dummyContent.length;
-    await createdCategory.save();
-
-    console.log("Seeding completed.");
-
-    return createdCategory._id;
-  } catch (err) {
-    console.error("Error seeding content:", err);
+    await categoryDoc.save();
+    console.log(`✅  Category "${categoryDoc.text}" seeded.`);
   }
-};
+  return createdCategoriesIds;
+}
 
 module.exports = seedContent;
