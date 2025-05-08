@@ -769,17 +769,6 @@ const categoriesSeed = [
             ],
           },
           {
-            pageA: "Co je to daimonion?",
-            pageB: `<p>Podle Sokrata je <b>daimonion</b> vnitřní hlas – svědomí, které zdržuje člověka od nesprávného jednání a ukazuje, co je dobré či špatné.</p>`,
-            question: "Co je to daimonion dle Sokrata?",
-            correctAnswer:
-              "Vnitřní hlas, svědomí, který nám říká, co je dobré a co špatné.",
-            wrongAnswers: [
-              "Náboženský obřad spojený s uctíváním bohů.",
-              "Historická událost v antickém Řecku.",
-            ],
-          },
-          {
             pageA: "Vyjmenujte nejdůležitější Platónova díla.",
             pageB: `<p>Nejzásadnější Platónova díla:</p>
       <ul>
@@ -1283,15 +1272,6 @@ const categoriesSeed = [
             wrongAnswers: ["Schopnosti rozumu", "Význam logických argumentů"],
           },
 
-          /*––– 3 –––*/
-          {
-            pageA: "Co je to iracionalismus?",
-            pageB: `<p><b>Iracionalismus</b> klade důraz na <b>vůli, cit, intuici a lásku</b> a odmítá, že by svět bylo možné vyložit čistě rozumově.</p>`,
-            question: "Co je základním principem iracionalismu?",
-            correctAnswer: "vůle, cit, intuice, láska",
-            wrongAnswers: ["rozumové poznání světa", "vědecké metody a důkazy"],
-          },
-
           /*––– 4 –––*/
           {
             pageA: "Co znamená pojem tabula rasa?",
@@ -1316,41 +1296,6 @@ const categoriesSeed = [
               "Názor, který tvrdí, že všechny náboženské víry jsou pravdivé.",
               "Filozofie, která tvrdí, že existuje pouze materiální svět a nic jiného.",
             ],
-          },
-
-          /*––– 6 –––*/
-          {
-            pageA: "Co je to solipsismus?",
-            pageB: `<p><b>Solipsismus</b> zastává přesvědčení, že <b>reálné jsou jen obsahy vědomí jednotlivce</b>; vše ostatní je nepoznatelné či neexistující.</p>`,
-            question: "Co tvrdí solipsismus?",
-            correctAnswer:
-              "Reálné jsou pouze obsahy vědomí jednotlivce, nic mimo vědomí neexistuje.",
-            wrongAnswers: [
-              "Reálný je pouze svět kolem nás, vědomí jednotlivce neexistuje.",
-              "Reálné jsou jenom fyzické objekty, vědomí je iluze.",
-            ],
-          },
-
-          /*––– 7 –––*/
-          {
-            pageA: "Co je to teodicea?",
-            pageB: `<p><b>Teodicea</b> (Leibniz) je pokus <b>ospravedlnit dobrotivého Boha vzhledem ke zlu ve světě</b>.</p>`,
-            question: "Co je to teodicea?",
-            correctAnswer:
-              "Filozofický problém ospravedlnění dobrotivého boha vzhledem ke zlu ve světě.",
-            wrongAnswers: [
-              "Metoda rozumového dokazování existence Boha.",
-              "Náboženský rituál sloužící k odpuštění hříchů.",
-            ],
-          },
-
-          /*––– 8 –––*/
-          {
-            pageA: "Co je to monadologie a monáda?",
-            pageB: `<p><b>Monadologie</b> (Leibniz) učí, že svět se skládá z <b>nedělitelných duchovních jednotek – monád</b>, nadaných vnitřní silou a percepcí.</p>`,
-            question: "S kterým filozofem je spojen pojem monáda?",
-            correctAnswer: "Gottfried Wilhelm Leibniz",
-            wrongAnswers: ["Immanuel Kant", "René Descartes"],
           },
 
           /*––– 9 –––*/
@@ -1599,19 +1544,6 @@ const categoriesSeed = [
             wrongAnswers: [
               "Pracovní síly a vlastnické vztahy",
               "Suroviny a výrobní nástroje",
-            ],
-          },
-
-          /*––– 30 –––*/
-          {
-            pageA: "Jak Schopenhauer vysvětluje metafyziku lásky?",
-            pageB: `<p>Schopenhauer tvrdí, že <b>láska je iluze</b>; prostřednictvím rozmnožovacího pudu si příroda zajišťuje zachování rodu.</p>`,
-            question: "Jak Schopenhauer vysvětluje metafyziku lásky?",
-            correctAnswer:
-              "Láska je iluze, jejíž pomocí příroda zajišťuje zachování rodu.",
-            wrongAnswers: [
-              "Láska je nejsilnější projev lidské vůle a vědomí.",
-              "Láska je přímý důsledek racionálního a logického myšlení lidí.",
             ],
           },
         ],
@@ -2326,11 +2258,1735 @@ const categoriesSeed = [
       },
     ],
   },
-  /*{
-    text: "Ekonomie",
+  {
+    text: "Právo",
     icon: "subject_13.png",
-    sections: [],
-  },*/
+    sections: [
+      {
+        name: "Teorie práva",
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Jaký je hlavní rozdíl mezi právem a morálkou?",
+            pageB: `<p><b>Právo</b> je soubor pravidel, která jsou vynutitelná státem.</p>
+        <p><b>Morálka</b> jsou nepsaná pravidla, za jejichž porušení nehrozí státní sankce.</p>`,
+            question: "Jaký je hlavní rozdíl mezi právem a morálkou?",
+            correctAnswer:
+              "Právo je soubor pravidel vynutitelných státem, zatímco morálka jsou nepsaná pravidla bez sankcí.",
+            wrongAnswers: [
+              "Právo i morálka jsou stejně vynutitelné státem.",
+              "Morálka je soubor pravidel vynutitelných státem, právo ne.",
+            ],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Jaké jsou dva hlavní typy právní kultury?",
+            pageB: `<p>Dva hlavní typy právní kultury jsou <b>kontinentální</b> a <b>anglosaské</b> právo.</p>
+        <p><i>Kontinentální právo</i> vychází z římského práva a základem jsou psané zákony.</p>
+        <p>V <i>anglosaském právu</i> jsou základem soudní precedenty a právní obyčeje.</p>`,
+            question: "Jaké jsou dva hlavní typy právní kultury?",
+            correctAnswer: "Kontinentální a anglosaské právo",
+            wrongAnswers: [
+              "Islámské a socialistické právo",
+              "Skandinávské a východoevropské právo",
+            ],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Co značí subjektivní právo?",
+            pageB: `<p><b>Objektivní (abstraktní) právo</b> – obecné právní zásady upravující společenské vztahy.</p>
+        <p><b>Subjektivní (konkrétní) právo</b> – možnost konkrétní osoby uplatňovat svá práva v konkrétní věci.</p>`,
+            question: "Co značí subjektivní právo?",
+            correctAnswer:
+              "Možnost konkrétní osoby uplatňovat svá práva v konkrétní věci.",
+            wrongAnswers: [
+              "Obecné právní zásady určené pro společnost.",
+              "Úpravu společenských vztahů obecně.",
+            ],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Jaký je rozdíl mezi veřejným a soukromým právem?",
+            pageB: `<p>V <b>soukromém právu</b> mají účastníci právního vztahu <i>rovné postavení</i>.</p>
+        <p>Ve <b>veřejném právu</b> je stát nadřazený ostatním účastníkům.</p>`,
+            question: "Jaký je rozdíl mezi veřejným a soukromým právem?",
+            correctAnswer:
+              "V soukromém právu mají účastníci rovné postavení, ve veřejném právu je stát nadřazený ostatním účastníkům.",
+            wrongAnswers: [
+              "Ve veřejném právu mají účastníci rovné postavení, v soukromém je stát nadřazený.",
+              "Veřejné a soukromé právo se nijak neliší.",
+            ],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Co je to právní řád?",
+            pageB: `<p><b>Právní řád</b> = soubor všech platných právních předpisů daného státu.</p>`,
+            question: "Co je to právní řád?",
+            correctAnswer: "Soubor všech platných právních předpisů státu.",
+            wrongAnswers: [
+              "Souhrn ústavních zvyků a tradic státu.",
+              "Dokument se základními lidskými právy a svobodami.",
+            ],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Co vyjadřuje právní síla?",
+            pageB: `<p><b>Právní síla</b> vyjadřuje <b>důležitost</b> (hierarchické postavení) právního předpisu – např. zákon má vyšší sílu než vyhláška.</p>`,
+            question: "Co vyjadřuje právní síla?",
+            correctAnswer: "Důležitost předpisu.",
+            wrongAnswers: [
+              "Délku platnosti předpisu.",
+              "Počet paragrafů v předpisu.",
+            ],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Jaký je rozdíl mezi platností a účinností předpisu?",
+            pageB: `<p>Předpis je <b>platný</b> ode dne <i>vyhlášení</i> ve Sbírce zákonů.</p>
+        <p><b>Účinný</b> je od data, kdy se jím musí subjekty řídit v praxi.</p>`,
+            question: "Jaký je rozdíl mezi platností a účinností předpisu?",
+            correctAnswer:
+              "Platnost = vyhlášení ve Sbírce zákonů; účinnost = den, od kterého se jím musíme řídit.",
+            wrongAnswers: [
+              "Platnost = den, od kterého se předpisem musíme řídit; účinnost = vyhlášení ve Sbírce.",
+              "Platnost a účinnost jsou totéž.",
+            ],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "Co znamená pojem vacatio legis?",
+            pageB: `<p><b>Vacatio legis</b> = období mezi <i>platností</i> a <i>účinností</i> právního předpisu.</p>`,
+            question: "Co znamená pojem vacatio legis?",
+            correctAnswer:
+              "Období mezi platností a účinností právního předpisu.",
+            wrongAnswers: [
+              "Období, kdy předpis není v platnosti.",
+              "Období po zrušení právního předpisu.",
+            ],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Jak se dělí právní normy podle závaznosti?",
+            pageB: `<p>Podle závaznosti rozlišujeme:</p>
+        <ul>
+          <li><b>Kogentní</b> normy – závazné bez odchylek.</li>
+          <li><b>Dispozitivní</b> normy – podpůrné, lze se od nich dohodou odchýlit.</li>
+        </ul>`,
+            question: "Jak se dělí právní normy podle závaznosti?",
+            correctAnswer: "Na kogentní a dispozitivní.",
+            wrongAnswers: [
+              "Na obligatorní a fakultativní.",
+              "Na základní a odvozené.",
+            ],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Co jsou to právní skutečnosti?",
+            pageB: `<p><b>Právní skutečnosti</b> – okolnosti, s nimiž právní řád spojuje vznik, změnu nebo zánik právních vztahů.</p>
+        <p>Dělí se na <i>objektivní události</i> (např. plynutí času, smrt) a <i>subjektivní právní jednání</i> (např. uzavření smlouvy).</p>`,
+            question: "Co jsou to právní skutečnosti?",
+            correctAnswer:
+              "Všechny skutečnosti, ke kterým se váže vznik, zánik nebo změna právního vztahu.",
+            wrongAnswers: [
+              "Pouze subjektivní jednání s právními následky.",
+              "Události, které může člověk vždy ovlivnit.",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Občanské právo",
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Jak vzniká právnická osoba?",
+            pageB: `<p>Právnická osoba vzniká <b>zakladatelským právním jednáním</b> (např. společenskou smlouvou) nebo přímo <b>zákonem</b>.</p>`,
+            question: "Jak vzniká právnická osoba?",
+            correctAnswer: "Zakladatelským právním jednáním nebo zákonem.",
+            wrongAnswers: [
+              "Pouze rozhodnutím soudu.",
+              "Pouze na základě smlouvy o převodu práv.",
+            ],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Absolutní × relativní práva",
+            pageB: `<p><b>Absolutní práva</b> působí <b>vůči všem</b> (erga omnes).</p>
+        <p><b>Relativní práva</b> působí jen mezi omezeným okruhem osob (např. smluvní strany).</p>`,
+            question: "Vůči komu působí absolutní práva?",
+            correctAnswer: "Vůči všem",
+            wrongAnswers: [
+              "Vůči omezenému okruhu osob",
+              "Vůči stranám smlouvy",
+            ],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Evidence právnických osob",
+            pageB: `<p>Právnické osoby se zapisují do <b>veřejných rejstříků</b> – typicky do <i>obchodního rejstříku</i>.</p>`,
+            question: "Kde se evidují právnické osoby?",
+            correctAnswer: "ve veřejných rejstřících",
+            wrongAnswers: ["v soukromých archivech", "u krajských úřadů"],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Právní osobnost",
+            pageB: `<p><b>Právní osobnost</b> = způsobilost mít <i>práva a povinnosti</i>.</p>`,
+            question: "Co je to právní osobnost?",
+            correctAnswer: "Způsobilost k právům a povinnostem.",
+            wrongAnswers: [
+              "Profesionální status jednotlivce.",
+              "Schopnost vykonávat právní úkony.",
+            ],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Hlavní pramen občanského práva",
+            pageB: `<p>Hlavním pramenem občanského práva je <b>občanský zákoník</b>.</p>`,
+            question: "Co je hlavním pramenem občanského práva?",
+            correctAnswer: "Občanský zákoník",
+            wrongAnswers: ["Ústava České republiky", "Trestní zákoník"],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Vlastnické právo – dílčí oprávnění",
+            pageB: `<p><b>Vlastnické právo</b> zahrnuje právo věc držet, užívat, brát z ní plody a užitky, nakládat s ní, zničit ji či ji opustit.</p>`,
+            question:
+              "Které z následujících práv není součástí vlastnického práva?",
+            correctAnswer: "Právo věc koupit",
+            wrongAnswers: ["Právo věc držet", "Právo věc užívat"],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Zletilost",
+            pageB: `<p>Člověk se stává <b>zletilým</b> dosažením <b>18&nbsp;let věku</b>.</p>`,
+            question: "Kdy člověk nabývá zletilosti?",
+            correctAnswer: "dosažením 18 let věku",
+            wrongAnswers: ["dosažením 21 let věku", "dosažením 16 let věku"],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "Oprávněná × neoprávněná držba",
+            pageB: `<p><b>Oprávněná (poctivá) držba</b>: držitel je v dobré víře, že mu věc patří; může ji vydržet (3 roky movitá, 10 let nemovitá).</p>
+        <p><b>Neoprávněná držba</b>: držitel ví, že k věci nemá právo.</p>`,
+            question: "Jaký je rozdíl mezi oprávněnou a neoprávněnou držbou?",
+            correctAnswer:
+              "Oprávněná držba znamená, že držitel je v dobré víře, že mu věc náleží, a může následně získat vlastnické právo.",
+            wrongAnswers: [
+              "Oprávněná držba znamená, že držitel ví, že k věci nemá oprávnění.",
+              "U neoprávněné držby lze získat vlastnické právo po určité době.",
+            ],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Nepominutelný dědic",
+            pageB: `<p><b>Nepominutelný dědic</b> (potomek zůstavitele) má nárok na <i>povinný díl</i>, pokud nebyl vyděděn.</p>`,
+            question: "Kdo je nepominutelným dědicem podle českého práva?",
+            correctAnswer: "Potomci zůstavitele",
+            wrongAnswers: [
+              "Přátelé zůstavitele",
+              "Druhořadí příbuzní zůstavitele",
+            ],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Věcné břemeno",
+            pageB: `<p><b>Věcné břemeno</b> je omezení spojené s nemovitostí – vlastník musí něco trpět, něčeho se zdržet či něco konat.</p>`,
+            question:
+              'Co znamená pojem "věcné břemeno" ve vztahu k nemovitostem?',
+            correctAnswer:
+              "Je to povinnost vlastníka něco trpět, něčeho se zdržet nebo něco konat.",
+            wrongAnswers: [
+              "Právo vlastníka na bezplatný přístup k veřejným službám.",
+              "Povinnost platit zvláštní daň z nemovitosti.",
+            ],
+          },
+
+          /* ––– 11 ––– */
+          {
+            pageA: "Předmět občanského práva",
+            pageB: `<p><b>Občanské právo</b> upravuje vztahy, práva a povinnosti <i>právnických i fyzických osob</i> – rodinné, věcné, dědické, závazkové právo atd.</p>`,
+            question: "Co je předmětem úpravy občanského práva?",
+            correctAnswer:
+              "Vztahy, práva a povinnosti právnických a fyzických osob.",
+            wrongAnswers: [
+              "Především trestní právo a veřejné právo.",
+              "Pouze práva a povinnosti státních orgánů.",
+            ],
+          },
+
+          /* ––– 12 ––– */
+          {
+            pageA: "První třída dědiců",
+            pageB: `<p>Do <b>první třídy</b> dědiců (dědění ze zákona) patří stejným dílem <b>děti a manžel</b> zůstavitele.</p>`,
+            question: "Kdo patří do první třídy dědiců při dědění ze zákona?",
+            correctAnswer: "Děti a manžel zůstavitele",
+            wrongAnswers: ["Jen děti zůstavitele", "Jen manžel zůstavitele"],
+          },
+
+          /* ––– 13 ––– */
+          {
+            pageA: "Zůstavitel",
+            pageB: `<p><b>Zůstavitel</b> = osoba, <i>po které se dědí</i>.</p>`,
+            question: "Kdo je zůstavitel?",
+            correctAnswer: "Osoba, po které se dědí.",
+            wrongAnswers: [
+              "Osoba, která vykonává závěť.",
+              "Osoba, která přijímá dědictví.",
+            ],
+          },
+
+          /* ––– 14 ––– */
+          {
+            pageA: "Zrušení právnické osoby",
+            pageB: `<p>Právnickou osobu lze <b>zrušit</b>:</p>
+        <ul>
+          <li>právním jednáním (např. rozhodnutím valné hromady),</li>
+          <li>uplynutím doby,</li>
+          <li>dosažením účelu,</li>
+          <li>rozhodnutím soudu.</li>
+        </ul>`,
+            question: "Jakými způsoby lze zrušit právnickou osobu?",
+            correctAnswer:
+              "Právním jednáním, uplynutím doby, dosažením účelu, rozhodnutím soudu.",
+            wrongAnswers: ["Pouze rozhodnutím soudu.", "Pouze uplynutím doby."],
+          },
+        ],
+      },
+      {
+        name: "Rodinné právo",
+        dummyContent: [
+          {
+            pageA: "Zdánlivé × neplatné manželství",
+            pageB: `<p><b>Neplatné manželství</b> sice <i>vzniklo</i>, ale trpí právní vadou (překážka manželství); o neplatnosti rozhoduje <b>soud</b>.</p>
+                      <p><b>Zdánlivé manželství</b> <i>nevznikne vůbec</i>, a tak nevyvolá žádné právní následky.</p>`,
+            question: "Jaký je rozdíl mezi zdánlivým a neplatným manželstvím?",
+            correctAnswer:
+              "Neplatné manželství vzniklo i přes právní vadu a o jeho neplatnosti rozhoduje soud, zatímco zdánlivé manželství vůbec nevznikne.",
+            wrongAnswers: [
+              "Zdánlivé manželství vzniklo s právní vadou a o jeho neplatnosti rozhoduje soud, zatímco neplatné manželství vůbec nevznikne.",
+              "Neplatné manželství nevzniká a nevyvolává právní následky, zatímco zdánlivé potřebuje rozhodnutí soudu.",
+            ],
+          },
+
+          /* ––– 16 ––– */
+          {
+            pageA: "Překážky uzavření manželství",
+            pageB: `<ul>
+                <li>nedostatek věku</li>
+                <li>existující manželství / registrované partnerství</li>
+                <li>omezená svéprávnost</li>
+                <li>příbuzenství</li>
+                <li>pěstounská péče nebo svěření do péče</li>
+              </ul>`,
+            question:
+              "Která z následujících možností NENÍ překážkou uzavření manželství?",
+            correctAnswer: "Nedostatek finančních prostředků",
+            wrongAnswers: ["Příbuzenství", "Nedostatek věku"],
+          },
+
+          /* ––– 17 ––– */
+          {
+            pageA: "Společné jmění manželů (SJM)",
+            pageB: `<p>Do <b>společného jmění manželů</b> patří <b>všechen majetek a dluhy</b> nabyté za trvání manželství.</p>
+                      <p><i>Nezahrnuje</i> věci nabyté <u>darem</u>, <u>dědictvím</u>, věci osobní potřeby a dluhy týkající se výlučného majetku jednoho z manželů.</p>`,
+            question:
+              "Který z následujících majetků spadá do společného jmění manželů?",
+            correctAnswer: "Majetek nabytý během manželství.",
+            wrongAnswers: [
+              "Majetek nabytý darem.",
+              "Majetek nabytý dědictvím.",
+            ],
+          },
+
+          /* ––– 18 ––– */
+          {
+            pageA: "Zánik manželství",
+            pageB: `<p>Manželství zaniká <b>smrtí</b> jednoho z manželů, <b>prohlášením za mrtvého</b> nebo <b>rozvodem</b>.</p>`,
+            question: "Jakými způsoby zaniká manželství?",
+            correctAnswer:
+              "Manželství zaniká smrtí, prohlášením za mrtvého nebo rozvodem.",
+            wrongAnswers: [
+              "Manželství zaniká pouze smrtí.",
+              "Manželství zaniká pouze rozvodem.",
+            ],
+          },
+
+          /* ––– 19 ––– */
+          {
+            pageA: "Příbuzenství – přímá × pobočná linie",
+            pageB: `<p><b>Přímá linie</b> – vztah předek ⇄ potomek, vyjadřuje se počtem porodů (např. dítě → rodič → prarodič).</p>
+                      <p><b>Pobočná linie</b> – osoby mají <i>společného předka</i> (sourozenci, bratranci ap.).</p>`,
+            question: "Jaký je rozdíl v příbuzenství v přímé a pobočné linii?",
+            correctAnswer:
+              "V přímé linii se příbuzenství určuje počtem porodů mezi předkem a potomkem, v pobočné linii jej spojuje společný předek.",
+            wrongAnswers: [
+              "V přímé linii jsou příbuzní pouze sourozenci, v pobočné rodiče a děti.",
+              "Pobočná linie se vyjadřuje počtem porodů, přímá společným předkem.",
+            ],
+          },
+
+          /* ––– 20 ––– */
+          {
+            pageA: "Domněnka otcovství po rozvodu",
+            pageB: `<p>Bývalý manžel je <b>automaticky považován za otce</b>, pokud se dítě narodí <b>do 300 dní</b> od právní moci rozvodu.</p>`,
+            question:
+              "V jakém případě může být bývalý manžel automaticky považován za otce dítěte?",
+            correctAnswer: "Pokud porod proběhl do 300 dní od rozvodu.",
+            wrongAnswers: [
+              "Pokud porod proběhl do 100 dní od rozvodu.",
+              "Pokud porod proběhl do 500 dní od rozvodu.",
+            ],
+          },
+
+          /* ––– 21 ––– */
+          {
+            pageA: "Formy náhradní rodinné péče",
+            pageB: `<p>Zákon zná <b>osvojení</b>, <b>pěstounskou péči</b>, <b>poručenství</b> a <b>ústavní výchovu</b>.</p>`,
+            question:
+              "Která z následujících možností není formou náhradní rodinné péče?",
+            correctAnswer: "Dohled nad nezletilými osobami",
+            wrongAnswers: ["Osvojení", "Pěstounská péče"],
+          },
+
+          /* ––– 22 ––– */
+          {
+            pageA: "Osvojení × pěstounská péče – práva rodičů",
+            pageB: `<p>Při <b>osvojení</b> biologickým rodičům <i>zanikají</i> veškerá rodičovská práva a povinnosti.</p>
+                      <p>U <b>pěstounské péče</b> zůstávají práva a povinnosti biologických rodičů zachována.</p>`,
+            question:
+              "Zanikají při osvojení práva a povinnosti biologických rodičů dítěte?",
+            correctAnswer:
+              "Ano, při osvojení biologickým rodičům zanikají práva a povinnosti vůči dítěti.",
+            wrongAnswers: [
+              "Ne, při osvojení biologickým rodičům zůstávají práva a povinnosti vůči dítěti.",
+              "Ano, ale práva a povinnosti jsou zachována stejně jako u pěstounské péče.",
+            ],
+          },
+
+          /* ––– 23 ––– */
+          {
+            pageA: "Pěstounská péče – věkový limit",
+            pageB: `<p>Dítě může být v <b>pěstounské péči</b> nejdéle <b>do dovršení 18 let</b>.</p>`,
+            question: "Do kolika let věku může být dítě v pěstounské péči?",
+            correctAnswer: "Do dovršení 18 let",
+            wrongAnswers: ["Do dovršení 16 let", "Do dovršení 21 let"],
+          },
+
+          /* ––– 24 ––– */
+          {
+            pageA: "Poručenství",
+            pageB: `<p><b>Poručník</b> spravuje majetkové i osobní záležitosti nezletilého, ale při <i>podstatných rozhodnutích</i> musí získat <b>souhlas soudu</b>.</p>`,
+            question: "Co je hlavní povinností poručníka v rámci poručenství?",
+            correctAnswer:
+              "Spravovat záležitosti nezletilého a žádat o souhlas soud při podstatných rozhodnutích.",
+            wrongAnswers: [
+              "Poskytovat finanční podporu nezletilému bez omezení.",
+              "Zastupovat nezletilého pouze v právních záležitostech bez souhlasu soudu.",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Trestní právo",
+        dummyContent: [
+          /* ––– 25 ––– */
+          {
+            pageA: "Kdo může podat obžalobu?",
+            pageB: `<p>Obžalobu v trestním řízení může <b>podat výhradně <u>státní zástupce</u></b>. Žádný jiný subjekt (advokát, poškozený ani obviněný) tuto pravomoc nemá.</p>`,
+            question: "Kdo může podat obžalobu?",
+            correctAnswer: "státní zástupce",
+            wrongAnswers: ["advokát", "obviněný"],
+          },
+
+          /* ––– 26 ––– */
+          {
+            pageA: "Tři stádia trestného činu",
+            pageB: `<p>Trestný čin může probíhat ve třech <b>stádiích</b>:</p>
+            <ol>
+              <li><i>Příprava</i></li>
+              <li><i>Pokus</i></li>
+              <li><i>Dokonaný čin</i></li>
+            </ol>
+            <p>Trestně stíhat lze pachatele už za samotnou přípravu (pokud to zákon stanoví).</p>`,
+            question: "Jaká jsou tři stádia trestného činu?",
+            correctAnswer: "příprava, pokus, dokonaný čin",
+            wrongAnswers: [
+              "zahájení, průběh, ukončení",
+              "plánování, čin, vyšetřování",
+            ],
+          },
+
+          /* ––– 27 ––– */
+          {
+            pageA: "Věk trestní odpovědnosti",
+            pageB: `<p>V České republice <b>není trestně odpovědný</b> ten, kdo v době činu ještě <b>nedovršil 15 let</b> věku.</p>`,
+            question: "Do kolika let věku nejsou osoby v ČR trestně odpovědné?",
+            correctAnswer: "Do 15 let",
+            wrongAnswers: ["Do 16 let", "Do 18 let"],
+          },
+
+          /* ––– 28 ––– */
+          {
+            pageA: "Skutková podstata trestného činu",
+            pageB: `<p>Skutková podstata je naplněna, pokud existují všechny <b>čtyři základní znaky</b>:</p>
+            <ul>
+              <li><i>Objekt</i> – chráněný společenský zájem</li>
+              <li><i>Objektivní stránka</i> – způsob spáchání, následek</li>
+              <li><i>Subjekt</i> – pachatel splňující podmínky trestní odpovědnosti</li>
+              <li><i>Subjektivní stránka</i> – vnitřní postoj pachatele (úmysl / nedbalost)</li>
+            </ul>`,
+            question: "Kdy je naplněna skutková podstata trestného činu?",
+            correctAnswer: "Pokud byly naplněny základní znaky trestného činu.",
+            wrongAnswers: [
+              "Pokud je objasněn motiv trestného činu.",
+              "Pokud je pachatel zadržen a odsouzen.",
+            ],
+          },
+
+          /* ––– 29 ––– */
+          {
+            pageA: "Přečin × zločin",
+            pageB: `<p><b>Přečin</b> = trestný čin s horní hranicí odnětí svobody <u>do 5 let</u>.</p>
+            <p><b>Zločin</b> = trestný čin s horní hranicí odnětí svobody <u>nad 5 let</u>.</p>`,
+            question:
+              "Jaký je maximální trest odnětí svobody, aby se trestný čin kvalifikoval jako přečin?",
+            correctAnswer: "Do pěti let",
+            wrongAnswers: ["Do deseti let", "Do tří let"],
+          },
+
+          /* ––– 30 ––– */
+          {
+            pageA: "Právní moc rozsudku – status obžalovaného",
+            pageB: `<p>Osoba se stává <b>odsouzeným</b> okamžikem nabytí <b>právní moci odsuzujícího rozsudku</b>.</p>`,
+            question: "Kdy se obžalovaný stává odsouzeným?",
+            correctAnswer:
+              "Okamžikem nabytí právní moci odsuzujícího rozsudku.",
+            wrongAnswers: [
+              "Po skončení hlavního líčení.",
+              "Po vyslechnutí rozsudku u soudu.",
+            ],
+          },
+
+          /* ––– 31 ––– */
+          {
+            pageA: "Obviněný × obžalovaný",
+            pageB: `<p><b>Obviněný</b> – osoba, proti níž bylo zahájeno trestní stíhání.</p>
+            <p><b>Obžalovaný</b> – obviněný od <i>nařízení hlavního líčení</i> až do pravomocného rozhodnutí soudu.</p>`,
+            question:
+              "Jak se nazývá osoba, proti které bylo zahájeno trestní stíhání, ale ještě nebylo nařízeno hlavní líčení?",
+            correctAnswer: "Obviněný",
+            wrongAnswers: ["Obžalovaný", "Odsouzený"],
+          },
+
+          /* ––– 32 ––– */
+          {
+            pageA: "Presumpce neviny",
+            pageB: `<p><b>Presumpce neviny</b> = na obžalovaného se hledí jako na <i>nevinného</i>, dokud není jeho vina <b>prokázána pravomocným rozsudkem</b>.</p>`,
+            question: "Co znamená pojem presumpce neviny v právním státě?",
+            correctAnswer:
+              "Na obžalovaného je nahlíženo jako na nevinného, dokud není prokázán opak a vynesen rozsudek.",
+            wrongAnswers: [
+              "Obžalovaný je považován za vinného, dokud nedokáže svou nevinu.",
+              "Obžalovaný se musí sám přiznat, jinak je automaticky považován za nevinného.",
+            ],
+          },
+
+          /* ––– 33 ––– */
+          {
+            pageA: "Nutná obrana × krajní nouze",
+            pageB: `<p><b>Nutná obrana</b> – jinak trestný čin spáchaný k <i>odvrácení útoku</i>; směřuje výlučně <u>proti útočníkovi</u>.</p>
+            <p><b>Krajní nouze</b> – čin spáchaný k <i>odvrácení nebezpečí</i>, které nelze odvrátit jinak.</p>`,
+            question:
+              "Jaký je hlavní rozdíl mezi nutnou obranou a krajní nouzí?",
+            correctAnswer:
+              "Nutná obrana působí pouze proti útočníkovi, zatímco krajní nouzí se odvrací nebezpečí.",
+            wrongAnswers: [
+              "Nutná obrana i krajní nouzí se zaměřují na odvrácení útoku.",
+              "Krajní nouzí se působí pouze proti útočníkovi, zatímco nutná obrana odvrací nebezpečí.",
+            ],
+          },
+
+          /* ––– 34 ––– */
+          {
+            pageA: "Fáze trestního řízení",
+            pageB: `<ol>
+      <li><b>Přípravné řízení</b> – zjišťování skutkového stavu, shromažďování důkazů</li>
+      <li><b>Hlavní líčení</b> – soud rozhoduje o vině a trestu</li>
+      <li><b>Odvolací řízení</b> – přezkum nepravomocného rozsudku</li>
+      <li><b>Výkon trestu</b></li>
+    </ol>`,
+            question: "Z kolika fází se skládá trestní řízení?",
+            correctAnswer:
+              "Čtyři fáze: Přípravné řízení, Hlavní líčení, Odvolací řízení, Výkon trestu",
+            wrongAnswers: [
+              "Tři fáze: Přípravné řízení, Hlavní líčení, Výkon trestu",
+              "Pět fází: Přípravné řízení, Hlavní líčení, Odvolací řízení, Výkon trestu, Dohled nad výkonem trestu",
+            ],
+          },
+
+          /* ––– 35 ––– */
+          {
+            pageA: "Hmotné × procesní trestní právo",
+            pageB: `<p><b>Hmotné trestní právo</b> definuje, <i>co je trestným činem</i> a jaké sankce lze uložit.</p>
+            <p><b>Procesní trestní právo</b> upravuje <i>postup orgánů</i> v trestním řízení (pravidla vyšetřování, řízení před soudem, opravné prostředky).</p>`,
+            question:
+              "Jaký je hlavní rozdíl mezi hmotným a procesním trestním právem?",
+            correctAnswer:
+              "Hmotné trestní právo stanoví, co je trestným činem, zatímco procesní trestní právo upravuje postup v trestním řízení.",
+            wrongAnswers: [
+              "Hmotné trestní právo se zabývá právními procedurami, zatímco procesní trestní právo definuje trestné činy.",
+              "Hmotné trestní právo chrání obviněné, procesní právo oběti.",
+            ],
+          },
+
+          /* ––– 36 ––– */
+          {
+            pageA: "Započítání vazby do trestu",
+            pageB: `<p>Čas strávený <b>ve vazbě</b> se podle českého práva <b>započítává</b> do výkonu trestu odnětí svobody.</p>`,
+            question:
+              "Započítává se do výkonu trestu odnětí svobody i čas strávený ve vazbě?",
+            correctAnswer:
+              "Ano, čas strávený ve vazbě se do výkonu trestu započítává.",
+            wrongAnswers: [
+              "Ne, čas strávený ve vazbě se do výkonu trestu nezapočítává.",
+              "Čas strávený ve vazbě se započítává pouze v určitých případech.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    text: "Anglické fráze",
+    icon: "subject_14.png",
+    sections: [
+      {
+        name: "Cestování 1",
+        /* 20 common travel-English flip-cards for Czech learners */
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Kde je nejbližší autobusová zastávka?",
+            pageB: `<p><b>Where is the nearest bus stop?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Kde je nejbližší autobusová zastávka?“",
+            correctAnswer: "Where is the nearest bus stop?",
+            wrongAnswers: [
+              "Where is the next train station?",
+              "How do I get to the airport?",
+            ],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Kolik to stojí?",
+            pageB: `<p><b>How much does this cost?</b></p>`,
+            question: "Jak se anglicky řekne „Kolik to stojí?“",
+            correctAnswer: "How much does this cost?",
+            wrongAnswers: [
+              "How long will it take?",
+              "Can you give me a discount?",
+            ],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Chtěl/a bych jízdenku do …",
+            pageB: `<p><b>I would like a ticket to …</b></p>`,
+            question: "Jak se anglicky řekne „Chtěl/a bych jízdenku do …“?",
+            correctAnswer: "I would like a ticket to …",
+            wrongAnswers: [
+              "I need to check in, please.",
+              "Can I book a room, please?",
+            ],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Můžete mi pomoci?",
+            pageB: `<p><b>Can you help me?</b></p>`,
+            question: "Jak se anglicky řekne „Můžete mi pomoci?“",
+            correctAnswer: "Can you help me?",
+            wrongAnswers: ["Can you hear me?", "Can you come with me?"],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Mluvíte anglicky?",
+            pageB: `<p><b>Do you speak English?</b></p>`,
+            question: "Jak se anglicky řekne „Mluvíte anglicky?“",
+            correctAnswer: "Do you speak English?",
+            wrongAnswers: ["Do you understand me?", "Can you translate this?"],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Mám rezervaci.",
+            pageB: `<p><b>I have a reservation.</b></p>`,
+            question: "Jak se anglicky řekne „Mám rezervaci.“",
+            correctAnswer: "I have a reservation.",
+            wrongAnswers: ["I need a reservation.", "I lost my reservation."],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Mohu platit kartou?",
+            pageB: `<p><b>Can I pay by card?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu platit kartou?“",
+            correctAnswer: "Can I pay by card?",
+            wrongAnswers: ["Can I pay in cash?", "Can I change money here?"],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "V kolik to otevírá?",
+            pageB: `<p><b>What time does it open?</b></p>`,
+            question: "Jak se anglicky řekne „V kolik to otevírá?“",
+            correctAnswer: "What time does it open?",
+            wrongAnswers: ["Where does it open?", "What time does it close?"],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Mohu dostat jídelní lístek, prosím?",
+            pageB: `<p><b>Can I have the menu, please?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Mohu dostat jídelní lístek, prosím?“",
+            correctAnswer: "Can I have the menu, please?",
+            wrongAnswers: [
+              "Can I have the bill, please?",
+              "Can I have some water, please?",
+            ],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Neperlivou vodu, prosím.",
+            pageB: `<p><b>Still water, please.</b></p>`,
+            question: "Jak se anglicky řekne „Neperlivou vodu, prosím.“",
+            correctAnswer: "Still water, please.",
+            wrongAnswers: ["Sparkling water, please.", "Tap water, please."],
+          },
+
+          /* ––– 11 ––– */
+          {
+            pageA: "Kde jsou toalety?",
+            pageB: `<p><b>Where is the restroom?</b></p>`,
+            question: "Jak se anglicky řekne „Kde jsou toalety?“",
+            correctAnswer: "Where is the restroom?",
+            wrongAnswers: [
+              "Where is the ticket office?",
+              "Where is the information desk?",
+            ],
+          },
+
+          /* ––– 12 ––– */
+          {
+            pageA: "Jsem alergický/á na …",
+            pageB: `<p><b>I’m allergic to …</b></p>`,
+            question: "Jak se anglicky řekne „Jsem alergický/á na …“",
+            correctAnswer: "I’m allergic to …",
+            wrongAnswers: ["I’m used to …", "I’m looking for …"],
+          },
+
+          /* ––– 13 ––– */
+          {
+            pageA: "Mohl/a byste nás vyfotit?",
+            pageB: `<p><b>Can you take a picture of us?</b></p>`,
+            question: "Jak se anglicky řekne „Mohl/a byste nás vyfotit?“",
+            correctAnswer: "Can you take a picture of us?",
+            wrongAnswers: [
+              "Can you show us the way?",
+              "Can you lend us your phone?",
+            ],
+          },
+
+          /* ––– 14 ––– */
+          {
+            pageA: "Jak je to daleko?",
+            pageB: `<p><b>How far is it?</b></p>`,
+            question: "Jak se anglicky řekne „Jak je to daleko?“",
+            correctAnswer: "How far is it?",
+            wrongAnswers: ["How long does it take?", "How big is it?"],
+          },
+
+          /* ––– 15 ––– */
+          {
+            pageA: "Je tu dostupná wifi?",
+            pageB: `<p><b>Is Wi-Fi available?</b></p>`,
+            question: "Jak se anglicky řekne „Je tu dostupná wifi?“",
+            correctAnswer: "Is Wi-Fi available?",
+            wrongAnswers: [
+              "Where can I charge my phone?",
+              "Is breakfast included?",
+            ],
+          },
+
+          /* ––– 16 ––– */
+          {
+            pageA: "Chtěl/a bych se ubytovat.",
+            pageB: `<p><b>I would like to check in.</b></p>`,
+            question: "Jak se anglicky řekne „Chtěl/a bych se ubytovat.“",
+            correctAnswer: "I would like to check in.",
+            wrongAnswers: [
+              "I would like to check out.",
+              "I would like to book a taxi.",
+            ],
+          },
+
+          /* ––– 17 ––– */
+          {
+            pageA: "Mohu dostat účet, prosím?",
+            pageB: `<p><b>Can I have the bill, please?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu dostat účet, prosím?“",
+            correctAnswer: "Can I have the bill, please?",
+            wrongAnswers: [
+              "Can I have the receipt, please?",
+              "Can I have the menu, please?",
+            ],
+          },
+
+          /* ––– 18 ––– */
+          {
+            pageA: "Můžete doporučit místní jídlo?",
+            pageB: `<p><b>Can you recommend a local dish?</b></p>`,
+            question: "Jak se anglicky řekne „Můžete doporučit místní jídlo?“",
+            correctAnswer: "Can you recommend a local dish?",
+            wrongAnswers: [
+              "Can you recommend a hotel?",
+              "Can you recommend a souvenir?",
+            ],
+          },
+
+          /* ––– 19 ––– */
+          {
+            pageA: "Ztratil/a jsem zavazadlo.",
+            pageB: `<p><b>I lost my luggage.</b></p>`,
+            question: "Jak se anglicky řekne „Ztratil/a jsem zavazadlo.“",
+            correctAnswer: "I lost my luggage.",
+            wrongAnswers: ["I forgot my ticket.", "I missed my flight."],
+          },
+
+          /* ––– 20 ––– */
+          {
+            pageA: "Kde si mohu koupit SIM kartu?",
+            pageB: `<p><b>Where can I buy a SIM card?</b></p>`,
+            question: "Jak se anglicky řekne „Kde si mohu koupit SIM kartu?“",
+            correctAnswer: "Where can I buy a SIM card?",
+            wrongAnswers: [
+              "Where can I rent a car?",
+              "Where can I change money?",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Cestování 2",
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Potřebuji lékaře.",
+            pageB: `<p><b>I need a doctor.</b></p>`,
+            question: "Jak se anglicky řekne „Potřebuji lékaře.“",
+            correctAnswer: "I need a doctor.",
+            wrongAnswers: ["I need a lawyer.", "Call the police."],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Kde je stanice metra?",
+            pageB: `<p><b>Where is the subway station?</b></p>`,
+            question: "Jak se anglicky řekne „Kde je stanice metra?“",
+            correctAnswer: "Where is the subway station?",
+            wrongAnswers: ["Where is the bus stop?", "Where is the taxi rank?"],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Kdy odjíždí poslední vlak?",
+            pageB: `<p><b>What time does the last train leave?</b></p>`,
+            question: "Jak se anglicky řekne „Kdy odjíždí poslední vlak?“",
+            correctAnswer: "What time does the last train leave?",
+            wrongAnswers: [
+              "When does the first train leave?",
+              "What time does the bus arrive?",
+            ],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Můžete mi zavolat taxi?",
+            pageB: `<p><b>Could you call me a taxi?</b></p>`,
+            question: "Jak se anglicky řekne „Můžete mi zavolat taxi?“",
+            correctAnswer: "Could you call me a taxi?",
+            wrongAnswers: [
+              "Could you carry my luggage?",
+              "Could you open the door?",
+            ],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Můžu si to vyzkoušet?",
+            pageB: `<p><b>Can I try it on?</b></p>`,
+            question: "Jak se anglicky řekne „Můžu si to vyzkoušet?“",
+            correctAnswer: "Can I try it on?",
+            wrongAnswers: ["Can I taste it?", "Can I sit here?"],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Kolik stojí vstupné?",
+            pageB: `<p><b>How much is the entrance fee?</b></p>`,
+            question: "Jak se anglicky řekne „Kolik stojí vstupné?“",
+            correctAnswer: "How much is the entrance fee?",
+            wrongAnswers: [
+              "How much is the discount?",
+              "How much is the taxi fare?",
+            ],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Můžete to zopakovat pomaleji?",
+            pageB: `<p><b>Could you repeat that more slowly?</b></p>`,
+            question: "Jak se anglicky řekne „Můžete to zopakovat pomaleji?“",
+            correctAnswer: "Could you repeat that more slowly?",
+            wrongAnswers: [
+              "Could you write that down?",
+              "Could you speak louder?",
+            ],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "Potřebuji mapu města.",
+            pageB: `<p><b>I need a city map.</b></p>`,
+            question: "Jak se anglicky řekne „Potřebuji mapu města.“",
+            correctAnswer: "I need a city map.",
+            wrongAnswers: ["I need a menu.", "I need a timetable."],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Je tahle sedačka volná?",
+            pageB: `<p><b>Is this seat free?</b></p>`,
+            question: "Jak se anglicky řekne „Je tahle sedačka volná?“",
+            correctAnswer: "Is this seat free?",
+            wrongAnswers: ["Is this room clean?", "Is this road closed?"],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Kterým směrem je centrum?",
+            pageB: `<p><b>Which way is the city centre?</b></p>`,
+            question: "Jak se anglicky řekne „Kterým směrem je centrum?“",
+            correctAnswer: "Which way is the city centre?",
+            wrongAnswers: [
+              "Which way is the airport?",
+              "Which way is the museum?",
+            ],
+          },
+
+          /* ––– 11 ––– */
+          {
+            pageA: "Můžu platit v eurech?",
+            pageB: `<p><b>Can I pay in euros?</b></p>`,
+            question: "Jak se anglicky řekne „Můžu platit v eurech?“",
+            correctAnswer: "Can I pay in euros?",
+            wrongAnswers: ["Can I pay later?", "Can I pay by cheque?"],
+          },
+
+          /* ––– 12 ––– */
+          {
+            pageA: "Kde je nejbližší lékárna?",
+            pageB: `<p><b>Where is the nearest pharmacy?</b></p>`,
+            question: "Jak se anglicky řekne „Kde je nejbližší lékárna?“",
+            correctAnswer: "Where is the nearest pharmacy?",
+            wrongAnswers: [
+              "Where is the nearest hospital?",
+              "Where is the nearest supermarket?",
+            ],
+          },
+
+          /* ––– 13 ––– */
+          {
+            pageA: "Můžete mi doporučit levný hotel?",
+            pageB: `<p><b>Can you recommend a cheap hotel?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Můžete mi doporučit levný hotel?“",
+            correctAnswer: "Can you recommend a cheap hotel?",
+            wrongAnswers: [
+              "Can you recommend an expensive restaurant?",
+              "Can you recommend a museum?",
+            ],
+          },
+
+          /* ––– 14 ––– */
+          {
+            pageA: "Je to v docházkové vzdálenosti?",
+            pageB: `<p><b>Is it within walking distance?</b></p>`,
+            question: "Jak se anglicky řekne „Je to v docházkové vzdálenosti?“",
+            correctAnswer: "Is it within walking distance?",
+            wrongAnswers: ["Is it open now?", "Is it safe at night?"],
+          },
+
+          /* ––– 15 ––– */
+          {
+            pageA: "Potřebuji účtenku.",
+            pageB: `<p><b>I need a receipt.</b></p>`,
+            question: "Jak se anglicky řekne „Potřebuji účtenku.“",
+            correctAnswer: "I need a receipt.",
+            wrongAnswers: ["I need directions.", "I need a reservation."],
+          },
+
+          /* ––– 16 ––– */
+          {
+            pageA: "Je tu někde bankomat?",
+            pageB: `<p><b>Is there an ATM nearby?</b></p>`,
+            question: "Jak se anglicky řekne „Je tu někde bankomat?“",
+            correctAnswer: "Is there an ATM nearby?",
+            wrongAnswers: [
+              "Is there a restroom nearby?",
+              "Is there a taxi stand nearby?",
+            ],
+          },
+
+          /* ––– 17 ––– */
+          {
+            pageA: "Můžete mi ukázat na mapě?",
+            pageB: `<p><b>Can you show me on the map?</b></p>`,
+            question: "Jak se anglicky řekne „Můžete mi ukázat na mapě?“",
+            correctAnswer: "Can you show me on the map?",
+            wrongAnswers: ["Can you fix my phone?", "Can you carry my bag?"],
+          },
+
+          /* ––– 18 ––– */
+          {
+            pageA: "Jak dlouho to potrvá?",
+            pageB: `<p><b>How long will it take?</b></p>`,
+            question: "Jak se anglicky řekne „Jak dlouho to potrvá?“",
+            correctAnswer: "How long will it take?",
+            wrongAnswers: ["How far is it?", "How much does it cost?"],
+          },
+
+          /* ––– 19 ––– */
+          {
+            pageA: "Je zahrnuta snídaně?",
+            pageB: `<p><b>Is breakfast included?</b></p>`,
+            question: "Jak se anglicky řekne „Je zahrnuta snídaně?“",
+            correctAnswer: "Is breakfast included?",
+            wrongAnswers: ["Is Wi-Fi free?", "Is parking available?"],
+          },
+
+          /* ––– 20 ––– */
+          {
+            pageA: "Kde si mohu půjčit auto?",
+            pageB: `<p><b>Where can I rent a car?</b></p>`,
+            question: "Jak se anglicky řekne „Kde si mohu půjčit auto?“",
+            correctAnswer: "Where can I rent a car?",
+            wrongAnswers: [
+              "Where can I buy a ticket?",
+              "Where can I catch a bus?",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Cestování 3",
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Promiňte, kde je toaleta?",
+            pageB: `<p><b>Excuse me, where is the bathroom?</b></p>`,
+            question: "Jak se anglicky řekne „Promiňte, kde je toaleta?“",
+            correctAnswer: "Excuse me, where is the bathroom?",
+            wrongAnswers: ["Where is the hotel?", "Where is the kitchen?"],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Chtěl bych jednosměrnou jízdenku.",
+            pageB: `<p><b>I’d like a one-way ticket.</b></p>`,
+            question:
+              "Jak se anglicky řekne „Chtěl bych jednosměrnou jízdenku.“",
+            correctAnswer: "I’d like a one-way ticket.",
+            wrongAnswers: [
+              "I’d like a return ticket.",
+              "I’d like two tickets.",
+            ],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Můžu platit kartou?",
+            pageB: `<p><b>Can I pay by card?</b></p>`,
+            question: "Jak se anglicky řekne „Můžu platit kartou?“",
+            correctAnswer: "Can I pay by card?",
+            wrongAnswers: ["Can I pay in cash?", "Can I pay tomorrow?"],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Máte volný stůl pro dva?",
+            pageB: `<p><b>Do you have a table for two?</b></p>`,
+            question: "Jak se anglicky řekne „Máte volný stůl pro dva?“",
+            correctAnswer: "Do you have a table for two?",
+            wrongAnswers: ["Do you have a map?", "Is there a table for one?"],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Mohl byste mě vyfotit?",
+            pageB: `<p><b>Could you take a picture of me?</b></p>`,
+            question: "Jak se anglicky řekne „Mohl byste mě vyfotit?“",
+            correctAnswer: "Could you take a picture of me?",
+            wrongAnswers: [
+              "Could you fix my phone?",
+              "Could you carry my bag?",
+            ],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Potřebuji adaptér do zásuvky.",
+            pageB: `<p><b>I need a power adapter.</b></p>`,
+            question: "Jak se anglicky řekne „Potřebuji adaptér do zásuvky.“",
+            correctAnswer: "I need a power adapter.",
+            wrongAnswers: ["I need a hair dryer.", "I need a blanket."],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Kdy se podává snídaně?",
+            pageB: `<p><b>What time is breakfast served?</b></p>`,
+            question: "Jak se anglicky řekne „Kdy se podává snídaně?“",
+            correctAnswer: "What time is breakfast served?",
+            wrongAnswers: [
+              "What time is dinner served?",
+              "What time is checkout?",
+            ],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "Kde je nejbližší zastávka autobusu?",
+            pageB: `<p><b>Where is the nearest bus stop?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Kde je nejbližší zastávka autobusu?“",
+            correctAnswer: "Where is the nearest bus stop?",
+            wrongAnswers: [
+              "Where is the nearest train station?",
+              "Where is the taxi stand?",
+            ],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Je Wi-Fi zdarma?",
+            pageB: `<p><b>Is the Wi-Fi free?</b></p>`,
+            question: "Jak se anglicky řekne „Je Wi-Fi zdarma?“",
+            correctAnswer: "Is the Wi-Fi free?",
+            wrongAnswers: ["Is breakfast included?", "Is parking free?"],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Jak se dostanu na letiště?",
+            pageB: `<p><b>How do I get to the airport?</b></p>`,
+            question: "Jak se anglicky řekne „Jak se dostanu na letiště?“",
+            correctAnswer: "How do I get to the airport?",
+            wrongAnswers: [
+              "How do I get to the museum?",
+              "How do I get to the beach?",
+            ],
+          },
+
+          /* ––– 11 ––– */
+          {
+            pageA: "Můžete mi doporučit místní specialitu?",
+            pageB: `<p><b>Can you recommend a local specialty?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Můžete mi doporučit místní specialitu?“",
+            correctAnswer: "Can you recommend a local specialty?",
+            wrongAnswers: [
+              "Can you recommend a taxi company?",
+              "Can you recommend a souvenir shop?",
+            ],
+          },
+
+          /* ––– 12 ––– */
+          {
+            pageA: "Mohu si to vzít s sebou?",
+            pageB: `<p><b>Can I have it to go?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu si to vzít s sebou?“",
+            correctAnswer: "Can I have it to go?",
+            wrongAnswers: ["Can I eat here?", "Can I return it?"],
+          },
+
+          /* ––– 13 ––– */
+          {
+            pageA: "Potřebuji rezervovat pokoj.",
+            pageB: `<p><b>I need to book a room.</b></p>`,
+            question: "Jak se anglicky řekne „Potřebuji rezervovat pokoj.“",
+            correctAnswer: "I need to book a room.",
+            wrongAnswers: [
+              "I need to cancel a room.",
+              "I need to buy a ticket.",
+            ],
+          },
+
+          /* ––– 14 ––– */
+          {
+            pageA: "Mluvíte prosím anglicky?",
+            pageB: `<p><b>Do you speak English, please?</b></p>`,
+            question: "Jak se anglicky řekne „Mluvíte prosím anglicky?“",
+            correctAnswer: "Do you speak English, please?",
+            wrongAnswers: ["Do you speak German?", "Where is English school?"],
+          },
+
+          /* ––– 15 ––– */
+          {
+            pageA: "Kde si mohu vyměnit peníze?",
+            pageB: `<p><b>Where can I exchange money?</b></p>`,
+            question: "Jak se anglicky řekne „Kde si mohu vyměnit peníze?“",
+            correctAnswer: "Where can I exchange money?",
+            wrongAnswers: [
+              "Where can I buy stamps?",
+              "Where can I get a taxi?",
+            ],
+          },
+
+          /* ––– 16 ––– */
+          {
+            pageA: "Mohu si uschovat zavazadlo?",
+            pageB: `<p><b>Can I store my luggage?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu si uschovat zavazadlo?“",
+            correctAnswer: "Can I store my luggage?",
+            wrongAnswers: ["Can I charge my phone?", "Can I wash my clothes?"],
+          },
+
+          /* ––– 17 ––– */
+          {
+            pageA: "Je to daleko?",
+            pageB: `<p><b>Is it far?</b></p>`,
+            question: "Jak se anglicky řekne „Je to daleko?“",
+            correctAnswer: "Is it far?",
+            wrongAnswers: ["Is it open?", "Is it expensive?"],
+          },
+
+          /* ––– 18 ––– */
+          {
+            pageA: "Máte nějaké vegetariánské jídlo?",
+            pageB: `<p><b>Do you have any vegetarian dishes?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Máte nějaké vegetariánské jídlo?“",
+            correctAnswer: "Do you have any vegetarian dishes?",
+            wrongAnswers: [
+              "Do you have any spicy food?",
+              "Do you have any desserts?",
+            ],
+          },
+
+          /* ––– 19 ––– */
+          {
+            pageA: "Mohu dostat sklenici vody?",
+            pageB: `<p><b>May I have a glass of water?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu dostat sklenici vody?“",
+            correctAnswer: "May I have a glass of water?",
+            wrongAnswers: ["May I have the bill?", "May I have the menu?"],
+          },
+
+          /* ––– 20 ––– */
+          {
+            pageA: "Kdy odjíždí autobus do centra?",
+            pageB: `<p><b>What time does the bus to downtown leave?</b></p>`,
+            question: "Jak se anglicky řekne „Kdy odjíždí autobus do centra?“",
+            correctAnswer: "What time does the bus to downtown leave?",
+            wrongAnswers: [
+              "What time does the train to downtown leave?",
+              "What time does the bus arrive?",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Restaurace",
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Rezervoval jsem stůl na osmou hodinu.",
+            pageB: `<p><b>I have a reservation for eight o’clock.</b></p>`,
+            question:
+              "Jak se anglicky řekne „Rezervoval jsem stůl na osmou hodinu.“",
+            correctAnswer: "I have a reservation for eight o’clock.",
+            wrongAnswers: [
+              "I have a reservation for seven o’clock.",
+              "I need a reservation.",
+            ],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Můžete mi ukázat jídelní lístek?",
+            pageB: `<p><b>Could I see the menu, please?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Můžete mi ukázat jídelní lístek?“",
+            correctAnswer: "Could I see the menu, please?",
+            wrongAnswers: [
+              "Could I see the bill, please?",
+              "Could I see the wine list, please?",
+            ],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Co byste doporučil?",
+            pageB: `<p><b>What would you recommend?</b></p>`,
+            question: "Jak se anglicky řekne „Co byste doporučil?“",
+            correctAnswer: "What would you recommend?",
+            wrongAnswers: ["What is the price?", "Where is the restroom?"],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Jsem alergický na ořechy.",
+            pageB: `<p><b>I am allergic to nuts.</b></p>`,
+            question: "Jak se anglicky řekne „Jsem alergický na ořechy.“",
+            correctAnswer: "I am allergic to nuts.",
+            wrongAnswers: ["I am allergic to dairy.", "I love nuts."],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Dám si steak medium.",
+            pageB: `<p><b>I’ll have the steak medium.</b></p>`,
+            question: "Jak se anglicky řekne „Dám si steak medium.“",
+            correctAnswer: "I’ll have the steak medium.",
+            wrongAnswers: [
+              "I’ll have the fish.",
+              "I’ll have the steak well-done.",
+            ],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Mohu si objednat poloviční porci?",
+            pageB: `<p><b>Can I order a half portion?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Mohu si objednat poloviční porci?“",
+            correctAnswer: "Can I order a half portion?",
+            wrongAnswers: [
+              "Can I order a dessert?",
+              "Can I have a double portion?",
+            ],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Bude to všechno?",
+            pageB: `<p><b>Is that everything?</b></p>`,
+            question: "Jak se anglicky řekne „Bude to všechno?“ (číšník)",
+            correctAnswer: "Is that everything?",
+            wrongAnswers: ["Is that spicy?", "Is that yours?"],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "Přinesete nám prosím účet?",
+            pageB: `<p><b>Could we have the bill, please?</b></p>`,
+            question: "Jak se anglicky řekne „Přinesete nám prosím účet?“",
+            correctAnswer: "Could we have the bill, please?",
+            wrongAnswers: [
+              "Could we have the menu, please?",
+              "Could we have more bread?",
+            ],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Je spropitné zahrnuto v ceně?",
+            pageB: `<p><b>Is the tip included?</b></p>`,
+            question: "Jak se anglicky řekne „Je spropitné zahrnuto v ceně?“",
+            correctAnswer: "Is the tip included?",
+            wrongAnswers: ["Is the dessert included?", "Is the tax included?"],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Chutnalo vám?",
+            pageB: `<p><b>Did you enjoy your meal?</b></p>`,
+            question: "Jak se anglicky řekne „Chutnalo vám?“",
+            correctAnswer: "Did you enjoy your meal?",
+            wrongAnswers: [
+              "Did you pay the bill?",
+              "Was your seat comfortable?",
+            ],
+          },
+
+          /* ––– 11 ––– */
+          {
+            pageA: "Mohu dostat ještě trochu vody?",
+            pageB: `<p><b>Could I have some more water?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu dostat ještě trochu vody?“",
+            correctAnswer: "Could I have some more water?",
+            wrongAnswers: [
+              "Could I have some more bread?",
+              "Could I have the bill?",
+            ],
+          },
+
+          /* ––– 12 ––– */
+          {
+            pageA: "Bez ledu, prosím.",
+            pageB: `<p><b>No ice, please.</b></p>`,
+            question: "Jak se anglicky řekne „Bez ledu, prosím.“",
+            correctAnswer: "No ice, please.",
+            wrongAnswers: ["No sugar, please.", "With ice, please."],
+          },
+
+          /* ––– 13 ––– */
+          {
+            pageA: "Toto jídlo je studené.",
+            pageB: `<p><b>This food is cold.</b></p>`,
+            question: "Jak se anglicky řekne „Toto jídlo je studené.“",
+            correctAnswer: "This food is cold.",
+            wrongAnswers: ["This food is spicy.", "This drink is cold."],
+          },
+
+          /* ––– 14 ––– */
+          {
+            pageA: "Bylo to výborné, děkuji.",
+            pageB: `<p><b>It was delicious, thank you.</b></p>`,
+            question: "Jak se anglicky řekne „Bylo to výborné, děkuji.“",
+            correctAnswer: "It was delicious, thank you.",
+            wrongAnswers: [
+              "It was terrible, thank you.",
+              "It was expensive, thank you.",
+            ],
+          },
+
+          /* ––– 15 ––– */
+          {
+            pageA: "Můžeme zaplatit zvlášť?",
+            pageB: `<p><b>Can we pay separately?</b></p>`,
+            question: "Jak se anglicky řekne „Můžeme zaplatit zvlášť?“",
+            correctAnswer: "Can we pay separately?",
+            wrongAnswers: ["Can we pay later?", "Can we pay with card?"],
+          },
+
+          /* ––– 16 ––– */
+          {
+            pageA: "Číšníku!",
+            pageB: `<p><b>Excuse me!</b></p>`,
+            question: "Jak se anglicky řekne „Číšníku!“ (oslovení obsluhy)",
+            correctAnswer: "Excuse me!",
+            wrongAnswers: ["Wait here!", "Good evening!"],
+          },
+
+          /* ––– 17 ––– */
+          {
+            pageA: "Máte nějaké bezlepkové možnosti?",
+            pageB: `<p><b>Do you have any gluten-free options?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Máte nějaké bezlepkové možnosti?“",
+            correctAnswer: "Do you have any gluten-free options?",
+            wrongAnswers: [
+              "Do you have any spicy dishes?",
+              "Do you have any dairy-free desserts?",
+            ],
+          },
+
+          /* ––– 18 ––– */
+          {
+            pageA: "Trvá to ještě dlouho?",
+            pageB: `<p><b>Is it going to take much longer?</b></p>`,
+            question: "Jak se anglicky řekne „Trvá to ještě dlouho?“",
+            correctAnswer: "Is it going to take much longer?",
+            wrongAnswers: ["Is it very tasty?", "Does it come with rice?"],
+          },
+
+          /* ––– 19 ––– */
+          {
+            pageA: "Rád bych sklenku červeného vína.",
+            pageB: `<p><b>I’d like a glass of red wine.</b></p>`,
+            question:
+              "Jak se anglicky řekne „Rád bych sklenku červeného vína.“",
+            correctAnswer: "I’d like a glass of red wine.",
+            wrongAnswers: [
+              "I’d like a glass of white wine.",
+              "I’d like a cup of tea.",
+            ],
+          },
+
+          /* ––– 20 ––– */
+          {
+            pageA: "Potřebuji krabici na odnos.",
+            pageB: `<p><b>Could I have a to-go box?</b></p>`,
+            question: "Jak se anglicky řekne „Potřebuji krabici na odnos.“",
+            correctAnswer: "Could I have a to-go box?",
+            wrongAnswers: [
+              "Could I have a knife?",
+              "Could I have the receipt?",
+            ],
+          },
+        ],
+      },
+      {
+        name: "Restaurace 2",
+        dummyContent: [
+          /* ––– 1 ––– */
+          {
+            pageA: "Můžete mi dát prosím ještě trochu chleba?",
+            pageB: `<p><b>Could we get some more bread, please?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Můžete mi dát prosím ještě trochu chleba?“",
+            correctAnswer: "Could we get some more bread, please?",
+            wrongAnswers: [
+              "Could we get some more water, please?",
+              "Could we get the bill, please?",
+            ],
+          },
+
+          /* ––– 2 ––– */
+          {
+            pageA: "Přinesete mi prosím pepřenku?",
+            pageB: `<p><b>Could you bring me the pepper, please?</b></p>`,
+            question: "Jak se anglicky řekne „Přinesete mi prosím pepřenku?“",
+            correctAnswer: "Could you bring me the pepper, please?",
+            wrongAnswers: [
+              "Could you bring me the menu, please?",
+              "Could you bring me the salt, please?",
+            ],
+          },
+
+          /* ––– 3 ––– */
+          {
+            pageA: "Mohu si objednat dezert?",
+            pageB: `<p><b>Could I order dessert?</b></p>`,
+            question: "Jak se anglicky řekne „Mohu si objednat dezert?“",
+            correctAnswer: "Could I order dessert?",
+            wrongAnswers: ["Could I order drinks?", "Could I order breakfast?"],
+          },
+
+          /* ––– 4 ––– */
+          {
+            pageA: "Je toto jídlo vegetariánské?",
+            pageB: `<p><b>Is this dish vegetarian?</b></p>`,
+            question: "Jak se anglicky řekne „Je toto jídlo vegetariánské?“",
+            correctAnswer: "Is this dish vegetarian?",
+            wrongAnswers: ["Is this dish spicy?", "Is this dish gluten-free?"],
+          },
+
+          /* ––– 5 ––– */
+          {
+            pageA: "Můžete mi to zabalit sebou?",
+            pageB: `<p><b>Could you wrap this to go, please?</b></p>`,
+            question: "Jak se anglicky řekne „Můžete mi to zabalit sebou?“",
+            correctAnswer: "Could you wrap this to go, please?",
+            wrongAnswers: [
+              "Could you warm this up, please?",
+              "Could you throw this away, please?",
+            ],
+          },
+
+          /* ––– 6 ––– */
+          {
+            pageA: "Přijímáte platební karty?",
+            pageB: `<p><b>Do you accept credit cards?</b></p>`,
+            question: "Jak se anglicky řekne „Přijímáte platební karty?“",
+            correctAnswer: "Do you accept credit cards?",
+            wrongAnswers: [
+              "Do you accept reservations?",
+              "Do you accept cash only?",
+            ],
+          },
+
+          /* ––– 7 ––– */
+          {
+            pageA: "Máte dětské menu?",
+            pageB: `<p><b>Do you have a kids’ menu?</b></p>`,
+            question: "Jak se anglicky řekne „Máte dětské menu?“",
+            correctAnswer: "Do you have a kids’ menu?",
+            wrongAnswers: [
+              "Do you have a wine list?",
+              "Do you have an English menu?",
+            ],
+          },
+
+          /* ––– 8 ––– */
+          {
+            pageA: "Potřebuji další ubrousky, prosím.",
+            pageB: `<p><b>I need some more napkins, please.</b></p>`,
+            question:
+              "Jak se anglicky řekne „Potřebuji další ubrousky, prosím.“",
+            correctAnswer: "I need some more napkins, please.",
+            wrongAnswers: [
+              "I need some more forks, please.",
+              "I need the menu, please.",
+            ],
+          },
+
+          /* ––– 9 ––– */
+          {
+            pageA: "Je v tom pokrmu mléko?",
+            pageB: `<p><b>Does this dish contain dairy?</b></p>`,
+            question: "Jak se anglicky řekne „Je v tom pokrmu mléko?“",
+            correctAnswer: "Does this dish contain dairy?",
+            wrongAnswers: [
+              "Does this dish contain nuts?",
+              "Does this dish contain meat?",
+            ],
+          },
+
+          /* ––– 10 ––– */
+          {
+            pageA: "Můžete doporučit nějaké místní pivo?",
+            pageB: `<p><b>Could you recommend a local beer?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Můžete doporučit nějaké místní pivo?“",
+            correctAnswer: "Could you recommend a local beer?",
+            wrongAnswers: [
+              "Could you recommend a dessert?",
+              "Could you recommend a nearby hotel?",
+            ],
+          },
+
+          /* ––– 11 ––– */
+          {
+            pageA: "Rád bych neperlivou vodu.",
+            pageB: `<p><b>I’d like still water.</b></p>`,
+            question: "Jak se anglicky řekne „Rád bych neperlivou vodu.“",
+            correctAnswer: "I’d like still water.",
+            wrongAnswers: [
+              "I’d like sparkling water.",
+              "I’d like apple juice.",
+            ],
+          },
+
+          /* ––– 12 ––– */
+          {
+            pageA: "Omlouvám se, objednal jsem si něco jiného.",
+            pageB: `<p><b>I’m sorry, I ordered something else.</b></p>`,
+            question:
+              "Jak se anglicky řekne „Omlouvám se, objednal jsem si něco jiného.“",
+            correctAnswer: "I’m sorry, I ordered something else.",
+            wrongAnswers: [
+              "I’m sorry, I’m late.",
+              "I’m sorry, it’s too spicy.",
+            ],
+          },
+
+          /* ––– 13 ––– */
+          {
+            pageA: "Můžeme dostat stůl u okna?",
+            pageB: `<p><b>Could we have a table by the window?</b></p>`,
+            question: "Jak se anglicky řekne „Můžeme dostat stůl u okna?“",
+            correctAnswer: "Could we have a table by the window?",
+            wrongAnswers: [
+              "Could we have a table outside?",
+              "Could we have a bigger table?",
+            ],
+          },
+
+          /* ––– 14 ––– */
+          {
+            pageA: "Jak dlouho budeme čekat?",
+            pageB: `<p><b>How long will the wait be?</b></p>`,
+            question: "Jak se anglicky řekne „Jak dlouho budeme čekat?“",
+            correctAnswer: "How long will the wait be?",
+            wrongAnswers: ["How long is the menu?", "How big is the table?"],
+          },
+
+          /* ––– 15 ––– */
+          {
+            pageA: "Můžete nám přinést další talířky?",
+            pageB: `<p><b>Could we have some extra plates?</b></p>`,
+            question:
+              "Jak se anglicky řekne „Můžete nám přinést další talířky?“",
+            correctAnswer: "Could we have some extra plates?",
+            wrongAnswers: [
+              "Could we have some extra chairs?",
+              "Could we have some extra napkins?",
+            ],
+          },
+
+          /* ––– 16 ––– */
+          {
+            pageA: "Účet dohromady, prosím.",
+            pageB: `<p><b>The check together, please.</b></p>`,
+            question: "Jak se anglicky řekne „Účet dohromady, prosím.“",
+            correctAnswer: "The check together, please.",
+            wrongAnswers: [
+              "The check separately, please.",
+              "The check later, please.",
+            ],
+          },
+
+          /* ––– 17 ––– */
+          {
+            pageA: "Bylo by možné vyměnit přílohu?",
+            pageB: `<p><b>Would it be possible to change the side dish?</b></p>`,
+            question: "Jak se anglicky řekne „Bylo by možné vyměnit přílohu?“",
+            correctAnswer: "Would it be possible to change the side dish?",
+            wrongAnswers: [
+              "Would it be possible to split the bill?",
+              "Would it be possible to add cheese?",
+            ],
+          },
+
+          /* ––– 18 ––– */
+          {
+            pageA: "Kolik stojí dnešní menu?",
+            pageB: `<p><b>How much is today’s special?</b></p>`,
+            question: "Jak se anglicky řekne „Kolik stojí dnešní menu?“",
+            correctAnswer: "How much is today’s special?",
+            wrongAnswers: ["What is today’s weather?", "How much is the taxi?"],
+          },
+
+          /* ––– 19 ––– */
+          {
+            pageA: "Je tu Wi-Fi?",
+            pageB: `<p><b>Do you have Wi-Fi?</b></p>`,
+            question: "Jak se anglicky řekne „Je tu Wi-Fi?“",
+            correctAnswer: "Do you have Wi-Fi?",
+            wrongAnswers: [
+              "Do you have Wi-Fi password?",
+              "Do you have a restroom?",
+            ],
+          },
+
+          /* ––– 20 ––– */
+          {
+            pageA: "Všechno bylo skvělé.",
+            pageB: `<p><b>Everything was great.</b></p>`,
+            question: "Jak se anglicky řekne „Všechno bylo skvělé.“",
+            correctAnswer: "Everything was great.",
+            wrongAnswers: ["Everything was late.", "Everything was salty."],
+          },
+        ],
+      },
+    ],
+  },
   // ⬇⬇  Klidně přidej další kategorií objekt  ⬇⬇
 ];
 
