@@ -27,7 +27,7 @@ cronHelpers.checkPremiumEnded = catchAsync(async () => {
       endedUsers.push(user.email);
     }
   });
-  mail.sendCronReport("checkPremiumEnded", endedUsers);
+  //mail.sendCronReport("checkPremiumEnded", endedUsers);
 });
 
 cronHelpers.resetStreaks = catchAsync(async () => {
@@ -48,7 +48,7 @@ cronHelpers.resetStreaks = catchAsync(async () => {
       user.save();
     }
   });
-  mail.sendCronReport("resetStreaks", counter);
+  //mail.sendCronReport("resetStreaks", counter);
 });
 
 cronHelpers.streakReminderEmail = catchAsync(async () => {
@@ -66,7 +66,7 @@ cronHelpers.streakReminderEmail = catchAsync(async () => {
       counter++;
     }
   });
-  mail.sendCronReport("streakReminderEmail", counter);
+  //mail.sendCronReport("streakReminderEmail", counter);
 });
 
 //cron notification to all users with expoPushToken and dailyActivityReminder set to true to remind them to do their daily goal
@@ -95,7 +95,7 @@ cronHelpers.dailyActivityReminder = catchAsync(async () => {
       counter++;
     }
   });
-  mail.sendCronReport("dailyActivityReminder", counter);
+  //mail.sendCronReport("dailyActivityReminder", counter);
 });
 
 cronHelpers.resetMonthlyCounters = catchAsync(async () => {
@@ -147,7 +147,7 @@ cronHelpers.saveDailyStats = catchAsync(async () => {
   console.log("RUNNING CRON: saveDailyStats");
   let simplifiedUsers = await User.find({}, "source");
   countDailyStats(simplifiedUsers);
-  mail.sendCronReport("saveDailyStats", "success");
+  //mail.sendCronReport("saveDailyStats", "success");
 });
 
 //cronHelper to send e-mail with information about Edookio to all users registered three days ago
@@ -175,7 +175,7 @@ cronHelpers.sendInfoEmail = catchAsync(async () => {
   }
 
   // 6) Send a summary to the admin (optional)
-  mail.sendCronReport("sendInfoEmail", counter);
+  //mail.sendCronReport("sendInfoEmail", counter);
 });
 
 //cronHelper to send e-mail with discount for yearly subscription to users who are not premium but have received the 500 credits bonus
@@ -213,7 +213,7 @@ cronHelpers.sendDiscountEmail = catchAsync(async () => {
   }
   // 4) Send a summary to the admin (optional)
   console.log("Discount e-mail sent to: ", counter);
-  await mail.sendCronReport("sendDiscountEmail", counter);
+  //await mail.sendCronReport("sendDiscountEmail", counter);
 });
 
 //cronHelper to add credits to users have active premium and it has been a month or more since the last recharge
@@ -241,7 +241,7 @@ cronHelpers.addCreditsToPremiumUsers = catchAsync(async () => {
       counter++;
     }
   }
-  mail.sendCronReport("addCreditsToPremiumUsers", counter);
+  //mail.sendCronReport("addCreditsToPremiumUsers", counter);
 });
 
 cronHelpers.dailyCleanupOps = catchAsync(async () => {
@@ -258,7 +258,7 @@ cronHelpers.dailyCleanupOps = catchAsync(async () => {
 
   console.log("Deleted demo categories", counter);
   console.log("Daily cleanup ops finished");
-  await mail.sendCronReport("Deleted demo categories", counter);
+  //await mail.sendCronReport("Deleted demo categories", counter);
 });
 
 let saveLeaderboard = catchAsync(async (users) => {
@@ -302,7 +302,7 @@ let saveLeaderboard = catchAsync(async (users) => {
     { upsert: true, new: true }
   );
   //send confirmation e-mail to admin
-  mail.sendCronReport("saveLeaderboard", simplifiedTopUsers);
+  //mail.sendCronReport("saveLeaderboard", simplifiedTopUsers);
 });
 
 async function countDailyStats(users) {
